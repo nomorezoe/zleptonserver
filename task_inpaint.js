@@ -21,8 +21,8 @@ function TaskInPaint(task, req, queue) {
     //console.log("imgData" + imgData);
     //console.log(buffer);
     const data = JSON.stringify({
-        width: 2048,
-        height: 2048,
+        width: 1536,
+        height: 1536,
         guidance_scale: 5,
         high_noise_frac: 0.75,
         seed: Tool.randomInt(999999999),

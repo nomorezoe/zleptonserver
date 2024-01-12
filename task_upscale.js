@@ -23,7 +23,7 @@ function TaskUpscale(task, req, queue) {
     image: contents,
     model: "realesr_general_x4v3",
     denoise_strength: denoiseValue,
-    outscale: 4,
+    outscale: 2,
     tile: 0,
     tile_pad: 10,
     pre_pad: 0,
