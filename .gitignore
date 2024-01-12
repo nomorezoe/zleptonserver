@@ -1,0 +1,5 @@
+/node_modules/
+/imgs/
+/images/
+/python_scripts/
+package-lock.json
