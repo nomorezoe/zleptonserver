@@ -51,7 +51,7 @@ function TaskInPaint(task, req, queue) {
 
         if(reshttps.statusCode == 200){
             const file = fs.createWriteStream(__dirname + OUTPUT_FOLDER + inpaintFileName);
-            task.imageFileName = inpaintFileName;
+            task.imageFileNames.push(inpaintFileName);
     
             reshttps.pipe(file);
     
@@ -69,6 +69,7 @@ function TaskInPaint(task, req, queue) {
     });
     reqhttps.on('error', (error) => {
         console.error(error);
+        queue.completeTask();
     });
     reqhttps.write(data);
     reqhttps.end();

@@ -182,7 +182,7 @@ function TaskRender(task, req, queue) {
 
         if(reshttps.statusCode == 200){
             var imgname = uuidv4() + ".png";
-            task.imageFileName = imgname;
+            task.imageFileNames.push(imgname);
     
             const file = fs.createWriteStream(__dirname + OUTPUT_FOLDER + imgname);
             reshttps.pipe(file);
@@ -202,6 +202,7 @@ function TaskRender(task, req, queue) {
 
     reqhttps.on('error', (error) => {
         console.error(error);
+        queue.completeTask();
     });
 
     reqhttps.write(data);

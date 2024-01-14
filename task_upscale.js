@@ -50,7 +50,7 @@ function TaskUpscale(task, req, queue) {
     if (reshttps.statusCode == 200) {
       const fileStream = fs.createWriteStream(__dirname + OUTPUT_FOLDER + upscaleImageName);
 
-      task.imageFileName = upscaleImageName;
+      task.imageFileNames.push(upscaleImageName);
       reshttps.pipe(fileStream);
 
       fileStream.on('finish', () => {
@@ -68,6 +68,7 @@ function TaskUpscale(task, req, queue) {
   });
   reqhttps.on('error', (error) => {
     console.error(error);
+    queue.completeTask();
   });
   reqhttps.write(data);
   reqhttps.end();

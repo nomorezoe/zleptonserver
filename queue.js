@@ -7,6 +7,7 @@ function Queue(sessionkey, completeFunc) {
     this.tasks = [];
     this.currentTask = null;
     this.completeFunc = completeFunc;
+    this.timer = 0;
 }
 
 Queue.prototype = {
@@ -30,7 +31,7 @@ Queue.prototype = {
             return;
         }
         
-        
+        this.timer = Date.now();
         this.currentTask = this.tasks.splice(0, 1)[0];
         this.currentTask.excuteTask(this);
         console.log("remainTask" + this.tasks.length);
@@ -42,6 +43,8 @@ Queue.prototype = {
         console.log("completeTask");
 
         if(this.currentTask){
+            let time = Date.now() - this.timer;
+            console.log("Task takes "  + time);
             this.sendCompeleteTask(this.currentTask);
         }
         this.currentTask = null;
@@ -81,8 +84,11 @@ Queue.prototype = {
     sendCompeleteTask: function(task){
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
-            console.log('emit completeTask' + task.imageFileName);
-            socket.emit("completeTask", task.imageFileName);
+            console.log('emit completeTask' + task.imageFileNames);
+            for(var i = 0 ; i < task.imageFileNames.length; i++){
+                socket.emit("completeTask", task.imageFileNames[i]);
+            }
+           
         }
     }
 }

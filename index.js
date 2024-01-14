@@ -90,10 +90,10 @@ app.use('/render', function (req, res, next) {
     var session = req.body.session;
 
     let queue = new Queue(session, completeAQueue);
-    for (let i = 0; i < BATCH_COUNT; i++) {
+    //for (let i = 0; i < BATCH_COUNT; i++) {
         let task = new Task("render", req);
         queue.tasks.push(task);
-    }
+    //}
 
     addToQueue(queue);
 
@@ -204,3 +204,24 @@ function sendQueueStatus() {
         }
     }
 }
+
+
+app.use('/test', function (req, res, next) {
+    //req.clearTimeout(); // clear request timeout
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).get('/test', (req, res) => {
+    var session = "test";
+    let queue = new Queue(session, completeAQueue);
+    let task = new Task("render", req);
+    queue.tasks.push(task);
+
+    addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: queues.length
+    });
+
+    getNextQueue();
+})
