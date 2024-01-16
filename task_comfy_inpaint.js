@@ -4,7 +4,6 @@ const fs = require('fs');
 var OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const sizeOf = require('buffer-image-size');
-const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
 
 function isQualifiedCkpt(model){

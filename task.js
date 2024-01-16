@@ -4,7 +4,8 @@ const TaskRender = require('./task_render');
 const TaskUpscale = require('./task_upscale');
 const TaskInpaint = require('./task_inpaint');
 const TaskComfyRender = require("./task_comfy_render");
-const TaskComfyInPaint = require("./task_comfy_inpaint")
+const TaskComfyInPaint = require("./task_comfy_inpaint");
+const TaskComfyUpscale = require("./task_comfy_upscale");
 
 
 function Task(type, req) {
@@ -22,7 +23,7 @@ Task.prototype = {
                 TaskComfyRender(this, this.req, queue);
                 break;
             case "upscale":
-                TaskUpscale(this, this.req, queue);
+                TaskComfyUpscale(this, this.req, queue);
                 break;
             case "inpaint":
                 TaskComfyInPaint(this, this.req, queue);
