@@ -43,6 +43,12 @@ function TaskComfyInPaint(task, req, queue) {
     var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
     var imgBytes = rawImg.toString('base64');
 
+    var prompt = req.body.prompt;
+
+    const promptFile = fs.readFileSync('./pipe/workflow_api_inpaint.json');
+    let promptjson = JSON.parse(promptFile);
+
+
     //read history checkpoint
     const tags =  ExifReader.load(rawImg);
     //console.log("Tags:" + tags.prompt);
@@ -54,7 +60,7 @@ function TaskComfyInPaint(task, req, queue) {
             if(jsonSettings[i]["inputs"] != undefined
                 && jsonSettings[i]["inputs"]["ckpt_name"]!= undefined){
                     if(isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
-                        prompt["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
+                        promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
                     }
         
                     console.log("find" + prompt["11"]["inputs"]["ckpt_name"]);
@@ -62,10 +68,9 @@ function TaskComfyInPaint(task, req, queue) {
         }
     }
 
-    var prompt = req.body.prompt;
+    
 
-    const promptFile = fs.readFileSync('./pipe/workflow_api_inpaint.json');
-    let promptjson = JSON.parse(promptFile);
+   
     promptjson["1"]["inputs"]["image"] = maskBytes;
     promptjson["2"]["inputs"]["image"] = imgBytes;
 
