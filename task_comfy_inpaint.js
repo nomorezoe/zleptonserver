@@ -63,7 +63,7 @@ function TaskComfyInPaint(task, req, queue) {
                         promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
                     }
         
-                    console.log("find" + prompt["11"]["inputs"]["ckpt_name"]);
+                    console.log("find" + jsonSettings[i]["inputs"]["ckpt_name"]);
                 }
         }
     }
