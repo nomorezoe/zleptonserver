@@ -8,8 +8,13 @@ const bodyParser = require('body-parser');
 //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 //const ExifReader = require('exifreader');
 
-const http = require('http');
-const server = http.createServer(app);
+//const http = require('http');
+const fs = require('fs');
+const https = require('https');
+const server = https.createServer({
+    key: fs.readFileSync("./certs/server.key"),
+    cert: fs.readFileSync("./certs/server.cert"),
+}, app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
@@ -70,12 +75,12 @@ io.on('connection', (socket) => {
 
         let key = SocketManager.getKeyBySocketId(socket.id);
 
-        if(key != null){
+        if (key != null) {
             handleLeaveFromQueue(key);
 
             SocketManager.removeSocket(socket.id);
         }
-       
+
 
     })
 })
@@ -91,8 +96,8 @@ app.use('/render', function (req, res, next) {
 
     let queue = new Queue(session, completeAQueue);
     //for (let i = 0; i < BATCH_COUNT; i++) {
-        let task = new Task("render", req);
-        queue.tasks.push(task);
+    let task = new Task("render", req);
+    queue.tasks.push(task);
     //}
 
     addToQueue(queue);
@@ -189,7 +194,7 @@ function handleLeaveFromQueue(key) {
     for (var i = 0; i < queues.length; i++) {
         if (queues[i].key == key) {
             queues.splice(i, 1);
-            console.log("handleLeaveFromQueue"+key);
+            console.log("handleLeaveFromQueue" + key);
             i--;
         }
     }
@@ -198,7 +203,7 @@ function handleLeaveFromQueue(key) {
 function sendQueueStatus() {
     for (var i = 0; i < queues.length; i++) {
         let socket = SocketManager.getSocketByKey(queues[i].key);
-        if(socket){
+        if (socket) {
             console.log('emit updateQueue' + socket.id);
             socket.emit("updateQueue", i + (currentQueue == null ? 0 : 1));
         }
@@ -211,6 +216,22 @@ app.use('/test', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).get('/test', (req, res) => {
+    req = {};
+    req.files = {};
+    req.files.imageByteArray = {};
+
+    let imageData = require('fs').readFileSync("./images/test_input.png");
+    req.files.imageByteArray.data = imageData;
+
+    req.body = {};
+    req.body.model = "dreamshaper";
+    req.body.cfg = 7;
+    req.body.prompt = "a lady in the forest"
+    req.body.sampleSteps = 20;
+    req.body.depthStrength = 0.53;
+    req.body.poseStrength = 1.0;
+    req.body.negtext = "";
+
     var session = "test";
     let queue = new Queue(session, completeAQueue);
     let task = new Task("render", req);
@@ -224,4 +245,14 @@ app.use('/test', function (req, res, next) {
     });
 
     getNextQueue();
+})
+
+
+app.use('/test2', function (req, res, next) {
+    //req.clearTimeout(); // clear request timeout
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).get('/test2', (req, res) => {
+    const TaskComfyInPaint = require("./task_comfy_inpaint");
+    TaskComfyInPaint();
 })

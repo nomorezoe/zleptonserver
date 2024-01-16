@@ -23,7 +23,7 @@ function TaskComfyUpscale(task, req, queue) {
     let promptjson = JSON.parse(promptFile);
     
     promptjson["2"]["inputs"]["image"] = imgBytes;
-    promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
+   // promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
     var data = JSON.stringify({ "prompt": promptjson });
     //console.log(data)
