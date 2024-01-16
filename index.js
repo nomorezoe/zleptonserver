@@ -12,8 +12,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const https = require('https');
 const server = https.createServer({
-    key: fs.readFileSync("./certs/key.pem"),
-    cert: fs.readFileSync("./certs/cert.pem"),
+    key: fs.readFileSync("./certs/key.pem",'utf-8'),
+    cert: fs.readFileSync("./certs/cert.pem",'utf-8'),
 }, app);
 const { Server } = require("socket.io");
 const io = new Server(server);
