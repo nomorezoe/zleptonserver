@@ -19,11 +19,11 @@ function TaskComfyUpscale(task, req, queue) {
 
     var upscaleImageName = imageFileName.split(".")[0] + "_upscale.png";
 
-    const promptFile = fs.readFileSync('./pipe/workflow_api_enlarge.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_upscale_face_denoise.json');
     let promptjson = JSON.parse(promptFile);
     
     promptjson["2"]["inputs"]["image"] = imgBytes;
-   // promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
+    promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
     var data = JSON.stringify({ "prompt": promptjson });
     //console.log(data)

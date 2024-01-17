@@ -51,17 +51,22 @@ function TaskComfyRender(task, req, queue) {
     var cfg = parseInt(req.body.cfg);
     var posPrompt = req.body.prompt;
     var sampleSteps =  parseInt(req.body.sampleSteps);
-    //var scheduler = req.body.scheduler;
-    //var sampler = req.body.sampler;
+    var scheduler = req.body.scheduler;
+    var sampler = req.body.sampler;
     var negtext = req.body.negtext;
+    var pretext = req.body.pretext;
+    var style = req.body.style;
 
+    
 
+    console.log("style:" + style);
+    console.log("pretext:" + pretext);
     console.log("model:" + model);
     console.log("cfg:" + cfg);
     console.log("prompt:" + posPrompt);
     console.log("sampleSteps:" + sampleSteps);
-   // console.log("sampler:" + sampler);
-   // console.log("scheduler:" + scheduler);
+    console.log("sampler:" + sampler);
+    console.log("scheduler:" + scheduler);
     console.log("negtext:" + negtext);
     
 
@@ -71,9 +76,18 @@ function TaskComfyRender(task, req, queue) {
     console.log("depthStrength:" + depthStrength);
     console.log("poseStrength:" + poseStrength);
 
+    if(style == "base"){
+        posPrompt = pretext + " , " + posPrompt;
+    }
 
     const promptFile = fs.readFileSync('./pipe/workflow_api.json');
     let prompt = JSON.parse(promptFile);
+
+    //turn on auto lora
+    if(style == "base" && model == "realismEngineSDXL_v20VAE"){
+        prompt["21"]["inputs"]["switch_1"] = "On";
+        prompt["21"]["inputs"]["switch_2"] = "On";
+    }
 
     prompt["2"]["inputs"]["image"] = imgData;
     prompt["13"]["inputs"]["text"] = posPrompt;
@@ -92,8 +106,8 @@ function TaskComfyRender(task, req, queue) {
     
     prompt["6"]["inputs"]["steps"] = sampleSteps;
     prompt["6"]["inputs"]["cfg"] = cfg;
-   // prompt["6"]["inputs"]["sampler_name"] = sampler;
-   // prompt["6"]["inputs"]["scheduler"] = scheduler;
+    prompt["6"]["inputs"]["sampler_name"] = sampler;
+    prompt["6"]["inputs"]["scheduler"] = scheduler;
 
     prompt["5"]["inputs"]["strength"] = depthStrength;
     prompt["18"]["inputs"]["strength"] = poseStrength;

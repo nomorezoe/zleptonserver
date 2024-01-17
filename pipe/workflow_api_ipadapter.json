@@ -9,29 +9,20 @@
         0
       ]
     },
-    "class_type": "MiDaS-DepthMapPreprocessor",
-    "_meta": {
-      "title": "MiDaS Depth Map"
-    }
+    "class_type": "MiDaS-DepthMapPreprocessor"
   },
   "2": {
     "inputs": {
       "image": "[WE_WILL_FILL_THIS_BELOW]",
       "upload": "image"
     },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
+    "class_type": "LoadImage"
   },
   "4": {
     "inputs": {
       "control_net_name": "control-lora-depth-rank256.safetensors"
     },
-    "class_type": "ControlNetLoader",
-    "_meta": {
-      "title": "Load ControlNet Model"
-    }
+    "class_type": "ControlNetLoader"
   },
   "5": {
     "inputs": {
@@ -49,10 +40,7 @@
         0
       ]
     },
-    "class_type": "ControlNetApply",
-    "_meta": {
-      "title": "Apply ControlNet"
-    }
+    "class_type": "ControlNetApply"
   },
   "6": {
     "inputs": {
@@ -63,7 +51,7 @@
       "scheduler": "normal",
       "denoise": 1,
       "model": [
-        "20",
+        "27",
         0
       ],
       "positive": [
@@ -79,19 +67,13 @@
         0
       ]
     },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
-    }
+    "class_type": "KSampler"
   },
   "7": {
     "inputs": {
       "ckpt_name": "dynavisionXLAllInOneStylized_release0557Bakedvae.safetensors"
     },
-    "class_type": "CheckpointLoaderSimple",
-    "_meta": {
-      "title": "Load Checkpoint"
-    }
+    "class_type": "CheckpointLoaderSimple"
   },
   "9": {
     "inputs": {
@@ -99,10 +81,7 @@
       "height": 768,
       "batch_size": 4
     },
-    "class_type": "EmptyLatentImage",
-    "_meta": {
-      "title": "Empty Latent Image"
-    }
+    "class_type": "EmptyLatentImage"
   },
   "11": {
     "inputs": {
@@ -115,10 +94,7 @@
         2
       ]
     },
-    "class_type": "VAEDecode",
-    "_meta": {
-      "title": "VAE Decode"
-    }
+    "class_type": "VAEDecode"
   },
   "12": {
     "inputs": {
@@ -128,10 +104,7 @@
         0
       ]
     },
-    "class_type": "SaveImage",
-    "_meta": {
-      "title": "Save Image"
-    }
+    "class_type": "SaveImage"
   },
   "13": {
     "inputs": {
@@ -141,10 +114,7 @@
         1
       ]
     },
-    "class_type": "CLIPTextEncode",
-    "_meta": {
-      "title": "CLIP Text Encode (Prompt)"
-    }
+    "class_type": "CLIPTextEncode"
   },
   "14": {
     "inputs": {
@@ -154,10 +124,7 @@
         1
       ]
     },
-    "class_type": "CLIPTextEncode",
-    "_meta": {
-      "title": "CLIP Text Encode (Prompt)"
-    }
+    "class_type": "CLIPTextEncode"
   },
   "15": {
     "inputs": {
@@ -172,19 +139,13 @@
         0
       ]
     },
-    "class_type": "DWPreprocessor",
-    "_meta": {
-      "title": "DWPose Estimator"
-    }
+    "class_type": "DWPreprocessor"
   },
   "17": {
     "inputs": {
       "control_net_name": "thibaud_xl_openpose_256lora.safetensors"
     },
-    "class_type": "ControlNetLoader",
-    "_meta": {
-      "title": "Load ControlNet Model"
-    }
+    "class_type": "ControlNetLoader"
   },
   "18": {
     "inputs": {
@@ -202,10 +163,7 @@
         0
       ]
     },
-    "class_type": "ControlNetApply",
-    "_meta": {
-      "title": "Apply ControlNet"
-    }
+    "class_type": "ControlNetApply"
   },
   "20": {
     "inputs": {
@@ -222,10 +180,7 @@
         0
       ]
     },
-    "class_type": "CR Apply LoRA Stack",
-    "_meta": {
-      "title": "CR Apply LoRA Stack"
-    }
+    "class_type": "CR Apply LoRA Stack"
   },
   "21": {
     "inputs": {
@@ -242,9 +197,64 @@
       "model_weight_3": 1,
       "clip_weight_3": 1
     },
-    "class_type": "CR LoRA Stack",
-    "_meta": {
-      "title": "CR LoRA Stack"
-    }
+    "class_type": "CR LoRA Stack"
+  },
+  "22": {
+    "inputs": {
+      "image": "8a30072a-3391-49b9-b679-c4a8dab75103.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "23": {
+    "inputs": {
+      "ipadapter_file": "ip-adapter_sd15.bin"
+    },
+    "class_type": "IPAdapterModelLoader"
+  },
+  "25": {
+    "inputs": {
+      "clip_name": "model_15.safetensors"
+    },
+    "class_type": "CLIPVisionLoader"
+  },
+  "26": {
+    "inputs": {
+      "interpolation": "LANCZOS",
+      "crop_position": "top",
+      "sharpening": 0,
+      "image": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "PrepImageForClipVision"
+  },
+  "27": {
+    "inputs": {
+      "weight": 1,
+      "noise": 0,
+      "weight_type": "original",
+      "start_at": 0,
+      "end_at": 1,
+      "unfold_batch": false,
+      "ipadapter": [
+        "23",
+        0
+      ],
+      "clip_vision": [
+        "25",
+        0
+      ],
+      "image": [
+        "26",
+        0
+      ],
+      "model": [
+        "20",
+        0
+      ]
+    },
+    "class_type": "IPAdapterApply"
   }
 }

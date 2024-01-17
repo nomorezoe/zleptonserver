@@ -247,13 +247,3 @@ app.use('/test', function (req, res, next) {
 
     getNextQueue();
 })
-
-
-app.use('/test2', function (req, res, next) {
-    //req.clearTimeout(); // clear request timeout
-    req.setTimeout(300000); //set a 20s timeout for this request
-    next();
-}).get('/test2', (req, res) => {
-    const TaskComfyInPaint = require("./task_comfy_inpaint");
-    TaskComfyInPaint();
-})
