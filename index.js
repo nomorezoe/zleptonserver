@@ -14,6 +14,7 @@ const https = require('https');
 const server = https.createServer({
     key: fs.readFileSync("./certs/server.key", 'utf-8'),
     cert: fs.readFileSync("./certs/server.cert", 'utf-8'),
+    ca: fs.readFileSync("./certs/ca.crt", 'utf-8')
 }, app);
 const { Server } = require("socket.io");
 const io = new Server(server);
