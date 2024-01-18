@@ -58,7 +58,7 @@ Task.prototype = {
                 }*/
                 break;
             case "upscale":
-                return 30;
+                return 90;
                 break;
             case "inpaint":
                 return 60;
