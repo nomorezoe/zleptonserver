@@ -50,14 +50,14 @@ function TaskComfyRender(task, req, queue) {
     model = getModelMap(model);
     var cfg = parseInt(req.body.cfg);
     var posPrompt = req.body.prompt;
-    var sampleSteps =  parseInt(req.body.sampleSteps);
+    var sampleSteps = parseInt(req.body.sampleSteps);
     var scheduler = req.body.scheduler;
     var sampler = req.body.sampler;
     var negtext = req.body.negtext;
     var pretext = req.body.pretext;
     var style = req.body.style;
 
-    
+
 
     console.log("style:" + style);
     console.log("pretext:" + pretext);
@@ -68,26 +68,46 @@ function TaskComfyRender(task, req, queue) {
     console.log("sampler:" + sampler);
     console.log("scheduler:" + scheduler);
     console.log("negtext:" + negtext);
-    
 
-    var depthStrength =  parseFloat(req.body.depthStrength);
+    var depthStrength = parseFloat(req.body.depthStrength);
     var poseStrength = parseFloat(req.body.poseStrength);
 
     console.log("depthStrength:" + depthStrength);
     console.log("poseStrength:" + poseStrength);
 
-    if(style == "base"){
+    var lockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
+    var characterFile = "";
+    if (lockCharacter) {
+        console.log("lockcharacter");
+        characterFile = req.body.characterFile;
+    }
+
+    if (style == "base") {
         posPrompt = pretext + " , " + posPrompt;
     }
 
-    const promptFile = fs.readFileSync('./pipe/workflow_api.json');
+    const promptFile = fs.readFileSync(lockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
     let prompt = JSON.parse(promptFile);
 
     //turn on auto lora
-    if(style == "base" && model == "realismEngineSDXL_v20VAE"){
+    if (style == "base" && model == "realismEngineSDXL_v20VAE") {
         prompt["21"]["inputs"]["switch_1"] = "On";
         prompt["21"]["inputs"]["switch_2"] = "On";
     }
+
+    //lockcharacter
+    if (lockCharacter) {
+        var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
+        var imgBytes = rawImg.toString('base64');
+        prompt["22"]["inputs"]["image"] = imgBytes;
+
+        if (!isXLModel(model)) {
+            console.log("lockCharacter SD 1.5 model");
+            prompt["23"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
+            prompt["25"]["inputs"]["clip_name"] = "model_15.safetensors";
+        }
+    }
+
 
     prompt["2"]["inputs"]["image"] = imgData;
     prompt["13"]["inputs"]["text"] = posPrompt;
@@ -96,14 +116,14 @@ function TaskComfyRender(task, req, queue) {
     prompt["7"]["inputs"]["ckpt_name"] = model + ".safetensors";
     //others
 
-    if(negtext.trim().length != 0){
+    if (negtext.trim().length != 0) {
         console.log("update neg");
         prompt["14"]["inputs"]["text"] = negtext;
     }
-    else{
+    else {
         console.log("skip neg");
     }
-    
+
     prompt["6"]["inputs"]["steps"] = sampleSteps;
     prompt["6"]["inputs"]["cfg"] = cfg;
     prompt["6"]["inputs"]["sampler_name"] = sampler;
@@ -114,17 +134,17 @@ function TaskComfyRender(task, req, queue) {
 
     //control net
 
-    if(!isXLModel(model)){
+    if (!isXLModel(model)) {
         console.log("SD 1.5 model");
-        prompt["17"]["inputs"]["control_net_name"]="control_openpose-fp16.safetensors";
-        prompt["4"]["inputs"]["control_net_name"]="control_depth-fp16.safetensors";
+        prompt["17"]["inputs"]["control_net_name"] = "control_openpose-fp16.safetensors";
+        prompt["4"]["inputs"]["control_net_name"] = "control_depth-fp16.safetensors";
     }
 
     var data = JSON.stringify({ "prompt": prompt });
     //console.log(data)
     console.log(data.length)
     const options = {
-        hostname: 'j9e5gs4n-comfyui.bjz.edr.lepton.ai',
+        hostname: Tool.RequestURL,
         path: '/run',
         method: 'POST',
         headers: {
@@ -150,7 +170,7 @@ function TaskComfyRender(task, req, queue) {
             for (var i = 0; i < jsonobj.length; i++) {
                 var imgname = uuidv4() + ".png";
                 task.imageFileNames.push(imgname);
-                fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i],{
+                fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
                     encoding: "base64",
                 });
             }

@@ -84,7 +84,7 @@ function TaskComfyInPaint(task, req, queue) {
     //console.log(data)
     console.log(data.length)
     const options = {
-        hostname: 'j9e5gs4n-comfyui.bjz.edr.lepton.ai',
+        hostname: Tool.RequestURL,
         path: '/run',
         method: 'POST',
         headers: {

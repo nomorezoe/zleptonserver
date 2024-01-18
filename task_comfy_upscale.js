@@ -2,7 +2,7 @@
 const https = require('https');
 const fs = require('fs');
 var OUTPUT_FOLDER = "/imgs/";
-//const Tool = require('./tool');
+const Tool = require('./tool');
 //const sizeOf = require('buffer-image-size');
 
 function TaskComfyUpscale(task, req, queue) {
@@ -10,9 +10,11 @@ function TaskComfyUpscale(task, req, queue) {
     var imageFileName = req.body.file;
     var session = req.body.session;
     var denoiseValue = req.body.denoisevalue;
+    var prompt = req.body.prompt;
 
     console.log("denoiseValue:" + denoiseValue);
     console.log("imageFileName" + imageFileName);
+    console.log("prompt" + prompt);
 
     var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
     var imgBytes = rawImg.toString('base64');
@@ -23,13 +25,15 @@ function TaskComfyUpscale(task, req, queue) {
     let promptjson = JSON.parse(promptFile);
     
     promptjson["2"]["inputs"]["image"] = imgBytes;
+    promptjson["13"]["inputs"]["text"] = prompt;
+    promptjson["7"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
     promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
     var data = JSON.stringify({ "prompt": promptjson });
     //console.log(data)
     console.log(data.length)
     const options = {
-        hostname: 'j9e5gs4n-comfyui.bjz.edr.lepton.ai',
+        hostname: Tool.RequestURL,
         path: '/run',
         method: 'POST',
         headers: {
