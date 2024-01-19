@@ -5,6 +5,7 @@ var OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const sizeOf = require('buffer-image-size');
 const ExifReader = require('exifreader');
+const { v4: uuidv4 } = require('uuid');
 
 function isQualifiedCkpt(model){
     if(model == "dynavisionXLAllInOneStylized_release0557Bakedvae.safetensors"){
@@ -32,16 +33,20 @@ function TaskComfyInPaint(task, req, queue) {
     var buffer = Buffer.from(rawMaskImg);
     var maskBytes = buffer.toString('base64');
 
-    var dimensions = sizeOf(buffer);
-    var dWidth = dimensions.width;
-    var dHeight = dimensions.height;
+   
 
     //original image
     var imageFileName = req.body.file;
-    var inpaintFileName = imageFileName.split(".")[0] + "_inpaint.png";
+    var inpaintFileName =  uuidv4() + "_inpaint.png";
     
     var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
     var imgBytes = rawImg.toString('base64');
+
+    var dimensions = sizeOf(rawImg);
+    var dWidth = dimensions.width;
+    var dHeight = dimensions.height;
+    console.log("dWidth" + dWidth);
+    console.log("dHeight" + dHeight);
 
     var prompt = req.body.prompt;
 

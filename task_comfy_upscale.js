@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 var OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
+const { v4: uuidv4 } = require('uuid');
 //const sizeOf = require('buffer-image-size');
 
 function TaskComfyUpscale(task, req, queue) {
@@ -19,7 +20,7 @@ function TaskComfyUpscale(task, req, queue) {
     var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
     var imgBytes = rawImg.toString('base64');
 
-    var upscaleImageName = imageFileName.split(".")[0] + "_upscale.png";
+    var upscaleImageName =  uuidv4() + "_upscale.png";
 
     const promptFile = fs.readFileSync('./pipe/workflow_api_upscale_face_denoise.json');
     let promptjson = JSON.parse(promptFile);
