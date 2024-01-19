@@ -20,7 +20,15 @@ function TaskComfyInPaint(task, req, queue) {
     var imageFileName = req.body.file;
     var inpaintFileName =  uuidv4() + "_inpaint.png";
     
-    var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
+    try{
+        var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
+    }
+    catch(err){
+        console.log("read file err:" + err);
+        queue.completeTask();
+        return;
+    }
+    
     var imgBytes = rawImg.toString('base64');
 
     var dimensions = sizeOf(rawImg);
@@ -114,6 +122,7 @@ function TaskComfyInPaint(task, req, queue) {
     reqhttps.on('error', (error) => {
         console.error(error);
         queue.completeTask();
+        return;
     });
 
     reqhttps.write(data);

@@ -4,6 +4,7 @@ const fs = require('fs');
 var OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
+const ExifReader = require('exifreader');
 //const sizeOf = require('buffer-image-size');
 
 function TaskComfyUpscale(task, req, queue) {
@@ -17,10 +18,24 @@ function TaskComfyUpscale(task, req, queue) {
     console.log("imageFileName" + imageFileName);
     console.log("prompt" + prompt);
 
-    var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
+    try{
+        var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
+    }
+    catch(err){
+        console.log("read file err:" + err);
+        queue.completeTask();
+        return;
+    }
     var imgBytes = rawImg.toString('base64');
 
     var upscaleImageName =  uuidv4() + "_upscale.png";
+
+    /*const tags =  ExifReader.load(rawImg);
+    if(tags.prompt){
+        console.log("Tags:" + tags.prompt.value);
+    }
+    */
+   
 
     const promptFile = fs.readFileSync('./pipe/workflow_api_upscale_face_denoise.json');
     let promptjson = JSON.parse(promptFile);

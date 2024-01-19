@@ -123,7 +123,15 @@ function TaskComfyRender(task, req, queue) {
 
     //lockcharacter
     if (lockCharacter) {
-        var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
+        try{
+            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
+        }
+        catch(err){
+            console.log("read file err");
+            queue.completeTask();
+            return;
+        }
+
         var imgBytes = rawImg.toString('base64');
         prompt["22"]["inputs"]["image"] = imgBytes;
 
