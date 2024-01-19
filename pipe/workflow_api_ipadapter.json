@@ -233,7 +233,7 @@
   "27": {
     "inputs": {
       "weight": 1,
-      "noise": 1,
+      "noise": 0,
       "weight_type": "original",
       "start_at": 0,
       "end_at": 1,
