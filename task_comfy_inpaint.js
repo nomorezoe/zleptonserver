@@ -7,25 +7,6 @@ const sizeOf = require('buffer-image-size');
 const ExifReader = require('exifreader');
 const { v4: uuidv4 } = require('uuid');
 
-function isQualifiedCkpt(model){
-    if(model == "dynavisionXLAllInOneStylized_release0557Bakedvae.safetensors"){
-        return true;
-    }
-    if(model == "realismEngineSDXL_v20VAE.safetensors"){
-        return true;
-    }
-    if(model == "realisticVisionV60B1_v60B1VAE.safetensors"){
-        return true;
-    }
-    if(model == "dreamshaper_8.safetensors"){
-        return true;
-    }
-    if(model == "Deliberate_v5.safetensors"){
-        return true;
-    }
-    return false;
-}
-
 function TaskComfyInPaint(task, req, queue) {
 
     //mask
@@ -54,6 +35,7 @@ function TaskComfyInPaint(task, req, queue) {
     let promptjson = JSON.parse(promptFile);
 
 
+    /*
     //read history checkpoint
     const tags =  ExifReader.load(rawImg);
     //console.log("Tags:" + tags.prompt);
@@ -64,15 +46,14 @@ function TaskComfyInPaint(task, req, queue) {
         for(var i in jsonSettings){
             if(jsonSettings[i]["inputs"] != undefined
                 && jsonSettings[i]["inputs"]["ckpt_name"]!= undefined){
-                    if(isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
+                    if(Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
                         promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
                     }
-        
                     console.log("find" + jsonSettings[i]["inputs"]["ckpt_name"]);
                 }
         }
     }
-
+    */
     
 
    
