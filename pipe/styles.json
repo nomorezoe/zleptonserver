@@ -1,0 +1,66 @@
+[
+    {
+        "name": "storyboard-style-3",
+        "prompt": "monochrome sketch in storyboard format {prompt} . pencil or marker, detailed, grayscale, dynamic lines with a hand-drawn jitter, expressive shading, storyboard narrative style, high clarity, focused on conveying motion and emotion",
+        "negative_prompt": "color, digital painting, smooth vector lines, abstract, over-simplified, photographic, cartoonish"
+    },
+    {
+        "name": "pen-watercolor",
+        "prompt": "pen and watercolor painting {prompt} . mixed media, vibrant colors, ink outlines, watercolor washes, detailed",
+        "negative_prompt": "digital, monochrome, oil, acrylic"
+    },
+    {
+        "name": "loose-pencil-sketch",
+        "prompt": "loose pencil sketch {prompt} . quick, gestural, light shading, rough, sketchy",
+        "negative_prompt": "detailed, color, ink, digital"
+    },
+    {
+        "name": "engraving-illustration",
+        "prompt": "engraving illustration {prompt} . detailed, line art, monochrome, vintage, cross-hatching",
+        "negative_prompt": "color, digital, abstract, blurry"
+    },
+    {
+        "name": "palette-knife-oil",
+        "prompt": "palette knife oil {prompt} . textured, thick paint, bold strokes, vibrant, impasto",
+        "negative_prompt": "digital, flat, detailed, watercolor"
+    },
+    {
+        "name": "pen-ink-drawing",
+        "prompt": "pen and ink drawing {prompt} . inked, fine lines, detailed, monochrome, cross-hatching",
+        "negative_prompt": "color, painting, blurry, sketchy"
+    },
+    {
+        "name": "fashion-illustration-quick-sketch",
+        "prompt": "quick sketch fashion illustration {prompt} . gestural, loose lines, dynamic, spontaneous, energetic",
+        "negative_prompt": "detailed, realistic, slow, meticulous",
+        "models": "Deliberate_v5"
+    },
+    {
+        "name": "fashion-illustration-vanish",
+        "prompt": "vanish technique fashion illustration {prompt} . fading elements, partial detailing, focus on key features, ethereal, mysterious",
+        "negative_prompt": "fully detailed, realistic, bold, clear",
+        "models": "Deliberate_v5"
+    },
+    {
+        "name": "fashion-illustration-realism",
+        "prompt": "realism fashion illustration {prompt} . lifelike, detailed, accurate proportions, textured fabrics, realistic shading",
+        "negative_prompt": "abstract, cartoon, exaggerated, flat",
+        "models": "Deliberate_v5"
+    },
+    {
+        "name": "fashion-illustration-semi-realism",
+        "prompt": "semi-realism fashion illustration {prompt} . stylized, realistic with artistic flair, detailed with imaginative elements, expressive",
+        "negative_prompt": "cartoon, flat, abstract, overly exaggerated",
+        "models": "Deliberate_v5"
+    },
+    {
+        "name": "fashion-illustration-quick-sketch-8",
+        "prompt": "quick sketch fashion illustration {prompt} . minimal hair dynamics, sharp background clarity, detailed linework, color highlights, consistent negative space",
+        "negative_prompt": "dynamic hair, blurred background, full color, overloaded"
+    },
+    {
+        "name": "fashion-illustration-quick-sketch-9",
+        "prompt": "quick sketch fashion illustration {prompt} . calm hair style, focused background details, line art precision, color accents, maintained white space",
+        "negative_prompt": "turbulent hair, vague background, overly vibrant, dense"
+    }
+]

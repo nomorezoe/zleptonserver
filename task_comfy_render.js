@@ -56,10 +56,12 @@ function TaskComfyRender(task, req, queue) {
     var negtext = req.body.negtext;
     var pretext = req.body.pretext;
     var style = req.body.style;
+    var lora = req.body.lora;
 
 
 
     console.log("style:" + style);
+    console.log("lora:" + lora);
     console.log("pretext:" + pretext);
     console.log("model:" + model);
     console.log("cfg:" + cfg);
@@ -84,6 +86,19 @@ function TaskComfyRender(task, req, queue) {
 
     if (style == "base") {
         posPrompt = pretext + " , " + posPrompt;
+    }
+    // styles
+    else{
+        for(let i = 0; i <TaskComfyRender.styleJson.length; i ++){
+            if(TaskComfyRender.styleJson[i].name == style){
+                console.log("find style: " + style);
+                posPrompt =  TaskComfyRender.styleJson[i].prompt.replace("{prompt}", posPrompt);
+                negtext = TaskComfyRender.styleJson[i].negative_prompt;
+                console.log("posprompt:" + posPrompt);
+                console.log("negtext:" + negtext);
+                break;
+            }
+        }
     }
 
     const promptFile = fs.readFileSync(lockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
@@ -117,8 +132,9 @@ function TaskComfyRender(task, req, queue) {
     //others
 
     if (negtext.trim().length != 0) {
-        console.log("update neg");
-        prompt["14"]["inputs"]["text"] = negtext;
+       
+        prompt["14"]["inputs"]["text"] = negtext +  ", watermark, nude, nsfw, signature";
+        console.log("update neg: " +  prompt["14"]["inputs"]["text"]);
     }
     else {
         console.log("skip neg");
@@ -194,5 +210,8 @@ function TaskComfyRender(task, req, queue) {
     reqhttps.end();
 
 }
+
+let stylefile = fs.readFileSync("./pipe/styles.json");
+TaskComfyRender.styleJson = JSON.parse(stylefile)
 
 module.exports = TaskComfyRender;
