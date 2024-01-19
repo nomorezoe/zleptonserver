@@ -110,6 +110,17 @@ function TaskComfyRender(task, req, queue) {
         prompt["21"]["inputs"]["switch_2"] = "On";
     }
 
+    if(lora != "none"){
+        for(let i = 1; i < 4; i++){
+            if(prompt["21"]["inputs"]["switch_" + i] == "Off"){
+                prompt["21"]["inputs"]["switch_" + i] = "On";
+                prompt["21"]["inputs"]["lora_name_" + i] = lora + ".safetensors";
+                break;
+            }
+        }
+        
+    }
+
     //lockcharacter
     if (lockCharacter) {
         var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
