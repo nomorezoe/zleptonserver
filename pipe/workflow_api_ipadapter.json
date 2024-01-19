@@ -49,7 +49,7 @@
       "cfg": 7,
       "sampler_name": "euler",
       "scheduler": "normal",
-      "denoise": 0.5,
+      "denoise": 1,
       "model": [
         "27",
         0
