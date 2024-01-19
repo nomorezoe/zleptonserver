@@ -61,7 +61,7 @@ Task.prototype = {
                 return 90;
                 break;
             case "inpaint":
-                return 60;
+                return 120;
                 break;
         } 
     }
