@@ -152,7 +152,7 @@ function TaskComfyRender(task, req, queue) {
 
     if (negtext.trim().length != 0) {
        
-        prompt["14"]["inputs"]["text"] = negtext +  ", watermark, nude, nsfw, signature";
+        prompt["14"]["inputs"]["text"] = negtext;// +  ", watermark, nude, nsfw, signature";
         console.log("update neg: " +  prompt["14"]["inputs"]["text"]);
     }
     else {
