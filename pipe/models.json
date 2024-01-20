@@ -1,0 +1,22 @@
+[
+    {
+        "name": "dynavisionXL",
+        "model": "dynavisionXLAllInOneStylized_release0557Bakedvae"
+    },
+    {
+        "name": "realism_engine_sdxl",
+        "model": "realismEngineSDXL_v20VAE"
+    },
+    {
+        "name": "realistic_vision_v6",
+        "model": "realisticVisionV60B1_v60B1VAE"
+    },
+    {
+        "name": "dreamshaper",
+        "model": "dreamshaper_8"
+    },
+    {
+        "name": "Deliberate_v4",
+        "model": "Deliberate_v4 (SFW)"
+    }
+]

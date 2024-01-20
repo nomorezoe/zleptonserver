@@ -216,17 +216,21 @@ app.get('/styles', (req, res) => {
     json = JSON.parse(json);
 
     var obj = [];
-    for(let i = 0; i < json.length; i++){
-        obj.push({"name":json[i].name,"models":json[i].models});
+    for (let i = 0; i < json.length; i++) {
+        obj.push({ "name": json[i].name, "models": json[i].models });
     }
 
     let json2 = require('fs').readFileSync("./pipe/loras.json");
     json2 = JSON.parse(json2);
 
+    let json3 = require('fs').readFileSync("./pipe/models.json");
+    json3 = JSON.parse(json3);
+
     res.json({
         success: true,
         data: obj,
-        lora:json2
+        lora: json2,
+        model: json3
     })
 });
 

@@ -64,26 +64,27 @@ function TaskComfyUpscale(task, req, queue) {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
 
-        reshttps.on('data', (d) => {
-            datastring += d;
-            console.log("ondata");
-        });
-
-        reshttps.on('end', (d) => {
-            let jsonobj = JSON.parse(datastring);
-
-            console.log("onend" + jsonobj.length);
-            for (var i = 0; i < jsonobj.length; i++) {
-                task.imageFileNames.push(upscaleImageName);
-                fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i],{
-                    encoding: "base64",
-                });
-            }
-            queue.completeTask();
-        });
+       
 
         if (reshttps.statusCode == 200) {
             console.log("200");
+            reshttps.on('data', (d) => {
+                datastring += d;
+               // console.log("ondata");
+            });
+    
+            reshttps.on('end', (d) => {
+                let jsonobj = JSON.parse(datastring);
+    
+                console.log("onend" + jsonobj.length);
+                for (var i = 0; i < jsonobj.length; i++) {
+                    task.imageFileNames.push(upscaleImageName);
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i],{
+                        encoding: "base64",
+                    });
+                }
+                queue.completeTask();
+            });
         }
         else {
             queue.completeTask();

@@ -165,26 +165,27 @@ function TaskComfyRender(task, req, queue) {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
 
-        reshttps.on('data', (d) => {
-            datastring += d;
-            console.log("ondata");
-        });
-
-        reshttps.on('end', (d) => {
-            console.log("onend");
-            const jsonobj = JSON.parse(datastring);
-            for (var i = 0; i < jsonobj.length; i++) {
-                var imgname = uuidv4() + ".png";
-                task.imageFileNames.push(imgname);
-                fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
-                    encoding: "base64",
-                });
-            }
-            queue.completeTask();
-        });
-
         if (reshttps.statusCode == 200) {
             console.log("200");
+
+            reshttps.on('data', (d) => {
+                datastring += d;
+                //console.log("ondata");
+            });
+    
+            reshttps.on('end', (d) => {
+                console.log("onend");
+                const jsonobj = JSON.parse(datastring);
+                for (var i = 0; i < jsonobj.length; i++) {
+                    var imgname = uuidv4() + ".png";
+                    task.imageFileNames.push(imgname);
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
+                        encoding: "base64",
+                    });
+                }
+                queue.completeTask();
+            });
+
         }
         else {
             queue.completeTask();
