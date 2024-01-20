@@ -41,12 +41,9 @@ function TaskComfyUpscale(task, req, queue) {
         //console.log("EXif:" + jsonString);
         var jsonSettings = JSON.parse(jsonString);
         for (let i in jsonSettings) {
-            if (jsonSettings[i]["class_type"] == "CLIPTextEncode") {
-                let text = jsonSettings[i]["inputs"]["text"];
-                style = Tool.getStyleFromNegPrompt(text);
-                if (style != null) {
-                    break;
-                }
+            if (jsonSettings[i]["class_type"] == "CLIPTextEncode"&& jsonSettings[i]["inputs"]["clip"] == undefined) {
+                style = jsonSettings[i]["inputs"]["text"];
+                break;
             }
         }
     }

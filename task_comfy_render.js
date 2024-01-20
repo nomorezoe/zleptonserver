@@ -87,6 +87,10 @@ function TaskComfyRender(task, req, queue) {
         }
     }
 
+    if(style != "base"){
+        prompt["100"]["inputs"]["text"] = style;
+    }
+
     //lockcharacter
     if (lockCharacter) {
         try{

@@ -256,5 +256,11 @@
       ]
     },
     "class_type": "IPAdapterApply"
+  },
+  "100": {
+    "inputs": {
+      "text": ""
+    },
+    "class_type": "CLIPTextEncode"
   }
 }
