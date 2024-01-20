@@ -18,30 +18,71 @@ function TaskComfyUpscale(task, req, queue) {
     console.log("imageFileName" + imageFileName);
     console.log("prompt" + prompt);
 
-    try{
+    try {
         var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
     }
-    catch(err){
+    catch (err) {
         console.log("read file err:" + err);
         queue.completeTask();
         return;
     }
     var imgBytes = rawImg.toString('base64');
 
-    var upscaleImageName =  uuidv4() + "_upscale.png";
+    var upscaleImageName = uuidv4() + "_upscale.png";
 
-    /*const tags =  ExifReader.load(rawImg);
-    if(tags.prompt){
+    // get old style
+    const tags = ExifReader.load(rawImg);
+    let style = null;
+    let negtext = null;
+    if (tags.prompt) {
         console.log("Tags:" + tags.prompt.value);
+
+        var jsonString = tags.prompt.value;
+        //console.log("EXif:" + jsonString);
+        var jsonSettings = JSON.parse(jsonString);
+        for (let i in jsonSettings) {
+            if (jsonSettings[i]["class_type"] == "CLIPTextEncode") {
+                let text = jsonSettings[i]["inputs"]["text"];
+                style = Tool.getStyleFromNegPrompt(text);
+                if (style != null) {
+                    break;
+                }
+            }
+        }
     }
-    */
-   
+
+    if (style) {
+        let styleInfo = Tool.getStyledPrompt(style, prompt, negtext);
+        prompt = styleInfo[0];
+        negtext = styleInfo[1];
+
+        console.log("styled prompt: " + prompt);
+        console.log("styled negprompt: " + negtext);
+    }
+
+    let model = null;
+    // get old model
+    for (var i in jsonSettings) {
+        if (jsonSettings[i]["class_type"] == "CheckpointLoaderSimple") {
+            if (Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])) {
+                model = jsonSettings[i]["inputs"]["ckpt_name"];
+                console.log("find" + model);
+                break;
+            }
+        }
+    }
 
     const promptFile = fs.readFileSync('./pipe/workflow_api_upscale_face_denoise.json');
     let promptjson = JSON.parse(promptFile);
-    
+
     promptjson["2"]["inputs"]["image"] = imgBytes;
     promptjson["13"]["inputs"]["text"] = prompt;
+    if (negtext != null) {
+        promptjson["14"]["inputs"]["text"] = negtext;
+    }
+    if (model != null) {
+        promptjson["6"]["inputs"]["ckpt_name"] = model;
+    }
     promptjson["7"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
     promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
@@ -64,22 +105,22 @@ function TaskComfyUpscale(task, req, queue) {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
 
-       
+
 
         if (reshttps.statusCode == 200) {
             console.log("200");
             reshttps.on('data', (d) => {
                 datastring += d;
-               // console.log("ondata");
+                // console.log("ondata");
             });
-    
+
             reshttps.on('end', (d) => {
                 let jsonobj = JSON.parse(datastring);
-    
+
                 console.log("onend" + jsonobj.length);
                 for (var i = 0; i < jsonobj.length; i++) {
                     task.imageFileNames.push(upscaleImageName);
-                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i],{
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i], {
                         encoding: "base64",
                     });
                 }

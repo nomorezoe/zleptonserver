@@ -60,16 +60,12 @@ function TaskComfyRender(task, req, queue) {
     }
     // styles
     else{
-        for(let i = 0; i <TaskComfyRender.styleJson.length; i ++){
-            if(TaskComfyRender.styleJson[i].name == style){
-                console.log("find style: " + style);
-                posPrompt =  TaskComfyRender.styleJson[i].prompt.replace("{prompt}", posPrompt);
-                negtext = TaskComfyRender.styleJson[i].negative_prompt;
-                console.log("posprompt:" + posPrompt);
-                console.log("negtext:" + negtext);
-                break;
-            }
-        }
+        let styleInfo = Tool.getStyledPrompt(style, posPrompt, negtext);
+        posPrompt = styleInfo[0];
+        negtext= styleInfo[1];
+
+        console.log("styled prompt: " + posPrompt);
+        console.log("styled negprompt: " + negtext);
     }
 
     const promptFile = fs.readFileSync(lockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
@@ -89,7 +85,6 @@ function TaskComfyRender(task, req, queue) {
                 break;
             }
         }
-        
     }
 
     //lockcharacter
@@ -202,7 +197,5 @@ function TaskComfyRender(task, req, queue) {
 
 }
 
-let stylefile = fs.readFileSync("./pipe/styles.json");
-TaskComfyRender.styleJson = JSON.parse(stylefile)
 
 module.exports = TaskComfyRender;

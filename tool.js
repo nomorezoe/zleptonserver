@@ -58,10 +58,33 @@ Tool.isQualifiedCkpt = function (model) {
     if (model == "dreamshaper_8.safetensors") {
         return true;
     }
-    if (model == "Deliberate_v5.safetensors") {
+    if (model == "Deliberate_v4 (SFW).safetensors") {
         return true;
     }
     return false;
+}
+
+Tool.styleJson = JSON.parse(require('fs').readFileSync("./pipe/styles.json"));
+
+Tool.getStyledPrompt = function (style, posPrompt, negPrompt) {
+    for (let i = 0; i < Tool.styleJson.length; i++) {
+        if (Tool.styleJson[i].name == style) {
+            console.log("find style: " + style);
+            posPrompt = Tool.styleJson[i].prompt.replace("{prompt}", posPrompt);
+            negPrompt = Tool.styleJson[i].negative_prompt;
+            return [posPrompt, negPrompt];
+        }
+    }
+    return [posPrompt, negPrompt];
+}
+
+Tool.getStyleFromNegPrompt = function (neg) {
+    for (let i = 0; i < Tool.styleJson.length; i++) {
+        if (neg.indexOf(Tool.styleJson[i].negative_prompt) != -1) {
+            return Tool.styleJson[i].name;
+        }
+    }
+    return null;
 }
 
 module.exports = Tool;
