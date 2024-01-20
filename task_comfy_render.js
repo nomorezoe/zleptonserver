@@ -6,36 +6,7 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 
-function getModelMap(model) {
-    // ["realismEngineSDXL_v20VAE", "realisticVisionV60B1_v60B1VAE", "Deliberate_v5", "dreamshaper_8", "dynavisionXLAllInOneStylized_release0557Bakedvae"]
-    switch (model) {
-        case "dynavisionXL":
-            return "dynavisionXLAllInOneStylized_release0557Bakedvae";
-            break;
-        case "realism_engine_sdxl":
-            return "realismEngineSDXL_v20VAE";
-            break;
-        case "realistic_vision_v6":
-            return "realisticVisionV60B1_v60B1VAE";
-            break;
-        case "dreamshaper":
-            return "dreamshaper_8";
-            break;
-        case "Deliberate_v5":
-            return "Deliberate_v5";
-            break;
-    }
-}
 
-function isXLModel(model) {
-    if (model == "dynavisionXLAllInOneStylized_release0557Bakedvae") {
-        return true;
-    }
-    if (model == "realismEngineSDXL_v20VAE") {
-        return true;
-    }
-    return false;
-}
 
 function TaskComfyRender(task, req, queue) {
     console.log('TaskComfyRender');
@@ -47,7 +18,7 @@ function TaskComfyRender(task, req, queue) {
     if (req.body.model != undefined) {
         model = req.body.model
     }
-    model = getModelMap(model);
+    model = Tool.getModelMap(model);
     var cfg = parseInt(req.body.cfg);
     var posPrompt = req.body.prompt;
     var sampleSteps = parseInt(req.body.sampleSteps);
@@ -135,7 +106,7 @@ function TaskComfyRender(task, req, queue) {
         var imgBytes = rawImg.toString('base64');
         prompt["22"]["inputs"]["image"] = imgBytes;
 
-        if (!isXLModel(model)) {
+        if (!Tool.isXLModel(model)) {
             console.log("lockCharacter SD 1.5 model");
             prompt["23"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
             prompt["25"]["inputs"]["clip_name"] = "model_15.safetensors";
@@ -169,7 +140,7 @@ function TaskComfyRender(task, req, queue) {
 
     //control net
 
-    if (!isXLModel(model)) {
+    if (!Tool.isXLModel(model)) {
         console.log("SD 1.5 model");
         prompt["17"]["inputs"]["control_net_name"] = "control_openpose-fp16.safetensors";
         prompt["4"]["inputs"]["control_net_name"] = "control_depth-fp16.safetensors";

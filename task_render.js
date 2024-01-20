@@ -5,37 +5,6 @@ var OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 
-function getModelMap(model) {
-    // ["realismEngineSDXL_v20VAE", "realisticVisionV60B1_v60B1VAE", "Deliberate_v5", "dreamshaper_8", "dynavisionXLAllInOneStylized_release0557Bakedvae"]
-    switch (model) {
-        case "dynavisionXL":
-            return "dynavisionXLAllInOneStylized_release0557Bakedvae";
-            break;
-        case "realism_engine_sdxl":
-            return "realismEngineSDXL_v20VAE";
-            break;
-        case "realistic_vision_v6":
-            return "realisticVisionV60B1_v60B1VAE";
-            break;
-        case "dreamshaper":
-            return "dreamshaper_8";
-            break;
-        case "Deliberate_v5":
-            return "Deliberate_v5";
-            break;
-    }
-}
-
-function isXLModel(model) {
-    if (model == "dynavisionXLAllInOneStylized_release0557Bakedvae") {
-        return true;
-    }
-    if (model == "realismEngineSDXL_v20VAE") {
-        return true;
-    }
-    return false;
-}
-
 function depth_controlnet_15(bytes, strength) {
     var json = {
         "module": "depth",
@@ -134,8 +103,8 @@ function TaskRender(task, req, queue) {
     console.log("poseStrength:" + poseStrength);
 
 
-    model = getModelMap(model);
-    var isxl = isXLModel(model);
+    model = Tool.getModelMap(model);
+    var isxl = Tool.isXLModel(model);
 
     console.log("isxl:" + isxl);
 
