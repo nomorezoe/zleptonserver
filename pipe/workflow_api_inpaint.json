@@ -17,7 +17,7 @@
     "inputs": {
       "channel": "blue",
       "image": [
-        "19",
+        "27",
         0
       ]
     },
@@ -50,7 +50,7 @@
         0
       ],
       "latent_image": [
-        "23",
+        "25",
         0
       ]
     },
@@ -58,7 +58,7 @@
   },
   "13": {
     "inputs": {
-      "text": "a dog",
+      "text": "a lady with tatoo",
       "clip": [
         "11",
         1
@@ -102,7 +102,7 @@
   "19": {
     "inputs": {
       "upscale_method": "nearest-exact",
-      "width": 2425,
+      "width": 1536,
       "height": 1536,
       "crop": "disabled",
       "image": [
@@ -112,21 +112,9 @@
     },
     "class_type": "ImageScale"
   },
-  "23": {
+  "25": {
     "inputs": {
-      "samples": [
-        "24",
-        0
-      ],
-      "mask": [
-        "10",
-        0
-      ]
-    },
-    "class_type": "SetLatentNoiseMask"
-  },
-  "24": {
-    "inputs": {
+      "grow_mask_by": 6,
       "pixels": [
         "2",
         0
@@ -134,8 +122,23 @@
       "vae": [
         "11",
         2
+      ],
+      "mask": [
+        "10",
+        0
       ]
     },
-    "class_type": "VAEEncode"
+    "class_type": "VAEEncodeForInpaint"
+  },
+  "27": {
+    "inputs": {
+      "blur_radius": 3,
+      "sigma": 1,
+      "image": [
+        "19",
+        0
+      ]
+    },
+    "class_type": "ImageBlur"
   }
 }
