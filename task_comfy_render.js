@@ -95,7 +95,7 @@ function TaskComfyRender(task, req, queue) {
 
         if (!Tool.isXLModel(model)) {
             console.log("is 1.5 for link extra lora");
-            //prompt["101"]["inputs"]["lora_name"] = "pytorch_lora_weights_1.5.safetensors";
+            prompt["101"]["inputs"]["lora_name"] = "pytorch_lora_weights_1.5.safetensors";
         }
     }
 
