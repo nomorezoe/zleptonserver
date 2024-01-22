@@ -12,7 +12,7 @@ Tool.RequestURL = "j9e5gs4n-comfyui00.bjz.edr.lepton.ai";
 
 
 Tool.isXLModel = function (model) {
-    if (model == "dynavisionXLAllInOneStylized_release0557Bakedvae") {
+    if (model == "dynavisionXLAllInOneStylized_releaseV0610Bakedvae") {
         return true;
     }
     if (model == "realismEngineSDXL_v20VAE") {
@@ -22,10 +22,9 @@ Tool.isXLModel = function (model) {
 }
 
 Tool.getModelMap = function (model) {
-    // ["realismEngineSDXL_v20VAE", "realisticVisionV60B1_v60B1VAE", "Deliberate_v5", "dreamshaper_8", "dynavisionXLAllInOneStylized_release0557Bakedvae"]
     switch (model) {
         case "dynavisionXL":
-            return "dynavisionXLAllInOneStylized_release0557Bakedvae";
+            return "dynavisionXLAllInOneStylized_releaseV0610Bakedvae";
             break;
         case "realism_engine_sdxl":
             return "realismEngineSDXL_v20VAE";
@@ -37,16 +36,16 @@ Tool.getModelMap = function (model) {
             return "dreamshaper_8";
             break;
         case "Deliberate_v5":
-            return "Deliberate_v4 (SFW)";
+            return "Deliberate_v4";
             break;
         case "Deliberate_v4":
-            return "Deliberate_v4 (SFW)";
+            return "Deliberate_v4";
     }
     return "realismEngineSDXL_v20VAE";
 }
 
 Tool.isQualifiedCkpt = function (model) {
-    if (model == "dynavisionXLAllInOneStylized_release0557Bakedvae.safetensors") {
+    if (model == "dynavisionXLAllInOneStylized_releaseV0610Bakedvae.safetensors") {
         return true;
     }
     if (model == "realismEngineSDXL_v20VAE.safetensors") {
@@ -58,7 +57,7 @@ Tool.isQualifiedCkpt = function (model) {
     if (model == "dreamshaper_8.safetensors") {
         return true;
     }
-    if (model == "Deliberate_v4 (SFW).safetensors") {
+    if (model == "Deliberate_v4.safetensors") {
         return true;
     }
     return false;

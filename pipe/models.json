@@ -1,7 +1,7 @@
 [
     {
         "name": "dynavisionXL",
-        "model": "dynavisionXLAllInOneStylized_release0557Bakedvae"
+        "model": "dynavisionXLAllInOneStylized_releaseV0610Bakedvae"
     },
     {
         "name": "realism_engine_sdxl",
@@ -17,6 +17,6 @@
     },
     {
         "name": "Deliberate_v4",
-        "model": "Deliberate_v4 (SFW)"
+        "model": "Deliberate_v4"
     }
 ]

@@ -59,10 +59,10 @@ function TaskComfyRender(task, req, queue) {
         posPrompt = pretext + " , " + posPrompt;
     }
     // styles
-    else{
+    else {
         let styleInfo = Tool.getStyledPrompt(style, posPrompt, negtext);
         posPrompt = styleInfo[0];
-        negtext= styleInfo[1];
+        negtext = styleInfo[1];
 
         console.log("styled prompt: " + posPrompt);
         console.log("styled negprompt: " + negtext);
@@ -77,9 +77,9 @@ function TaskComfyRender(task, req, queue) {
         prompt["21"]["inputs"]["switch_2"] = "On";
     }
 
-    if(lora != "none"){
-        for(let i = 1; i < 4; i++){
-            if(prompt["21"]["inputs"]["switch_" + i] == "Off"){
+    if (lora != "none") {
+        for (let i = 1; i < 4; i++) {
+            if (prompt["21"]["inputs"]["switch_" + i] == "Off") {
                 prompt["21"]["inputs"]["switch_" + i] = "On";
                 prompt["21"]["inputs"]["lora_name_" + i] = lora + ".safetensors";
                 break;
@@ -87,16 +87,24 @@ function TaskComfyRender(task, req, queue) {
         }
     }
 
-    if(style != "base"){
+    if (style != "base") {
+        console.log("link extra lora");
         prompt["100"]["inputs"]["text"] = style;
+        prompt["13"]["inputs"]["clip"][0] = "101";
+        prompt["14"]["inputs"]["clip"][0] = "101";
+
+        if (!Tool.isXLModel(model)) {
+            console.log("is 1.5 for link extra lora");
+            prompt["101"]["inputs"]["lora_name"] = "pytorch_lora_weights_1.5.safetensors";
+        }
     }
 
     //lockcharacter
     if (lockCharacter) {
-        try{
+        try {
             var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
         }
-        catch(err){
+        catch (err) {
             console.log("read file err");
             queue.completeTask();
             return;
@@ -121,9 +129,9 @@ function TaskComfyRender(task, req, queue) {
     //others
 
     if (negtext.trim().length != 0) {
-       
+
         prompt["14"]["inputs"]["text"] = negtext;// +  ", watermark, nude, nsfw, signature";
-        console.log("update neg: " +  prompt["14"]["inputs"]["text"]);
+        console.log("update neg: " + prompt["14"]["inputs"]["text"]);
     }
     else {
         console.log("skip neg");
@@ -171,7 +179,7 @@ function TaskComfyRender(task, req, queue) {
                 datastring += d;
                 //console.log("ondata");
             });
-    
+
             reshttps.on('end', (d) => {
                 console.log("onend");
                 const jsonobj = JSON.parse(datastring);
