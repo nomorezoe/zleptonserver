@@ -19,13 +19,13 @@
         "pipe": "illustration"
     },
     {
-        "id": "B/W loose",
+        "id": "B/W Loose",
         "model": "Deliberate_v4",
         "style": "fashion-illustration-quick-sketch-8",
         "pipe": "illustration"
     },
     {
-        "id": "Print Ad",
+        "id": "Print ad",
         "model": "Deliberate_v5",
         "style": "ads-advertising",
         "pipe": "delibrerate_photo_hand_fix"
@@ -76,7 +76,7 @@
         "pipe": "illustration"
     },
     {
-        "id": "Pen Water Color",
+        "id": "Pen Watercolor",
         "model": "Deliberate_v4",
         "style": "pen-watercolor",
         "pipe": "illustration"
@@ -88,13 +88,14 @@
         "pipe": "illustration"
     },
     {
-        "id": "Realistic Pencil",
+        "id": "Engraving",
         "model": "Deliberate_v4",
         "style": "engraving-illustration",
-        "pipe": "illustration"
+        "pipe": "illustration",
+        "note":"Realistic Pencil"
     },
     {
-        "id": "Fantasy digital Art",
+        "id": "Fantasy Digital Art",
         "model": "Deliberate_v5",
         "style": "sai-fantasy art",
         "pipe": "illustration"
@@ -124,7 +125,7 @@
         "pipe": "delibrerate_photo_hand_fix"
     },
     {
-        "id": "Pixel art",
+        "id": "Pixel Art",
         "model": "Deliberate_v4",
         "style": "sai-pixel art",
         "pipe": "illustration"
@@ -160,7 +161,7 @@
         "pipe": "delibrerate_photo_hand_fix"
     },
     {
-        "id": "80’s retro neon",
+        "id": "80’s Retro Neon",
         "model": "Deliberate_v4",
         "style": "sai-neonpunk",
         "pipe": "delibrerate_photo_hand_fix"
