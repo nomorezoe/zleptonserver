@@ -149,8 +149,8 @@ function TaskComfyRender(task, req, queue) {
 
     if (!Tool.isXLModel(model)) {
         console.log("SD 1.5 model");
-        prompt["17"]["inputs"]["control_net_name"] = "control_openpose-fp16.safetensors";
-        prompt["4"]["inputs"]["control_net_name"] = "control_depth-fp16.safetensors";
+        prompt["17"]["inputs"]["control_net_name"] = "control_v11p_sd15_openpose.pth";
+        prompt["4"]["inputs"]["control_net_name"] = "control_v11f1p_sd15_depth.pth";
     }
 
     var data = JSON.stringify({ "prompt": prompt });
