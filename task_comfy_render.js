@@ -76,9 +76,12 @@ function TaskComfyRender(task, req, queue) {
     if(lora != ""){
         let loras = lora.split(",");
         for (let i = 0; i < loras.length; i++) {
-            prompt["21"]["inputs"]["switch_" + (i + 1)] = "On";
-            console.log("lora:" + loras[i] + ":" + Tool.GetLoraFile(loras[i]));
-            prompt["21"]["inputs"]["lora_name_" + (i + 1)] = Tool.GetLoraFile(loras[i]);
+            if(Tool.GetLoraFile(loras[i])!= null){
+                prompt["21"]["inputs"]["switch_" + (i + 1)] = "On";
+                console.log("lora:" + loras[i] + ":" + Tool.GetLoraFile(loras[i]));
+                prompt["21"]["inputs"]["lora_name_" + (i + 1)] = Tool.GetLoraFile(loras[i]);
+            }
+           
         }
     }
     
