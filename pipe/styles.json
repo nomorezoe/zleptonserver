@@ -59,6 +59,11 @@
         "models": "Deliberate_v5"
     },
     {
+        "name": "fashion-illustration-quick-sketch-1",
+        "prompt": "quick sketch fashion illustration {prompt} . gestural, loose lines, dynamic, spontaneous, energetic, detailed beautiful faces, accurate background lines, color wipes, negative space",
+        "negative_prompt": "overly detailed, slow, meticulous, cluttered background"
+    },
+    {
         "name": "fashion-illustration-quick-sketch-8",
         "prompt": "quick sketch fashion illustration {prompt} . minimal hair dynamics, sharp background clarity, detailed linework, color highlights, consistent negative space",
         "negative_prompt": "dynamic hair, blurred background, full color, overloaded"
@@ -67,6 +72,11 @@
         "name": "fashion-illustration-quick-sketch-9",
         "prompt": "quick sketch fashion illustration {prompt} . calm hair style, focused background details, line art precision, color accents, maintained white space",
         "negative_prompt": "turbulent hair, vague background, overly vibrant, dense"
+    },
+    {
+        "name": "fashion-illustration-quick-sketch-12",
+        "prompt": "quick sketch fashion illustration {prompt} . brisk, flowing lines, lively, impromptu, faces with distinct features, hair less dynamic, moderately detailed background lines from sketch-8, balanced color accents under black and white line art, negative space utilization, body as in sketch-9",
+        "negative_prompt": "overly intricate detailing, lethargic, photo-realistic, overloaded background"
     },
     {
         "name": "ads-advertising",
@@ -602,10 +612,5 @@
         "name": "comic-character",
         "prompt": "comic character {prompt} . dynamic, bold lines, vibrant colors, stylized, expressive",
         "negative_prompt": "realistic, monochrome, digital, abstract"
-    },
-    {
-        "name": "fashion-illustration-quick-sketch-12",
-        "prompt": "quick sketch fashion illustration {prompt} . brisk, flowing lines, lively, impromptu, faces with distinct features, hair less dynamic, moderately detailed background lines from sketch-8, balanced color accents under black and white line art, negative space utilization, body as in sketch-9",
-        "negative_prompt": "overly intricate detailing, lethargic, photo-realistic, overloaded background"
     }
 ]
