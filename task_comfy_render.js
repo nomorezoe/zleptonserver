@@ -14,11 +14,12 @@ function TaskComfyRender(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-    var model = "dreamshaper";
+    var model = "dynavisionXL";
     if (req.body.model != undefined) {
         model = req.body.model
     }
-    model = Tool.getModelMap(model);
+    console.log("1_model:" + model);
+    model = Tool.getModelFile(model);
     var cfg = parseInt(req.body.cfg);
     var posPrompt = req.body.prompt;
     var sampleSteps = parseInt(req.body.sampleSteps);
@@ -34,7 +35,7 @@ function TaskComfyRender(task, req, queue) {
     console.log("style:" + style);
     console.log("lora:" + lora);
     console.log("pretext:" + pretext);
-    console.log("model:" + model);
+    console.log("2_model:" + model);
     console.log("cfg:" + cfg);
     console.log("prompt:" + posPrompt);
     console.log("sampleSteps:" + sampleSteps);
@@ -55,14 +56,14 @@ function TaskComfyRender(task, req, queue) {
         characterFile = req.body.characterFile;
     }
 
-    if (style == "base") {
-        posPrompt = pretext + " , " + posPrompt;
-    }
-    // styles
-    else {
-        let styleInfo = Tool.getStyledPrompt(style, posPrompt, negtext);
+    //add pretext
+    posPrompt = pretext + " , " + posPrompt;
+
+    //update style
+    if (style != "base") {
+        let styleInfo = Tool.getStyledPrompt(style, posPrompt);
         posPrompt = styleInfo[0];
-        negtext = styleInfo[1];
+        negtext = styleInfo[1] + negtext;
 
         console.log("styled prompt: " + posPrompt);
         console.log("styled negprompt: " + negtext);
@@ -71,29 +72,25 @@ function TaskComfyRender(task, req, queue) {
     const promptFile = fs.readFileSync(lockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
     let prompt = JSON.parse(promptFile);
 
-    //turn on auto lora
-    if (style == "base" && model == "realismEngineSDXL_v20VAE") {
-        prompt["21"]["inputs"]["switch_1"] = "On";
-        prompt["21"]["inputs"]["switch_2"] = "On";
-    }
-
-    if (lora != "none") {
-        for (let i = 1; i < 4; i++) {
-            if (prompt["21"]["inputs"]["switch_" + i] == "Off") {
-                prompt["21"]["inputs"]["switch_" + i] = "On";
-                prompt["21"]["inputs"]["lora_name_" + i] = lora + ".safetensors";
-                break;
-            }
+    //turn on lora
+    if(lora != ""){
+        let loras = lora.split(",");
+        for (let i = 0; i < loras.length; i++) {
+            prompt["21"]["inputs"]["switch_" + (i + 1)] = "On";
+            console.log("lora:" + loras[i] + ":" + Tool.GetLoraFile(loras[i]));
+            prompt["21"]["inputs"]["lora_name_" + (i + 1)] = Tool.GetLoraFile(loras[i]);
         }
     }
+    
 
+    //auto style pytorch_lora_weights
     if (style != "base") {
         console.log("link extra lora");
         prompt["100"]["inputs"]["text"] = style;
         prompt["13"]["inputs"]["clip"][0] = "101";
         prompt["14"]["inputs"]["clip"][0] = "101";
 
-        if (!Tool.isXLModel(model)) {
+        if (!Tool.isXLModelByFile(model)) {
             console.log("is 1.5 for link extra lora");
             prompt["101"]["inputs"]["lora_name"] = "pytorch_lora_weights_1.5.safetensors";
         }
@@ -113,7 +110,7 @@ function TaskComfyRender(task, req, queue) {
         var imgBytes = rawImg.toString('base64');
         prompt["22"]["inputs"]["image"] = imgBytes;
 
-        if (!Tool.isXLModel(model)) {
+        if (!Tool.isXLModelByFile(model)) {
             console.log("lockCharacter SD 1.5 model");
             prompt["23"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
             prompt["25"]["inputs"]["clip_name"] = "model_15.safetensors";
@@ -125,17 +122,11 @@ function TaskComfyRender(task, req, queue) {
     prompt["13"]["inputs"]["text"] = posPrompt;
     prompt["6"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
     //checkpoint
-    prompt["7"]["inputs"]["ckpt_name"] = model + ".safetensors";
+    prompt["7"]["inputs"]["ckpt_name"] = model;
+    console.log("ckpt_name:" + model);
+
     //others
-
-    if (negtext.trim().length != 0) {
-
-        prompt["14"]["inputs"]["text"] = negtext;// +  ", watermark, nude, nsfw, signature";
-        console.log("update neg: " + prompt["14"]["inputs"]["text"]);
-    }
-    else {
-        console.log("skip neg");
-    }
+    prompt["14"]["inputs"]["text"] = negtext;
 
     prompt["6"]["inputs"]["steps"] = sampleSteps;
     prompt["6"]["inputs"]["cfg"] = cfg;
@@ -146,8 +137,7 @@ function TaskComfyRender(task, req, queue) {
     prompt["18"]["inputs"]["strength"] = poseStrength;
 
     //control net
-
-    if (!Tool.isXLModel(model)) {
+    if (!Tool.isXLModelByFile(model)) {
         console.log("SD 1.5 model");
         prompt["17"]["inputs"]["control_net_name"] = "control_v11p_sd15_openpose.pth";
         prompt["4"]["inputs"]["control_net_name"] = "control_v11f1p_sd15_depth.pth";

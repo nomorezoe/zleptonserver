@@ -10,62 +10,48 @@ Tool.randomInt = function (max) {
 
 Tool.RequestURL = "j9e5gs4n-comfyui00.bjz.edr.lepton.ai";
 
+Tool.modelJson = JSON.parse(require('fs').readFileSync("./pipe/models.json"));
 
-Tool.isXLModel = function (model) {
-    if (model == "dynavisionXLAllInOneStylized_releaseV0610Bakedvae") {
-        return true;
-    }
-    if (model == "realismEngineSDXL_v20VAE") {
-        return true;
+Tool.isXLModelByFile = function (model) {
+    for(let i = 0; i < Tool.modelJson .length; i++){
+        if(Tool.modelJson[i].file == model){
+            return Tool.modelJson[i].isxl;
+        }
     }
     return false;
 }
 
-Tool.getModelMap = function (model) {
-    switch (model) {
-        case "dynavisionXL":
-            return "dynavisionXLAllInOneStylized_releaseV0610Bakedvae";
-            break;
-        case "realism_engine_sdxl":
-            return "realismEngineSDXL_v20VAE";
-            break;
-        case "realistic_vision_v6":
-            return "realisticVisionV60B1_v60B1VAE";
-            break;
-        case "dreamshaper":
-            return "dreamshaper_8";
-            break;
-        case "Deliberate_v5":
-            return "Deliberate_v4";
-            break;
-        case "Deliberate_v4":
-            return "Deliberate_v4";
+Tool.getModelFile = function (model) {
+    for(let i = 0; i < Tool.modelJson .length; i++){
+        if(Tool.modelJson[i].name == model){
+            return Tool.modelJson[i].file;
+        }
     }
-    return "realismEngineSDXL_v20VAE";
+    return Tool.modelJson[0].file;
 }
 
 Tool.isQualifiedCkpt = function (model) {
-    if (model == "dynavisionXLAllInOneStylized_releaseV0610Bakedvae.safetensors") {
-        return true;
-    }
-    if (model == "realismEngineSDXL_v20VAE.safetensors") {
-        return true;
-    }
-    if (model == "realisticVisionV60B1_v60B1VAE.safetensors") {
-        return true;
-    }
-    if (model == "dreamshaper_8.safetensors") {
-        return true;
-    }
-    if (model == "Deliberate_v4.safetensors") {
-        return true;
+    for(let i = 0; i < Tool.modelJson .length; i++){
+        if(Tool.modelJson[i].file == model){
+            return true;
+        }
     }
     return false;
 }
 
-Tool.styleJson = JSON.parse(require('fs').readFileSync("./pipe/styles.json"));
 
-Tool.getStyledPrompt = function (style, posPrompt, negPrompt) {
+Tool.loraJson = JSON.parse(require('fs').readFileSync("./pipe/loras.json"));
+Tool.GetLoraFile = function (model) {
+    for(let i = 0; i < Tool.loraJson.length; i++){
+        if(Tool.loraJson[i].model == model){
+            return Tool.loraJson[i].file;
+        }
+    }
+    return null;
+}
+
+Tool.styleJson = JSON.parse(require('fs').readFileSync("./pipe/styles.json"));
+Tool.getStyledPrompt = function (style, posPrompt) {
     for (let i = 0; i < Tool.styleJson.length; i++) {
         if (Tool.styleJson[i].name == style) {
             console.log("find style: " + style);

@@ -1,22 +1,32 @@
 [
     {
         "name": "dynavisionXL",
-        "model": "dynavisionXLAllInOneStylized_releaseV0610Bakedvae"
+        "file": "dynavisionXLAllInOneStylized_releaseV0610Bakedvae.safetensors",
+        "isxl": true
     },
     {
         "name": "realism_engine_sdxl",
-        "model": "realismEngineSDXL_v20VAE"
+        "file": "realismEngineSDXL_v20VAE.safetensors",
+        "isxl": true
     },
     {
-        "name": "realistic_vision_v6",
-        "model": "realisticVisionV60B1_v60B1VAE"
+        "name": "realistic_vision",
+        "file": "realisticVisionV60B1_v60B1VAE.safetensors",
+        "isxl": false
     },
     {
         "name": "dreamshaper",
-        "model": "dreamshaper_8"
+        "file": "dreamshaper_8.safetensors",
+        "isxl": false
     },
     {
         "name": "Deliberate_v4",
-        "model": "Deliberate_v4"
+        "file": "Deliberate_v4.safetensors",
+        "isxl": false
+    },
+    {
+        "name": "Deliberate_v5",
+        "file": "Deliberate_v5.safetensors",
+        "isxl": false
     }
 ]

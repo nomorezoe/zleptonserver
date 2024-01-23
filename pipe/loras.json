@@ -1,5 +1,20 @@
 [
     {
-        "name": "Storyboard_sketch"
+        "name": "Cinematic_Hollywood_Film",
+        "file": "Cinematic_Hollywood_Film_sdxl.safetensors",
+        "pretext": "Cinematic Hollywood Film",
+        "loratext": "<lora:Cinematic Hollywood Film:1.5>"
+    },
+    {
+        "name": "real-humans-PublicPrompts",
+        "file": "real-humans-PublicPrompts.safetensors",
+        "pretext": "portrait photo",
+        "loratext": "<lora:real-humans-PublicPrompts:0.95>"
+    },
+    {
+        "name": "BetterPhotography",
+        "file": "SDXL1.0_Essenz-series-by-AI_Characters_Style_BetterPhotography-v1.2-Skynet.safetensors",
+        "pretext": "photo in phst artstyle",
+        "loratext": ""
     }
 ]

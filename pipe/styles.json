@@ -1,5 +1,10 @@
 [
     {
+        "name": "base",
+        "prompt": "{prompt}",
+        "negative_prompt": ""
+    },
+    {
         "name": "storyboard-style-3",
         "prompt": "monochrome sketch in storyboard format {prompt} . pencil or marker, detailed, grayscale, dynamic lines with a hand-drawn jitter, expressive shading, storyboard narrative style, high clarity, focused on conveying motion and emotion",
         "negative_prompt": "color, digital painting, smooth vector lines, abstract, over-simplified, photographic, cartoonish"
@@ -592,5 +597,15 @@
         "name": "sai-texture",
         "prompt": "texture {prompt} top down close-up",
         "negative_prompt": "ugly, deformed, noisy, blurry"
+    },
+    {
+        "name": "comic-character",
+        "prompt": "comic character {prompt} . dynamic, bold lines, vibrant colors, stylized, expressive",
+        "negative_prompt": "realistic, monochrome, digital, abstract"
+    },
+    {
+        "name": "fashion-illustration-quick-sketch-12",
+        "prompt": "quick sketch fashion illustration {prompt} . brisk, flowing lines, lively, impromptu, faces with distinct features, hair less dynamic, moderately detailed background lines from sketch-8, balanced color accents under black and white line art, negative space utilization, body as in sketch-9",
+        "negative_prompt": "overly intricate detailing, lethargic, photo-realistic, overloaded background"
     }
 ]

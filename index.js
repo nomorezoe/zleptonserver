@@ -226,11 +226,19 @@ app.get('/styles', (req, res) => {
     let json3 = require('fs').readFileSync("./pipe/models.json");
     json3 = JSON.parse(json3);
 
+    let json4 = require('fs').readFileSync("./pipe/settings.json");
+    json4 = JSON.parse(json4);
+
+    let json5 = require('fs').readFileSync("./pipe/rendermind_styles.json");
+    json5 = JSON.parse(json5);
+
     res.json({
         success: true,
         data: obj,
         lora: json2,
-        model: json3
+        model: json3,
+        settings: json4,
+        rd_styles: json5
     })
 });
 

@@ -49,7 +49,7 @@ function TaskComfyUpscale(task, req, queue) {
     }
 
     if (style) {
-        let styleInfo = Tool.getStyledPrompt(style, prompt, negtext);
+        let styleInfo = Tool.getStyledPrompt(style, prompt);
         prompt = styleInfo[0];
         negtext = styleInfo[1];
 

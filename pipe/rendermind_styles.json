@@ -1,0 +1,186 @@
+[
+    {
+        "id": "Photorealism",
+        "model": "realism_engine_sdxl",
+        "style": "base",
+        "pipe": "real_photo",
+        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+    },
+    {
+        "id": "Loose Color",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-quick-sketch-12",
+        "pipe": "illustration"
+    },
+    {
+        "id": "B/W loose (Film Grain)",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-quick-sketch-8",
+        "pipe": "illustration"
+    },
+    {
+        "id": "B/W loose",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-quick-sketch-8",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Print Ad",
+        "model": "Deliberate_v5",
+        "style": "ads-advertising",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "Editorial Photography",
+        "model": "realism_engine_sdxl",
+        "style": "ads-fashion editorial",
+        "pipe": "real_photo",
+        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+    },
+    {
+        "id": "Glamour Photography",
+        "model": "realism_engine_sdxl",
+        "style": "ads-luxury",
+        "pipe": "real_photo",
+        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+    },
+    {
+        "id": "Loose Sketch Wash",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-quick-sketch-12",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Fashion impressionistic sketch",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-quick-sketch-1",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Fashion impressionistic sketch",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-quick-sketch-9",
+        "pipe": "illustration",
+        "note":"duplicated"
+    },
+    {
+        "id": "Classic Animation",
+        "model": "dynavisionXL",
+        "style": "comic-character",
+        "pipe": "animation"
+    },
+    {
+        "id": "Spot Color",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-quick-sketch-9",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Pen Water Color",
+        "model": "Deliberate_v4",
+        "style": "pen-watercolor",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Water Color",
+        "model": "Deliberate_v4",
+        "style": "artstyle-watercolor",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Realistic Pencil",
+        "model": "Deliberate_v4",
+        "style": "engraving-illustration",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Fantasy digital Art",
+        "model": "Deliberate_v5",
+        "style": "sai-fantasy art",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Graphic Novel Comic",
+        "model": "Deliberate_v4",
+        "style": "sai-comic book",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Anime",
+        "model": "Deliberate_v4",
+        "style": "sai-anime",
+        "pipe": "illustration"
+    },
+    {
+        "id": "Mech-Organic Design",
+        "model": "Deliberate_v4",
+        "style": "futuristic-biomechanical",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "Cybernetic Surrealism",
+        "model": "Deliberate_v4",
+        "style": "futuristic-biomechanical cyberpunk",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "Pixel art",
+        "model": "Deliberate_v4",
+        "style": "sai-pixel art",
+        "pipe": "illustration"
+    },
+    {
+        "id": "DSLR",
+        "model": "Deliberate_v4",
+        "style": "sai-photographic",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "Origami",
+        "model": "Deliberate_v4",
+        "style": "sai-origami",
+        "pipe": "illustration"
+    },
+    {
+        "id": "High Fashion",
+        "model": "Deliberate_v4",
+        "style": "sai-texture",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "High fashion",
+        "model": "Deliberate_v4",
+        "style": "fashion-illustration-vanish",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "Commercial Car Photography",
+        "model": "Deliberate_v4",
+        "style": "ads-automotive",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "80’s retro neon",
+        "model": "Deliberate_v4",
+        "style": "sai-neonpunk",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "Craft Clay",
+        "model": "Deliberate_v4",
+        "style": "sai-craft clay",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "Geometric Minimalism",
+        "model": "Deliberate_v4",
+        "style": "sai-lowpoly",
+        "pipe": "delibrerate_photo_hand_fix"
+    },
+    {
+        "id": "impressionistic",
+        "model": "Deliberate_v4",
+        "style": "artstyle-impressionist",
+        "pipe": "delibrerate_photo_hand_fix"
+    }
+]
