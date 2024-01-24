@@ -29,8 +29,9 @@ function TaskComfyRender(task, req, queue) {
     var pretext = req.body.pretext;
     var style = req.body.style;
     var lora = req.body.lora;
+    var rd_style = req.body.rd_style;
 
-
+    console.log("rd_style:" + rd_style);
 
     console.log("style:" + style);
     console.log("lora:" + lora);
