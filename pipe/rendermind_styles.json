@@ -9,11 +9,11 @@
     {
         "id": "loose_color",
         "model": "Deliberate_v4",
-        "style": "fashion-illustration-quick-sketch-12",
+        "style": "fashion-illustration-quick-sketch-8",
         "pipe": "illustration"
     },
     {
-        "id": "B/W loose (Film Grain)",
+        "id": "bw_loose_film_grain",
         "model": "Deliberate_v4",
         "style": "fashion-illustration-quick-sketch-8",
         "pipe": "illustration"
