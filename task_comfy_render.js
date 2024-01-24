@@ -1,12 +1,14 @@
 "strict mode"
 const https = require('https');
 const fs = require('fs');
-var OUTPUT_FOLDER = "/imgs/";
+const OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
-
-
+const NormalRender = require("./pipe_render_normal");
+const IllustrationToneRender = require("./pipe_illustration_tone");
+const IllustrationRender = require("./pipe_illustration");
+const IllustrationGrainRender = require("./pipe_illustration_grain");
 
 function TaskComfyRender(task, req, queue) {
     console.log('TaskComfyRender');
@@ -14,12 +16,9 @@ function TaskComfyRender(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-    var model = "dynavisionXL";
-    if (req.body.model != undefined) {
-        model = req.body.model
-    }
-    console.log("1_model:" + model);
-    model = Tool.getModelFile(model);
+    var reqModel = req.body.model == undefined ?"dynavisionXL" :req.body.model;
+    var model = Tool.getModelFile(reqModel);
+
     var cfg = parseInt(req.body.cfg);
     var posPrompt = req.body.prompt;
     var sampleSteps = parseInt(req.body.sampleSteps);
@@ -30,9 +29,10 @@ function TaskComfyRender(task, req, queue) {
     var style = req.body.style;
     var lora = req.body.lora;
     var rd_style = req.body.rd_style;
+    var depthStrength = parseFloat(req.body.depthStrength);
+    var poseStrength = parseFloat(req.body.poseStrength);
 
     console.log("rd_style:" + rd_style);
-
     console.log("style:" + style);
     console.log("lora:" + lora);
     console.log("pretext:" + pretext);
@@ -43,110 +43,56 @@ function TaskComfyRender(task, req, queue) {
     console.log("sampler:" + sampler);
     console.log("scheduler:" + scheduler);
     console.log("negtext:" + negtext);
-
-    var depthStrength = parseFloat(req.body.depthStrength);
-    var poseStrength = parseFloat(req.body.poseStrength);
-
     console.log("depthStrength:" + depthStrength);
     console.log("poseStrength:" + poseStrength);
 
-    var lockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
+    //lock character
+    var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
     var characterFile = "";
-    if (lockCharacter) {
-        console.log("lockcharacter");
+    if (isLockCharacter) {
         characterFile = req.body.characterFile;
+        console.log("lockcharacter:" + characterFile);
     }
 
     //add pretext
     posPrompt = pretext + " , " + posPrompt;
 
-    //update style
-    if (style != "base") {
-        let styleInfo = Tool.getStyledPrompt(style, posPrompt);
-        posPrompt = styleInfo[0];
-        negtext = styleInfo[1] + negtext;
-
-        console.log("styled prompt: " + posPrompt);
-        console.log("styled negprompt: " + negtext);
+    //loras
+    var loras = [];
+    if (lora != "" && lora != null) {
+        loras = lora.split(",");
     }
 
-    const promptFile = fs.readFileSync(lockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
-    let prompt = JSON.parse(promptFile);
-
-    //turn on lora
-    if(lora != ""){
-        let loras = lora.split(",");
-        for (let i = 0; i < loras.length; i++) {
-            if(Tool.GetLoraFile(loras[i])!= null){
-                prompt["21"]["inputs"]["switch_" + (i + 1)] = "On";
-                console.log("lora:" + loras[i] + ":" + Tool.GetLoraFile(loras[i]));
-                prompt["21"]["inputs"]["lora_name_" + (i + 1)] = Tool.GetLoraFile(loras[i]);
-            }
-           
-        }
+    let processRDStyle = Tool.getRenderStyle(rd_style, reqModel, loras, style);
+    if(processRDStyle != null){
+        console.log("processRDStyle:" + processRDStyle);
     }
-    
+    let prompt = null;
 
-    //auto style pytorch_lora_weights
-    if (style != "base") {
-        console.log("link extra lora");
-        prompt["100"]["inputs"]["text"] = style;
-        prompt["13"]["inputs"]["clip"][0] = "101";
-        prompt["14"]["inputs"]["clip"][0] = "101";
-
-        if (!Tool.isXLModelByFile(model)) {
-            console.log("is 1.5 for link extra lora");
-            prompt["101"]["inputs"]["lora_name"] = "LCM_LoRA_Weights_SD15.safetensors";
-        }
+    // process 
+    if(processRDStyle == "illustration" && !isLockCharacter){
+        prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+    }
+    else if(processRDStyle == "illustration_tone_grain" && !isLockCharacter){
+        prompt = IllustrationGrainRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+    }
+    else if(processRDStyle == "illustration_tone" && !isLockCharacter){
+        prompt = IllustrationToneRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+    }
+    else{
+        prompt = NormalRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
 
-    //lockcharacter
-    if (lockCharacter) {
-        try {
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
-        }
-        catch (err) {
-            console.log("read file err");
-            queue.completeTask();
-            return;
-        }
-
-        var imgBytes = rawImg.toString('base64');
-        prompt["22"]["inputs"]["image"] = imgBytes;
-
-        if (!Tool.isXLModelByFile(model)) {
-            console.log("lockCharacter SD 1.5 model");
-            prompt["23"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
-            prompt["25"]["inputs"]["clip_name"] = "model_15.safetensors";
-        }
+   
+    if (prompt == null) {
+        queue.completeTask();
+        return;
     }
 
+    sendRequest(prompt, queue, task);
+}
 
-    prompt["2"]["inputs"]["image"] = imgData;
-    prompt["13"]["inputs"]["text"] = posPrompt;
-    prompt["6"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
-    //checkpoint
-    prompt["7"]["inputs"]["ckpt_name"] = model;
-    console.log("ckpt_name:" + model);
-
-    //others
-    prompt["14"]["inputs"]["text"] = negtext;
-
-    prompt["6"]["inputs"]["steps"] = sampleSteps;
-    prompt["6"]["inputs"]["cfg"] = cfg;
-    prompt["6"]["inputs"]["sampler_name"] = sampler;
-    prompt["6"]["inputs"]["scheduler"] = scheduler;
-
-    prompt["5"]["inputs"]["strength"] = depthStrength;
-    prompt["18"]["inputs"]["strength"] = poseStrength;
-
-    //control net
-    if (!Tool.isXLModelByFile(model)) {
-        console.log("SD 1.5 model");
-        prompt["17"]["inputs"]["control_net_name"] = "control_v11p_sd15_openpose.pth";
-        prompt["4"]["inputs"]["control_net_name"] = "control_v11f1p_sd15_depth.pth";
-    }
-
+function sendRequest(prompt, queue, task) {
     var data = JSON.stringify({ "prompt": prompt });
     //console.log(data)
     console.log(data.length)
@@ -200,7 +146,6 @@ function TaskComfyRender(task, req, queue) {
 
     reqhttps.write(data);
     reqhttps.end();
-
 }
 
 

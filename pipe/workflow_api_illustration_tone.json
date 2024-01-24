@@ -1,0 +1,272 @@
+{
+  "1": {
+    "inputs": {
+      "image": "[FILL THIS]",
+      "upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "Deliberate_v4.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
+  "13": {
+    "inputs": {
+      "seed": 1086394622719508,
+      "steps": 25,
+      "cfg": 4.1,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "ddim_uniform",
+      "denoise": 1,
+      "model": [
+        "44",
+        0
+      ],
+      "positive": [
+        "34",
+        0
+      ],
+      "negative": [
+        "48",
+        0
+      ],
+      "latent_image": [
+        "18",
+        0
+      ]
+    },
+    "class_type": "KSampler"
+  },
+  "18": {
+    "inputs": {
+      "width": 768,
+      "height": 768,
+      "batch_size": 4
+    },
+    "class_type": "EmptyLatentImage"
+  },
+  "19": {
+    "inputs": {
+      "samples": [
+        "13",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "20": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "SaveImage"
+  },
+  "22": {
+    "inputs": {
+      "control_net_name": "control_v11p_sd15_openpose.pth"
+    },
+    "class_type": "ControlNetLoader"
+  },
+  "26": {
+    "inputs": {
+      "images": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "28": {
+    "inputs": {
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": 1024,
+      "bbox_detector": "yolox_l.onnx",
+      "pose_estimator": "dw-ll_ucoco_384.onnx",
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "DWPreprocessor"
+  },
+  "29": {
+    "inputs": {
+      "control_net_name": "control_v11f1p_sd15_depth.pth"
+    },
+    "class_type": "ControlNetLoader"
+  },
+  "31": {
+    "inputs": {
+      "images": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "33": {
+    "inputs": {
+      "a": 6.283185307179586,
+      "bg_threshold": 0.1,
+      "resolution": 768,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "MiDaS-DepthMapPreprocessor"
+  },
+  "34": {
+    "inputs": {
+      "strength": 0.5,
+      "conditioning": [
+        "35",
+        0
+      ],
+      "control_net": [
+        "29",
+        0
+      ],
+      "image": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "ControlNetApply"
+  },
+  "35": {
+    "inputs": {
+      "strength": 0.8,
+      "conditioning": [
+        "47",
+        0
+      ],
+      "control_net": [
+        "22",
+        0
+      ],
+      "image": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "ControlNetApply"
+  },
+  "44": {
+    "inputs": {
+      "b1": 1.5,
+      "b2": 1.6,
+      "s1": 0.9,
+      "s2": 0.2,
+      "model": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "FreeU_V2"
+  },
+  "47": {
+    "inputs": {
+      "text": [
+        "49",
+        0
+      ],
+      "clip": [
+        "50",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "48": {
+    "inputs": {
+      "text": [
+        "49",
+        1
+      ],
+      "clip": [
+        "50",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "49": {
+    "inputs": {
+      "text_positive": "Fashion illustration quick color sketch girl with long brown hair wearing long sleeve flannel shirt and long blue jeans, walking on path lined with trees in lush city park",
+      "text_negative": "",
+      "style": "fashion-illustration-quick-sketch-8",
+      "log_prompt": true,
+      "style_positive": true,
+      "style_negative": true
+    },
+    "class_type": "SDXLPromptStyler"
+  },
+  "50": {
+    "inputs": {
+      "lora_name": "LCM_LoRA_Weights_SD15.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1,
+      "model": [
+        "4",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "LoraLoader"
+  },
+  "51": {
+    "inputs": {
+      "sampling": "lcm",
+      "zsnr": false,
+      "model": [
+        "50",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingDiscrete"
+  },
+  "52": {
+    "inputs": {
+      "b1": 1.5,
+      "b2": 1.6,
+      "s1": 0.9,
+      "s2": 0.2,
+      "model": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "FreeU_V2"
+  },
+  "53": {
+    "inputs": {
+      "factor": 1,
+      "image": [
+        "19",
+        0
+      ]
+    },
+    "class_type": "ImageDesaturate+"
+  },
+  "100": {
+    "inputs": {
+      "text": ""
+    },
+    "class_type": "CLIPTextEncode"
+  }
+}

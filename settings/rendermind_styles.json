@@ -16,13 +16,13 @@
         "id": "bw_loose_film_grain",
         "model": "Deliberate_v4",
         "style": "fashion-illustration-quick-sketch-8",
-        "pipe": "illustration"
+        "pipe": "illustration_tone_grain"
     },
     {
         "id": "bw_loose",
         "model": "Deliberate_v4",
         "style": "fashion-illustration-quick-sketch-8",
-        "pipe": "illustration"
+        "pipe": "illustration_tone"
     },
     {
         "id": "print_ad",
@@ -51,13 +51,13 @@
         "pipe": "illustration"
     },
     {
-        "id": "fashion_impressionistic_sketc",
+        "id": "fashion_impressionistic_sketch",
         "model": "Deliberate_v4",
         "style": "fashion-illustration-quick-sketch-1",
         "pipe": "illustration"
     },
     {
-        "id": "fashion_impressionistic_sketc",
+        "id": "fashion_impressionistic_sketch",
         "model": "Deliberate_v4",
         "style": "fashion-illustration-quick-sketch-9",
         "pipe": "illustration",

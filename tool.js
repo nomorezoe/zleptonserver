@@ -10,11 +10,11 @@ Tool.randomInt = function (max) {
 
 Tool.RequestURL = "j9e5gs4n-comfyui00.bjz.edr.lepton.ai";
 
-Tool.modelJson = JSON.parse(require('fs').readFileSync("./pipe/models.json"));
+Tool.modelJson = JSON.parse(require('fs').readFileSync("./settings/models.json"));
 
 Tool.isXLModelByFile = function (model) {
-    for(let i = 0; i < Tool.modelJson .length; i++){
-        if(Tool.modelJson[i].file == model){
+    for (let i = 0; i < Tool.modelJson.length; i++) {
+        if (Tool.modelJson[i].file == model) {
             return Tool.modelJson[i].isxl;
         }
     }
@@ -22,8 +22,8 @@ Tool.isXLModelByFile = function (model) {
 }
 
 Tool.getModelFile = function (model) {
-    for(let i = 0; i < Tool.modelJson .length; i++){
-        if(Tool.modelJson[i].name == model){
+    for (let i = 0; i < Tool.modelJson.length; i++) {
+        if (Tool.modelJson[i].name == model) {
             return Tool.modelJson[i].file;
         }
     }
@@ -31,8 +31,8 @@ Tool.getModelFile = function (model) {
 }
 
 Tool.isQualifiedCkpt = function (model) {
-    for(let i = 0; i < Tool.modelJson .length; i++){
-        if(Tool.modelJson[i].file == model){
+    for (let i = 0; i < Tool.modelJson.length; i++) {
+        if (Tool.modelJson[i].file == model) {
             return true;
         }
     }
@@ -40,17 +40,17 @@ Tool.isQualifiedCkpt = function (model) {
 }
 
 
-Tool.loraJson = JSON.parse(require('fs').readFileSync("./pipe/loras.json"));
+Tool.loraJson = JSON.parse(require('fs').readFileSync("./settings/loras.json"));
 Tool.GetLoraFile = function (model) {
-    for(let i = 0; i < Tool.loraJson.length; i++){
-        if(Tool.loraJson[i].model == model){
+    for (let i = 0; i < Tool.loraJson.length; i++) {
+        if (Tool.loraJson[i].model == model) {
             return Tool.loraJson[i].file;
         }
     }
     return null;
 }
 
-Tool.styleJson = JSON.parse(require('fs').readFileSync("./pipe/styles.json"));
+Tool.styleJson = JSON.parse(require('fs').readFileSync("./settings/styles.json"));
 Tool.getStyledPrompt = function (style, posPrompt) {
     for (let i = 0; i < Tool.styleJson.length; i++) {
         if (Tool.styleJson[i].name == style) {
@@ -69,6 +69,47 @@ Tool.getStyleFromNegPrompt = function (neg) {
             return Tool.styleJson[i].name;
         }
     }
+    return null;
+}
+
+Tool.rdStyleJson = JSON.parse(require('fs').readFileSync("./settings/rendermind_styles.json"));
+Tool.isSameArray = function (arr1, arr2) {
+    if (arr1.length != arr2.length) {
+        return false;
+    }
+
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr2.indexOf(arr1[i]) == -1) {
+            return false;
+        }
+    }
+
+    for (let i = 0; i < arr2.length; i++) {
+        if (arr1.indexOf(arr2[i]) == -1) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+Tool.getRenderStyle = function (rdStyle, model, loras, style) {
+    for (let i = 0; i < Tool.rdStyleJson.length; i++) {
+        if (Tool.rdStyleJson[i].id == rdStyle) {
+            if (Tool.rdStyleJson[i].model == model && Tool.rdStyleJson[i].style == style) {
+                let refLoras = [];
+                if (refLoras != null && refLoras != "") {
+                    refLoras = Tool.rdStyleJson[i].loras.split(",");
+                }
+
+                if (Tool.isSameArray(refLoras, loras)) {
+                    return Tool.rdStyleJson[i].pipe;
+                }
+            }
+            break;
+        }
+    }
+
     return null;
 }
 

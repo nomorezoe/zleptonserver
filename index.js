@@ -212,7 +212,7 @@ function sendQueueStatus() {
 }
 
 app.get('/styles', (req, res) => {
-    let json = require('fs').readFileSync("./pipe/styles.json");
+    let json = require('fs').readFileSync("./settings/styles.json");
     json = JSON.parse(json);
 
     var obj = [];
@@ -220,16 +220,16 @@ app.get('/styles', (req, res) => {
         obj.push({ "name": json[i].name, "models": json[i].models });
     }
 
-    let json2 = require('fs').readFileSync("./pipe/loras.json");
+    let json2 = require('fs').readFileSync("./settings/loras.json");
     json2 = JSON.parse(json2);
 
-    let json3 = require('fs').readFileSync("./pipe/models.json");
+    let json3 = require('fs').readFileSync("./settings/models.json");
     json3 = JSON.parse(json3);
 
-    let json4 = require('fs').readFileSync("./pipe/settings.json");
+    let json4 = require('fs').readFileSync("./settings/settings.json");
     json4 = JSON.parse(json4);
 
-    let json5 = require('fs').readFileSync("./pipe/rendermind_styles.json");
+    let json5 = require('fs').readFileSync("./settings/rendermind_styles.json");
     json5 = JSON.parse(json5);
 
     res.json({
