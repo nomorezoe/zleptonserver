@@ -3,7 +3,7 @@
     "inputs": {
       "a": 6.28,
       "bg_threshold": 0.1,
-      "resolution": 512,
+      "resolution": 768,
       "image": [
         "2",
         0
@@ -131,7 +131,7 @@
       "detect_hand": "enable",
       "detect_body": "enable",
       "detect_face": "enable",
-      "resolution": 512,
+      "resolution": 1024,
       "bbox_detector": "yolox_l.onnx",
       "pose_estimator": "dw-ll_ucoco_384.onnx",
       "image": [
