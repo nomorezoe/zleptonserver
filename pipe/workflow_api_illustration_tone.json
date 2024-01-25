@@ -262,11 +262,5 @@
       ]
     },
     "class_type": "ImageDesaturate+"
-  },
-  "100": {
-    "inputs": {
-      "text": ""
-    },
-    "class_type": "CLIPTextEncode"
   }
 }

@@ -35,14 +35,14 @@ function TaskComfyUpscale(task, req, queue) {
     let style = null;
     let negtext = null;
     if (tags.prompt) {
-        console.log("Tags:" + tags.prompt.value);
 
         var jsonString = tags.prompt.value;
         //console.log("EXif:" + jsonString);
         var jsonSettings = JSON.parse(jsonString);
         for (let i in jsonSettings) {
-            if (jsonSettings[i]["class_type"] == "CLIPTextEncode"&& jsonSettings[i]["inputs"]["clip"] == undefined) {
-                style = jsonSettings[i]["inputs"]["text"];
+            if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
+                style = jsonSettings[i]["inputs"]["style"];
+                console.log("find style:" + style);
                 break;
             }
         }
@@ -63,7 +63,7 @@ function TaskComfyUpscale(task, req, queue) {
         if (jsonSettings[i]["class_type"] == "CheckpointLoaderSimple") {
             if (Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])) {
                 model = jsonSettings[i]["inputs"]["ckpt_name"];
-                console.log("find" + model);
+                console.log("find model:" + model);
                 break;
             }
         }

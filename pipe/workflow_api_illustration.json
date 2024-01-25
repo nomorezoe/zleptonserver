@@ -252,11 +252,5 @@
       ]
     },
     "class_type": "FreeU_V2"
-  },
-  "100": {
-    "inputs": {
-      "text": ""
-    },
-    "class_type": "CLIPTextEncode"
   }
 }

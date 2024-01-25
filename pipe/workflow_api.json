@@ -9,20 +9,29 @@
         0
       ]
     },
-    "class_type": "MiDaS-DepthMapPreprocessor"
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "_meta": {
+      "title": "MiDaS Depth Map"
+    }
   },
   "2": {
     "inputs": {
       "image": "[WE_WILL_FILL_THIS_BELOW]",
       "upload": "image"
     },
-    "class_type": "LoadImage"
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
   },
   "4": {
     "inputs": {
       "control_net_name": "control-lora-depth-rank256.safetensors"
     },
-    "class_type": "ControlNetLoader"
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
   },
   "5": {
     "inputs": {
@@ -40,7 +49,10 @@
         0
       ]
     },
-    "class_type": "ControlNetApply"
+    "class_type": "ControlNetApply",
+    "_meta": {
+      "title": "Apply ControlNet"
+    }
   },
   "6": {
     "inputs": {
@@ -67,13 +79,19 @@
         0
       ]
     },
-    "class_type": "KSampler"
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
   },
   "7": {
     "inputs": {
       "ckpt_name": "dynavisionXLAllInOneStylized_releaseV0610Bakedvae.safetensors"
     },
-    "class_type": "CheckpointLoaderSimple"
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
   },
   "9": {
     "inputs": {
@@ -81,7 +99,10 @@
       "height": 768,
       "batch_size": 4
     },
-    "class_type": "EmptyLatentImage"
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
   },
   "11": {
     "inputs": {
@@ -94,7 +115,10 @@
         2
       ]
     },
-    "class_type": "VAEDecode"
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
   },
   "12": {
     "inputs": {
@@ -104,27 +128,42 @@
         0
       ]
     },
-    "class_type": "SaveImage"
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
   },
   "13": {
     "inputs": {
-      "text": "a dog on grass, photo, high quality",
+      "text": [
+        "104",
+        0
+      ],
       "clip": [
         "20",
         1
       ]
     },
-    "class_type": "CLIPTextEncode"
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
   },
   "14": {
     "inputs": {
-      "text": "(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, nude, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) horror",
+      "text": [
+        "104",
+        1
+      ],
       "clip": [
         "20",
         1
       ]
     },
-    "class_type": "CLIPTextEncode"
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
   },
   "15": {
     "inputs": {
@@ -139,13 +178,19 @@
         0
       ]
     },
-    "class_type": "DWPreprocessor"
+    "class_type": "DWPreprocessor",
+    "_meta": {
+      "title": "DWPose Estimator"
+    }
   },
   "17": {
     "inputs": {
       "control_net_name": "thibaud_xl_openpose_256lora.safetensors"
     },
-    "class_type": "ControlNetLoader"
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
   },
   "18": {
     "inputs": {
@@ -163,7 +208,10 @@
         0
       ]
     },
-    "class_type": "ControlNetApply"
+    "class_type": "ControlNetApply",
+    "_meta": {
+      "title": "Apply ControlNet"
+    }
   },
   "20": {
     "inputs": {
@@ -180,7 +228,10 @@
         0
       ]
     },
-    "class_type": "CR Apply LoRA Stack"
+    "class_type": "CR Apply LoRA Stack",
+    "_meta": {
+      "title": "CR Apply LoRA Stack"
+    }
   },
   "21": {
     "inputs": {
@@ -197,7 +248,10 @@
       "model_weight_3": 1,
       "clip_weight_3": 1
     },
-    "class_type": "CR LoRA Stack"
+    "class_type": "CR LoRA Stack",
+    "_meta": {
+      "title": "CR LoRA Stack"
+    }
   },
   "22": {
     "inputs": {
@@ -210,13 +264,10 @@
         0
       ]
     },
-    "class_type": "FreeU_V2"
-  },
-  "100": {
-    "inputs": {
-      "text": ""
-    },
-    "class_type": "CLIPTextEncode"
+    "class_type": "FreeU_V2",
+    "_meta": {
+      "title": "FreeU_V2"
+    }
   },
   "101": {
     "inputs": {
@@ -232,6 +283,23 @@
         1
       ]
     },
-    "class_type": "LoraLoader"
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "Load LoRA"
+    }
+  },
+  "104": {
+    "inputs": {
+      "text_positive": "a dog on grass, photo, high quality",
+      "text_negative": "(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, nude, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) horror",
+      "style": "base",
+      "log_prompt": true,
+      "style_positive": true,
+      "style_negative": true
+    },
+    "class_type": "SDXLPromptStyler",
+    "_meta": {
+      "title": "SDXL Prompt Styler"
+    }
   }
 }

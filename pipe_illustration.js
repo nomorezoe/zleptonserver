@@ -29,8 +29,6 @@ IllustrationRender.process = function (imgData, positivePrompt, negtivePrompt, m
 
     prompt["4"]["inputs"]["ckpt_name"] = modelFile;
     
-
-    prompt["100"]["inputs"]["text"] = style;
     return prompt;
 }
 

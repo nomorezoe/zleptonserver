@@ -275,11 +275,5 @@
       ]
     },
     "class_type": "FilmGrain"
-  },
-  "100": {
-    "inputs": {
-      "text": ""
-    },
-    "class_type": "CLIPTextEncode"
   }
 }

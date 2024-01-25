@@ -26,7 +26,6 @@ IllustrationGrainRender.process = function (imgData, positivePrompt, negtiveProm
     prompt["35"]["inputs"]["strength"] = poseStrength;
     prompt["34"]["inputs"]["strength"] = depthStrength;
 
-    prompt["100"]["inputs"]["text"] = style;
     return prompt;
 }
 

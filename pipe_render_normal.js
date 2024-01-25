@@ -9,18 +9,13 @@ function NormalRender() {
 
 NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
 
-    //update style
-    if (style != "base") {
-        let styleInfo = Tool.getStyledPrompt(style, positivePrompt);
-        positivePrompt = styleInfo[0];
-        negtivePrompt = styleInfo[1] + negtivePrompt;
-
-        console.log("styled prompt: " + positivePrompt);
-        console.log("styled negprompt: " + negtivePrompt);
-    }
-
     const promptFile = fs.readFileSync(isLockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
     let prompt = JSON.parse(promptFile);
+
+    //style
+    prompt["104"]["inputs"]["text_positive"] = positivePrompt;
+    prompt["104"]["inputs"]["text_negative"] = negtivePrompt;
+    prompt["104"]["inputs"]["style"] = style;
 
     //turn on lora
     for (let i = 0; i < loras.length; i++) {
@@ -35,7 +30,6 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
     //auto style pytorch_lora_weights
     if (style != "base") {
         console.log("link extra lora");
-        prompt["100"]["inputs"]["text"] = style;
         prompt["13"]["inputs"]["clip"][0] = "101";
         prompt["14"]["inputs"]["clip"][0] = "101";
 
