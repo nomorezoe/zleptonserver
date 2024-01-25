@@ -1,8 +1,11 @@
 {
+    "amplify_rd_style": [
+       
+    ],
     "amplify_style": [
         {
-            "pretext": "loose color sketch",
-            "sd_style": "fashion-illustration-quick-sketch-8"
+            "pretext": "fashion illustration quick sketch",
+            "style": "fashion-illustration-quick-sketch-8"
         }
     ],
     "amplify_model": [
@@ -44,14 +47,18 @@
             "steps": 25,
             "cfg": 4,
             "sampler": "dpmpp_2m",
-            "scheduler": "ddim_uniform"
+            "scheduler": "ddim_uniform",
+            "poseStrength": 0.8,
+            "depthStrength": 0.5
         },
         {
             "model": "Deliberate_v5",
             "steps": 25,
             "cfg": 4,
             "sampler": "dpmpp_2m",
-            "scheduler": "ddim_uniform"
+            "scheduler": "ddim_uniform",
+            "poseStrength": 0.8,
+            "depthStrength": 0.5
         },
         {
             "model": "dynavisionXL",

@@ -43,7 +43,7 @@ Tool.isQualifiedCkpt = function (model) {
 Tool.loraJson = JSON.parse(require('fs').readFileSync("./settings/loras.json"));
 Tool.GetLoraFile = function (model) {
     for (let i = 0; i < Tool.loraJson.length; i++) {
-        if (Tool.loraJson[i].model == model) {
+        if (Tool.loraJson[i].name == model) {
             return Tool.loraJson[i].file;
         }
     }
