@@ -74,6 +74,8 @@ Tool.getStyleFromNegPrompt = function (neg) {
 
 Tool.rdStyleJson = JSON.parse(require('fs').readFileSync("./settings/rendermind_styles.json"));
 Tool.isSameArray = function (arr1, arr2) {
+    return true;
+    console.log("isSameArray" + arr1 + ":" + arr2);
     if (arr1.length != arr2.length) {
         return false;
     }
@@ -98,7 +100,7 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style) {
         if (Tool.rdStyleJson[i].id == rdStyle) {
             if (Tool.rdStyleJson[i].model == model && Tool.rdStyleJson[i].style == style) {
                 let refLoras = [];
-                if (refLoras != null && refLoras != "") {
+                if (Tool.rdStyleJson[i].loras != null && Tool.rdStyleJson[i].loras != "") {
                     refLoras = Tool.rdStyleJson[i].loras.split(",");
                 }
 

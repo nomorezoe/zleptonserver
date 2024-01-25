@@ -3,7 +3,7 @@
         "id": "photorealism",
         "model": "realism_engine_sdxl",
         "style": "base",
-        "pipe": "real_photo",
+        "pipe": "real_photo_sharpen",
         "loras":"Cinematic_Hollywood_Film,BetterPhotography"
     },
     {
@@ -28,7 +28,7 @@
         "id": "print_ad",
         "model": "Deliberate_v5",
         "style": "ads-advertising",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "editorial_photography",
@@ -98,7 +98,7 @@
         "id": "fantasy_digital_art",
         "model": "Deliberate_v5",
         "style": "sai-fantasy art",
-        "pipe": "illustration"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "graphic_novel_comic",
@@ -116,13 +116,13 @@
         "id": "mech_organic_design",
         "model": "Deliberate_v4",
         "style": "futuristic-biomechanical",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "cybernetic_surrealism",
         "model": "Deliberate_v4",
         "style": "futuristic-biomechanical cyberpunk",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "pixel_art",
@@ -134,7 +134,7 @@
         "id": "dslr",
         "model": "Deliberate_v4",
         "style": "sai-photographic",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "origami",
@@ -146,42 +146,42 @@
         "id": "high_fashion",
         "model": "Deliberate_v4",
         "style": "sai-texture",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "High fashion",
         "model": "Deliberate_v4",
         "style": "fashion-illustration-vanish",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "commercial_car_photography",
         "model": "Deliberate_v4",
         "style": "ads-automotive",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "retro_neon",
         "model": "Deliberate_v4",
         "style": "sai-neonpunk",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "craft_clay",
         "model": "Deliberate_v4",
         "style": "sai-craft clay",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "geometric_minimalism",
         "model": "Deliberate_v4",
         "style": "sai-lowpoly",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     },
     {
         "id": "impressionistic",
         "model": "Deliberate_v4",
         "style": "artstyle-impressionist",
-        "pipe": "delibrerate_photo_hand_fix"
+        "pipe": "delibrerate_photo"
     }
 ]
