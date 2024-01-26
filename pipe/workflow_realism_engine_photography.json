@@ -241,8 +241,8 @@
   },
   "51": {
     "inputs": {
-      "width": 768,
-      "height": 768,
+      "width": 1024,
+      "height": 576,
       "batch_size": 4
     },
     "class_type": "EmptyLatentImage",

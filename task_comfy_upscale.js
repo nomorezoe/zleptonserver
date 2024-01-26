@@ -5,7 +5,7 @@ var OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
-//const sizeOf = require('buffer-image-size');
+const sizeOf = require('buffer-image-size');
 
 function TaskComfyUpscale(task, req, queue) {
 
@@ -26,6 +26,14 @@ function TaskComfyUpscale(task, req, queue) {
         queue.completeTask();
         return;
     }
+    var dimensions = sizeOf(rawImg);
+    var dWidth = dimensions.width;
+    var dHeight = dimensions.height;
+    console.log("dWidth" + dWidth);
+    console.log("dHeight" + dHeight);
+
+    var targetWidth = Math.floor(1536 / dHeight * dWidth);
+
     var imgBytes = rawImg.toString('base64');
 
     var upscaleImageName = uuidv4() + "_upscale.png";
@@ -71,6 +79,8 @@ function TaskComfyUpscale(task, req, queue) {
 
     const promptFile = fs.readFileSync('./pipe/workflow_api_upscale_face_denoise.json');
     let promptjson = JSON.parse(promptFile);
+
+    promptjson["11"]["inputs"]["width"] = targetWidth;
 
     promptjson["2"]["inputs"]["image"] = imgBytes;
     promptjson["13"]["inputs"]["text"] = prompt;
