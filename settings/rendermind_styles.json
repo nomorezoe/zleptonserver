@@ -67,7 +67,7 @@
         "id": "classic_animation",
         "model": "dynavisionXL",
         "style": "comic-character",
-        "pipe": "animation"
+        "pipe": "illustration_comic"
     },
     {
         "id": "spot_color",

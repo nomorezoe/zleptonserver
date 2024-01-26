@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "image": "save (3).png",
+      "image": "save (9).png",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -201,7 +201,7 @@
     "inputs": {
       "mask_bbox_padding": 30,
       "resolution": 2048,
-      "mask_type": "tight_bboxes",
+      "mask_type": "based_on_depth",
       "mask_expand": 5,
       "rand_seed": 88,
       "image": [
@@ -373,7 +373,7 @@
   },
   "72:1": {
     "inputs": {
-      "seed": 718770902093370,
+      "seed": 141512233534135,
       "steps": 20,
       "cfg": 6,
       "sampler_name": "dpmpp_2m_sde_gpu",
@@ -403,7 +403,7 @@
   },
   "72:2": {
     "inputs": {
-      "seed": 329832053141269,
+      "seed": 436888412807274,
       "steps": 22,
       "cfg": 4,
       "sampler_name": "dpmpp_2m_sde_gpu",
