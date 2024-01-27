@@ -18,7 +18,7 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
     prompt["104"]["inputs"]["style"] = style;
 
     //turn on lora
-    for (let i = 0; i < loras.length; i++) {
+    for (let i = 0; i < Math.min(3,loras.length); i++) {
         if (Tool.GetLoraFile(loras[i]) != null) {
             prompt["21"]["inputs"]["switch_" + (i + 1)] = "On";
             console.log("lora:" + loras[i] + ":" + Tool.GetLoraFile(loras[i]));

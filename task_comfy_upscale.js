@@ -93,7 +93,7 @@ function TaskComfyUpscale(task, req, queue) {
     promptjson["7"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
     promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
-    var data = JSON.stringify({ "prompt": promptjson });
+    var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
     //console.log(data)
     console.log(data.length)
     const options = {

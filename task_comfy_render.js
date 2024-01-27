@@ -109,7 +109,7 @@ function TaskComfyRender(task, req, queue) {
 }
 
 function sendRequest(prompt, queue, task) {
-    var data = JSON.stringify({ "prompt": prompt });
+    var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     //console.log(data)
     console.log(data.length)
     const options = {

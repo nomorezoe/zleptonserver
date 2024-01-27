@@ -16,5 +16,11 @@
         "file": "SDXL1.0_Essenz-series-by-AI_Characters_Style_BetterPhotography-v1.2-'Skynet'.safetensors",
         "pretext": "photo in phst artstyle",
         "loratext": ""
+    },
+    {
+        "name": "Jim Lee",
+        "file": "jim_lee_offset_right_filesize.safetensors",
+        "pretext": "jim lee",
+        "loratext": "<lora:jim_lee_offset:1>"
     }
 ]

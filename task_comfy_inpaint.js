@@ -74,7 +74,7 @@ function TaskComfyInPaint(task, req, queue) {
     promptjson["12"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
     promptjson["13"]["inputs"]["text"] = prompt;
 
-    var data = JSON.stringify({ "prompt": promptjson });
+    var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
     //console.log(data)
     console.log(data.length)
     const options = {

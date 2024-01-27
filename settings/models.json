@@ -28,5 +28,10 @@
         "name": "Deliberate_v5",
         "file": "Deliberate_v5.safetensors",
         "isxl": false
+    },
+    {
+        "name": "arthemyComics",
+        "file": "arthemyComics_v60.safetensors",
+        "isxl": false
     }
 ]
