@@ -269,7 +269,7 @@
   },
   "50": {
     "inputs": {
-      "lora_name": "pytorch_lora_weights_1.5.safetensors",
+      "lora_name": "LCM_LoRA_Weights_SD15.safetensors",
       "strength_model": 1,
       "strength_clip": 1,
       "model": [

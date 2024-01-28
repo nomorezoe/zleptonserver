@@ -80,7 +80,7 @@
   },
   "33": {
     "inputs": {
-      "a": 6.283185307179586,
+      "a": 6.28,
       "bg_threshold": 0.1,
       "resolution": 512,
       "image": [
@@ -135,67 +135,9 @@
       "title": "Apply ControlNet"
     }
   },
-  "36": {
-    "inputs": {
-      "control_net_name": "control-lora-sketch-rank256.safetensors"
-    },
-    "class_type": "ControlNetLoader",
-    "_meta": {
-      "title": "Load ControlNet Model"
-    }
-  },
-  "37": {
-    "inputs": {
-      "images": [
-        "39",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
-    }
-  },
-  "38": {
-    "inputs": {
-      "strength": 1,
-      "conditioning": [
-        "34",
-        0
-      ],
-      "control_net": [
-        "36",
-        0
-      ],
-      "image": [
-        "39",
-        0
-      ]
-    },
-    "class_type": "ControlNetApply",
-    "_meta": {
-      "title": "Apply ControlNet"
-    }
-  },
-  "39": {
-    "inputs": {
-      "resolution": 512,
-      "image": [
-        "1",
-        0
-      ]
-    },
-    "class_type": "ScribblePreprocessor",
-    "_meta": {
-      "title": "Scribble Lines"
-    }
-  },
   "45": {
     "inputs": {
-      "seed": [
-        "59",
-        0
-      ],
+      "seed": 1051517286330132,
       "steps": 25,
       "cfg": 3.5,
       "sampler_name": "dpmpp_2m",
@@ -206,7 +148,7 @@
         0
       ],
       "positive": [
-        "38",
+        "34",
         0
       ],
       "negative": [
@@ -271,7 +213,7 @@
     },
     "class_type": "CR LoRA Stack",
     "_meta": {
-      "title": "[Optional] CR LoRA Stack"
+      "title": "CR LoRA Stack"
     }
   },
   "53": {
@@ -311,7 +253,7 @@
     },
     "class_type": "CR LoRA Stack",
     "_meta": {
-      "title": "[Optional] CR LoRA Stack"
+      "title": "CR LoRA Stack"
     }
   },
   "55": {
@@ -358,15 +300,6 @@
     "class_type": "CLIPTextEncode",
     "_meta": {
       "title": "CLIP Text Encode (Prompt)"
-    }
-  },
-  "59": {
-    "inputs": {
-      "seed": 327894766045627
-    },
-    "class_type": "Seed Generator",
-    "_meta": {
-      "title": "Seed Generator"
     }
   },
   "65": {
@@ -511,7 +444,7 @@
       "guide_size": 1024,
       "guide_size_for": true,
       "max_size": 1024,
-      "seed": 0,
+      "seed": 707794421223482,
       "steps": 20,
       "cfg": 8,
       "sampler_name": "euler_ancestral",
@@ -527,7 +460,7 @@
       "sam_dilation": 0,
       "sam_threshold": 0.93,
       "sam_bbox_expansion": 20,
-      "sam_mask_hint_threshold": 0.7,
+      "sam_mask_hint_threshold": 0.7000000000000001,
       "sam_mask_hint_use_negative": "False",
       "drop_size": 10,
       "refiner_ratio": 0.2,

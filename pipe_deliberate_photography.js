@@ -16,9 +16,9 @@ DeliberatePhotographyRender.process = function (imgData, positivePrompt, negtive
     prompt["1"]["inputs"]["image"]=imgData;
     prompt["4"]["inputs"]["ckpt_name"] = modelFile;
 
-    prompt["49"]["inputs"]["text_positive"] = positivePrompt;
-    prompt["49"]["inputs"]["text_negative"] = negtivePrompt;
-    prompt["49"]["inputs"]["style"] = style;
+    prompt["55"]["inputs"]["text_positive"] = positivePrompt;
+    prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
+    prompt["55"]["inputs"]["style"] = style;
 
     /*prompt["45"]["inputs"]["seed"] =  Tool.randomInt(450993616797312);
     prompt["45"]["inputs"]["steps"] = sampleSteps;
