@@ -10,10 +10,26 @@ function RealismPhotographySharpenRender() {
 RealismPhotographySharpenRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
 
     console.log("RealismPhotographySharpenRender");
-    const promptFile = fs.readFileSync('./pipe/workflow_realism_engine_photography_sharpen.json');//');
+    const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_realism_engine_photography_sharpen_ch_lock.json':'./pipe/workflow_realism_engine_photography_sharpen.json');//');
     let prompt = JSON.parse(promptFile);
 
     prompt["1"]["inputs"]["image"]=imgData;
+
+     //lockcharacter
+     if (isLockCharacter) {
+        console.log("isLockCharacter:" + characterFile);
+        try {
+            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
+        }
+        catch (err) {
+            console.log("read file err");
+            //queue.completeTask();
+            return null;
+        }
+        
+        var imgBytes = rawImg.toString('base64');
+        prompt["89"]["inputs"]["image"] = imgBytes;
+    }
 
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
     prompt["55"]["inputs"]["text_negative"] = negtivePrompt;

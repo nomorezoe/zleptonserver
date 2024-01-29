@@ -80,10 +80,10 @@ function TaskComfyRender(task, req, queue) {
     else if (processRDStyle == "illustration_comic" && !isLockCharacter) {
         prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
-    else if (processRDStyle == "real_photo_sharpen" && !isLockCharacter) {
+    else if (processRDStyle == "real_photo_sharpen") {// && !isLockCharacter) {
         prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
-    else if (processRDStyle == "real_photo" && !isLockCharacter) {
+    else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
         prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
     else if (processRDStyle == "delibrerate_photo" && !isLockCharacter) {
@@ -150,7 +150,7 @@ function sendRequest(prompt, queue, task) {
                 }
 
                 task.sendCompleteTaskSuccess();
-               
+
             });
 
         }
