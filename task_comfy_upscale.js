@@ -76,7 +76,7 @@ function TaskComfyUpscale(task, req, queue) {
             }
         }
     }
-
+    
     const promptFile = fs.readFileSync('./pipe/workflow_api_upscale_face_denoise.json');
     let promptjson = JSON.parse(promptFile);
 
@@ -93,6 +93,8 @@ function TaskComfyUpscale(task, req, queue) {
     promptjson["7"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
     promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
+    Tool.applyRandomFileName(promptjson);
+    
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
     //console.log(data)
     console.log(data.length)
@@ -115,6 +117,7 @@ function TaskComfyUpscale(task, req, queue) {
 
 
         if (reshttps.statusCode == 200) {
+            queue.completeTask();
             console.log("200");
             reshttps.on('data', (d) => {
                 datastring += d;
@@ -131,7 +134,7 @@ function TaskComfyUpscale(task, req, queue) {
                         encoding: "base64",
                     });
                 }
-                queue.completeTask();
+                task.sendCompleteTaskSuccess();
             });
         }
         else {

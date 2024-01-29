@@ -97,7 +97,7 @@ app.use('/render', function (req, res, next) {
 
     let queue = new Queue(session, completeAQueue);
     //for (let i = 0; i < BATCH_COUNT; i++) {
-    let task = new Task("render", req);
+    let task = new Task("render", 0, req);
     queue.tasks.push(task);
     //}
 
@@ -122,7 +122,7 @@ app.use('/upscale', function (req, res, next) {
 
     var session = req.body.session;
     let queue = new Queue(session, completeAQueue);
-    let task = new Task("upscale", req);
+    let task = new Task("upscale", 0, req);
     queue.tasks.push(task);
     addToQueue(queue);
 
@@ -146,7 +146,7 @@ app.use('/inpaint', function (req, res, next) {
 
     var session = req.body.session;
     let queue = new Queue(session, completeAQueue);
-    let task = new Task("inpaint", req);
+    let task = new Task("inpaint",  0,req);
     queue.tasks.push(task);
 
     addToQueue(queue);
@@ -267,7 +267,7 @@ app.use('/test', function (req, res, next) {
 
     var session = "test";
     let queue = new Queue(session, completeAQueue);
-    let task = new Task("render", req);
+    let task = new Task("render", 0, req);
     queue.tasks.push(task);
 
     addToQueue(queue);

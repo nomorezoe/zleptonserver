@@ -3,17 +3,20 @@
 const TaskComfyRender = require("./task_comfy_render");
 const TaskComfyInPaint = require("./task_comfy_inpaint");
 const TaskComfyUpscale = require("./task_comfy_upscale");
+const SocketManager = require("./socket_manager");
 
-
-function Task(type, req) {
+function Task(type, index, req) {
     this.type = type;
+    this.index = index;
     this.req = req;
+    this.key = "";
     this.imageFileNames = [];
 }
 
 Task.prototype = {
 
     excuteTask: function (queue) {
+        this.key = queue.key;
         switch (this.type) {
             case "render":
                 //TaskRender(this, this.req, queue);
@@ -61,6 +64,21 @@ Task.prototype = {
                 return 120;
                 break;
         } 
+    },
+
+    sendCompleteTaskSuccess: function(){
+        let socket =  SocketManager.getSocketByKey(this.key);
+        if(socket){
+            if(this.type == "render"){
+                socket.emit("completeRenderTask", this.imageFileNames.join(','));
+            }
+            else if(this.type == "upscale"){
+                socket.emit("completeUpscaleTask", this.imageFileNames.join(','));
+            }
+            else{
+                socket.emit("completeTask", this.imageFileNames.join(','));
+            }
+        }
     }
 
 }

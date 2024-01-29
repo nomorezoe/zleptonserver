@@ -105,6 +105,7 @@ function TaskComfyRender(task, req, queue) {
         return;
     }
 
+    Tool.applyRandomFileName(prompt);
     sendRequest(prompt, queue, task);
 }
 
@@ -130,6 +131,7 @@ function sendRequest(prompt, queue, task) {
 
         if (reshttps.statusCode == 200) {
             console.log("200");
+            queue.completeTask();
 
             reshttps.on('data', (d) => {
                 datastring += d;
@@ -146,7 +148,9 @@ function sendRequest(prompt, queue, task) {
                         encoding: "base64",
                     });
                 }
-                queue.completeTask();
+
+                task.sendCompleteTaskSuccess();
+               
             });
 
         }

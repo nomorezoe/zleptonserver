@@ -16,7 +16,7 @@
     "inputs": {
       "seed": 1086394622719508,
       "steps": 25,
-      "cfg": 4.1,
+      "cfg": 4,
       "sampler_name": "dpmpp_2m",
       "scheduler": "ddim_uniform",
       "denoise": 1,

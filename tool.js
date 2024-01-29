@@ -1,4 +1,5 @@
 "strict mode"
+const { v4: uuidv4 } = require('uuid');
 
 function Tool() {
 
@@ -74,8 +75,6 @@ Tool.getStyleFromNegPrompt = function (neg) {
 
 Tool.rdStyleJson = JSON.parse(require('fs').readFileSync("./settings/rendermind_styles.json"));
 Tool.isSameArray = function (arr1, arr2) {
-    return true;
-    console.log("isSameArray" + arr1 + ":" + arr2);
     if (arr1.length != arr2.length) {
         return false;
     }
@@ -113,6 +112,16 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style) {
     }
 
     return null;
+}
+
+Tool.applyRandomFileName = function(prompt){
+    for(var i in prompt){
+        if(prompt[i]["class_type"] == "SaveImage"){
+            prompt[i]["inputs"]["filename_prefix"] = uuidv4();
+            return;
+        }
+    }
+
 }
 
 module.exports = Tool;

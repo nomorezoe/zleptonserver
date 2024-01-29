@@ -74,6 +74,8 @@ function TaskComfyInPaint(task, req, queue) {
     promptjson["12"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
     promptjson["13"]["inputs"]["text"] = prompt;
 
+    Tool.applyRandomFileName(promptjson);
+
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
     //console.log(data)
     console.log(data.length)
@@ -97,6 +99,8 @@ function TaskComfyInPaint(task, req, queue) {
 
         if (reshttps.statusCode == 200) {
             console.log("200");
+            queue.completeTask();
+
             reshttps.on('data', (d) => {
                 datastring += d;
                 //console.log("ondata");
@@ -112,7 +116,8 @@ function TaskComfyInPaint(task, req, queue) {
                         encoding: "base64",
                     });
                 }
-                queue.completeTask();
+               
+                task.sendCompleteTaskSuccess();
             });
         }
         else {

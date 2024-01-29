@@ -39,14 +39,25 @@
     ],
     "ksampler_settings": [
         {
-            "model": "realism_engine_sdxl",
-            "steps": 35,
-            "cfg": 7,
-            "sampler": "dpmpp_2m_sde",
-            "scheduler": "exponential"
+            "pipe": "real_photo",
+            "steps": 25,
+            "cfg": 3.5,
+            "sampler": "dpmpp_2m",
+            "scheduler": "karras",
+            "poseStrength": 1,
+            "depthStrength": 0.53
         },
         {
-            "model": "Deliberate_v4",
+            "pipe": "real_photo_sharpen",
+            "steps": 25,
+            "cfg": 5,
+            "sampler": "dpmpp_2m",
+            "scheduler": "karras",
+            "poseStrength": 1,
+            "depthStrength": 0.53
+        },
+        {
+            "pipe": "illustration",
             "steps": 25,
             "cfg": 4,
             "sampler": "dpmpp_2m",
@@ -55,7 +66,7 @@
             "depthStrength": 0.5
         },
         {
-            "model": "Deliberate_v5",
+            "pipe": "illustration_tone",
             "steps": 25,
             "cfg": 4,
             "sampler": "dpmpp_2m",
@@ -64,11 +75,31 @@
             "depthStrength": 0.5
         },
         {
-            "model": "dynavisionXL",
+            "pipe": "illustration_tone_grain",
             "steps": 25,
             "cfg": 4,
             "sampler": "dpmpp_2m",
-            "scheduler": "ddim_uniform"
+            "scheduler": "ddim_uniform",
+            "poseStrength": 0.8,
+            "depthStrength": 0.5
+        },
+        {
+            "pipe": "delibrerate_photo",
+            "steps": 25,
+            "cfg": 5,
+            "sampler": "dpmpp_2m",
+            "scheduler": "karras",
+            "poseStrength": 0.83,
+            "depthStrength": 0.53
+        },
+        {
+            "pipe": "illustration_comic",
+            "steps": 25,
+            "cfg": 4,
+            "sampler": "dpmpp_2m",
+            "scheduler": "ddim_uniform",
+            "poseStrength": 0.8,
+            "depthStrength": 0.5
         }
     ]
 }

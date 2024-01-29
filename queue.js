@@ -26,7 +26,7 @@ Queue.prototype = {
         }
 
         if (this.tasks.length == 0) {
-            this.sendCompleteTask();
+            this._sendCompleteQueueFailed();
             this.completeFunc();
             return;
         }
@@ -42,11 +42,11 @@ Queue.prototype = {
     completeTask: function () {
         console.log("completeTask");
 
-        if(this.currentTask){
+        /*if(this.currentTask){
             let time = Date.now() - this.timer;
             console.log("Task takes "  + time);
-            this.sendCompeleteTask(this.currentTask);
-        }
+            this._sendCompleteTaskSuccess(this.currentTask);
+        }*/
         this.currentTask = null;
         this.nextTask();
     },
@@ -73,24 +73,13 @@ Queue.prototype = {
     },
 
 
-    sendCompleteTask: function(){
+    _sendCompleteQueueFailed: function(){
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
             console.log('emit completeQueue' + socket.id);
             socket.emit("completeQueue");
         }
     },
-
-    sendCompeleteTask: function(task){
-        let socket =  SocketManager.getSocketByKey(this.key);
-        if(socket){
-            console.log('emit completeTask' + task.imageFileNames);
-            for(var i = 0 ; i < task.imageFileNames.length; i++){
-                socket.emit("completeTask", task.imageFileNames[i]);
-            }
-           
-        }
-    }
 }
 
 module.exports = Queue;
