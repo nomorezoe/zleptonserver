@@ -9,10 +9,26 @@ function IllustrationToneRender() {
 
 IllustrationToneRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
     console.log("IllustrationToneRender");
-    const promptFile = fs.readFileSync('./pipe/workflow_api_illustration_tone.json');//');
+    const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_api_illustration_tone_ch_lock.json':'./pipe/workflow_api_illustration_tone.json');//');
     let prompt = JSON.parse(promptFile);
  
     prompt["1"]["inputs"]["image"]=imgData;
+
+     //lockcharacter
+     if (isLockCharacter) {
+        console.log("isLockCharacter:" + characterFile);
+        try {
+            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
+        }
+        catch (err) {
+            console.log("read file err");
+            //queue.completeTask();
+            return null;
+        }
+        
+        var imgBytes = rawImg.toString('base64');
+        prompt["58"]["inputs"]["image"] = imgBytes;
+    }
 
     prompt["49"]["inputs"]["text_positive"] = positivePrompt;
     prompt["49"]["inputs"]["text_negative"] = negtivePrompt;

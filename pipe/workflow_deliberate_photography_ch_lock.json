@@ -1,0 +1,655 @@
+{
+  "1": {
+    "inputs": {
+      "image": "save (10).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "Deliberate_v5.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "22": {
+    "inputs": {
+      "control_net_name": "control_v11p_sd15_openpose.pth"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "26": {
+    "inputs": {
+      "images": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "28": {
+    "inputs": {
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": 1024,
+      "bbox_detector": "yolox_l.onnx",
+      "pose_estimator": "dw-ll_ucoco_384.onnx",
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "DWPreprocessor",
+    "_meta": {
+      "title": "DWPose Estimator"
+    }
+  },
+  "29": {
+    "inputs": {
+      "control_net_name": "control_v11f1p_sd15_depth.pth"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "31": {
+    "inputs": {
+      "images": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "33": {
+    "inputs": {
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 512,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "_meta": {
+      "title": "MiDaS Depth Map"
+    }
+  },
+  "34": {
+    "inputs": {
+      "strength": 0.53,
+      "conditioning": [
+        "35",
+        0
+      ],
+      "control_net": [
+        "29",
+        0
+      ],
+      "image": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "ControlNetApply",
+    "_meta": {
+      "title": "Apply ControlNet"
+    }
+  },
+  "35": {
+    "inputs": {
+      "strength": 0.8300000000000001,
+      "conditioning": [
+        "57",
+        0
+      ],
+      "control_net": [
+        "22",
+        0
+      ],
+      "image": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "ControlNetApply",
+    "_meta": {
+      "title": "Apply ControlNet"
+    }
+  },
+  "45": {
+    "inputs": {
+      "seed": 391453879960094,
+      "steps": 25,
+      "cfg": 5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "84",
+        0
+      ],
+      "positive": [
+        "34",
+        0
+      ],
+      "negative": [
+        "58",
+        0
+      ],
+      "latent_image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "49": {
+    "inputs": {
+      "samples": [
+        "45",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "51": {
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "batch_size": 4
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "52": {
+    "inputs": {
+      "switch_1": "Off",
+      "lora_name_1": "real-humans-PublicPromptsXL.safetensors",
+      "model_weight_1": 0,
+      "clip_weight_1": 1,
+      "switch_2": "On",
+      "lora_name_2": "None",
+      "model_weight_2": 1,
+      "clip_weight_2": 1,
+      "switch_3": "On",
+      "lora_name_3": "None",
+      "model_weight_3": 1,
+      "clip_weight_3": 1,
+      "lora_stack": [
+        "54",
+        0
+      ]
+    },
+    "class_type": "CR LoRA Stack",
+    "_meta": {
+      "title": "CR LoRA Stack"
+    }
+  },
+  "53": {
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ],
+      "lora_stack": [
+        "52",
+        0
+      ]
+    },
+    "class_type": "CR Apply LoRA Stack",
+    "_meta": {
+      "title": "CR Apply LoRA Stack"
+    }
+  },
+  "54": {
+    "inputs": {
+      "switch_1": "Off",
+      "lora_name_1": "Cinematic Hollywood Film_sdxl.safetensors",
+      "model_weight_1": 1.5,
+      "clip_weight_1": 1,
+      "switch_2": "Off",
+      "lora_name_2": "SDXL1.0_Essenz-series-by-AI_Characters_Style_BetterPhotography-v1.2-'Skynet'.safetensors",
+      "model_weight_2": 1.5,
+      "clip_weight_2": 1,
+      "switch_3": "On",
+      "lora_name_3": "None",
+      "model_weight_3": 1,
+      "clip_weight_3": 1
+    },
+    "class_type": "CR LoRA Stack",
+    "_meta": {
+      "title": "CR LoRA Stack"
+    }
+  },
+  "55": {
+    "inputs": {
+      "text_positive": "portrait photo, Cinematic Hollywood Film, photo in phst artstyle, 25 year old african amercian fashion model walking holding coffee in one hand, ((over the top amazed expression : 1.0)), wearing white haute couture, surreal, avante guard outfit by balenciaga, flowing white dress that covers the neck, photoshoot in the style of alexander mcqueen, futuristic noir elegance, shot in dark muted tones, background from blade runner 2046, ((orange and blue neon rim studio lights : 1)), surrealism, DSLR, f/8.0 atmospheric lighting masterpiece, high quality, high resolution, 4K, HDR, <lora:Cinematic Hollywood Film:1.5> ",
+      "text_negative": "Asymmetrical Eyes, Mismatched Eyes, Distorted Eyes, film grain, noise, Unaligned Eyes, Blurry Eyes, Overexaggerated Eyes, Inconsistent Lighting on Eyes, Unnatural Eye Color, Floating Eyes, Missing Eyelids, ugly, deformed, noisy, blurry, low cont rast, realistic, ugly breasts, tripod, camera, anime, animation, cartoon, 3D, drawing, painting, (censorship, censored, worst quality, low quality, normal quality, lowres, low details, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) (ugly hands, ugly anatomy, ugly body, ugly face, ugly teeth, ugly arms, ugly legs, deformities:1.3) ugly fingers, bad fingers, (((ugly nipples, bad nipples, deformed nipples))), (((Bad teeth, ugly teeth))), nude, nsfw",
+      "style": "ads-advertising",
+      "log_prompt": true,
+      "style_positive": true,
+      "style_negative": true
+    },
+    "class_type": "SDXLPromptStyler",
+    "_meta": {
+      "title": "SDXL Prompt Styler"
+    }
+  },
+  "57": {
+    "inputs": {
+      "text": [
+        "55",
+        0
+      ],
+      "clip": [
+        "53",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "58": {
+    "inputs": {
+      "text": [
+        "55",
+        1
+      ],
+      "clip": [
+        "53",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "59": {
+    "inputs": {
+      "seed": 510545512958349
+    },
+    "class_type": "Seed Generator",
+    "_meta": {
+      "title": "Seed Generator"
+    }
+  },
+  "65": {
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0_0.9vae.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "67": {
+    "inputs": {
+      "ascore": 6,
+      "width": 1024,
+      "height": 1024,
+      "text": "",
+      "clip": [
+        "65",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXLRefiner",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXLRefiner"
+    }
+  },
+  "68": {
+    "inputs": {
+      "ascore": 6,
+      "width": 1024,
+      "height": 1024,
+      "text": "",
+      "clip": [
+        "65",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXLRefiner",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXLRefiner"
+    }
+  },
+  "69": {
+    "inputs": {
+      "vae_name": "vae-ft-mse-840000-ema-pruned.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "71": {
+    "inputs": {
+      "wildcard": "",
+      "Select to add LoRA": "Select the LoRA to add to the text",
+      "Select to add Wildcard": "Select the Wildcard to add to the text",
+      "model": [
+        "88",
+        0
+      ],
+      "clip": [
+        "53",
+        1
+      ],
+      "vae": [
+        "69",
+        0
+      ],
+      "positive": [
+        "57",
+        0
+      ],
+      "negative": [
+        "58",
+        0
+      ],
+      "refiner_model": [
+        "65",
+        0
+      ],
+      "refiner_clip": [
+        "65",
+        1
+      ],
+      "refiner_positive": [
+        "67",
+        0
+      ],
+      "refiner_negative": [
+        "68",
+        0
+      ],
+      "bbox_detector": [
+        "72",
+        0
+      ],
+      "sam_model_opt": [
+        "73",
+        0
+      ],
+      "segm_detector_opt": [
+        "74",
+        1
+      ]
+    },
+    "class_type": "ToDetailerPipeSDXL",
+    "_meta": {
+      "title": "ToDetailerPipeSDXL"
+    }
+  },
+  "72": {
+    "inputs": {
+      "model_name": "bbox/face_yolov8m.pt"
+    },
+    "class_type": "UltralyticsDetectorProvider",
+    "_meta": {
+      "title": "UltralyticsDetectorProvider"
+    }
+  },
+  "73": {
+    "inputs": {
+      "model_name": "sam_vit_b_01ec64.pth",
+      "device_mode": "AUTO"
+    },
+    "class_type": "SAMLoader",
+    "_meta": {
+      "title": "SAMLoader (Impact)"
+    }
+  },
+  "74": {
+    "inputs": {
+      "model_name": "segm/person_yolov8m-seg.pt"
+    },
+    "class_type": "UltralyticsDetectorProvider",
+    "_meta": {
+      "title": "UltralyticsDetectorProvider"
+    }
+  },
+  "75": {
+    "inputs": {
+      "guide_size": 1024,
+      "guide_size_for": true,
+      "max_size": 1024,
+      "seed": 579787144599680,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "denoise": 0.5,
+      "feather": 50,
+      "noise_mask": true,
+      "force_inpaint": false,
+      "bbox_threshold": 0.8,
+      "bbox_dilation": 50,
+      "bbox_crop_factor": 3,
+      "sam_detection_hint": "center-1",
+      "sam_dilation": 0,
+      "sam_threshold": 0.93,
+      "sam_bbox_expansion": 20,
+      "sam_mask_hint_threshold": 0.7000000000000001,
+      "sam_mask_hint_use_negative": "False",
+      "drop_size": 10,
+      "refiner_ratio": 0.2,
+      "cycle": 1,
+      "inpaint_model": false,
+      "noise_mask_feather": 10,
+      "image": [
+        "49",
+        0
+      ],
+      "detailer_pipe": [
+        "71",
+        0
+      ]
+    },
+    "class_type": "FaceDetailerPipe",
+    "_meta": {
+      "title": "FaceDetailer (pipe)"
+    }
+  },
+  "78": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "75",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "79": {
+    "inputs": {
+      "images": [
+        "49",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "80": {
+    "inputs": {
+      "images": [
+        "75",
+        1
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "81": {
+    "inputs": {
+      "images": [
+        "75",
+        2
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "82": {
+    "inputs": {
+      "mask": [
+        "75",
+        3
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "83": {
+    "inputs": {
+      "images": [
+        "82",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "84": {
+    "inputs": {
+      "b1": 0.8300000000000001,
+      "b2": 0.9500000000000001,
+      "s1": 0.8300000000000001,
+      "s2": 0.72,
+      "model": [
+        "88",
+        0
+      ]
+    },
+    "class_type": "FreeU_V2",
+    "_meta": {
+      "title": "FreeU_V2"
+    }
+  },
+  "85": {
+    "inputs": {
+      "ipadapter_file": "ip-adapter-plus_sd15.bin"
+    },
+    "class_type": "IPAdapterModelLoader",
+    "_meta": {
+      "title": "Load IPAdapter Model"
+    }
+  },
+  "86": {
+    "inputs": {
+      "clip_name": "IP Adapter encoder 1.5.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "87": {
+    "inputs": {
+      "interpolation": "LANCZOS",
+      "crop_position": "top",
+      "sharpening": 0,
+      "image": [
+        "89",
+        0
+      ]
+    },
+    "class_type": "PrepImageForClipVision",
+    "_meta": {
+      "title": "Prepare Image For Clip Vision"
+    }
+  },
+  "88": {
+    "inputs": {
+      "weight": 1,
+      "noise": 0,
+      "weight_type": "original",
+      "start_at": 0,
+      "end_at": 1,
+      "unfold_batch": false,
+      "ipadapter": [
+        "85",
+        0
+      ],
+      "clip_vision": [
+        "86",
+        0
+      ],
+      "image": [
+        "87",
+        0
+      ],
+      "model": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "IPAdapterApply",
+    "_meta": {
+      "title": "Apply IPAdapter"
+    }
+  },
+  "89": {
+    "inputs": {
+      "image": "ComfyUI_00031_.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  }
+}

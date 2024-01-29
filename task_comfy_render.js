@@ -74,10 +74,10 @@ function TaskComfyRender(task, req, queue) {
     let prompt = null;
 
     // process 
-    if (processRDStyle == "illustration" && !isLockCharacter) {
+    if (processRDStyle == "illustration" ) {//&& !isLockCharacter) {
         prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
-    else if (processRDStyle == "illustration_comic" && !isLockCharacter) {
+    else if (processRDStyle == "illustration_comic"  ) {//&& !isLockCharacter) {
         prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
     else if (processRDStyle == "real_photo_sharpen") {// && !isLockCharacter) {
@@ -86,13 +86,13 @@ function TaskComfyRender(task, req, queue) {
     else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
         prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
-    else if (processRDStyle == "delibrerate_photo" && !isLockCharacter) {
+    else if (processRDStyle == "delibrerate_photo") {// && !isLockCharacter) {
         prompt = DeliberatePhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
-    else if (processRDStyle == "illustration_tone_grain" && !isLockCharacter) {
+    else if (processRDStyle == "illustration_tone_grain"  ) {//&& !isLockCharacter) {
         prompt = IllustrationGrainRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
-    else if (processRDStyle == "illustration_tone" && !isLockCharacter) {
+    else if (processRDStyle == "illustration_tone"  ) {//&& !isLockCharacter) {
         prompt = IllustrationToneRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
     }
     else {

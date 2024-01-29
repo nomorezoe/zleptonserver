@@ -10,11 +10,27 @@ function DeliberatePhotographyRender() {
 DeliberatePhotographyRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
 
     console.log("DeliberatePhotographyRender");
-    const promptFile = fs.readFileSync('./pipe/workflow_deliberate_photography.json');//');
+    const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_deliberate_photography_ch_lock.json':'./pipe/workflow_deliberate_photography.json');//');
     let prompt = JSON.parse(promptFile);
 
     prompt["1"]["inputs"]["image"]=imgData;
     prompt["4"]["inputs"]["ckpt_name"] = modelFile;
+
+    //lockcharacter
+    if (isLockCharacter) {
+        console.log("isLockCharacter:" + characterFile);
+        try {
+            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
+        }
+        catch (err) {
+            console.log("read file err");
+            //queue.completeTask();
+            return null;
+        }
+        
+        var imgBytes = rawImg.toString('base64');
+        prompt["89"]["inputs"]["image"] = imgBytes;
+    }
 
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
     prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
