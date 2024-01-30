@@ -38,10 +38,11 @@ RealismPhotographyRender.process = function (imgData, positivePrompt, negtivePro
     prompt["55"]["inputs"]["style"] = style;
 
     prompt["45"]["inputs"]["seed"] =  Tool.randomInt(450993616797312);
-    prompt["45"]["inputs"]["steps"] = sampleSteps;
+    /*prompt["45"]["inputs"]["steps"] = sampleSteps;
     prompt["45"]["inputs"]["cfg"] = cfg;
     prompt["45"]["inputs"]["sampler_name"] = sampler;
     prompt["45"]["inputs"]["scheduler"] = scheduler;
+    */
 
     prompt["35"]["inputs"]["strength"] = poseStrength;
     prompt["34"]["inputs"]["strength"] = depthStrength;
