@@ -33,7 +33,7 @@ IllustrationToneRender.process = function (imgData, positivePrompt, negtivePromp
     prompt["49"]["inputs"]["text_positive"] = positivePrompt;
     prompt["49"]["inputs"]["text_negative"] = negtivePrompt;
 
-    prompt["13"]["inputs"]["seed"] =  Tool.randomInt(450993616797312);
+    prompt["13"]["inputs"]["seed"] =  Tool.randomInt();
     /*prompt["13"]["inputs"]["steps"] = sampleSteps;
     prompt["13"]["inputs"]["cfg"] = cfg;
     prompt["13"]["inputs"]["sampler_name"] = sampler;

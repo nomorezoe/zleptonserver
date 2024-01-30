@@ -71,7 +71,7 @@ function TaskComfyInPaint(task, req, queue) {
     promptjson["19"]["inputs"]["width"] = dWidth;
     promptjson["19"]["inputs"]["height"] = dHeight;
 
-    promptjson["12"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
+    promptjson["12"]["inputs"]["seed"] = Tool.randomInt();
     promptjson["13"]["inputs"]["text"] = prompt;
 
     Tool.applyRandomFileName(promptjson);

@@ -34,7 +34,7 @@ IllustrationComicRender.process = function (imgData, positivePrompt, negtiveProm
     prompt["49"]["inputs"]["text_negative"] = negtivePrompt;
     prompt["49"]["inputs"]["style"] = style;
 
-    prompt["13"]["inputs"]["seed"] =  Tool.randomInt(450993616797312);
+    prompt["13"]["inputs"]["seed"] =  Tool.randomInt();
     /*prompt["13"]["inputs"]["steps"] = sampleSteps;
     prompt["13"]["inputs"]["cfg"] = cfg;
     prompt["13"]["inputs"]["sampler_name"] = sampler;

@@ -90,7 +90,7 @@ function TaskComfyUpscale(task, req, queue) {
     if (model != null) {
         promptjson["6"]["inputs"]["ckpt_name"] = model;
     }
-    promptjson["7"]["inputs"]["seed"] = Tool.randomInt(450993616797312);
+    promptjson["7"]["inputs"]["seed"] = Tool.randomInt();
     promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
     Tool.applyRandomFileName(promptjson);

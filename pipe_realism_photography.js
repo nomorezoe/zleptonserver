@@ -37,7 +37,7 @@ RealismPhotographyRender.process = function (imgData, positivePrompt, negtivePro
     prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     prompt["55"]["inputs"]["style"] = style;
 
-    prompt["45"]["inputs"]["seed"] =  Tool.randomInt(450993616797312);
+    prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
     /*prompt["45"]["inputs"]["steps"] = sampleSteps;
     prompt["45"]["inputs"]["cfg"] = cfg;
     prompt["45"]["inputs"]["sampler_name"] = sampler;
