@@ -1,70 +1,58 @@
 {
   "1": {
     "inputs": {
-      "image": "test.png",
+      "image": "mask (1).png",
       "upload": "image"
     },
-    "class_type": "LoadImage"
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
   },
   "2": {
     "inputs": {
-      "image": "8a30072a-3391-49b9-b679-c4a8dab75103.png",
+      "image": "81875cb2-b939-460d-80c6-ba1561442e8b (3).png",
       "upload": "image"
     },
-    "class_type": "LoadImage"
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
   },
   "10": {
     "inputs": {
       "channel": "blue",
       "image": [
-        "27",
+        "19",
         0
       ]
     },
-    "class_type": "ImageToMask"
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
   },
   "11": {
     "inputs": {
       "ckpt_name": "absolutereality_v181INPAINTING.safetensors"
     },
-    "class_type": "CheckpointLoaderSimple"
-  },
-  "12": {
-    "inputs": {
-      "seed": 45174920785866,
-      "steps": 30,
-      "cfg": 8,
-      "sampler_name": "euler",
-      "scheduler": "normal",
-      "denoise": 1,
-      "model": [
-        "11",
-        0
-      ],
-      "positive": [
-        "13",
-        0
-      ],
-      "negative": [
-        "14",
-        0
-      ],
-      "latent_image": [
-        "25",
-        0
-      ]
-    },
-    "class_type": "KSampler"
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
   },
   "13": {
     "inputs": {
-      "text": "a lady with tatoo",
+      "text": "a tatoo",
       "clip": [
         "11",
         1
       ]
     },
-    "class_type": "CLIPTextEncode"
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
   },
   "14": {
     "inputs": {
@@ -74,71 +62,107 @@
         1
       ]
     },
-    "class_type": "CLIPTextEncode"
-  },
-  "16": {
-    "inputs": {
-      "samples": [
-        "12",
-        0
-      ],
-      "vae": [
-        "11",
-        2
-      ]
-    },
-    "class_type": "VAEDecode"
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
   },
   "17": {
     "inputs": {
       "filename_prefix": "ComfyUI",
       "images": [
-        "16",
+        "35",
         0
       ]
     },
-    "class_type": "SaveImage"
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
   },
   "19": {
     "inputs": {
       "upscale_method": "nearest-exact",
-      "width": 1536,
-      "height": 1536,
+      "width": 1024,
+      "height": 576,
       "crop": "disabled",
       "image": [
         "1",
         0
       ]
     },
-    "class_type": "ImageScale"
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
+    }
   },
-  "25": {
+  "31": {
     "inputs": {
-      "grow_mask_by": 6,
-      "pixels": [
-        "2",
-        0
-      ],
-      "vae": [
-        "11",
-        2
-      ],
+      "combined": false,
+      "crop_factor": 3,
+      "bbox_fill": false,
+      "drop_size": 10,
+      "contour_fill": false,
       "mask": [
         "10",
         0
       ]
     },
-    "class_type": "VAEEncodeForInpaint"
+    "class_type": "MaskToSEGS",
+    "_meta": {
+      "title": "MASK to SEGS"
+    }
   },
-  "27": {
+  "35": {
     "inputs": {
-      "blur_radius": 3,
-      "sigma": 1,
+      "guide_size": 64,
+      "guide_size_for": true,
+      "max_size": 1024,
+      "seed": 34492085635223,
+      "steps": 30,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "karras",
+      "denoise": 1,
+      "feather": 5,
+      "noise_mask": true,
+      "force_inpaint": true,
+      "wildcard": "",
+      "cycle": 3,
+      "inpaint_model": false,
+      "noise_mask_feather": 5,
       "image": [
-        "19",
+        "2",
+        0
+      ],
+      "segs": [
+        "31",
+        0
+      ],
+      "model": [
+        "11",
+        0
+      ],
+      "clip": [
+        "11",
+        1
+      ],
+      "vae": [
+        "11",
+        2
+      ],
+      "positive": [
+        "13",
+        0
+      ],
+      "negative": [
+        "14",
         0
       ]
     },
-    "class_type": "ImageBlur"
+    "class_type": "DetailerForEachDebug",
+    "_meta": {
+      "title": "DetailerDebug (SEGS)"
+    }
   }
 }

@@ -14,7 +14,11 @@ function TaskComfyInPaint(task, req, queue) {
     var buffer = Buffer.from(rawMaskImg);
     var maskBytes = buffer.toString('base64');
 
-   
+   /* fs.writeFileSync(__dirname + OUTPUT_FOLDER + "mask.png", maskBytes,{
+        encoding: "base64",
+    });
+
+    */
 
     //original image
     var imageFileName = req.body.file;
@@ -71,7 +75,7 @@ function TaskComfyInPaint(task, req, queue) {
     promptjson["19"]["inputs"]["width"] = dWidth;
     promptjson["19"]["inputs"]["height"] = dHeight;
 
-    promptjson["12"]["inputs"]["seed"] = Tool.randomInt();
+    promptjson["35"]["inputs"]["seed"] = Tool.randomInt();
     promptjson["13"]["inputs"]["text"] = prompt;
 
     Tool.applyRandomFileName(promptjson);
