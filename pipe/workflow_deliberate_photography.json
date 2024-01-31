@@ -137,10 +137,7 @@
   },
   "45": {
     "inputs": {
-      "seed": [
-        "59",
-        0
-      ],
+      "seed": 391453879960094,
       "steps": 25,
       "cfg": 5,
       "sampler_name": "dpmpp_2m",
@@ -303,15 +300,6 @@
     "class_type": "CLIPTextEncode",
     "_meta": {
       "title": "CLIP Text Encode (Prompt)"
-    }
-  },
-  "59": {
-    "inputs": {
-      "seed": 59579691792930
-    },
-    "class_type": "Seed Generator",
-    "_meta": {
-      "title": "Seed Generator"
     }
   },
   "65": {

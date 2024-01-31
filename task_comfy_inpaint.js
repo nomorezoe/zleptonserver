@@ -109,7 +109,7 @@ function TaskComfyInPaint(task, req, queue) {
             reshttps.on('end', (d) => {
                 let jsonobj = JSON.parse(datastring);
     
-                console.log("onend" + jsonobj.length);
+                console.log("onend_inpaint: "  + task.key);
                 for (var i = 0; i < jsonobj.length; i++) {
                     task.imageFileNames.push(inpaintFileName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + inpaintFileName, jsonobj[i],{

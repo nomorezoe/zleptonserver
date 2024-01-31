@@ -144,7 +144,7 @@ function sendRequest(prompt, queue, task) {
             });
 
             reshttps.on('end', (d) => {
-                console.log("onend");
+                console.log("onend_render: "  + task.key);
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
                     var imgname = uuidv4() + ".png";

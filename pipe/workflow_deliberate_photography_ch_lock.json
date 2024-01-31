@@ -302,15 +302,6 @@
       "title": "CLIP Text Encode (Prompt)"
     }
   },
-  "59": {
-    "inputs": {
-      "seed": 510545512958349
-    },
-    "class_type": "Seed Generator",
-    "_meta": {
-      "title": "Seed Generator"
-    }
-  },
   "65": {
     "inputs": {
       "ckpt_name": "sd_xl_base_1.0_0.9vae.safetensors"

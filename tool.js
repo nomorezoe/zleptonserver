@@ -52,17 +52,6 @@ Tool.GetLoraFile = function (model) {
 }
 
 Tool.styleJson = JSON.parse(require('fs').readFileSync("./settings/styles.json"));
-Tool.getStyledPrompt = function (style, posPrompt) {
-    for (let i = 0; i < Tool.styleJson.length; i++) {
-        if (Tool.styleJson[i].name == style) {
-            console.log("find style: " + style);
-            posPrompt = Tool.styleJson[i].prompt.replace("{prompt}", posPrompt);
-            negPrompt = Tool.styleJson[i].negative_prompt;
-            return [posPrompt, negPrompt];
-        }
-    }
-    return [posPrompt, negPrompt];
-}
 
 Tool.getStyleFromNegPrompt = function (neg) {
     for (let i = 0; i < Tool.styleJson.length; i++) {

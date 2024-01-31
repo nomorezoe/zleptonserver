@@ -5,7 +5,7 @@ var OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
-const sizeOf = require('buffer-image-size');
+const Upscale4X = require('./pipe_upsale_4x');
 
 function TaskComfyUpscale(task, req, queue) {
 
@@ -26,17 +26,8 @@ function TaskComfyUpscale(task, req, queue) {
         queue.completeTask();
         return;
     }
-    var dimensions = sizeOf(rawImg);
-    var dWidth = dimensions.width;
-    var dHeight = dimensions.height;
-    console.log("dWidth" + dWidth);
-    console.log("dHeight" + dHeight);
-
-    var targetWidth = Math.floor(1536 / dHeight * dWidth);
 
     var imgBytes = rawImg.toString('base64');
-
-    var upscaleImageName = uuidv4() + "_upscale.png";
 
     // get old style
     const tags = ExifReader.load(rawImg);
@@ -50,19 +41,11 @@ function TaskComfyUpscale(task, req, queue) {
         for (let i in jsonSettings) {
             if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
                 style = jsonSettings[i]["inputs"]["style"];
+                negtext = jsonSettings[i]["inputs"]["text_negative"];
                 console.log("find style:" + style);
                 break;
             }
         }
-    }
-
-    if (style) {
-        let styleInfo = Tool.getStyledPrompt(style, prompt);
-        prompt = styleInfo[0];
-        negtext = styleInfo[1];
-
-        console.log("styled prompt: " + prompt);
-        console.log("styled negprompt: " + negtext);
     }
 
     let model = null;
@@ -76,28 +59,21 @@ function TaskComfyUpscale(task, req, queue) {
             }
         }
     }
-    
-    const promptFile = fs.readFileSync('./pipe/workflow_api_upscale_face_denoise.json');
-    let promptjson = JSON.parse(promptFile);
 
-    promptjson["11"]["inputs"]["width"] = targetWidth;
+    let promptjson = Upscale4X.process(imgBytes, denoiseValue, prompt, model, style, negtext);
 
-    promptjson["2"]["inputs"]["image"] = imgBytes;
-    promptjson["13"]["inputs"]["text"] = prompt;
-    if (negtext != null) {
-        promptjson["14"]["inputs"]["text"] = negtext;
-    }
-    if (model != null) {
-        promptjson["6"]["inputs"]["ckpt_name"] = model;
-    }
-    promptjson["7"]["inputs"]["seed"] = Tool.randomInt();
-    promptjson["7"]["inputs"]["denoise"] = parseFloat(denoiseValue);
-
+    //
     Tool.applyRandomFileName(promptjson);
-    
+
+    sendRequest(promptjson, queue, task);
+}
+
+function sendRequest(promptjson, queue, task) {
+    var startTime = new Date().getTime();
+
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
-    //console.log(data)
-    console.log(data.length)
+
+    //send request
     const options = {
         hostname: Tool.RequestURL,
         path: '/run',
@@ -114,11 +90,11 @@ function TaskComfyUpscale(task, req, queue) {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
 
-
-
         if (reshttps.statusCode == 200) {
+            var completeTime = new Date().getTime() - startTime;
+
             queue.completeTask();
-            console.log("200");
+            console.log("200" + " , time: " + completeTime);
             reshttps.on('data', (d) => {
                 datastring += d;
                 // console.log("ondata");
@@ -126,9 +102,11 @@ function TaskComfyUpscale(task, req, queue) {
 
             reshttps.on('end', (d) => {
                 let jsonobj = JSON.parse(datastring);
-
-                console.log("onend" + jsonobj.length);
+                var endTime = new Date().getTime() - startTime;
+                console.log("onend_upscale: " + task.key + " , time: " + endTime);
                 for (var i = 0; i < jsonobj.length; i++) {
+
+                    var upscaleImageName = uuidv4() + "_upscale.png";
                     task.imageFileNames.push(upscaleImageName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i], {
                         encoding: "base64",
