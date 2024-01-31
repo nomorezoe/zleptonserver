@@ -14,7 +14,7 @@ Upscale4X.process = function (imgBytes, denoiseValue, prompt, history_model, his
     promptjson["2"]["inputs"]["image"] = imgBytes;
     promptjson["30"]["inputs"]["text_positive"] = prompt;
 
-    if (history_style != null) {
+    if (history_style != null && history_style != ''&& history_style != "") {
         promptjson["30"]["inputs"]["text_negative"] = history_neg;
         promptjson["30"]["inputs"]["style"] = history_style;
     }

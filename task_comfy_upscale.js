@@ -89,7 +89,7 @@ function sendRequest(promptjson, queue, task) {
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
-        reshttps.setTimeout(600000);
+        reshttps.setTimeout(6000000);
         if (reshttps.statusCode == 200) {
             var completeTime = new Date().getTime() - startTime;
 
@@ -120,7 +120,7 @@ function sendRequest(promptjson, queue, task) {
         }
     });
 
-    reqhttps.setTimeout(600000);
+    reqhttps.setTimeout(6000000);
     reqhttps.on('error', (error) => {
         console.error(error);
         queue.completeTask();
