@@ -1,12 +1,12 @@
 "strict mode"
 
+const QueueManager = require("./queue_manager");
 const SocketManager = require("./socket_manager");
 
-function Queue(sessionkey, completeFunc) {
+function Queue(sessionkey) {
     this.key = sessionkey;
     this.tasks = [];
     this.currentTask = null;
-    this.completeFunc = completeFunc;
     this.timer = 0;
 }
 
@@ -27,7 +27,7 @@ Queue.prototype = {
 
         if (this.tasks.length == 0) {
             this._sendCompleteQueueFailed();
-            this.completeFunc();
+            QueueManager.instance.completeAQueue(this);
             return;
         }
         

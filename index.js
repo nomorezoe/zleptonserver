@@ -22,12 +22,11 @@ const io = new Server(server);
 const Task = require('./task');
 const Queue = require('./queue');
 const SocketManager = require('./socket_manager');
+const QueueManager = require('./queue_manager');
 
 
 
-let queues = [];
-let currentQueue = null;
-let BATCH_COUNT = 4;
+
 
 app.use(cors({
     origin: '*'
@@ -77,7 +76,7 @@ io.on('connection', (socket) => {
         let key = SocketManager.getKeyBySocketId(socket.id);
 
         if (key != null) {
-            handleLeaveFromQueue(key);
+            QueueManager.instance.handleLeaveFromQueue(key);
 
             SocketManager.removeSocket(socket.id);
         }
@@ -95,20 +94,20 @@ app.use('/render', function (req, res, next) {
 
     var session = req.body.session;
 
-    let queue = new Queue(session, completeAQueue);
+    let queue = new Queue(session);
     //for (let i = 0; i < BATCH_COUNT; i++) {
     let task = new Task("render", 0, req);
     queue.tasks.push(task);
     //}
 
-    addToQueue(queue);
+    QueueManager.instance.addToQueue(queue);
 
     res.json({
         success: true,
-        queue_count: queues.length
+        queue_count: QueueManager.instance.remainQueueCount()
     });
 
-    getNextQueue();
+    QueueManager.instance.getNextQueue();
 })
 //render - end
 
@@ -121,17 +120,17 @@ app.use('/upscale', function (req, res, next) {
 }).post('/upscale', (req, res) => {
 
     var session = req.body.session;
-    let queue = new Queue(session, completeAQueue);
+    let queue = new Queue(session);
     let task = new Task("upscale", 0, req);
     queue.tasks.push(task);
-    addToQueue(queue);
+    QueueManager.instance.addToQueue(queue);
 
     res.json({
         success: true,
-        queue_count: queues.length
+        queue_count: QueueManager.instance.remainQueueCount()
     });
 
-    getNextQueue();
+    QueueManager.instance.getNextQueue();
 
 })
 //upscale - end
@@ -145,71 +144,22 @@ app.use('/inpaint', function (req, res, next) {
 }).post('/inpaint', (req, res) => {
 
     var session = req.body.session;
-    let queue = new Queue(session, completeAQueue);
+    let queue = new Queue(session);
     let task = new Task("inpaint",  0,req);
     queue.tasks.push(task);
 
-    addToQueue(queue);
+    QueueManager.instance.addToQueue(queue);
 
     res.json({
         success: true,
-        queue_count: queues.length
+        queue_count: QueueManager.instance.remainQueueCount()
     });
 
-    getNextQueue();
+    QueueManager.instance.getNextQueue();
 
 })
 //inpaint -end
 
-function addToQueue(queue) {
-    queues.push(queue);
-    console.log("add queue" + queues.length);
-    sendQueueStatus();
-}
-
-function getNextQueue() {
-    if (currentQueue != null) {
-        return;
-    }
-
-    if (queues.length == 0) {
-        console.log("0 queue")
-        return;
-    }
-
-    currentQueue = queues.splice(0, 1)[0];
-
-    console.log("new queue start" + queues.length);
-    sendQueueStatus();
-
-    currentQueue.excuteQueue();
-}
-
-function completeAQueue() {
-    currentQueue = null;
-    console.log("completeQueue");
-    getNextQueue();
-}
-
-function handleLeaveFromQueue(key) {
-    for (var i = 0; i < queues.length; i++) {
-        if (queues[i].key == key) {
-            queues.splice(i, 1);
-            console.log("handleLeaveFromQueue" + key);
-            i--;
-        }
-    }
-}
-
-function sendQueueStatus() {
-    for (var i = 0; i < queues.length; i++) {
-        let socket = SocketManager.getSocketByKey(queues[i].key);
-        if (socket) {
-            console.log('emit updateQueue' + socket.id);
-            socket.emit("updateQueue", i + (currentQueue == null ? 0 : 1));
-        }
-    }
-}
 
 app.get('/styles', (req, res) => {
     let json = require('fs').readFileSync("./settings/styles.json");
@@ -266,16 +216,16 @@ app.use('/test', function (req, res, next) {
     req.body.negtext = "";
 
     var session = "test";
-    let queue = new Queue(session, completeAQueue);
+    let queue = new Queue(session);
     let task = new Task("render", 0, req);
     queue.tasks.push(task);
 
-    addToQueue(queue);
+    QueueManager.instance.addToQueue(queue);
 
     res.json({
         success: true,
-        queue_count: queues.length
+        queue_count: QueueManager.instance.remainQueueCount()
     });
 
-    getNextQueue();
+    QueueManager.instance.getNextQueue();
 })
