@@ -25,7 +25,7 @@ const SocketManager = require('./socket_manager');
 const QueueManager = require('./queue_manager');
 
 
-
+server.setTimeout(600000);
 
 
 app.use(cors({
