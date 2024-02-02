@@ -103,14 +103,61 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style) {
     return null;
 }
 
-Tool.applyRandomFileName = function(prompt){
-    for(var i in prompt){
-        if(prompt[i]["class_type"] == "SaveImage"){
+Tool.applyRandomFileName = function (prompt) {
+    for (var i in prompt) {
+        if (prompt[i]["class_type"] == "SaveImage") {
             prompt[i]["inputs"]["filename_prefix"] = uuidv4();
             return;
         }
     }
-
 }
 
+Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
+
+    let cropJson = {
+        "inputs": {
+            "width": 512,
+            "height": 512,
+            "x": 0,
+            "y": 0,
+            "image": [
+                "19",
+                0
+            ]
+        },
+        "class_type": "ImageCrop"
+    };
+    let width = 1024;
+    let height = 576;
+    for (var i in prompt) {
+        if (prompt[i]["class_type"] == "EmptyLatentImage") {
+            width = prompt[i]["inputs"]["width"];
+            height = prompt[i]["inputs"]["height"];
+            break;
+        }
+    }
+
+    if(width == cropwidth && height == cropHeight){
+        console.log("skip");
+        return;
+    }
+    console.log("crop");
+    for (var i in prompt) {
+        if (prompt[i]["class_type"] == "SaveImage") {
+            let history = prompt[i]["inputs"]["images"][0];
+            prompt[i]["inputs"]["images"][0] = "1000";
+
+            cropJson["inputs"]["image"][0] = history;
+
+            cropJson["inputs"]["width"] = cropwidth;
+            cropJson["inputs"]["height"] = cropHeight;
+
+            cropJson["inputs"]["x"] = Math.floor( (width - cropwidth)/2);
+            cropJson["inputs"]["y"] = Math.floor( (height - cropHeight)/2);
+
+            prompt["1000"] = cropJson;
+            return;
+        }
+    }
+}
 module.exports = Tool;
