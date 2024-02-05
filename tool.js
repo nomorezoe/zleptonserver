@@ -1,6 +1,8 @@
 "strict mode"
 const { v4: uuidv4 } = require('uuid');
 
+const OUTPUT_FOLDER = "/imgs/";
+
 function Tool() {
 
 }
@@ -137,7 +139,7 @@ Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
         }
     }
 
-    if(width == cropwidth && height == cropHeight){
+    if (width == cropwidth && height == cropHeight) {
         console.log("skip");
         return;
     }
@@ -152,12 +154,46 @@ Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
             cropJson["inputs"]["width"] = cropwidth;
             cropJson["inputs"]["height"] = cropHeight;
 
-            cropJson["inputs"]["x"] = Math.floor( (width - cropwidth)/2);
-            cropJson["inputs"]["y"] = Math.floor( (height - cropHeight)/2);
+            cropJson["inputs"]["x"] = Math.floor((width - cropwidth) / 2);
+            cropJson["inputs"]["y"] = Math.floor((height - cropHeight) / 2);
 
             prompt["1000"] = cropJson;
             return;
         }
     }
 }
+
+Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath) {
+    if (fullFilePath != undefined && fullFilePath != "" && fullFilePath != null) {
+        console.log("fullFilePath")
+        let json = {
+            "inputs": {
+                "url": "",
+                "keep_alpha_channel": false,
+                "output_mode": false
+            },
+            "class_type": "LoadImageFromUrl"
+        }
+        json["inputs"]["url"] = fullFilePath;
+        prompt[index] = json;
+    }
+    else {
+        console.log("oldFilePath")
+        try {
+            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + oldFilePath);
+        }
+        catch (err) {
+            console.log("read file err");
+            return false;
+        }
+
+        var imgBytes = rawImg.toString('base64');
+        prompt[index]["inputs"]["image"] = imgBytes;
+    }
+
+    return true;
+
+}
+
+
 module.exports = Tool;

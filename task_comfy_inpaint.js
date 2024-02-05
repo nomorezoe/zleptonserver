@@ -9,42 +9,83 @@ const { v4: uuidv4 } = require('uuid');
 
 function TaskComfyInPaint(task, req, queue) {
 
+    var prompt = req.body.prompt;
     //mask
     var rawMaskImg = req.files.imageByteArray.data;
     var buffer = Buffer.from(rawMaskImg);
     var maskBytes = buffer.toString('base64');
 
-   /* fs.writeFileSync(__dirname + OUTPUT_FOLDER + "mask.png", maskBytes,{
+    /*fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask.png", maskBytes,{
         encoding: "base64",
     });
-
     */
 
-    //original image
-    var imageFileName = req.body.file;
-    var inpaintFileName =  uuidv4() + "_inpaint.png";
     
-    try{
-        var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
-    }
-    catch(err){
-        console.log("read file err:" + err);
-        queue.completeTask();
-        return;
-    }
-    
-    var imgBytes = rawImg.toString('base64');
+    //load workflow
+    const promptFile = fs.readFileSync('./pipe/workflow_api_inpaint.json');
+    let promptjson = JSON.parse(promptFile);
 
-    var dimensions = sizeOf(rawImg);
-    var dWidth = dimensions.width;
-    var dHeight = dimensions.height;
+    //original image
+    var inpaintFileName =  uuidv4() + "_inpaint.png";
+    var dWidth = 1024;
+    var dHeight = 576;
+    
+    if(req.body.fullFilePath == undefined){
+        var imageFileName = req.body.file;
+        try{
+            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
+        }
+        catch(err){
+            console.log("read file err:" + err);
+            queue.completeTask();
+            return;
+        }
+        
+        var imgBytes = rawImg.toString('base64');
+    
+        var dimensions = sizeOf(rawImg);
+        dWidth = dimensions.width;
+        dHeight = dimensions.height;
+
+
+        promptjson["2"]["inputs"]["image"] = imgBytes;
+    }
+    else{
+       
+        var fullFilePath = req.body.fullFilePath;
+        console.log("FULL PATH" + fullFilePath)
+        Tool.applyImage(promptjson, "2", null, fullFilePath);
+
+        var tags = req.body.tags;
+        if(tags != undefined){
+           
+            var jsonTags = JSON.parse(tags);
+           // console.log("read tags"  + jsonTags["prompt"]["value"]);
+            dWidth = jsonTags["Image Width"].value;
+            dHeight = jsonTags["Image Height"].value;
+
+            if(jsonTags.prompt && jsonTags.prompt.value){
+                var jsonString = jsonTags.prompt.value;
+                var jsonSettings = JSON.parse(jsonString);
+                for(var i in jsonSettings){
+                    if(jsonSettings[i]["inputs"] != undefined
+                        && jsonSettings[i]["inputs"]["ckpt_name"]!= undefined){
+                            if(Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
+                               // promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
+                            }
+                            console.log("find" + jsonSettings[i]["inputs"]["ckpt_name"]);
+                        }
+                }
+            }
+        }
+    }
+    
+
+
     console.log("dWidth" + dWidth);
     console.log("dHeight" + dHeight);
 
-    var prompt = req.body.prompt;
-
-    const promptFile = fs.readFileSync('./pipe/workflow_api_inpaint.json');
-    let promptjson = JSON.parse(promptFile);
+    
 
 
     /*
@@ -68,9 +109,9 @@ function TaskComfyInPaint(task, req, queue) {
     */
     
 
+    
    
     promptjson["1"]["inputs"]["image"] = maskBytes;
-    promptjson["2"]["inputs"]["image"] = imgBytes;
 
     promptjson["19"]["inputs"]["width"] = dWidth;
     promptjson["19"]["inputs"]["height"] = dHeight;
