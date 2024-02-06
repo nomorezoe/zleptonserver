@@ -13,58 +13,49 @@ function TaskComfyUpscale(task, req, queue) {
     var session = req.body.session;
     var denoiseValue = req.body.denoisevalue;
     var prompt = req.body.prompt;
+    var fullfilepath = req.body.fullfilepath;
 
     console.log("denoiseValue:" + denoiseValue);
     console.log("imageFileName" + imageFileName);
     console.log("prompt" + prompt);
+    console.log("fullfilepath" + fullfilepath);
 
-    try {
-        var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
-    }
-    catch (err) {
-        console.log("read file err:" + err);
-        queue.completeTask();
-        return;
-    }
-
-    var imgBytes = rawImg.toString('base64');
-
-    // get old style
-    const tags = ExifReader.load(rawImg);
     let style = null;
     let negtext = null;
-    if (tags.prompt) {
-
-        var jsonString = tags.prompt.value;
-        //console.log("EXif:" + jsonString);
-        var jsonSettings = JSON.parse(jsonString);
-        for (let i in jsonSettings) {
-            if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
-                style = jsonSettings[i]["inputs"]["style"];
-                negtext = jsonSettings[i]["inputs"]["text_negative"];
-                console.log("find style:" + style);
-                break;
-            }
-        }
-    }
-
     let model = null;
-    // get old model
-    for (var i in jsonSettings) {
-        if (jsonSettings[i]["class_type"] == "CheckpointLoaderSimple") {
-            if (Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])) {
-                model = jsonSettings[i]["inputs"]["ckpt_name"];
-                console.log("find model:" + model);
-                break;
+    if (req.body.tags != undefined) {
+        var tagString = req.body.tags
+        var tags = JSON.parse(tagString);
+        if (tags.prompt) {
+            var jsonString = tags.prompt.value;
+            //console.log("EXif:" + jsonString);
+            var jsonSettings = JSON.parse(jsonString);
+            for (let i in jsonSettings) {
+                if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
+                    style = jsonSettings[i]["inputs"]["style"];
+                    negtext = jsonSettings[i]["inputs"]["text_negative"];
+                    console.log("find style:" + style);
+                    break;
+                }
             }
+            // get old model
+            for (var i in jsonSettings) {
+                if (jsonSettings[i]["class_type"] == "CheckpointLoaderSimple") {
+                    if (Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])) {
+                        model = jsonSettings[i]["inputs"]["ckpt_name"];
+                        console.log("find model:" + model);
+                        break;
+                    }
+                }
+            }
+
         }
     }
 
-    let promptjson = Upscale4X.process(imgBytes, denoiseValue, prompt, model, style, negtext);
+    let promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext);
 
     //
     Tool.applyRandomFileName(promptjson);
-
     sendRequest(promptjson, queue, task);
 }
 

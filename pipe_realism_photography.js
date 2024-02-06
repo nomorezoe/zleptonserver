@@ -7,7 +7,7 @@ function RealismPhotographyRender() {
 
 }
 
-RealismPhotographyRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
+RealismPhotographyRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath) {
 
     console.log("RealismPhotographyRender");
     const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_realism_engine_photography_ch_lock.json':'./pipe/workflow_realism_engine_photography.json');//');
@@ -17,18 +17,11 @@ RealismPhotographyRender.process = function (imgData, positivePrompt, negtivePro
 
      //lockcharacter
      if (isLockCharacter) {
-        console.log("isLockCharacter:" + characterFile);
-        try {
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
-        }
-        catch (err) {
-            console.log("read file err");
-            //queue.completeTask();
+        console.log("isLockCharacter:");
+        let value = Tool.applyImage(prompt, "84", characterFile, fullCharacterPath);
+        if(!value){
             return null;
         }
-
-        var imgBytes = rawImg.toString('base64');
-        prompt["84"]["inputs"]["image"] = imgBytes;
     }
 
 

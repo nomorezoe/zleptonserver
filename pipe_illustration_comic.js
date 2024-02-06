@@ -7,7 +7,7 @@ function IllustrationComicRender() {
 
 }
 
-IllustrationComicRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
+IllustrationComicRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath) {
     console.log("IllustrationComicRender");
     const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_api_illustration_comic_ch_lock.json':'./pipe/workflow_api_illustration_comic.json');//');
     let prompt = JSON.parse(promptFile);
@@ -16,18 +16,11 @@ IllustrationComicRender.process = function (imgData, positivePrompt, negtiveProm
 
     //lockcharacter
     if (isLockCharacter) {
-        console.log("isLockCharacter:" + characterFile);
-        try {
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
-        }
-        catch (err) {
-            console.log("read file err");
-            //queue.completeTask();
+        console.log("isLockCharacter:");
+        let value = Tool.applyImage(prompt, "57", characterFile, fullCharacterPath);
+        if(!value){
             return null;
         }
-        
-        var imgBytes = rawImg.toString('base64');
-        prompt["57"]["inputs"]["image"] = imgBytes;
     }
     
     prompt["49"]["inputs"]["text_positive"] = positivePrompt;

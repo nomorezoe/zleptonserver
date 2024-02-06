@@ -7,7 +7,7 @@ function IllustrationGrainRender() {
 
 }
 
-IllustrationGrainRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
+IllustrationGrainRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath) {
     console.log("IllustrationGrainRender");
     const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_api_illustration_grain_ch_lock.json':'./pipe/workflow_api_illustration_grain.json');//');
     let prompt = JSON.parse(promptFile);
@@ -16,18 +16,11 @@ IllustrationGrainRender.process = function (imgData, positivePrompt, negtiveProm
 
     //lockcharacter
     if (isLockCharacter) {
-        console.log("isLockCharacter:" + characterFile);
-        try {
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
-        }
-        catch (err) {
-            console.log("read file err");
-            //queue.completeTask();
+        console.log("isLockCharacter:");
+        let value = Tool.applyImage(prompt, "59", characterFile, fullCharacterPath);
+        if(!value){
             return null;
         }
-        
-        var imgBytes = rawImg.toString('base64');
-        prompt["59"]["inputs"]["image"] = imgBytes;
     }
 
     prompt["49"]["inputs"]["text_positive"] = positivePrompt;

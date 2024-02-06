@@ -7,7 +7,7 @@ function RealismPhotographySharpenRender() {
 
 }
 
-RealismPhotographySharpenRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
+RealismPhotographySharpenRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath) {
 
     console.log("RealismPhotographySharpenRender");
     const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_realism_engine_photography_sharpen_ch_lock.json':'./pipe/workflow_realism_engine_photography_sharpen.json');//');
@@ -17,18 +17,11 @@ RealismPhotographySharpenRender.process = function (imgData, positivePrompt, neg
 
      //lockcharacter
      if (isLockCharacter) {
-        console.log("isLockCharacter:" + characterFile);
-        try {
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
-        }
-        catch (err) {
-            console.log("read file err");
-            //queue.completeTask();
+        console.log("isLockCharacter:");
+        let value = Tool.applyImage(prompt, "89", characterFile, fullCharacterPath);
+        if(!value){
             return null;
         }
-        
-        var imgBytes = rawImg.toString('base64');
-        prompt["89"]["inputs"]["image"] = imgBytes;
     }
 
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;

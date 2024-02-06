@@ -20,10 +20,10 @@ function TaskComfyRender(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-   /* fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "capture.png", imgData, {
-        encoding: "base64",
-    });
-    */
+    /* fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "capture.png", imgData, {
+         encoding: "base64",
+     });
+     */
 
     var reqModel = req.body.model == undefined ? "dynavisionXL" : req.body.model;
     var model = Tool.getModelFile(reqModel);
@@ -64,9 +64,15 @@ function TaskComfyRender(task, req, queue) {
     //lock character
     var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
     var characterFile = "";
+    var fullCharacterPath = "";
     if (isLockCharacter) {
         characterFile = req.body.characterFile;
         console.log("lockcharacter:" + characterFile);
+
+        if (req.body.fullCharacterFile != undefined) {
+            fullCharacterPath = req.body.fullCharacterFile;
+            console.log("fullCharacterPath:" + fullCharacterPath);
+        }
     }
 
     //add pretext
@@ -86,28 +92,28 @@ function TaskComfyRender(task, req, queue) {
 
     // process 
     if (processRDStyle == "illustration") {//&& !isLockCharacter) {
-        prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "illustration_comic") {//&& !isLockCharacter) {
-        prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "real_photo_sharpen") {// && !isLockCharacter) {
-        prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
-        prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "delibrerate_photo") {// && !isLockCharacter) {
-        prompt = DeliberatePhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = DeliberatePhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "illustration_tone_grain") {//&& !isLockCharacter) {
-        prompt = IllustrationGrainRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = IllustrationGrainRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "illustration_tone") {//&& !isLockCharacter) {
-        prompt = IllustrationToneRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = IllustrationToneRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else {
-        prompt = NormalRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile);
+        prompt = NormalRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
 
 
@@ -151,7 +157,7 @@ function sendRequest(prompt, queue, task) {
             });
 
             reshttps.on('end', (d) => {
-                console.log("onend_render: "  + task.key);
+                console.log("onend_render: " + task.key);
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
                     var imgname = uuidv4() + ".png";

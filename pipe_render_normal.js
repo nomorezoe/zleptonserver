@@ -7,7 +7,7 @@ function NormalRender() {
 
 }
 
-NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile) {
+NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath) {
 
     const promptFile = fs.readFileSync(isLockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
     let prompt = JSON.parse(promptFile);
@@ -41,18 +41,11 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
 
     //lockcharacter
     if (isLockCharacter) {
-        try {
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + characterFile);
-        }
-        catch (err) {
-            console.log("read file err");
-            //queue.completeTask();
+        console.log("isLockCharacter:");
+        let value = Tool.applyImage(prompt, "22", characterFile, fullCharacterPath);
+        if(!value){
             return null;
         }
-
-        var imgBytes = rawImg.toString('base64');
-        prompt["22"]["inputs"]["image"] = imgBytes;
-
         if (!Tool.isXLModelByFile(modelFile)) {
             console.log("lockCharacter SD 1.5 model");
             prompt["23"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
