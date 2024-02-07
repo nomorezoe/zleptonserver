@@ -76,7 +76,7 @@ function TaskComfyRender(task, req, queue) {
     }
 
     //add pretext
-    posPrompt = pretext + " , " + posPrompt;
+    posPrompt = pretext + posPrompt;
 
     //loras
     var loras = [];
