@@ -198,7 +198,7 @@
   },
   "32": {
     "inputs": {
-      "ipadapter_file": "ip-adapter-plus_sd15.bin"
+      "ipadapter_file": "ip-adapter_sdxl.bin"
     },
     "class_type": "IPAdapterModelLoader",
     "_meta": {
@@ -207,7 +207,7 @@
   },
   "33": {
     "inputs": {
-      "clip_name": "IP Adapter encoder 1.5.safetensors"
+      "clip_name": "model_xl.safetensors"
     },
     "class_type": "CLIPVisionLoader",
     "_meta": {

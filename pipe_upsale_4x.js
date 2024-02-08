@@ -39,6 +39,12 @@ Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, histo
     }
     if (history_model != null && history_model != '' && history_model != "") {
         promptjson["6"]["inputs"]["ckpt_name"] = history_model;
+
+        if (!Tool.isXLModelByFile(history_model)) {
+            console.log("lockCharacter SD 1.5 model");
+            promptjson["32"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
+            promptjson["33"]["inputs"]["clip_name"] = "IP Adapter encoder 1.5.safetensors";
+        }
     }
     promptjson["21"]["inputs"]["seed"] = Tool.randomInt();
     //promptjson["21"]["inputs"]["denoise"] = parseFloat(denoiseValue);
@@ -47,6 +53,8 @@ Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, histo
         console.log("isPhoto");
         promptjson["28"]["inputs"]["model_name"] = "4x-UltraSharp.pth";
     }
+
+    
     return promptjson;
 }
 
