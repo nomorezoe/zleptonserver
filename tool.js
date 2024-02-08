@@ -105,6 +105,24 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style) {
     return null;
 }
 
+Tool.getIsPhotoStyle = function(model, style){
+    for (let i = 0; i < Tool.rdStyleJson.length; i++) {
+        if (Tool.getModelFile (Tool.rdStyleJson[i].model)== model && Tool.rdStyleJson[i].style == style) {
+            return Tool.isPhotoPipe(Tool.rdStyleJson[i].pipe);
+        }
+    }
+
+    return false;
+}
+
+Tool.isPhotoPipe = function(pipe){
+    console.log("isPhotoPipe" + pipe);
+    if(pipe == "delibrerate_photo" || pipe == "real_photo_sharpen" || pipe == "real_photo"){
+        return true;
+    }
+
+}
+
 Tool.applyRandomFileName = function (prompt) {
     for (var i in prompt) {
         if (prompt[i]["class_type"] == "SaveImage") {

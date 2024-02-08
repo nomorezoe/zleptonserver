@@ -79,7 +79,7 @@
         0
       ],
       "model": [
-        "6",
+        "35",
         0
       ],
       "positive": [
@@ -139,7 +139,7 @@
         "24",
         0
       ],
-      "b": 2
+      "b": 4
     },
     "class_type": "CM_IntBinaryOperation",
     "_meta": {
@@ -153,7 +153,7 @@
         "24",
         1
       ],
-      "b": 2
+      "b": 4
     },
     "class_type": "CM_IntBinaryOperation",
     "_meta": {
@@ -194,6 +194,79 @@
     "class_type": "SDXLPromptStyler",
     "_meta": {
       "title": "SDXL Prompt Styler"
+    }
+  },
+  "32": {
+    "inputs": {
+      "ipadapter_file": "ip-adapter-plus_sd15.bin"
+    },
+    "class_type": "IPAdapterModelLoader",
+    "_meta": {
+      "title": "Load IPAdapter Model"
+    }
+  },
+  "33": {
+    "inputs": {
+      "clip_name": "IP Adapter encoder 1.5.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "34": {
+    "inputs": {
+      "interpolation": "LANCZOS",
+      "crop_position": "top",
+      "sharpening": 0,
+      "image": [
+        "36",
+        0
+      ]
+    },
+    "class_type": "PrepImageForClipVision",
+    "_meta": {
+      "title": "Prepare Image For Clip Vision"
+    }
+  },
+  "35": {
+    "inputs": {
+      "weight": 1,
+      "noise": 0,
+      "weight_type": "original",
+      "start_at": 0,
+      "end_at": 1,
+      "unfold_batch": false,
+      "ipadapter": [
+        "32",
+        0
+      ],
+      "clip_vision": [
+        "33",
+        0
+      ],
+      "image": [
+        "34",
+        0
+      ],
+      "model": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "IPAdapterApply",
+    "_meta": {
+      "title": "Apply IPAdapter"
+    }
+  },
+  "36": {
+    "inputs": {
+      "image": "ComfyUI_00031_.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
     }
   }
 }

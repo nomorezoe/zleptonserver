@@ -12,17 +12,20 @@ function TaskComfyUpscale(task, req, queue) {
     var imageFileName = req.body.file;
     var session = req.body.session;
     var denoiseValue = req.body.denoisevalue;
-    var prompt = req.body.prompt;
+    //var prompt = req.body.prompt;
     var fullfilepath = req.body.fullfilepath;
 
     console.log("denoiseValue:" + denoiseValue);
     console.log("imageFileName" + imageFileName);
-    console.log("prompt" + prompt);
     console.log("fullfilepath" + fullfilepath);
+
+    console.log("lockCharacter" +  req.body.lockCharacter);
+    console.log("fullCharacterFile" +  req.body.fullCharacterFile);
 
     let style = null;
     let negtext = null;
     let model = null;
+    let prompt = null;
     if (req.body.tags != undefined) {
         var tagString = req.body.tags
         var tags = JSON.parse(tagString);
@@ -34,7 +37,10 @@ function TaskComfyUpscale(task, req, queue) {
                 if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
                     style = jsonSettings[i]["inputs"]["style"];
                     negtext = jsonSettings[i]["inputs"]["text_negative"];
+                    prompt = jsonSettings[i]["inputs"]["text_positive"];
                     console.log("find style:" + style);
+                    console.log("find negtext:" + negtext);
+                    console.log("find prompt:" + prompt);
                     break;
                 }
             }
@@ -52,7 +58,8 @@ function TaskComfyUpscale(task, req, queue) {
         }
     }
 
-    let promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext);
+    let isPhoto = Tool.getIsPhotoStyle(model, style);
+    let promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext, isPhoto);
 
     //
     Tool.applyRandomFileName(promptjson);
