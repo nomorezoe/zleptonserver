@@ -19,8 +19,16 @@ function TaskComfyUpscale(task, req, queue) {
     console.log("imageFileName" + imageFileName);
     console.log("fullfilepath" + fullfilepath);
 
-    console.log("lockCharacter" +  req.body.lockCharacter);
-    console.log("fullCharacterFile" +  req.body.fullCharacterFile);
+    //lock character
+    var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.fullCharacterFile != undefined);
+    var fullCharacterPath = "";
+    if (isLockCharacter) {
+
+        if (req.body.fullCharacterFile != undefined) {
+            fullCharacterPath = req.body.fullCharacterFile;
+            console.log("fullCharacterPath:" + fullCharacterPath);
+        }
+    }
 
     let style = null;
     let negtext = null;
@@ -59,7 +67,7 @@ function TaskComfyUpscale(task, req, queue) {
     }
 
     let isPhoto = Tool.getIsPhotoStyle(model, style);
-    let promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext, isPhoto);
+    let promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
 
     //
     Tool.applyRandomFileName(promptjson);
