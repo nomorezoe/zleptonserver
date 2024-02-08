@@ -43,7 +43,7 @@ Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, histo
         if (!Tool.isXLModelByFile(history_model)) {
             console.log("lockCharacter SD 1.5 model");
             promptjson["32"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
-            promptjson["33"]["inputs"]["clip_name"] = "IP Adapter encoder 1.5.safetensors";
+            promptjson["33"]["inputs"]["clip_name"] = "model_15.safetensors";
         }
     }
     promptjson["21"]["inputs"]["seed"] = Tool.randomInt();
