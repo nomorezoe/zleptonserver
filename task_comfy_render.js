@@ -13,6 +13,7 @@ const RealismPhotographyRender = require('./pipe_realism_photography');
 const RealismPhotographySharpenRender = require('./pipe_realism_photography_sharpen');
 const DeliberatePhotographyRender = require('./pipe_deliberate_photography');
 const IllustrationComicRender = require('./pipe_illustration_comic');
+const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism');
 
 function TaskComfyRender(task, req, queue) {
     console.log('TaskComfyRender');
@@ -23,6 +24,8 @@ function TaskComfyRender(task, req, queue) {
     /* fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "capture.png", imgData, {
          encoding: "base64",
      });
+
+     return;
      */
 
     var reqModel = req.body.model == undefined ? "dynavisionXL" : req.body.model;
@@ -101,7 +104,12 @@ function TaskComfyRender(task, req, queue) {
         prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
-        prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        if(!isLockCharacter){
+            prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        }
+        else{
+            prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        }
     }
     else if (processRDStyle == "delibrerate_photo") {// && !isLockCharacter) {
         prompt = DeliberatePhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
