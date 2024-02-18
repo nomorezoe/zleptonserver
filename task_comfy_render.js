@@ -93,6 +93,8 @@ function TaskComfyRender(task, req, queue) {
     }
     let prompt = null;
 
+    let applyCrop = true;
+
     // process 
     if (processRDStyle == "illustration") {//&& !isLockCharacter) {
         prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
@@ -101,15 +103,18 @@ function TaskComfyRender(task, req, queue) {
         prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "real_photo_sharpen") {// && !isLockCharacter) {
-        prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
-    }
-    else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
         if(!isLockCharacter){
+            applyCrop = false;
             prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else{
-            prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
+    }
+    else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
+        
+        prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        
     }
     else if (processRDStyle == "delibrerate_photo") {// && !isLockCharacter) {
         prompt = DeliberatePhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
@@ -130,8 +135,11 @@ function TaskComfyRender(task, req, queue) {
         return;
     }
 
+    if(applyCrop){
+        Tool.applyCropInfo(prompt, cropWidth, cropHeight);
+    }
     Tool.applyRandomFileName(prompt);
-    Tool.applyCropInfo(prompt, cropWidth, cropHeight);
+   
     sendRequest(prompt, queue, task);
 }
 
@@ -165,7 +173,7 @@ function sendRequest(prompt, queue, task) {
             });
 
             reshttps.on('end', (d) => {
-                console.log("onend_render: " + task.key);
+                console.log("onend_render: " + task.key +":"+datastring);
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
                     var imgname = uuidv4() + ".png";

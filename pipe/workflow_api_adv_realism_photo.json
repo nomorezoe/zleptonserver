@@ -466,18 +466,6 @@
       "title": "VAE Decode"
     }
   },
-  "195": {
-    "inputs": {
-      "images": [
-        "194",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
-    }
-  },
   "205": {
     "inputs": {
       "model_name": "bbox/face_yolov8m.pt"
