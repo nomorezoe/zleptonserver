@@ -16,7 +16,7 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
     prompt["1"]["inputs"]["image"]=imgData;
 
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
-    prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
+    //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;
 
     //prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
