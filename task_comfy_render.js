@@ -14,6 +14,7 @@ const RealismPhotographySharpenRender = require('./pipe_realism_photography_shar
 const DeliberatePhotographyRender = require('./pipe_deliberate_photography');
 const IllustrationComicRender = require('./pipe_illustration_comic');
 const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism');
+const PipeAdvanceLooseColor = require('./pipe_adv_loose_color');
 
 function TaskComfyRender(task, req, queue) {
     console.log('TaskComfyRender');
@@ -21,12 +22,9 @@ function TaskComfyRender(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-    /* fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "capture.png", imgData, {
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "capture.png", imgData, {
          encoding: "base64",
      });
-
-     return;
-     */
 
     var reqModel = req.body.model == undefined ? "dynavisionXL" : req.body.model;
     var model = Tool.getModelFile(reqModel);
@@ -97,7 +95,14 @@ function TaskComfyRender(task, req, queue) {
 
     // process 
     if (processRDStyle == "illustration") {//&& !isLockCharacter) {
-        prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+
+        if(rd_style == "loose_color" && !isLockCharacter){
+            applyCrop = false;
+            prompt = PipeAdvanceLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        }
+        else{
+            prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        }
     }
     else if (processRDStyle == "illustration_comic") {//&& !isLockCharacter) {
         prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
