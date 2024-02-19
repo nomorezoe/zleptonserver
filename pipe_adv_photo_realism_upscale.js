@@ -19,6 +19,7 @@ PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, positivePrompt,
     promptjson["55"]["inputs"]["text_positive"] = positivePrompt;
     promptjson["55"]["inputs"]["text_negative"] = negtivePrompt;
 
+    promptjson["142"]["inputs"]["seed"] =  Tool.randomInt();
     return promptjson;
 }
 

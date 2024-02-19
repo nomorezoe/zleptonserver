@@ -20,7 +20,7 @@ PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt,
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;
 
-    //prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
+    prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
 
     return prompt;
 }
