@@ -1,6 +1,6 @@
 "strict mode"
 const { v4: uuidv4 } = require('uuid');
-
+const fs = require('fs');
 const OUTPUT_FOLDER = "/imgs/";
 
 function Tool() {
@@ -211,6 +211,32 @@ Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath) {
 
     return true;
 
+}
+
+Tool.checkIsSamePipeLine = function (prompt, refFile){
+    if(prompt == null){
+        return false;
+    }
+    const promptFile = fs.readFileSync('./pipe/' + refFile);//');
+    let refPrompt = JSON.parse(promptFile);
+
+    for(let i in refPrompt){
+        if(refPrompt[i].class_type != prompt[i].class_type){
+            console.log("BREAK " + i + ":"+ refPrompt[i].class_type )
+            return false;
+
+        }
+        else {
+            if(refPrompt[i].class_type == "CheckpointLoaderSimple" ){
+                if(refPrompt[i]["inputs"]["ckpt_name"] != prompt[i]["inputs"]["ckpt_name"]){
+                    console.log("BREAK " + i + ":"+ refPrompt[i].class_type  +":"+ refPrompt[i]["inputs"]["ckpt_name"]
+                    +":"+ prompt[i]["inputs"]["ckpt_name"])
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 

@@ -9,6 +9,8 @@ function Upscale4X() {
 
 Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, history_model, history_style, history_neg, isPhoto, isLockCharacter, fullCharacterPath) {
 
+    console.log("Upscale4X.process");
+    
     isLockCharacter = isLockCharacter && fullCharacterPath != null && fullCharacterPath != undefined && fullCharacterPath != "";
 
     const promptFile = fs.readFileSync(isLockCharacter ? './pipe/workflow_api_4x_upscale_ch_lock.json' : './pipe/workflow_api_4x_upscale.json');

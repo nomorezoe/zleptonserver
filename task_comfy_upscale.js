@@ -6,6 +6,7 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
 const Upscale4X = require('./pipe_upsale_4x');
+const PipeAdvancePhotoRealismUpscale = require("./pipe_adv_photo_realism_upscale")
 
 function TaskComfyUpscale(task, req, queue) {
 
@@ -34,13 +35,14 @@ function TaskComfyUpscale(task, req, queue) {
     let negtext = null;
     let model = null;
     let prompt = null;
+    var jsonSettings  = null;
     if (req.body.tags != undefined) {
         var tagString = req.body.tags
         var tags = JSON.parse(tagString);
         if (tags.prompt) {
             var jsonString = tags.prompt.value;
             //console.log("EXif:" + jsonString);
-            var jsonSettings = JSON.parse(jsonString);
+            jsonSettings = JSON.parse(jsonString);
             for (let i in jsonSettings) {
                 if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
                     style = jsonSettings[i]["inputs"]["style"];
@@ -66,9 +68,15 @@ function TaskComfyUpscale(task, req, queue) {
         }
     }
 
-    let isPhoto = Tool.getIsPhotoStyle(model, style);
-    let promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
-
+    let promptjson;
+    if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
+        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+    }
+    else{
+        let isPhoto = Tool.getIsPhotoStyle(model, style);
+        promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
+    }
+    
     //
     Tool.applyRandomFileName(promptjson);
     sendRequest(promptjson, queue, task);
