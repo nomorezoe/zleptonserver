@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "image": "save (19).png",
+      "image": "save (20).png",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -387,7 +387,7 @@
   "192": {
     "inputs": {
       "add_noise": "enable",
-      "noise_seed": 93676897470874,
+      "noise_seed": 363127728637131,
       "steps": 20,
       "cfg": 8,
       "sampler_name": "euler_ancestral",
@@ -420,7 +420,7 @@
   "193": {
     "inputs": {
       "add_noise": "disable",
-      "noise_seed": 597045615895963,
+      "noise_seed": 442614990692167,
       "steps": 20,
       "cfg": 8,
       "sampler_name": "euler_ancestral",
