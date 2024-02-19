@@ -3,15 +3,15 @@ const fs = require('fs');
 const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
 
-function PipeAdvanceLooseColor() {
+function PipeAdvanceBWLooseColor() {
 
 }
 
 
-PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath){
+PipeAdvanceBWLooseColor.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath){
 
-    console.log("PipeAdvanceLooseColor");
-    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_loose_color.json');//');
+    console.log("PipeAdvanceBWLooseColor");
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_loose_color.json');//');
     let prompt = JSON.parse(promptFile);
 
     prompt["1"]["inputs"]["image"]=imgData;
@@ -25,4 +25,4 @@ PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt,
     return prompt;
 }
 
-module.exports = PipeAdvanceLooseColor;
+module.exports = PipeAdvanceBWLooseColor;

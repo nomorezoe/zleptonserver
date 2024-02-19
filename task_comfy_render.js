@@ -15,6 +15,7 @@ const DeliberatePhotographyRender = require('./pipe_deliberate_photography');
 const IllustrationComicRender = require('./pipe_illustration_comic');
 const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism');
 const PipeAdvanceLooseColor = require('./pipe_adv_loose_color');
+const PipeAdvanceBWLooseColor =  require('./pipe_adv_bw_loose_color');
 
 function TaskComfyRender(task, req, queue) {
     console.log('TaskComfyRender');
@@ -128,7 +129,14 @@ function TaskComfyRender(task, req, queue) {
         prompt = IllustrationGrainRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
     }
     else if (processRDStyle == "illustration_tone") {//&& !isLockCharacter) {
-        prompt = IllustrationToneRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        if(!isLockCharacter){
+            applyCrop = false;
+            prompt =PipeAdvanceBWLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        }
+        else{
+            prompt = IllustrationToneRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        }
+            
     }
     else {
         prompt = NormalRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
