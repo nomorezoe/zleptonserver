@@ -15,6 +15,16 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
 
     prompt["1"]["inputs"]["image"]=imgData;
 
+    let tailText = "cinematic lighting, masterpiece, high quality, high resolution, 4K, HDR";
+    let tailTexts = tailText.split(",");
+    for(let i in tailTexts){
+        if(positivePrompt.indexOf(tailTexts[i]) == -1){
+            positivePrompt += " "+ tailTexts[i] +",";
+        }
+    }
+
+    console.log("positivePrompt:" + positivePrompt);
+   
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;

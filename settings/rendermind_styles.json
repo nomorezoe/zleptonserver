@@ -4,7 +4,7 @@
         "model": "realism_engine_sdxl",
         "style": "base",
         "pipe": "real_photo_sharpen",
-        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+        "loras":"Cinematic_Hollywood_Film"
     },
     {
         "id": "loose_color",

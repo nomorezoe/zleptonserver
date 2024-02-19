@@ -3,7 +3,8 @@
         "name": "Cinematic_Hollywood_Film",
         "file": "Cinematic Hollywood Film_sdxl.safetensors",
         "pretext": "Cinematic Hollywood Film",
-        "loratext": "<lora:Cinematic Hollywood Film:1.5>"
+        "loratext": "",
+        "note":"<lora:Cinematic Hollywood Film:1.5>"
     },
     {
         "name": "real-humans-PublicPrompts",
