@@ -3,13 +3,18 @@
         {
             "pretext": "anime ninja illustration, ",
             "rd_style": "classic_animation"
+        },
+        {
+            "pretext": "<lora:bwstyle:2>bwstyle pencil drawing of ",
+            "rd_style": "bw_loose"
+        },
+        {
+            "pretext": "concept art illustration portrait of ",
+            "rd_style": "loose_color"
         }
     ],
     "amplify_style": [
-        {
-            "pretext": "loose colored sketch of ",
-            "style": "fashion-illustration-quick-sketch-8"
-        }
+        
     ],
     "amplify_model": [
         {

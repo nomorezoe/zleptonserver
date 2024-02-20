@@ -132,6 +132,19 @@ Tool.applyRandomFileName = function (prompt) {
     }
 }
 
+Tool.FIX_WIDTH = 1152;
+Tool.FIX_HEIGHT = 896;
+
+Tool.applyCropInfoForLatentImage = function(prompt){
+    for (var i in prompt) {
+        if (prompt[i]["class_type"] == "EmptyLatentImage") {
+            prompt[i]["inputs"]["width"] = Tool.FIX_WIDTH;
+            prompt[i]["inputs"]["height"] = Tool.FIX_HEIGHT;
+            break;
+        }
+    }
+}
+
 Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
 
     let cropJson = {
@@ -147,17 +160,8 @@ Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
         },
         "class_type": "ImageCrop"
     };
-    let width = 1024;
-    let height = 576;
-    for (var i in prompt) {
-        if (prompt[i]["class_type"] == "EmptyLatentImage") {
-            width = prompt[i]["inputs"]["width"];
-            height = prompt[i]["inputs"]["height"];
-            break;
-        }
-    }
 
-    if (width == cropwidth && height == cropHeight) {
+    if (Tool.FIX_WIDTH == cropwidth && Tool.FIX_HEIGHT == cropHeight) {
         console.log("skip");
         return;
     }
@@ -172,8 +176,8 @@ Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
             cropJson["inputs"]["width"] = cropwidth;
             cropJson["inputs"]["height"] = cropHeight;
 
-            cropJson["inputs"]["x"] = Math.floor((width - cropwidth) / 2);
-            cropJson["inputs"]["y"] = Math.floor((height - cropHeight) / 2);
+            cropJson["inputs"]["x"] = Math.floor((Tool.FIX_WIDTH - cropwidth) / 2);
+            cropJson["inputs"]["y"] = Math.floor((Tool.FIX_HEIGHT - cropHeight) / 2);
 
             prompt["1000"] = cropJson;
             return;

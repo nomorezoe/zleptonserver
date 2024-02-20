@@ -149,8 +149,9 @@ function TaskComfyRender(task, req, queue) {
     }
 
     if(applyCrop){
-        Tool.applyCropInfo(prompt, cropWidth, cropHeight);
+        Tool.applyCropInfoForLatentImage(prompt);
     }
+    Tool.applyCropInfo(prompt, cropWidth, cropHeight);
     Tool.applyRandomFileName(prompt);
    
     sendRequest(prompt, queue, task);
