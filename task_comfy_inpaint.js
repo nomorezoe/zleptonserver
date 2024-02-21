@@ -20,104 +20,10 @@ function TaskComfyInPaint(task, req, queue) {
     });
     */
 
-    
-    //load workflow
-    const promptFile = fs.readFileSync('./pipe/workflow_api_inpaint.json');
-    let promptjson = JSON.parse(promptFile);
-
-    //original image
-    var inpaintFileName =  uuidv4() + "_inpaint.png";
-    var dWidth = 1024;
-    var dHeight = 576;
-    
-    if(req.body.fullFilePath == undefined){
-        var imageFileName = req.body.file;
-        try{
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + imageFileName);
-        }
-        catch(err){
-            console.log("read file err:" + err);
-            queue.completeTask();
-            return;
-        }
-        
-        var imgBytes = rawImg.toString('base64');
-    
-        var dimensions = sizeOf(rawImg);
-        dWidth = dimensions.width;
-        dHeight = dimensions.height;
-
-
-        promptjson["2"]["inputs"]["image"] = imgBytes;
-    }
-    else{
-       
-        var fullFilePath = req.body.fullFilePath;
-        console.log("FULL PATH" + fullFilePath)
-        Tool.applyImage(promptjson, "2", null, fullFilePath);
-
-        var tags = req.body.tags;
-        if(tags != undefined){
-           
-            var jsonTags = JSON.parse(tags);
-           // console.log("read tags"  + jsonTags["prompt"]["value"]);
-            dWidth = jsonTags["Image Width"].value;
-            dHeight = jsonTags["Image Height"].value;
-
-            if(jsonTags.prompt && jsonTags.prompt.value){
-                var jsonString = jsonTags.prompt.value;
-                var jsonSettings = JSON.parse(jsonString);
-                for(var i in jsonSettings){
-                    if(jsonSettings[i]["inputs"] != undefined
-                        && jsonSettings[i]["inputs"]["ckpt_name"]!= undefined){
-                            if(Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
-                               // promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
-                            }
-                            console.log("find" + jsonSettings[i]["inputs"]["ckpt_name"]);
-                        }
-                }
-            }
-        }
-    }
-    
-
-
-    console.log("dWidth" + dWidth);
-    console.log("dHeight" + dHeight);
+    let promptjson = TaskComfyInPaint.advanceProcess(req.body.fullFilePath , req.body.tags, maskBytes, prompt);
 
     
-
-
-    /*
-    //read history checkpoint
-    const tags =  ExifReader.load(rawImg);
-    //console.log("Tags:" + tags.prompt);
-    if(tags.prompt && tags.prompt.value){
-        var jsonString = tags.prompt.value;
-        //console.log("EXif:" + jsonString);
-        var jsonSettings = JSON.parse(jsonString);
-        for(var i in jsonSettings){
-            if(jsonSettings[i]["inputs"] != undefined
-                && jsonSettings[i]["inputs"]["ckpt_name"]!= undefined){
-                    if(Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
-                        promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
-                    }
-                    console.log("find" + jsonSettings[i]["inputs"]["ckpt_name"]);
-                }
-        }
-    }
-    */
     
-
-    
-   
-    promptjson["1"]["inputs"]["image"] = maskBytes;
-
-    promptjson["19"]["inputs"]["width"] = dWidth;
-    promptjson["19"]["inputs"]["height"] = dHeight;
-
-    promptjson["35"]["inputs"]["seed"] = Tool.randomInt();
-    promptjson["13"]["inputs"]["text"] = prompt;
 
     Tool.applyRandomFileName(promptjson);
 
@@ -156,6 +62,7 @@ function TaskComfyInPaint(task, req, queue) {
     
                 console.log("onend_inpaint: "  + task.key);
                 for (var i = 0; i < jsonobj.length; i++) {
+                    var inpaintFileName =  uuidv4() + "_inpaint.png";
                     task.imageFileNames.push(inpaintFileName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + inpaintFileName, jsonobj[i],{
                         encoding: "base64",
@@ -180,3 +87,116 @@ function TaskComfyInPaint(task, req, queue) {
     reqhttps.end();
 }
 module.exports = TaskComfyInPaint;
+
+TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt){
+     //load workflow
+     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint.json');
+     let promptjson = JSON.parse(promptFile);
+
+     Tool.applyImage(promptjson, "198", null, fullFilePath);
+
+    
+     var dWidth = 1152;
+     var dHeight = 896;
+
+     if(tags != undefined){
+    
+        var jsonTags = JSON.parse(tags);
+    // console.log("read tags"  + jsonTags["prompt"]["value"]);
+        dWidth = jsonTags["Image Width"].value;
+        dHeight = jsonTags["Image Height"].value;
+    }
+
+
+
+    console.log("dWidth" + dWidth);
+    console.log("dHeight" + dHeight);
+    
+    promptjson["213"]["inputs"]["image"] = maskBytes;
+
+    promptjson["215"]["inputs"]["width"] = dWidth;
+    promptjson["215"]["inputs"]["height"] = dHeight;
+
+    promptjson["86"]["inputs"]["seed"] = Tool.randomInt();
+    promptjson["87"]["inputs"]["text"] = prompt;
+
+    return promptjson;
+     
+}
+
+
+TaskComfyInPaint.defaultProcess = function(fullFilePath, tags, maskBytes, prompt){
+    //load workflow
+    const promptFile = fs.readFileSync('./pipe/workflow_api_inpaint.json');
+    let promptjson = JSON.parse(promptFile);
+
+    //original image
+  
+    var dWidth = 1024;
+    var dHeight = 576;
+
+    console.log("FULL PATH" + fullFilePath)
+    Tool.applyImage(promptjson, "2", null, fullFilePath);
+
+    var tags = tags;
+    if(tags != undefined){
+    
+        var jsonTags = JSON.parse(tags);
+    // console.log("read tags"  + jsonTags["prompt"]["value"]);
+        dWidth = jsonTags["Image Width"].value;
+        dHeight = jsonTags["Image Height"].value;
+
+        if(jsonTags.prompt && jsonTags.prompt.value){
+            var jsonString = jsonTags.prompt.value;
+            var jsonSettings = JSON.parse(jsonString);
+            for(var i in jsonSettings){
+                if(jsonSettings[i]["inputs"] != undefined
+                    && jsonSettings[i]["inputs"]["ckpt_name"]!= undefined){
+                        if(Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
+                        // promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
+                        }
+                        console.log("find" + jsonSettings[i]["inputs"]["ckpt_name"]);
+                    }
+            }
+        }
+    }
+
+
+
+    console.log("dWidth" + dWidth);
+    console.log("dHeight" + dHeight);
+
+
+
+
+    /*
+    //read history checkpoint
+    const tags =  ExifReader.load(rawImg);
+    //console.log("Tags:" + tags.prompt);
+    if(tags.prompt && tags.prompt.value){
+        var jsonString = tags.prompt.value;
+        //console.log("EXif:" + jsonString);
+        var jsonSettings = JSON.parse(jsonString);
+        for(var i in jsonSettings){
+            if(jsonSettings[i]["inputs"] != undefined
+                && jsonSettings[i]["inputs"]["ckpt_name"]!= undefined){
+                    if(Tool.isQualifiedCkpt(jsonSettings[i]["inputs"]["ckpt_name"])){
+                        promptjson["11"]["inputs"]["ckpt_name"] = jsonSettings[i]["inputs"]["ckpt_name"];
+                    }
+                    console.log("find" + jsonSettings[i]["inputs"]["ckpt_name"]);
+                }
+        }
+    }
+    */
+
+
+    promptjson["1"]["inputs"]["image"] = maskBytes;
+
+    promptjson["19"]["inputs"]["width"] = dWidth;
+    promptjson["19"]["inputs"]["height"] = dHeight;
+
+    promptjson["35"]["inputs"]["seed"] = Tool.randomInt();
+    promptjson["13"]["inputs"]["text"] = prompt;
+
+    return promptjson;
+}
