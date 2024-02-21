@@ -219,10 +219,10 @@
   "142": {
     "inputs": {
       "seed": 657603569508348,
-      "steps": 25,
-      "cfg": 3.5,
-      "sampler_name": "dpmpp_2m",
-      "scheduler": "karras",
+      "steps": 30,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
       "denoise": 0.3,
       "model": [
         "53",
@@ -379,8 +379,8 @@
       "guide_size_for": true,
       "max_size": 981,
       "seed": 224184134667586,
-      "steps": 25,
-      "cfg": 3.9000000000000004,
+      "steps": 30,
+      "cfg": 7,
       "sampler_name": "euler_ancestral",
       "scheduler": "normal",
       "denoise": 0.35000000000000003,
