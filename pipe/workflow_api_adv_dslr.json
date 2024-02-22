@@ -236,7 +236,7 @@
   },
   "65": {
     "inputs": {
-      "ckpt_name": "Refiner\\sdXL_v10RefinerVAEFix.safetensors"
+      "ckpt_name": "sdXL_v10RefinerVAEFix.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
