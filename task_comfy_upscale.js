@@ -6,7 +6,8 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
 const Upscale4X = require('./pipe_upsale_4x');
-const PipeAdvancePhotoRealismUpscale = require("./pipe_adv_photo_realism_upscale")
+const PipeAdvancePhotoRealismUpscale = require("./pipe_adv_photo_realism_upscale");
+const PipeAdvanceDSLRUpscale = require("./pipe_adv_photo_dslr_upscale")
 
 function TaskComfyUpscale(task, req, queue) {
 
@@ -71,6 +72,9 @@ function TaskComfyUpscale(task, req, queue) {
     let promptjson;
     if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
         promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+    }
+    else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")){
+        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else{
         let isPhoto = Tool.getIsPhotoStyle(model, style);
