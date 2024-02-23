@@ -363,7 +363,7 @@
   },
   "175": {
     "inputs": {
-      "clip_name": "model_15.safetensors"
+      "clip_name": "IP Adapter encoder 1.5.safetensors"
     },
     "class_type": "CLIPVisionLoader",
     "_meta": {
