@@ -15,7 +15,7 @@ PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt,
     let prompt = JSON.parse(promptFile);
 
 
-    let tailText = "in the the style of ntlia <lora:ntliastylesdxl-000005:1>, digital artwork, illustrative, painterly, matte painting, highly detailed";
+    let tailText = "digital artwork, illustrative, painterly, matte painting, highly detailed";
     let tailTexts = tailText.split(",");
     for(let i in tailTexts){
         if(positivePrompt.indexOf(tailTexts[i]) == -1){

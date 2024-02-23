@@ -33,5 +33,20 @@
         "name": "arthemyComics",
         "file": "arthemyComics_v60.safetensors",
         "isxl": false
+    },
+    {
+        "name": "juggernautXL",
+        "file": "juggernautXL_v7Rundiffusion.safetensors",
+        "isxl": true
+    },
+    {
+        "name":"sd_xl_base_1.0_0.9vae",
+        "file":"sd_xl_base_1.0_0.9vae.safetensors",
+        "isxl": true
+    },
+    {
+        "name":"realvisxlV30Turbo",
+        "file":"realvisxlV30Turbo_v30Bakedvae.safetensors",
+        "isxl": true
     }
 ]

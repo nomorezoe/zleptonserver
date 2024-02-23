@@ -3,14 +3,15 @@
         "id": "photorealism",
         "model": "realism_engine_sdxl",
         "style": "base",
-        "pipe": "real_photo_sharpen",
+        "pipe": "adv_photo_realism",
         "loras":"Cinematic_Hollywood_Film,BetterPhotography"
     },
     {
         "id": "loose_color",
-        "model": "Deliberate_v4",
-        "style": "fashion-illustration-quick-sketch-8",
-        "pipe": "illustration"
+        "model": "realvisxlV30Turbo",
+        "style": "base",
+        "pipe": "adv_loose_color",
+        "loras": "ntliastylesdxl"
     },
     {
         "id": "bw_loose_film_grain",
@@ -20,9 +21,10 @@
     },
     {
         "id": "bw_loose",
-        "model": "Deliberate_v4",
-        "style": "fashion-illustration-quick-sketch-8",
-        "pipe": "illustration_tone"
+        "model": "sd_xl_base_1.0_0.9vae",
+        "style": "base",
+        "pipe": "adv_bw_loose",
+        "loras": "bwstyle"
     },
     {
         "id": "print_ad",
@@ -132,9 +134,9 @@
     },
     {
         "id": "dslr",
-        "model": "Deliberate_v4",
-        "style": "sai-photographic",
-        "pipe": "delibrerate_photo"
+        "model": "juggernautXL",
+        "style": "base",
+        "pipe": "adv_dslr"
     },
     {
         "id": "origami",

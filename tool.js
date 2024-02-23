@@ -85,7 +85,7 @@ Tool.isSameArray = function (arr1, arr2) {
     return true;
 }
 
-Tool.getRenderStyle = function (rdStyle, model, loras, style) {
+Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSteps,scheduler,cfg, depthStrength, poseStrength) {
     for (let i = 0; i < Tool.rdStyleJson.length; i++) {
         if (Tool.rdStyleJson[i].id == rdStyle) {
             if (Tool.rdStyleJson[i].model == model && Tool.rdStyleJson[i].style == style) {

@@ -5,12 +5,8 @@
             "rd_style": "classic_animation"
         },
         {
-            "pretext": "<lora:bwstyle:2>bwstyle pencil drawing of ",
-            "rd_style": "bw_loose"
-        },
-        {
             "pretext": "concept art illustration portrait of ",
-            "rd_style": "loose_color"
+            "rd_style": "adv_loose_color"
         }
     ],
     "amplify_style": [
@@ -105,6 +101,42 @@
             "scheduler": "ddim_uniform",
             "poseStrength": 0.8,
             "depthStrength": 0.5
+        },
+        {
+            "pipe": "adv_loose_color",
+            "steps": 25,
+            "cfg": 3.5,
+            "sampler": "dpmpp_2m",
+            "scheduler": "karras",
+            "poseStrength": 1,
+            "depthStrength": 0.53
+        },
+        {
+            "pipe": "adv_bw_loose_color",
+            "steps": 25,
+            "cfg": 5,
+            "sampler": "dpmpp_2m",
+            "scheduler": "karras",
+            "poseStrength": 0.83,
+            "depthStrength": 0.53
+        },
+        {
+            "pipe": "adv_photo_realism",
+            "steps": 20,
+            "cfg": 8,
+            "sampler": "euler_ancestral",
+            "scheduler": "normal",
+            "poseStrength": 0.5,
+            "depthStrength": 0.4
+        },
+        {
+            "pipe": "adv_dslr",
+            "steps": 30,
+            "cfg": 3.5,
+            "sampler": "dpmpp_2m",
+            "scheduler": "karras",
+            "poseStrength": 0.5,
+            "depthStrength": 0.4
         }
     ]
 }
