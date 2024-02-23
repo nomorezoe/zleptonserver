@@ -31,7 +31,7 @@ function TaskComfyRender(task, req, queue) {
     var reqModel = req.body.model == undefined ? "dynavisionXL" : req.body.model;
     var model = Tool.getModelFile(reqModel);
 
-    var cfg = parseInt(req.body.cfg);
+    var cfg = parseFloat(req.body.cfg);
     var posPrompt = req.body.prompt;
     var sampleSteps = parseInt(req.body.sampleSteps);
     var scheduler = req.body.scheduler;

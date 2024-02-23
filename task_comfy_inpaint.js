@@ -10,6 +10,25 @@ const { v4: uuidv4 } = require('uuid');
 function TaskComfyInPaint(task, req, queue) {
 
     var prompt = req.body.prompt;
+
+    var inpaintStyle = req.body.inpaintStyle;
+    var ipimageURL = req.body.ipimageURL;
+    var denoise = parseFloat(req.body.denoise);
+    var cfg = parseFloat(req.body.cfg);
+    var samplingsteps = parseInt(req.body.samplingsteps);
+    var sampler = req.body.sampler;
+    var scheduler = req.body.scheduler;
+
+    console.log('inpaintStyle:', inpaintStyle);
+    console.log('ipimageURL:', ipimageURL);
+    console.log('denoise:', denoise);
+    console.log('cfg:', cfg);
+    console.log('samplingsteps:', samplingsteps);
+    console.log('sampler:', sampler);
+    console.log('scheduler:', scheduler);
+
+
+
     //mask
     var rawMaskImg = req.files.imageByteArray.data;
     var buffer = Buffer.from(rawMaskImg);
@@ -20,8 +39,27 @@ function TaskComfyInPaint(task, req, queue) {
     });
     */
 
-    let promptjson = TaskComfyInPaint.advanceProcess(req.body.fullFilePath , req.body.tags, maskBytes, prompt);
+    let promptjson = null;
 
+    switch(inpaintStyle){
+        case "1":
+            promptjson = TaskComfyInPaint.advanceProcess(req.body.fullFilePath , req.body.tags, maskBytes, prompt,denoise, cfg, samplingsteps, sampler, scheduler);
+            break;
+
+        case "2":
+            promptjson = TaskComfyInPaint.advanceProcessExpressyourself(req.body.fullFilePath , req.body.tags, maskBytes, prompt,denoise, cfg, samplingsteps, sampler, scheduler);
+            break;
+
+        case "3":
+            promptjson = TaskComfyInPaint.advanceProcessLockCharacter(req.body.fullFilePath , req.body.tags, maskBytes, prompt,ipimageURL,denoise, cfg, samplingsteps, sampler, scheduler);
+
+            break;
+        default:
+            promptjson = TaskComfyInPaint.advanceProcess(req.body.fullFilePath , req.body.tags, maskBytes, prompt);
+    }
+    
+
+   
     
     
 
@@ -88,8 +126,10 @@ function TaskComfyInPaint(task, req, queue) {
 }
 module.exports = TaskComfyInPaint;
 
-TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt){
+//wardobe
+TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt, denoise, cfg, samplingsteps, sampler, scheduler){
      //load workflow
+     console.log("TaskComfyInPaint.advanceProcess");
      const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint.json');
      let promptjson = JSON.parse(promptFile);
 
@@ -107,8 +147,6 @@ TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt
         dHeight = jsonTags["Image Height"].value;
     }
 
-
-
     console.log("dWidth" + dWidth);
     console.log("dHeight" + dHeight);
     
@@ -120,8 +158,99 @@ TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt
     promptjson["86"]["inputs"]["seed"] = Tool.randomInt();
     promptjson["87"]["inputs"]["text"] = prompt;
 
+    promptjson["86"]["inputs"]["steps"] = samplingsteps;
+    promptjson["86"]["inputs"]["cfg"] = cfg;
+    promptjson["86"]["inputs"]["sampler_name"] = sampler;
+    promptjson["86"]["inputs"]["scheduler"] = scheduler;
+    promptjson["86"]["inputs"]["denoise"] = denoise;
+
     return promptjson;
      
+}
+
+//ad studio
+TaskComfyInPaint.advanceProcessLockCharacter = function(fullFilePath, tags, maskBytes, prompt, ipimageURL, denoise, cfg, samplingsteps, sampler, scheduler){
+    //load workflow
+    console.log("TaskComfyInPaint.advanceProcessLockCharacter");
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint_lock_ch.json');
+    let promptjson = JSON.parse(promptFile);
+
+    Tool.applyImage(promptjson, "198", null, fullFilePath);
+    Tool.applyImage(promptjson, "178", null, ipimageURL);
+
+    var dWidth = 1152;
+    var dHeight = 896;
+
+    if(tags != undefined){
+   
+       var jsonTags = JSON.parse(tags);
+   // console.log("read tags"  + jsonTags["prompt"]["value"]);
+       dWidth = jsonTags["Image Width"].value;
+       dHeight = jsonTags["Image Height"].value;
+   }
+
+   console.log("dWidth" + dWidth);
+   console.log("dHeight" + dHeight);
+   
+   promptjson["213"]["inputs"]["image"] = maskBytes;
+
+   promptjson["215"]["inputs"]["width"] = dWidth;
+   promptjson["215"]["inputs"]["height"] = dHeight;
+
+   promptjson["86"]["inputs"]["seed"] = Tool.randomInt();
+   promptjson["87"]["inputs"]["text"] = prompt;
+
+   promptjson["86"]["inputs"]["steps"] = samplingsteps;
+   promptjson["86"]["inputs"]["cfg"] = cfg;
+   promptjson["86"]["inputs"]["sampler_name"] = sampler;
+   promptjson["86"]["inputs"]["scheduler"] = scheduler;
+   promptjson["86"]["inputs"]["denoise"] = denoise;
+
+   return promptjson;
+    
+}
+
+
+TaskComfyInPaint.advanceProcessExpressyourself = function(fullFilePath, tags, maskBytes, prompt, denoise, cfg, samplingsteps, sampler, scheduler){
+    //load workflow
+    console.log("TaskComfyInPaint.advanceProcessExpressyourself");
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint_yourself.json');
+    let promptjson = JSON.parse(promptFile);
+
+    Tool.applyImage(promptjson, "198", null, fullFilePath);
+
+    var dWidth = 1152;
+    var dHeight = 896;
+
+    if(tags != undefined){
+   
+       var jsonTags = JSON.parse(tags);
+   // console.log("read tags"  + jsonTags["prompt"]["value"]);
+       dWidth = jsonTags["Image Width"].value;
+       dHeight = jsonTags["Image Height"].value;
+   }
+
+
+
+   console.log("dWidth" + dWidth);
+   console.log("dHeight" + dHeight);
+   
+   promptjson["213"]["inputs"]["image"] = maskBytes;
+
+   promptjson["215"]["inputs"]["width"] = dWidth;
+   promptjson["215"]["inputs"]["height"] = dHeight;
+
+   promptjson["86"]["inputs"]["seed"] = Tool.randomInt();
+   promptjson["87"]["inputs"]["text"] = prompt;
+
+   promptjson["86"]["inputs"]["steps"] = samplingsteps;
+   promptjson["86"]["inputs"]["cfg"] = cfg;
+   promptjson["86"]["inputs"]["sampler_name"] = sampler;
+   promptjson["86"]["inputs"]["scheduler"] = scheduler;
+   promptjson["86"]["inputs"]["denoise"] = denoise;
+
+   return promptjson;
+    
 }
 
 
