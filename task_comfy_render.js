@@ -98,7 +98,7 @@ function TaskComfyRender(task, req, queue) {
     //new pipe
     if(processRDStyle == "adv_loose_color"){
         if(!isLockCharacter){
-            applyCrop = false;
+           // applyCrop = false;
             prompt = PipeAdvanceLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else{
@@ -115,7 +115,7 @@ function TaskComfyRender(task, req, queue) {
         }
     }else if(processRDStyle == "adv_bw_loose"){
         if(!isLockCharacter){
-            applyCrop = false;
+            //applyCrop = false;
             prompt =PipeAdvanceBWLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else{
