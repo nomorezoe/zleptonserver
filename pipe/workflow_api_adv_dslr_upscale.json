@@ -246,10 +246,10 @@
   "142": {
     "inputs": {
       "seed": 933672894851712,
-      "steps": 25,
-      "cfg": 3.5,
-      "sampler_name": "dpmpp_2m",
-      "scheduler": "karras",
+      "steps": 30,
+      "cfg": 7.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
       "denoise": 0.3,
       "model": [
         "53",
