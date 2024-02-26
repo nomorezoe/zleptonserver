@@ -225,14 +225,14 @@ Tool.checkIsSamePipeLine = function (prompt, refFile){
     let refPrompt = JSON.parse(promptFile);
 
     for(let i in refPrompt){
-        if(refPrompt[i].class_type != prompt[i].class_type){
+        if(prompt[i] != undefined && refPrompt[i].class_type != prompt[i].class_type){
             console.log("BREAK " + i + ":"+ refPrompt[i].class_type )
             return false;
 
         }
         else {
             if(refPrompt[i].class_type == "CheckpointLoaderSimple" ){
-                if(refPrompt[i]["inputs"]["ckpt_name"] != prompt[i]["inputs"]["ckpt_name"]){
+                if(prompt[i] && prompt[i]["inputs"] && refPrompt[i]["inputs"]["ckpt_name"] != prompt[i]["inputs"]["ckpt_name"]){
                     console.log("BREAK " + i + ":"+ refPrompt[i].class_type  +":"+ refPrompt[i]["inputs"]["ckpt_name"]
                     +":"+ prompt[i]["inputs"]["ckpt_name"])
                     return false;
