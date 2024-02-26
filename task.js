@@ -11,21 +11,27 @@ function Task(type, index, req) {
     this.req = req;
     this.key = "";
     this.imageFileNames = [];
+    this.timer = 0;
+    this.pipeline = "";
 }
 
 Task.prototype = {
 
     excuteTask: function (queue) {
         this.key = queue.key;
+        this.timer  = Date.now();
         switch (this.type) {
             case "render":
                 //TaskRender(this, this.req, queue);
+                this.pipeline = "render_normal";
                 TaskComfyRender(this, this.req, queue);
                 break;
             case "upscale":
+                this.pipeline = "upscale_normal";
                 TaskComfyUpscale(this, this.req, queue);
                 break;
             case "inpaint":
+                this.pipeline = "inpaint_normal";
                 TaskComfyInPaint(this, this.req, queue);
                 break;
         }
@@ -77,7 +83,19 @@ Task.prototype = {
             }
             else{
                 socket.emit("completeTask", this.imageFileNames.join(','));
+                socket.emit("completeInpaintTask", this.imageFileNames.join(','));
             }
+        }
+    },
+
+    sendCompletePipeline: function(){
+       let timer = Date.now();
+        let socket =  SocketManager.getSocketByKey(this.key);
+        if(socket){
+            let sendObject  = {};
+            sendObject.pipeline = this.pipeline;
+            sendObject.time  =  timer - this.timer;
+            socket.emit("completePipeline", JSON.stringify(sendObject));
         }
     }
 

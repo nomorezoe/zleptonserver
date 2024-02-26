@@ -7,7 +7,6 @@ function Queue(sessionkey) {
     this.key = sessionkey;
     this.tasks = [];
     this.currentTask = null;
-    this.timer = 0;
 }
 
 Queue.prototype = {
@@ -31,7 +30,6 @@ Queue.prototype = {
             return;
         }
         
-        this.timer = Date.now();
         this.currentTask = this.tasks.splice(0, 1)[0];
         this.currentTask.excuteTask(this);
         console.log("remainTask" + this.tasks.length);
@@ -41,6 +39,7 @@ Queue.prototype = {
 
     completeTask: function () {
         console.log("completeTask");
+        this.currentTask.sendCompletePipeline();
 
         /*if(this.currentTask){
             let time = Date.now() - this.timer;

@@ -43,23 +43,23 @@ function TaskComfyInPaint(task, req, queue) {
 
     switch(inpaintStyle){
         case "1":
+            task.pipeline = "inpaint_wardobe";
             promptjson = TaskComfyInPaint.advanceProcess(req.body.fullFilePath , req.body.tags, maskBytes, prompt,denoise, cfg, samplingsteps, sampler, scheduler);
             break;
 
         case "2":
+            task.pipeline = "inpaint_expressyourself";
             promptjson = TaskComfyInPaint.advanceProcessExpressyourself(req.body.fullFilePath , req.body.tags, maskBytes, prompt,denoise, cfg, samplingsteps, sampler, scheduler);
             break;
 
         case "3":
+            task.pipeline = "inpaint_advance";
             promptjson = TaskComfyInPaint.advanceProcessLockCharacter(req.body.fullFilePath , req.body.tags, maskBytes, prompt,ipimageURL,denoise, cfg, samplingsteps, sampler, scheduler);
 
             break;
         default:
             promptjson = TaskComfyInPaint.advanceProcess(req.body.fullFilePath , req.body.tags, maskBytes, prompt);
     }
-    
-
-   
     
     
 

@@ -99,7 +99,8 @@ function TaskComfyRender(task, req, queue) {
     //new pipe
     if(processRDStyle == "adv_loose_color"){
         if(!isLockCharacter){
-           // applyCrop = false;
+            // applyCrop = false;
+            task.pipeline = "adv_loose_color";
             prompt = PipeAdvanceLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else{
@@ -109,6 +110,7 @@ function TaskComfyRender(task, req, queue) {
     else if(processRDStyle == "adv_photo_realism"){
         if(!isLockCharacter){
             applyCrop = false;
+            task.pipeline = "adv_photo_realism";
             prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else{
@@ -117,6 +119,7 @@ function TaskComfyRender(task, req, queue) {
     }else if(processRDStyle == "adv_bw_loose"){
         if(!isLockCharacter){
             //applyCrop = false;
+            task.pipeline = "adv_bw_loose";
             prompt =PipeAdvanceBWLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else{
@@ -125,6 +128,7 @@ function TaskComfyRender(task, req, queue) {
     }else if(processRDStyle == "adv_dslr"){
         if(!isLockCharacter){
             applyCrop = false;
+            task.pipeline = "adv_dslr";
             prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else{
@@ -136,33 +140,41 @@ function TaskComfyRender(task, req, queue) {
     if( prompt == null){
         // process 
         if (processRDStyle == "illustration") {//&& !isLockCharacter) {
+            task.pipeline = "illustration";
             prompt = IllustrationRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else if (processRDStyle == "illustration_comic") {//&& !isLockCharacter) {
+            task.pipeline = "illustration_comic";
             prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else if (processRDStyle == "real_photo_sharpen") {// && !isLockCharacter) {
+            task.pipeline = "real_photo_sharpen";
             prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
             
         }
         else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
-            
+            task.pipeline = "real_photo";
             prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
             
         }
         else if (processRDStyle == "delibrerate_photo") {// && !isLockCharacter) {
+            task.pipeline = "delibrerate_photo";
             prompt = DeliberatePhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else if (processRDStyle == "illustration_tone_grain") {//&& !isLockCharacter) {
+            task.pipeline = "illustration_tone_grain";
             prompt = IllustrationGrainRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else if (processRDStyle == "illustration_tone") {//&& !isLockCharacter) {
+            task.pipeline = "illustration_tone";
             prompt = IllustrationToneRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
         else {
             prompt = NormalRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
         }
     }
+
+    task.pipeline += "_" + isLockCharacter;
     
 
 

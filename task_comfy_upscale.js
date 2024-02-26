@@ -71,16 +71,19 @@ function TaskComfyUpscale(task, req, queue) {
 
     let promptjson;
     if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
+        task.pipeline = "upscale_photorealism";
         promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")){
+        task.pipeline = "upscale_dslr";
         promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else{
+        task.pipeline = "upscale_normal";
         let isPhoto = Tool.getIsPhotoStyle(model, style);
         promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
     }
-    
+    task.pipeline += "_" + isLockCharacter;
     //
     Tool.applyRandomFileName(promptjson);
     sendRequest(promptjson, queue, task);
