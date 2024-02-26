@@ -85,7 +85,7 @@ Tool.isSameArray = function (arr1, arr2) {
     return true;
 }
 
-Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSteps,scheduler,cfg, depthStrength, poseStrength) {
+Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSteps, scheduler, cfg, depthStrength, poseStrength) {
     for (let i = 0; i < Tool.rdStyleJson.length; i++) {
         if (Tool.rdStyleJson[i].id == rdStyle) {
             if (Tool.rdStyleJson[i].model == model && Tool.rdStyleJson[i].style == style) {
@@ -105,9 +105,9 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSte
     return null;
 }
 
-Tool.getIsPhotoStyle = function(model, style){
+Tool.getIsPhotoStyle = function (model, style) {
     for (let i = 0; i < Tool.rdStyleJson.length; i++) {
-        if (Tool.getModelFile (Tool.rdStyleJson[i].model)== model && Tool.rdStyleJson[i].style == style) {
+        if (Tool.getModelFile(Tool.rdStyleJson[i].model) == model && Tool.rdStyleJson[i].style == style) {
             return Tool.isPhotoPipe(Tool.rdStyleJson[i].pipe);
         }
     }
@@ -115,9 +115,9 @@ Tool.getIsPhotoStyle = function(model, style){
     return false;
 }
 
-Tool.isPhotoPipe = function(pipe){
+Tool.isPhotoPipe = function (pipe) {
     console.log("isPhotoPipe" + pipe);
-    if(pipe == "delibrerate_photo" || pipe == "real_photo_sharpen" || pipe == "real_photo"){
+    if (pipe == "delibrerate_photo" || pipe == "real_photo_sharpen" || pipe == "real_photo") {
         return true;
     }
 
@@ -135,7 +135,7 @@ Tool.applyRandomFileName = function (prompt) {
 Tool.FIX_WIDTH = 1152;
 Tool.FIX_HEIGHT = 896;
 
-Tool.applyCropInfoForLatentImage = function(prompt){
+Tool.applyCropInfoForLatentImage = function (prompt) {
     for (var i in prompt) {
         if (prompt[i]["class_type"] == "EmptyLatentImage") {
             prompt[i]["inputs"]["width"] = Tool.FIX_WIDTH;
@@ -217,30 +217,35 @@ Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath) {
 
 }
 
-Tool.checkIsSamePipeLine = function (prompt, refFile){
-    if(prompt == null){
+Tool.checkIsSamePipeLine = function (prompt, refFile) {
+    if (prompt == null) {
         return false;
     }
-    const promptFile = fs.readFileSync('./pipe/' + refFile);//');
-    let refPrompt = JSON.parse(promptFile);
+    try {
+        const promptFile = fs.readFileSync('./pipe/' + refFile);//');
+        let refPrompt = JSON.parse(promptFile);
 
-    for(let i in refPrompt){
-        if(prompt[i] != undefined && refPrompt[i].class_type != prompt[i].class_type){
-            console.log("BREAK " + i + ":"+ refPrompt[i].class_type )
-            return false;
+        for (let i in refPrompt) {
+            if (refPrompt[i].class_type != prompt[i].class_type) {
+                console.log("BREAK " + i + ":" + refPrompt[i].class_type)
+                return false;
 
-        }
-        else {
-            if(refPrompt[i].class_type == "CheckpointLoaderSimple" ){
-                if(prompt[i] && prompt[i]["inputs"] && refPrompt[i]["inputs"]["ckpt_name"] != prompt[i]["inputs"]["ckpt_name"]){
-                    console.log("BREAK " + i + ":"+ refPrompt[i].class_type  +":"+ refPrompt[i]["inputs"]["ckpt_name"]
-                    +":"+ prompt[i]["inputs"]["ckpt_name"])
-                    return false;
+            }
+            else {
+                if (refPrompt[i].class_type == "CheckpointLoaderSimple") {
+                    if (refPrompt[i]["inputs"]["ckpt_name"] != prompt[i]["inputs"]["ckpt_name"]) {
+                        console.log("BREAK " + i + ":" + refPrompt[i].class_type + ":" + refPrompt[i]["inputs"]["ckpt_name"]
+                            + ":" + prompt[i]["inputs"]["ckpt_name"])
+                        return false;
+                    }
                 }
             }
         }
+        return true;
     }
-    return true;
+    catch (error) {
+        return false;
+    }
 }
 
 
