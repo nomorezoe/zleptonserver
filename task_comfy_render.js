@@ -24,9 +24,10 @@ function TaskComfyRender(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-    fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "capture.png", imgData, {
+    /*fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "capture.png", imgData, {
          encoding: "base64",
      });
+     */
 
     var reqModel = req.body.model == undefined ? "dynavisionXL" : req.body.model;
     var model = Tool.getModelFile(reqModel);

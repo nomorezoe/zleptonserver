@@ -87,7 +87,6 @@ function TaskComfyUpscale(task, req, queue) {
 }
 
 function sendRequest(promptjson, queue, task) {
-    var startTime = new Date().getTime();
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
 
@@ -109,10 +108,9 @@ function sendRequest(promptjson, queue, task) {
         console.log('headers:', reshttps.headers);
         reshttps.setTimeout(6000000);
         if (reshttps.statusCode == 200) {
-            var completeTime = new Date().getTime() - startTime;
 
             queue.completeTask();
-            console.log("200" + " , time: " + completeTime);
+            console.log("200");
             reshttps.on('data', (d) => {
                 datastring += d;
                 // console.log("ondata");
@@ -120,8 +118,7 @@ function sendRequest(promptjson, queue, task) {
 
             reshttps.on('end', (d) => {
                 let jsonobj = JSON.parse(datastring);
-                var endTime = new Date().getTime() - startTime;
-                console.log("onend_upscale: " + task.key + " , time: " + endTime);
+                console.log("onend_upscale: " + task.key + " , time: ");
                 for (var i = 0; i < jsonobj.length; i++) {
 
                     var upscaleImageName = uuidv4() + "_upscale.png";

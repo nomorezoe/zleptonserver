@@ -26,7 +26,7 @@ Queue.prototype = {
         }
 
         if (this.tasks.length == 0) {
-            this._sendCompleteQueueFailed();
+            this._sendCompleteQueue();
             QueueManager.instance.completeAQueue(this);
             return;
         }
@@ -73,7 +73,7 @@ Queue.prototype = {
     },
 
 
-    _sendCompleteQueueFailed: function(){
+    _sendCompleteQueue: function(){
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
             console.log('emit completeQueue' + socket.id);
