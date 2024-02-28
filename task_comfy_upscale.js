@@ -11,14 +11,20 @@ const PipeAdvanceDSLRUpscale = require("./pipe_adv_photo_dslr_upscale")
 
 function TaskComfyUpscale(task, req, queue) {
 
-    var imageFileName = req.body.file;
     var session = req.body.session;
-    var denoiseValue = req.body.denoisevalue;
-    //var prompt = req.body.prompt;
+    var denoise = req.body.denoise;
+    var cfg = parseFloat(req.body.cfg);
+    var samplingsteps = parseInt(req.body.samplingsteps);
+    var sampler = req.body.sampler;
+    var scheduler = req.body.scheduler;
+    
     var fullfilepath = req.body.fullfilepath;
 
-    console.log("denoiseValue:" + denoiseValue);
-    console.log("imageFileName" + imageFileName);
+    console.log("denoise:" + denoise);
+    console.log("cfg:" + cfg);
+    console.log("samplingsteps:" + samplingsteps);
+    console.log("sampler:" + sampler);
+    console.log("scheduler:" + scheduler);
     console.log("fullfilepath" + fullfilepath);
 
     //lock character
@@ -72,16 +78,16 @@ function TaskComfyUpscale(task, req, queue) {
     let promptjson;
     if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
         task.pipeline = "upscale_photorealism";
-        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")){
         task.pipeline = "upscale_dslr";
-        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else{
         task.pipeline = "upscale_normal";
         let isPhoto = Tool.getIsPhotoStyle(model, style);
-        promptjson = Upscale4X.process(imageFileName, fullfilepath, denoiseValue, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
+        promptjson = Upscale4X.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
     }
     task.pipeline += "_" + isLockCharacter;
     //
