@@ -2,11 +2,13 @@
 
 const QueueManager = require("./queue_manager");
 const SocketManager = require("./socket_manager");
+const { v4: uuidv4 } = require('uuid');
 
 function Queue(sessionkey) {
     this.key = sessionkey;
     this.tasks = [];
     this.currentTask = null;
+    this.id = uuidv4();
 }
 
 Queue.prototype = {
@@ -54,7 +56,7 @@ Queue.prototype = {
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
             console.log('emit startQueue' + socket.id);
-            socket.emit("startQueue");
+            socket.emit("startQueue", this.id );
         }
     },
 
@@ -63,6 +65,7 @@ Queue.prototype = {
         sendObject.totalTasks = this.totalTasks;
         sendObject.remainTasks = this.tasks.length;
         sendObject.duration = this.estimateTaskDuration;
+        sendObject.id = this.id;
 
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
@@ -76,7 +79,7 @@ Queue.prototype = {
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
             console.log('emit completeQueue' + socket.id);
-            socket.emit("completeQueue");
+            socket.emit("completeQueue",  this.id);
         }
     },
 }

@@ -7,7 +7,7 @@ function PipeAdvancePhotoRealismUpscale() {
 
 }
 
-PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, positivePrompt, model, style, negtivePrompt, isLockCharacter, fullCharacterPath) {
+PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, negtivePrompt, isLockCharacter, fullCharacterPath) {
 
     console.log("PipeAdvancePhotoRealismUpscale.process");
 
@@ -20,6 +20,11 @@ PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, positivePrompt,
     promptjson["55"]["inputs"]["text_negative"] = negtivePrompt;
 
     promptjson["142"]["inputs"]["seed"] =  Tool.randomInt();
+    promptjson["142"]["inputs"]["denoise"] = denoise;
+    promptjson["142"]["inputs"]["cfg"] = cfg;
+    promptjson["142"]["inputs"]["steps"] = samplingsteps;
+    promptjson["142"]["inputs"]["sampler_name"] = sampler;
+    promptjson["142"]["inputs"]["scheduler"] = scheduler;
     return promptjson;
 }
 

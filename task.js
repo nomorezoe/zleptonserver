@@ -3,6 +3,7 @@
 const TaskComfyRender = require("./task_comfy_render");
 const TaskComfyInPaint = require("./task_comfy_inpaint");
 const TaskComfyUpscale = require("./task_comfy_upscale");
+const TaskComfyTweak = require('./task_comfy_tweak');
 const SocketManager = require("./socket_manager");
 
 function Task(type, index, req) {
@@ -33,6 +34,10 @@ Task.prototype = {
             case "inpaint":
                 this.pipeline = "inpaint_normal";
                 TaskComfyInPaint(this, this.req, queue);
+                break;
+            case "tweak":
+                this.pipeline = "tweak";
+                TaskComfyTweak(this, this.req, queue);
                 break;
         }
     },
@@ -80,6 +85,9 @@ Task.prototype = {
             }
             else if(this.type == "upscale"){
                 socket.emit("completeUpscaleTask", this.imageFileNames.join(','));
+            }
+            else if(this.type == "tweak"){
+                socket.emit("completeTweakTask", this.imageFileNames.join(','));
             }
             else{
                 socket.emit("completeTask", this.imageFileNames.join(','));

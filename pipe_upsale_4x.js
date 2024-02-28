@@ -7,10 +7,10 @@ function Upscale4X() {
 
 }
 
-Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, history_model, history_style, history_neg, isPhoto, isLockCharacter, fullCharacterPath) {
+Upscale4X.process = function (fullFilaName, denoise, cfg, samplingsteps, sampler, scheduler, prompt, history_model, history_style, history_neg, isPhoto, isLockCharacter, fullCharacterPath) {
 
     console.log("Upscale4X.process");
-    
+
     isLockCharacter = isLockCharacter && fullCharacterPath != null && fullCharacterPath != undefined && fullCharacterPath != "";
 
     const promptFile = fs.readFileSync(isLockCharacter ? './pipe/workflow_api_4x_upscale_ch_lock.json' : './pipe/workflow_api_4x_upscale.json');
@@ -31,7 +31,7 @@ Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, histo
         }
     }
 
-    Tool.applyImage(promptjson, "2", oldfile, fullFilaName);
+    Tool.applyImage(promptjson, "2", null, fullFilaName);
     // promptjson["2"]["inputs"]["image"] = imgBytes;
 
     if (prompt != null && prompt != '' && prompt != "") {
@@ -48,9 +48,14 @@ Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, histo
     if (history_model != null && history_model != '' && history_model != "") {
         promptjson["6"]["inputs"]["ckpt_name"] = history_model;
 
-        
+
     }
     promptjson["21"]["inputs"]["seed"] = Tool.randomInt();
+    promptjson["21"]["inputs"]["denoise"] = denoise;
+    promptjson["21"]["inputs"]["cfg"] = cfg;
+    promptjson["21"]["inputs"]["steps"] = samplingsteps;
+    promptjson["21"]["inputs"]["sampler_name"] = sampler;
+    promptjson["21"]["inputs"]["scheduler"] = scheduler;
     //promptjson["21"]["inputs"]["denoise"] = parseFloat(denoiseValue);
 
     if (isPhoto) {
@@ -58,7 +63,7 @@ Upscale4X.process = function (oldfile, fullFilaName, denoiseValue, prompt, histo
         promptjson["28"]["inputs"]["model_name"] = "4x-UltraSharp.pth";
     }
 
-    
+
     return promptjson;
 }
 
