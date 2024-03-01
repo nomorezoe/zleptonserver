@@ -36,44 +36,29 @@ Queue.prototype = {
         this.currentTask.excuteTask(this);
         console.log("remainTask" + this.tasks.length);
 
-        this.sendTaskStatus();
+        //this.sendTaskStatus();
     },
 
     completeTask: function () {
         console.log("completeTask");
         this.currentTask.sendCompletePipeline();
-
-        /*if(this.currentTask){
-            let time = Date.now() - this.timer;
-            console.log("Task takes "  + time);
-            this._sendCompleteTaskSuccess(this.currentTask);
-        }*/
+        
         this.currentTask = null;
         this.nextTask();
     },
 
     sendStartQueue: function(){
+        var sendObject = {};
+        sendObject.duration = this.estimateTaskDuration;
+        sendObject.id = this.id;
+        sendObject.type = this.tasks[0].type;
+
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
             console.log('emit startQueue' + socket.id);
-            socket.emit("startQueue", this.id );
+            socket.emit("startQueue", JSON.stringify(sendObject));
         }
     },
-
-    sendTaskStatus: function () {
-        var sendObject = {};
-        sendObject.totalTasks = this.totalTasks;
-        sendObject.remainTasks = this.tasks.length;
-        sendObject.duration = this.estimateTaskDuration;
-        sendObject.id = this.id;
-
-        let socket =  SocketManager.getSocketByKey(this.key);
-        if(socket){
-            console.log('emit progressQueue' + socket.id);
-            socket.emit("progressQueue",JSON.stringify(sendObject));
-        }
-    },
-
 
     _sendCompleteQueue: function(){
         let socket =  SocketManager.getSocketByKey(this.key);
