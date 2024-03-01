@@ -135,6 +135,26 @@ app.use('/upscale', function (req, res, next) {
 })
 //upscale - end
 
+//tweak - start
+app.post('/tweak', (req, res) => {
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("tweak", 0, req);
+    queue.tasks.push(task);
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount(),
+        id: queue.id
+    });
+
+    QueueManager.instance.getNextQueue();
+
+})
+//tweak - end
+
 
 //inpaint - start
 app.use('/inpaint', function (req, res, next) {
