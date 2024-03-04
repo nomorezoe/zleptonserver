@@ -11,6 +11,12 @@ function TaskComfyTweak(task, req, queue) {
     var session = req.body.session;
     var prompt = req.body.prompt;
     let fullfilepath = req.body.fullfilepath;
+    let denoise = parseFloat(req.body.denoise);
+    let capture = req.body.capture;
+
+    console.log("denoise:" + denoise);
+    console.log("capture:" + capture);
+    
     var promptjson;
     var replaced = false;
 
@@ -25,7 +31,7 @@ function TaskComfyTweak(task, req, queue) {
             for (let i in promptjson) {
                 if (promptjson[i]["inputs"] != undefined && promptjson[i]["inputs"]["text_positive"] != undefined) {
                     replaced = true;
-                    console.log("Tool.text_positive" + i +":"+ prompt);
+                    console.log("text_positive" + i +":"+ prompt);
                     promptjson[i]["inputs"]["text_positive"] = prompt;
                     break;
                 }
@@ -33,8 +39,16 @@ function TaskComfyTweak(task, req, queue) {
 
             for (let j in promptjson) {
                 if (promptjson[j]["class_type"] == "LoadImage") {
-                    console.log("Tool.applyImage" + j);
-                    Tool.applyImage(promptjson, j, null, fullfilepath);
+                    console.log("applyImage" + j);
+                    Tool.applyImage(promptjson, j, null, capture);
+                    break;
+                }
+            }
+
+            for (let m in promptjson) {
+                if (promptjson[m]["class_type"] == "KSampler") {
+                    console.log("KSampler" + m);
+                    promptjson[m]["inputs"]["denoise"] = denoise;
                     break;
                 }
             }

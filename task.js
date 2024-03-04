@@ -96,6 +96,13 @@ Task.prototype = {
         }
     },
 
+    sendSocketMsg: function(evt, msg){
+        let socket =  SocketManager.getSocketByKey(this.key);
+        if(socket){
+            socket.emit(evt, msg);
+        }
+    },
+
     sendCompletePipeline: function(){
        let timer = Date.now();
         let socket =  SocketManager.getSocketByKey(this.key);
