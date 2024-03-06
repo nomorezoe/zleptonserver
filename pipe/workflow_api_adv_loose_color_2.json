@@ -106,7 +106,7 @@
   },
   "29": {
     "inputs": {
-      "lora_name": "control-lora-depth-rank128.safetensors",
+      "lora_name": "colscottstyle.safetensors",
       "strength_model": 0.6,
       "strength_clip": 1,
       "model": [
