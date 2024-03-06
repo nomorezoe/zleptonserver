@@ -1,5 +1,12 @@
 [
     {
+        "name": "colscottstyle",
+        "file": "colscottstyle.safetensors",
+        "pretext": "colscottstyle",
+        "loratext": "",
+        "note":""
+    },
+    {
         "name": "Cinematic_Hollywood_Film",
         "file": "Cinematic Hollywood Film_sdxl.safetensors",
         "pretext": "Cinematic Hollywood Film",

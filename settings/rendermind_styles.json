@@ -11,7 +11,7 @@
         "model": "realvisxlV30Turbo",
         "style": "base",
         "pipe": "adv_loose_color",
-        "loras": "ntliastylesdxl"
+        "loras": "colscottstyle"
     },
     {
         "id": "bw_loose_film_grain",
