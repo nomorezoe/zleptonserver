@@ -14,6 +14,10 @@ PipeAdvanceBWLooseColor.process = function(imgData, positivePrompt, negtivePromp
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_loose_color_2.json');//');
     let prompt = JSON.parse(promptFile);
 
+    let tailText = ",Warm color temperature, serene facial expression";
+    
+    positivePrompt += tailText;
+    
     prompt["44"]["inputs"]["image"]=imgData;
 
     prompt["6"]["inputs"]["text"] = positivePrompt;

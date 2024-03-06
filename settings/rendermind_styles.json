@@ -8,16 +8,17 @@
     },
     {
         "id": "loose_color",
-        "model": "realvisxlV30Turbo",
+        "model": "sd_xl_base_1.0_0.9vae",
         "style": "base",
         "pipe": "adv_loose_color",
         "loras": "colscottstyle"
     },
     {
         "id": "bw_loose_film_grain",
-        "model": "Deliberate_v4",
+        "model": "sd_xl_base_1.0_0.9vae",
         "style": "base",
-        "pipe": "adv_bw_grain"
+        "pipe": "adv_bw_grain",
+        "loras": "bwstyle"
     },
     {
         "id": "bw_loose",
