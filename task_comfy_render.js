@@ -16,7 +16,8 @@ const IllustrationComicRender = require('./pipe_illustration_comic');
 const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism');
 const PipeAdvanceLooseColor = require('./pipe_adv_loose_color');
 const PipeAdvanceBWLooseColor =  require('./pipe_adv_bw_loose_color');
-const PipeAdvanceDSLR = require("./pipe_adv_dslr")
+const PipeAdvanceDSLR = require("./pipe_adv_dslr");
+const PipeAdvanceBWGrain = require('./pipe_adv_bw_grain');
 
 function TaskComfyRender(task, req, queue) {
     console.log('TaskComfyRender');
@@ -128,6 +129,15 @@ function TaskComfyRender(task, req, queue) {
         }
         else{
             processRDStyle == "illustration_tone";
+        }
+    }else if(processRDStyle == "adv_bw_grain"){
+        if(!isLockCharacter){
+            //applyCrop = false;
+            task.pipeline = "adv_bw_grain";
+            prompt =PipeAdvanceBWGrain.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+        }
+        else{
+            processRDStyle == "illustration_tone_grain";
         }
     }else if(processRDStyle == "adv_dslr"){
         if(!isLockCharacter){

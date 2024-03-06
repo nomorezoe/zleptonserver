@@ -16,8 +16,8 @@
     {
         "id": "bw_loose_film_grain",
         "model": "Deliberate_v4",
-        "style": "fashion-illustration-quick-sketch-8",
-        "pipe": "illustration_tone_grain"
+        "style": "base",
+        "pipe": "adv_bw_grain"
     },
     {
         "id": "bw_loose",
