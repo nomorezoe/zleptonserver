@@ -23,12 +23,20 @@ PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, mo
     prompt["44"]["inputs"]["image"]=imgData;
 
     prompt["6"]["inputs"]["text"] = positivePrompt;
-    console.log( prompt["6"]["inputs"]["text"] );
+    console.log( positivePrompt );
 
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;
 
     prompt["3"]["inputs"]["seed"] =  Tool.randomInt();
+
+    prompt["3"]["inputs"]["steps"] = sampleSteps;
+    prompt["3"]["inputs"]["cfg"] = cfg;
+    prompt["3"]["inputs"]["sampler_name"] = sampler;
+    prompt["3"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["41"]["inputs"]["strength"] = depthStrength;
+
 
     return prompt;
 }

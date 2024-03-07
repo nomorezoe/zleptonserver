@@ -32,6 +32,19 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
     prompt["192"]["inputs"]["noise_seed"] =  Tool.randomInt();
     prompt["193"]["inputs"]["noise_seed"] =  Tool.randomInt();
 
+
+    prompt["192"]["inputs"]["steps"] = sampleSteps;
+    prompt["192"]["inputs"]["cfg"] = cfg;
+    prompt["192"]["inputs"]["sampler_name"] = sampler;
+    prompt["192"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["193"]["inputs"]["steps"] = sampleSteps;
+    prompt["193"]["inputs"]["cfg"] = cfg;
+    prompt["193"]["inputs"]["sampler_name"] = sampler;
+    prompt["193"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["181"]["inputs"]["strength"] = poseStrength;
+    prompt["182"]["inputs"]["strength"] = depthStrength;
     return prompt;
 }
 

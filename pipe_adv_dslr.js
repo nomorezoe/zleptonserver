@@ -17,10 +17,19 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
     prompt["1"]["inputs"]["image"]=imgData;
 
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
+    console.log( positivePrompt );
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;
 
     prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
+
+    prompt["45"]["inputs"]["steps"] = sampleSteps;
+    prompt["45"]["inputs"]["cfg"] = cfg;
+    prompt["45"]["inputs"]["sampler_name"] = sampler;
+    prompt["45"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["181"]["inputs"]["strength"] = poseStrength;
+    prompt["182"]["inputs"]["strength"] = depthStrength;
 
     return prompt;
 }

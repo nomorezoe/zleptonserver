@@ -104,21 +104,30 @@
         },
         {
             "pipe": "adv_loose_color",
-            "steps": 25,
+            "steps": 20,
             "cfg": 3.5,
-            "sampler": "dpmpp_2m",
-            "scheduler": "karras",
-            "poseStrength": 1,
-            "depthStrength": 0.53
+            "sampler": "euler",
+            "scheduler": "normal",
+            "poseStrength": -1,
+            "depthStrength": 0.8
         },
         {
-            "pipe": "adv_bw_loose_color",
-            "steps": 25,
-            "cfg": 5,
-            "sampler": "dpmpp_2m",
-            "scheduler": "karras",
-            "poseStrength": 0.83,
-            "depthStrength": 0.53
+            "pipe": "adv_bw_loose",
+            "steps": 20,
+            "cfg": 3.5,
+            "sampler": "euler",
+            "scheduler": "normal",
+            "poseStrength": -1,
+            "depthStrength": 0.8
+        },
+        {
+            "pipe": "adv_bw_grain",
+            "steps": 20,
+            "cfg": 3.5,
+            "sampler": "euler",
+            "scheduler": "normal",
+            "poseStrength": -1,
+            "depthStrength": 0.8
         },
         {
             "pipe": "adv_photo_realism",
