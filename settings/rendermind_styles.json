@@ -137,7 +137,8 @@
         "id": "dslr",
         "model": "juggernautXL",
         "style": "base",
-        "pipe": "adv_dslr"
+        "pipe": "adv_dslr",
+        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
     },
     {
         "id": "origami",

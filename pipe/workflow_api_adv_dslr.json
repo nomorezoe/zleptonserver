@@ -202,11 +202,11 @@
   },
   "54": {
     "inputs": {
-      "switch_1": "Off",
-      "lora_name_1": "None",
+      "switch_1": "On",
+      "lora_name_1": "Cinematic Hollywood Film_sdxl.safetensors",
       "model_weight_1": 1.5,
       "clip_weight_1": 1,
-      "switch_2": "Off",
+      "switch_2": "On",
       "lora_name_2": "SDXL1.0_Essenz-series-by-AI_Characters_Style_BetterPhotography-v1.2-'Skynet'.safetensors",
       "model_weight_2": 1.5,
       "clip_weight_2": 1,
