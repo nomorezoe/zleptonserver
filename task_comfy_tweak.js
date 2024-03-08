@@ -69,8 +69,8 @@ function TaskComfyTweak(task, req, queue) {
         }
     }
 
-    console.log("promptjson:" + promptjson);
-    
+    console.log("promptjson:" + JSON.stringify(promptjson));
+
     if (replaced) {
         sendRequest(promptjson, queue, task);
     }
