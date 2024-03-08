@@ -20,13 +20,6 @@ function TaskComfyUpscale(task, req, queue) {
     var sampler = req.body.sampler;
     var scheduler = req.body.scheduler;
 
-   /* var face_denoise = req.body.face_denoise;
-    var face_cfg = parseFloat(req.body.face_cfg);
-    var face_samplingsteps = parseInt(req.body.face_samplingsteps);
-    var face_sampler = req.body.face_sampler;
-    var face_scheduler = req.body.face_scheduler;
-    */
-    
     var fullfilepath = req.body.fullfilepath;
 
     console.log("denoise:" + denoise);
@@ -34,15 +27,33 @@ function TaskComfyUpscale(task, req, queue) {
     console.log("samplingsteps:" + samplingsteps);
     console.log("sampler:" + sampler);
     console.log("scheduler:" + scheduler);
-
-    /*console.log("face_denoise:" + denoise);
-    console.log("face_cfg:" + cfg);
-    console.log("face_samplingsteps:" + samplingsteps);
-    console.log("face_sampler:" + sampler);
-    console.log("face_scheduler:" + scheduler);
-    */
-
     console.log("fullfilepath" + fullfilepath);
+
+
+    var faceParams = null;
+    if( req.body.face_denoise != undefined){
+        var face_denoise = req.body.face_denoise;
+        var face_cfg = parseFloat(req.body.face_cfg);
+        var face_samplingsteps = parseInt(req.body.face_samplingsteps);
+        var face_sampler = req.body.face_sampler;
+        var face_scheduler = req.body.face_scheduler;
+
+        console.log("face_denoise:" + face_denoise);
+        console.log("face_cfg:" + face_cfg);
+        console.log("face_samplingsteps:" + face_samplingsteps);
+        console.log("face_sampler:" + face_sampler);
+        console.log("face_scheduler:" + face_scheduler);
+
+        faceParams = {};
+        faceParams.face_denoise = face_denoise;
+        faceParams.face_cfg = face_cfg;
+        faceParams.face_samplingsteps = face_samplingsteps;
+        faceParams.face_sampler = face_sampler;
+        faceParams.face_scheduler = face_scheduler;
+    }
+   
+    
+   
 
     //lock character
     var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.fullCharacterFile != undefined);
@@ -106,21 +117,21 @@ function TaskComfyUpscale(task, req, queue) {
     let promptjson;
     if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
         task.pipeline = "upscale_photorealism";
-        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")){
         task.pipeline = "upscale_dslr";
-        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_loose_color_2.json")){
         task.pipeline = "upscale_loose_color";
-        promptjson = PipeAdvanceLooseColorUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceLooseColorUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && 
         (Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_loose_color_2.json")
         ||Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_grain.json"))){
         task.pipeline = "upscale_bw_loose";
-        promptjson = PipeAdvanceBWLooseUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceBWLooseUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else{
         task.pipeline = "upscale_normal";

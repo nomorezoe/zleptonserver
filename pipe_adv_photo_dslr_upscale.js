@@ -7,7 +7,7 @@ function PipeAdvanceDSLRUpscale() {
 
 }
 
-PipeAdvanceDSLRUpscale.process = function (fullfilepath, denoise, cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, humanloras, negtivePrompt, isLockCharacter, fullCharacterPath) {
+PipeAdvanceDSLRUpscale.process = function (fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, humanloras, negtivePrompt, isLockCharacter, fullCharacterPath) {
 
     console.log("PipeAdvanceDSLRUpscale.process");
 
@@ -31,7 +31,11 @@ PipeAdvanceDSLRUpscale.process = function (fullfilepath, denoise, cfg, samplings
         console.log("lora real-humans-PublicPrompts On");
     }
 
+    Tool.ApplyFaceParams(promptjson, faceParams);
+
     return promptjson;
 }
+
+
 
 module.exports = PipeAdvanceDSLRUpscale;

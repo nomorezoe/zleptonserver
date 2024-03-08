@@ -7,7 +7,7 @@ function PipeAdvanceLooseColorUpscale() {
 
 }
 
-PipeAdvanceLooseColorUpscale.process = function (fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, negtivePrompt, isLockCharacter, fullCharacterPath) {
+PipeAdvanceLooseColorUpscale.process = function (fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, negtivePrompt, isLockCharacter, fullCharacterPath) {
 
     console.log("PipeAdvanceLooseColorUpscale.process");
 
@@ -26,7 +26,7 @@ PipeAdvanceLooseColorUpscale.process = function (fullfilepath, denoise,cfg, samp
     promptjson["142"]["inputs"]["sampler_name"] = sampler;
     promptjson["142"]["inputs"]["scheduler"] = scheduler;
 
-    
+    Tool.ApplyFaceParams(promptjson, faceParams);
     return promptjson;
 }
 

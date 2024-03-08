@@ -259,5 +259,16 @@ Tool.checkIsSamePipeLine = function (prompt, refFile) {
     }
 }
 
+Tool.ApplyFaceParams = function (promptjson, faceParams){
+    if(faceParams){
+        promptjson["220"]["inputs"]["seed"] =  Tool.randomInt();
+        promptjson["220"]["inputs"]["denoise"] = faceParams.face_denoise;
+        promptjson["220"]["inputs"]["cfg"] = faceParams.face_cfg;
+        promptjson["220"]["inputs"]["steps"] = faceParams.face_samplingsteps;
+        promptjson["220"]["inputs"]["sampler_name"] = faceParams.face_sampler;
+        promptjson["220"]["inputs"]["scheduler"] = faceParams.face_scheduler;
+    }
+}
+
 
 module.exports = Tool;

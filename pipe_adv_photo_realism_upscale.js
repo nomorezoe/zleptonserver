@@ -7,7 +7,7 @@ function PipeAdvancePhotoRealismUpscale() {
 
 }
 
-PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, humanloras, negtivePrompt, isLockCharacter, fullCharacterPath) {
+PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, humanloras, negtivePrompt, isLockCharacter, fullCharacterPath) {
 
     console.log("PipeAdvancePhotoRealismUpscale.process");
 
@@ -31,6 +31,7 @@ PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, denoise,cfg, sa
         console.log("lora real-humans-PublicPrompts On");
     }
 
+    Tool.ApplyFaceParams(promptjson, faceParams);
     return promptjson;
 }
 

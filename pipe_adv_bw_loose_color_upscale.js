@@ -7,7 +7,7 @@ function PipeAdvanceBWLooseUpscale() {
 
 }
 
-PipeAdvanceBWLooseUpscale.process = function (fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, negtivePrompt, isLockCharacter, fullCharacterPath) {
+PipeAdvanceBWLooseUpscale.process = function (fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, negtivePrompt, isLockCharacter, fullCharacterPath) {
 
     console.log("PipeAdvanceBWLooseUpscale.process");
 
@@ -26,7 +26,7 @@ PipeAdvanceBWLooseUpscale.process = function (fullfilepath, denoise,cfg, samplin
     promptjson["142"]["inputs"]["sampler_name"] = sampler;
     promptjson["142"]["inputs"]["scheduler"] = scheduler;
 
-    
+    Tool.ApplyFaceParams(promptjson, faceParams);
     return promptjson;
 }
 
