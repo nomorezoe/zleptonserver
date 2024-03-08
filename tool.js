@@ -241,6 +241,15 @@ Tool.checkIsSamePipeLine = function (prompt, refFile) {
                         return false;
                     }
                 }
+                if (refPrompt[i].class_type == "LoraLoader") {
+                    if (refPrompt[i]["inputs"]["lora_name"] != prompt[i]["inputs"]["lora_name"]) {
+                        console.log("BREAK " + i + ":" + refPrompt[i].class_type + ":" + refPrompt[i]["inputs"]["lora_name"]
+                            + ":" + prompt[i]["inputs"]["lora_name"])
+                        return false;
+                    }
+                }
+                
+
             }
         }
         return true;

@@ -7,7 +7,9 @@ const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
 const Upscale4X = require('./pipe_upsale_4x');
 const PipeAdvancePhotoRealismUpscale = require("./pipe_adv_photo_realism_upscale");
-const PipeAdvanceDSLRUpscale = require("./pipe_adv_photo_dslr_upscale")
+const PipeAdvanceDSLRUpscale = require("./pipe_adv_photo_dslr_upscale");
+const PipeAdvanceLooseColorUpscale = require('./pipe_adv_loose_color_upscale');
+const PipeAdvanceBWLooseUpscale = require('./pipe_adv_bw_loose_color_upscale');
 
 function TaskComfyUpscale(task, req, queue) {
 
@@ -17,6 +19,13 @@ function TaskComfyUpscale(task, req, queue) {
     var samplingsteps = parseInt(req.body.samplingsteps);
     var sampler = req.body.sampler;
     var scheduler = req.body.scheduler;
+
+   /* var face_denoise = req.body.face_denoise;
+    var face_cfg = parseFloat(req.body.face_cfg);
+    var face_samplingsteps = parseInt(req.body.face_samplingsteps);
+    var face_sampler = req.body.face_sampler;
+    var face_scheduler = req.body.face_scheduler;
+    */
     
     var fullfilepath = req.body.fullfilepath;
 
@@ -25,6 +34,14 @@ function TaskComfyUpscale(task, req, queue) {
     console.log("samplingsteps:" + samplingsteps);
     console.log("sampler:" + sampler);
     console.log("scheduler:" + scheduler);
+
+    /*console.log("face_denoise:" + denoise);
+    console.log("face_cfg:" + cfg);
+    console.log("face_samplingsteps:" + samplingsteps);
+    console.log("face_sampler:" + sampler);
+    console.log("face_scheduler:" + scheduler);
+    */
+
     console.log("fullfilepath" + fullfilepath);
 
     //lock character
@@ -78,8 +95,7 @@ function TaskComfyUpscale(task, req, queue) {
                 if (jsonSettings[i]["class_type"] == "CR LoRA Stack") {
                     if(jsonSettings[i]["inputs"]["lora_name_1"] ==  "real-humans-PublicPromptsXL.safetensors"
                         && jsonSettings[i]["inputs"]["switch_1"] == "On"){
-                            useHumanLora = true;
-                        }
+                        useHumanLora = true;
                     }
                 }
             }
@@ -95,6 +111,16 @@ function TaskComfyUpscale(task, req, queue) {
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")){
         task.pipeline = "upscale_dslr";
         promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
+    }
+    else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_loose_color_2.json")){
+        task.pipeline = "upscale_loose_color";
+        promptjson = PipeAdvanceLooseColorUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+    }
+    else if(!isLockCharacter && 
+        (Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_loose_color_2.json")
+        ||Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_grain.json"))){
+        task.pipeline = "upscale_bw_loose";
+        promptjson = PipeAdvanceBWLooseUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
     else{
         task.pipeline = "upscale_normal";
