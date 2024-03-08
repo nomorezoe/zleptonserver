@@ -270,5 +270,15 @@ Tool.ApplyFaceParams = function (promptjson, faceParams){
     }
 }
 
+Tool.ApplyPromptNote = function (promptjson, prompt){
+    let noteJson = {
+        "text":"",
+        "class_type": "Note"
+    };
+
+    noteJson["text"] = prompt;
+    promptjson["10000"] = noteJson;
+}
+
 
 module.exports = Tool;

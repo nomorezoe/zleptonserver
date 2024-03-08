@@ -38,7 +38,7 @@ function TaskComfyRender(task, req, queue) {
     var model = Tool.getModelFile(reqModel);
 
     var cfg = parseFloat(req.body.cfg);
-    var posPrompt = req.body.prompt;
+    var originalPosPrompt = req.body.prompt;
     var sampleSteps = parseInt(req.body.sampleSteps);
     var scheduler = req.body.scheduler;
     var sampler = req.body.sampler;
@@ -59,7 +59,7 @@ function TaskComfyRender(task, req, queue) {
     console.log("pretext:" + pretext);
     console.log("2_model:" + model);
     console.log("cfg:" + cfg);
-    console.log("prompt:" + posPrompt);
+    console.log("prompt:" + originalPosPrompt);
     console.log("sampleSteps:" + sampleSteps);
     console.log("sampler:" + sampler);
     console.log("scheduler:" + scheduler);
@@ -85,7 +85,7 @@ function TaskComfyRender(task, req, queue) {
     }
 
     //add pretext
-    posPrompt = pretext + posPrompt;
+    let posPrompt = pretext + originalPosPrompt;
 
     //loras
     var loras = [];
@@ -204,6 +204,8 @@ function TaskComfyRender(task, req, queue) {
     Tool.applyCropInfo(prompt, cropWidth, cropHeight);
     
     Tool.applyRandomFileName(prompt);
+
+    Tool.ApplyPromptNote(prompt, originalPosPrompt);
    
     sendRequest(prompt, queue, task);
 }
