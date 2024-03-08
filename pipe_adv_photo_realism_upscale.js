@@ -7,7 +7,7 @@ function PipeAdvancePhotoRealismUpscale() {
 
 }
 
-PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, negtivePrompt, isLockCharacter, fullCharacterPath) {
+PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, positivePrompt, model, style, humanloras, negtivePrompt, isLockCharacter, fullCharacterPath) {
 
     console.log("PipeAdvancePhotoRealismUpscale.process");
 
@@ -25,6 +25,12 @@ PipeAdvancePhotoRealismUpscale.process = function (fullfilepath, denoise,cfg, sa
     promptjson["142"]["inputs"]["steps"] = samplingsteps;
     promptjson["142"]["inputs"]["sampler_name"] = sampler;
     promptjson["142"]["inputs"]["scheduler"] = scheduler;
+
+    if(humanloras){
+        promptjson["52"]["inputs"]["switch_1"] = "On";
+        console.log("lora real-humans-PublicPrompts On");
+    }
+
     return promptjson;
 }
 

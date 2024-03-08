@@ -43,6 +43,7 @@ function TaskComfyUpscale(task, req, queue) {
     let model = null;
     let prompt = null;
     var jsonSettings  = null;
+    let useHumanLora = false;
     if (req.body.tags != undefined) {
         var tagString = req.body.tags
         var tags = JSON.parse(tagString);
@@ -72,17 +73,28 @@ function TaskComfyUpscale(task, req, queue) {
                 }
             }
 
+            //humanlora
+            for (var i in jsonSettings) {
+                if (jsonSettings[i]["class_type"] == "CR LoRA Stack") {
+                    if(jsonSettings[i]["inputs"]["lora_name_1"] ==  "real-humans-PublicPromptsXL.safetensors"
+                        && jsonSettings[i]["inputs"]["switch_1"] == "On"){
+                            useHumanLora = true;
+                        }
+                    }
+                }
+            }
+
         }
     }
 
     let promptjson;
     if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
         task.pipeline = "upscale_photorealism";
-        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")){
         task.pipeline = "upscale_dslr";
-        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
     else{
         task.pipeline = "upscale_normal";

@@ -45,6 +45,14 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
 
     prompt["181"]["inputs"]["strength"] = poseStrength;
     prompt["182"]["inputs"]["strength"] = depthStrength;
+
+    //lora
+   
+    console.log("loras" + loras);
+    if(loras.indexOf("real-humans-PublicPrompts") != -1){
+        prompt["52"]["inputs"]["switch_1"] = "On";
+        console.log("lora real-humans-PublicPrompts On");
+    }
     return prompt;
 }
 

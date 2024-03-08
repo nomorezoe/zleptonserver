@@ -65,10 +65,10 @@ Tool.getStyleFromNegPrompt = function (neg) {
 }
 
 Tool.rdStyleJson = JSON.parse(require('fs').readFileSync("./settings/rendermind_styles.json"));
-Tool.isSameArray = function (arr1, arr2) {
-    if (arr1.length != arr2.length) {
+Tool.isSameLoraArray = function (arr1, arr2) {
+    /*if (arr1.length < arr2.length) {
         return false;
-    }
+    }*/
 
     for (let i = 0; i < arr1.length; i++) {
         if (arr2.indexOf(arr1[i]) == -1) {
@@ -76,11 +76,13 @@ Tool.isSameArray = function (arr1, arr2) {
         }
     }
 
+    /*
     for (let i = 0; i < arr2.length; i++) {
         if (arr1.indexOf(arr2[i]) == -1) {
             return false;
         }
     }
+    */
 
     return true;
 }
@@ -94,7 +96,7 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSte
                     refLoras = Tool.rdStyleJson[i].loras.split(",");
                 }
 
-                if (Tool.isSameArray(refLoras, loras)) {
+                if (Tool.isSameLoraArray(refLoras, loras)) {
                     return Tool.rdStyleJson[i].pipe;
                 }
             }
