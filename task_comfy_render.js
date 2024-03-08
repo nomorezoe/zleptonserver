@@ -205,7 +205,7 @@ function TaskComfyRender(task, req, queue) {
     
     Tool.applyRandomFileName(prompt);
 
-    Tool.ApplyPromptNote(prompt, originalPosPrompt);
+    //Tool.ApplyPromptNote(prompt, originalPosPrompt);
    
     sendRequest(prompt, queue, task);
 }
