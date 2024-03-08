@@ -74,6 +74,9 @@ Task.prototype = {
             case "inpaint":
                 return 180;
                 break;
+            case "tweak":
+                return 60;
+                break;
         } 
     },
 
