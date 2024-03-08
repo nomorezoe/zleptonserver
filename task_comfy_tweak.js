@@ -25,7 +25,7 @@ function TaskComfyTweak(task, req, queue) {
         var tags = JSON.parse(tagString);
         if (tags.prompt) {
             var jsonString = tags.prompt.value;
-            console.log("EXif:" + jsonString);
+            //console.log("EXif:" + jsonString);
             promptjson = JSON.parse(jsonString);
 
             for (let i in promptjson) {
@@ -40,7 +40,13 @@ function TaskComfyTweak(task, req, queue) {
             for (let j in promptjson) {
                 if (promptjson[j]["class_type"] == "LoadImage") {
                     console.log("applyImage" + j);
-                    Tool.applyImage(promptjson, j, null, capture);
+                    if(capture != null && capture != "" && capture != undefined){
+                        Tool.applyImage(promptjson, j, null, capture);
+                    }
+                    else{
+                        Tool.applyImage(promptjson, j, null, fullfilepath);
+                    }
+                   
                     break;
                 }
             }
@@ -63,6 +69,8 @@ function TaskComfyTweak(task, req, queue) {
         }
     }
 
+    console.log("promptjson:" + promptjson);
+    
     if (replaced) {
         sendRequest(promptjson, queue, task);
     }
