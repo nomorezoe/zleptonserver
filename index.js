@@ -49,6 +49,9 @@ app.use(bodyParser.urlencoded({
 
 app.get('/', (req, res) => {
     res.send('Hello World !');
+
+   
+
 });
 
 app.use('/imgs', express.static('imgs'));
@@ -249,3 +252,26 @@ app.use('/test', function (req, res, next) {
 
     QueueManager.instance.getNextQueue();
 })
+
+startAutoRemoveFileProcess();
+
+function startAutoRemoveFileProcess(){
+    removeFile();
+    setInterval(() => {
+        removeFile();
+      }, 86400000);
+}
+
+function removeFile(){
+    console.log("removeFile");
+    let d = Date.now() - 24 * 60  * 60 * 1000 ;
+    let time =  new Date(d);
+    let dateString = time.getFullYear() + "-" +(time. getMonth()  + 1) +"-"+ time.getDate();
+
+    let cmd = "find ./imgs/ -type f ! -newermt '"+ dateString +"' -exec rm -f {} \\;";
+    var exec = require('child_process').exec;
+
+    exec(cmd, function(error, stdout, stderr) {
+        // command output is in stdout
+    });
+}
