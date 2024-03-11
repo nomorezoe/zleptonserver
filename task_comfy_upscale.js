@@ -19,6 +19,7 @@ function TaskComfyUpscale(task, req, queue) {
     var samplingsteps = parseInt(req.body.samplingsteps);
     var sampler = req.body.sampler;
     var scheduler = req.body.scheduler;
+    var upscaleModel = req.body.model;
 
     var fullfilepath = req.body.fullfilepath;
 
@@ -27,7 +28,9 @@ function TaskComfyUpscale(task, req, queue) {
     console.log("samplingsteps:" + samplingsteps);
     console.log("sampler:" + sampler);
     console.log("scheduler:" + scheduler);
+    console.log("upscaleModel:" + upscaleModel);
     console.log("fullfilepath" + fullfilepath);
+
 
 
     var faceParams = null;
@@ -180,6 +183,7 @@ function sendRequest(promptjson, queue, task) {
                 for (var i = 0; i < jsonobj.length; i++) {
 
                     var upscaleImageName = uuidv4() + "_upscale.png";
+                    console.log("upscaleImageName:" + upscaleImageName);
                     task.imageFileNames.push(upscaleImageName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i], {
                         encoding: "base64",
