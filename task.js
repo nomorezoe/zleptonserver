@@ -73,7 +73,7 @@ Task.prototype = {
                 return 240;
                 break;
             case "inpaint":
-                return 180;
+                return 240;
                 break;
             case "tweak":
                 return 60;
