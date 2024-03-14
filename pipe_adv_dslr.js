@@ -8,7 +8,7 @@ function PipeAdvanceDSLR() {
 }
 
 
-PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath){
+PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvanceDSLR");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_dslr.json');//');
@@ -17,6 +17,7 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
     prompt["1"]["inputs"]["image"]=imgData;
 
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
+    prompt["55"]["_meta"]["info"] = info;
     console.log( positivePrompt );
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;

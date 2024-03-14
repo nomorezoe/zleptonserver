@@ -8,7 +8,7 @@ function PipeAdvanceBWLooseColor() {
 }
 
 
-PipeAdvanceBWLooseColor.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath){
+PipeAdvanceBWLooseColor.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvanceBWLooseColor");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_loose_color_2.json');//');
@@ -21,6 +21,7 @@ PipeAdvanceBWLooseColor.process = function(imgData, positivePrompt, negtivePromp
     prompt["44"]["inputs"]["image"]=imgData;
 
     prompt["6"]["inputs"]["text"] = positivePrompt;
+    prompt["6"]["_meta"]["info"] = info;
     console.log( positivePrompt );
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;

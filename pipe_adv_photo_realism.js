@@ -7,7 +7,7 @@ function PipeAdvancePhotoRealism() {
 
 }
 
-PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath){
+PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvancePhotoRealism");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo.json');//');
@@ -26,6 +26,7 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
     console.log("positivePrompt:" + positivePrompt);
    
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
+    prompt["55"]["_meta"]["info"] = info;
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;
 

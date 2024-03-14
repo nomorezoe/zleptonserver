@@ -8,7 +8,7 @@ function PipeAdvanceBWGrain() {
 }
 
 
-PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath){
+PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvanceBWGrain");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_grain.json');//');
@@ -23,6 +23,7 @@ PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, mo
     prompt["44"]["inputs"]["image"]=imgData;
 
     prompt["6"]["inputs"]["text"] = positivePrompt;
+    prompt["6"]["_meta"]["info"] = info;
     console.log( positivePrompt );
 
     //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
