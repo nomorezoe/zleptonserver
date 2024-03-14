@@ -21,6 +21,7 @@ Task.prototype = {
     excuteTask: function (queue) {
         this.key = queue.key;
         this.timer  = Date.now();
+        this.id = queue.id;
         switch (this.type) {
             case "render":
                 //TaskRender(this, this.req, queue);
@@ -80,9 +81,27 @@ Task.prototype = {
         } 
     },
 
+    getDownloadDuration: function(){
+        switch (this.type) {
+            case "render":
+                return 60;
+                break;
+            case "upscale":
+                return 60;
+                break;
+            case "inpaint":
+                return 60;
+                break;
+            case "tweak":
+                return 30;
+                break;
+        } 
+    },
+
     sendCompleteTaskSuccess: function(){
         let socket =  SocketManager.getSocketByKey(this.key);
         if(socket){
+            socket.emit("completeDownload", this.id);
             if(this.type == "render"){
                 socket.emit("completeRenderTask", this.imageFileNames.join(','));
             }
@@ -93,7 +112,7 @@ Task.prototype = {
                 socket.emit("completeTweakTask", this.imageFileNames.join(','));
             }
             else{
-                socket.emit("completeTask", this.imageFileNames.join(','));
+                console.log("here");
                 socket.emit("completeInpaintTask", this.imageFileNames.join(','));
             }
         }

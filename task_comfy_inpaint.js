@@ -36,8 +36,8 @@ function TaskComfyInPaint(task, req, queue) {
 
     /*fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask.png", maskBytes,{
         encoding: "base64",
-    });
-    */
+    });*/
+    
 
     let promptjson = null;
 
@@ -101,6 +101,7 @@ function TaskComfyInPaint(task, req, queue) {
                 console.log("onend_inpaint: "  + task.key);
                 for (var i = 0; i < jsonobj.length; i++) {
                     var inpaintFileName =  uuidv4() + "_inpaint.png";
+                    console.log("inpaintImageName:" + inpaintFileName);
                     task.imageFileNames.push(inpaintFileName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + inpaintFileName, jsonobj[i],{
                         encoding: "base64",

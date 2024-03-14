@@ -14,6 +14,7 @@ function Queue(sessionkey) {
 Queue.prototype = {
     excuteQueue: function () {
         this.estimateTaskDuration = this.tasks[0].getDuration();
+        this.downloadDuration = this.tasks[0].getDownloadDuration();
         this.totalTasks = this.tasks.length;
 
         this.sendStartQueue();
@@ -50,6 +51,7 @@ Queue.prototype = {
     sendStartQueue: function(){
         var sendObject = {};
         sendObject.duration = this.estimateTaskDuration;
+        sendObject.downloadDuration = this.downloadDuration;
         sendObject.id = this.id;
         sendObject.type = this.tasks[0].type;
 

@@ -375,7 +375,7 @@
   },
   "220": {
     "inputs": {
-      "guide_size": 384,
+      "guide_size": 1024,
       "guide_size_for": true,
       "max_size": 981,
       "seed": 224184134667586,
