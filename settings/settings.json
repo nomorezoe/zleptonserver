@@ -42,7 +42,7 @@
             "model": "sd_xl_base_1.0_0.9vae"
         },
         {
-            "negtext":"Asymmetrical Eyes, Mismatched Eyes, Distorted Eyes, Unaligned Eyes, Blurry Eyes, Overexaggerated Eyes, Inconsistent Lighting on Eyes, Unnatural Eye Color, Floating Eyes, Missing Eyelids, ugly, deformed, noisy, blurry, low contrast, realistic, ugly breasts, tripod, camera, anime, animation, cartoon, 3D, drawing, painting, (censorship, censored, worst quality, low quality, normal quality, lowres, low details, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) (ugly hands, ugly anatomy, ugly body, ugly face, ugly teeth, ugly arms, ugly legs, deformities:1.3) ugly fingers, bad fingers, (((ugly nipples, bad nipples, deformed nipples))), (((Bad teeth, ugly teeth)))",
+            "negtext":"(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation",
             "model":"juggernautXL"
         }
     ],
@@ -148,9 +148,9 @@
         },
         {
             "pipe": "adv_dslr",
-            "steps": 30,
-            "cfg": 3.5,
-            "sampler": "dpmpp_2m",
+            "steps": 6,
+            "cfg": 2,
+            "sampler": "dpmpp_sde",
             "scheduler": "karras",
             "poseStrength": 0.5,
             "depthStrength": 0.4
