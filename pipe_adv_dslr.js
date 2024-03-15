@@ -19,7 +19,7 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
     prompt["55"]["_meta"]["info"] = info;
     console.log( positivePrompt );
-    //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
+    prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;
 
     prompt["45"]["inputs"]["seed"] =  Tool.randomInt();

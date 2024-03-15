@@ -26,7 +26,7 @@ PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, mo
     prompt["6"]["_meta"]["info"] = info;
     console.log( positivePrompt );
 
-    //prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
+    prompt["7"]["inputs"]["text"] = negtivePrompt;
     //prompt["55"]["inputs"]["style"] = style;
 
     prompt["3"]["inputs"]["seed"] =  Tool.randomInt();
