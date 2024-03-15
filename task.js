@@ -49,22 +49,22 @@ Task.prototype = {
                 console.log("render duration"+this.req.body.model);
                 switch(this.req.body.model){
                     case "dynavisionXL":
-                    return 150;
+                    return 240;
                     break;
                 case "realism_engine_sdxl":
-                    return 150;
+                    return 240;
                     break;
                 case "realistic_vision_v6":
-                    return 150;
+                    return 240;
                     break;
                 case "dreamshaper":
-                    return 150;
+                    return 240;
                     break;
                 case "Deliberate_v5":
-                    return 150;
+                    return 240;
                     break;
                 }
-                return 150;
+                return 240;
                 /*if(this.req.model == ""){
                     return 60;
                 }*/
@@ -76,7 +76,7 @@ Task.prototype = {
                 return 240;
                 break;
             case "tweak":
-                return 60;
+                return 120;
                 break;
         } 
     },
@@ -93,7 +93,7 @@ Task.prototype = {
                 return 60;
                 break;
             case "tweak":
-                return 30;
+                return 60;
                 break;
         } 
     },
@@ -133,6 +133,13 @@ Task.prototype = {
             sendObject.pipeline = this.pipeline;
             sendObject.time  =  timer - this.timer;
             socket.emit("completePipeline", JSON.stringify(sendObject));
+        }
+    },
+
+    sendCompleteDownload: function(){
+        let socket =  SocketManager.getSocketByKey(this.key);
+        if(socket){
+            socket.emit("completeDownload", this.id);
         }
     }
 

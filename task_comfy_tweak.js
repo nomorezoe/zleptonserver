@@ -16,7 +16,7 @@ function TaskComfyTweak(task, req, queue) {
 
     console.log("denoise:" + denoise);
     console.log("capture:" + capture);
-    
+
     var promptjson;
     var replaced = false;
 
@@ -29,24 +29,67 @@ function TaskComfyTweak(task, req, queue) {
             promptjson = JSON.parse(jsonString);
 
             for (let i in promptjson) {
-                if (promptjson[i]["inputs"] != undefined && promptjson[i]["inputs"]["text_positive"] != undefined) {
+                if (promptjson[i]["class_type"] == "SDXLPromptStyler") {
                     replaced = true;
-                    console.log("text_positive" + i +":"+ prompt);
-                    promptjson[i]["inputs"]["text_positive"] = prompt;
+
+                    let oldprompt = promptjson[i]["inputs"]["text_positive"];
+                    console.log("oldprompt:" + oldprompt);
+                    if (promptjson[i]["_meta"] != undefined && promptjson[i]["_meta"]["info"] != undefined) {
+                        let info = promptjson[i]["_meta"]["info"];
+                        let arr = oldprompt.split(info);
+                        if (arr.length >= 2) {
+                            console.log("prompt:" + prompt +"end");
+                            console.log("prompt1:" + arr[0] +"end");
+                            console.log("prompt2:" + arr[1] +"end");
+                            promptjson[i]["inputs"]["text_positive"] = arr[0] + prompt + arr[1];
+                        }
+                        else {
+                            promptjson[i]["inputs"]["text_positive"] = prompt;
+                        }
+                    }
+                    else {
+                        promptjson[i]["inputs"]["text_positive"] = prompt;
+                    }
+
+                    console.log("text_positive:" + i + ":" + promptjson[i]["inputs"]["text_positive"]);
+
                     break;
+                }
+            }
+
+            if (!replaced) {
+                for (let i in promptjson) {
+                    if (promptjson[i]["class_type"] == "CLIPTextEncode"
+                        && promptjson[i]["_meta"] != undefined && promptjson[i]["_meta"]["info"] != undefined) {
+
+                        let info = promptjson[i]["_meta"]["info"];
+                        let oldprompt = promptjson[i]["inputs"]["text"];
+                        console.log("oldprompt:" + oldprompt);
+                        let arr = oldprompt.split(info);
+
+                        if (arr.length >= 2) {
+                            promptjson[i]["inputs"]["text"] = arr[0] + prompt + arr[1];
+                        }
+                        else {
+                            promptjson[i]["inputs"]["text"] = prompt;
+                        }
+                        replaced = true;
+                        console.log("text:" + i + ":" + promptjson[i]["inputs"]["text"]);
+                        break;
+                    }
                 }
             }
 
             for (let j in promptjson) {
                 if (promptjson[j]["class_type"] == "LoadImage") {
                     console.log("applyImage" + j);
-                    if(capture != null && capture != "" && capture != undefined){
+                    if (capture != null && capture != "" && capture != undefined) {
                         Tool.applyImage(promptjson, j, null, capture);
                     }
-                    else{
+                    else {
                         Tool.applyImage(promptjson, j, null, fullfilepath);
                     }
-                   
+
                     break;
                 }
             }
@@ -75,7 +118,7 @@ function TaskComfyTweak(task, req, queue) {
         sendRequest(promptjson, queue, task);
     }
     else {
-        queue.completeTask();
+        queue.completeTaskFailed();
     }
 
 }
@@ -116,9 +159,11 @@ function sendRequest(promptjson, queue, task) {
                 console.log("onend_tweak: " + task.key + " , time: ");
                 for (var i = 0; i < jsonobj.length; i++) {
 
-                    var upscaleImageName = uuidv4() + "_tweak.png";
-                    task.imageFileNames.push(upscaleImageName);
-                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i], {
+                    var tweakImageName = uuidv4() + "_tweak.png";
+                    console.log("tweakImageName:" + tweakImageName);
+
+                    task.imageFileNames.push(tweakImageName);
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + tweakImageName, jsonobj[i], {
                         encoding: "base64",
                     });
                 }
@@ -126,14 +171,14 @@ function sendRequest(promptjson, queue, task) {
             });
         }
         else {
-            queue.completeTask();
+            queue.completeTaskFailed();
         }
     });
 
     reqhttps.setTimeout(6000000);
     reqhttps.on('error', (error) => {
         console.error(error);
-        queue.completeTask();
+        queue.completeTaskFailed();
     });
 
     reqhttps.write(data);

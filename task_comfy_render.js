@@ -195,7 +195,7 @@ function TaskComfyRender(task, req, queue) {
 
 
     if (prompt == null) {
-        queue.completeTask();
+        queue.completeTaskFailed();
         return;
     }
 
@@ -263,13 +263,13 @@ function sendRequest(prompt, queue, task) {
 
         }
         else {
-            queue.completeTask();
+            queue.completeTaskFailed();
         }
     });
 
     reqhttps.on('error', (error) => {
         console.error(error);
-        queue.completeTask();
+        queue.completeTaskFailed();
     });
 
     reqhttps.write(data);

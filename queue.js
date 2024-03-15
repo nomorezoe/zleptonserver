@@ -48,6 +48,17 @@ Queue.prototype = {
         this.nextTask();
     },
 
+    completeTaskFailed: function(){
+        console.log("completeTaskFailed");
+        this.currentTask.sendCompletePipeline();
+        this.currentTask.sendCompleteDownload();
+        
+        this.currentTask = null;
+        this.nextTask();
+
+
+    },
+
     sendStartQueue: function(){
         var sendObject = {};
         sendObject.duration = this.estimateTaskDuration;

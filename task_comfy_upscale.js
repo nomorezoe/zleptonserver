@@ -194,13 +194,13 @@ function sendRequest(promptjson, queue, task) {
             });
         }
         else {
-            queue.completeTask();
+            queue.completeTaskFailed();
         }
     });
 
     reqhttps.on('error', (error) => {
         console.error(error);
-        queue.completeTask();
+        queue.completeTaskFailed();
     });
 
     reqhttps.write(data);

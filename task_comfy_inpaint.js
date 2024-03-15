@@ -112,13 +112,13 @@ function TaskComfyInPaint(task, req, queue) {
             });
         }
         else {
-            queue.completeTask();
+            queue.completeTaskFailed();
         }
     });
 
     reqhttps.on('error', (error) => {
         console.error(error);
-        queue.completeTask();
+        queue.completeTaskFailed();
         return;
     });
 
