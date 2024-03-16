@@ -55,14 +55,14 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
 
 
     prompt["2"]["inputs"]["image"] = imgData;
-    prompt["13"]["inputs"]["text"] = positivePrompt;
+    //prompt["13"]["inputs"]["text"] = positivePrompt;
     prompt["6"]["inputs"]["seed"] = Tool.randomInt();
     //checkpoint
     prompt["7"]["inputs"]["ckpt_name"] = modelFile;
     console.log("ckpt_name:" + modelFile);
 
     //others
-    prompt["14"]["inputs"]["text"] = negtivePrompt;
+   // prompt["14"]["inputs"]["text"] = negtivePrompt;
 
     prompt["6"]["inputs"]["steps"] = sampleSteps;
     prompt["6"]["inputs"]["cfg"] = cfg;
