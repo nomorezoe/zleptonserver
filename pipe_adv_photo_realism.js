@@ -12,6 +12,7 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
     console.log("PipeAdvancePhotoRealism");
     let promptFile;
     if(cannyStrength >= 0){
+        console.log("Canny");
         promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo_canny.json');//');
     }
     else{
