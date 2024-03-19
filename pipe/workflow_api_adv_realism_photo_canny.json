@@ -555,7 +555,7 @@
   },
   "225": {
     "inputs": {
-      "control_net_name": "diffusers_xl_canny_small.safetensors"
+      "control_net_name": "diffusers_xl_canny_full.safetensors"
     },
     "class_type": "ControlNetLoader",
     "_meta": {
@@ -566,14 +566,14 @@
     "inputs": {
       "strength": 0.8,
       "start_percent": 0.2,
-      "end_percent": 0.35000000000000003,
+      "end_percent": 0.35,
       "positive": [
         "182",
         0
       ],
       "negative": [
         "182",
-        0
+        1
       ],
       "control_net": [
         "225",
