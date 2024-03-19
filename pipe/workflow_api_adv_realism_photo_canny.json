@@ -580,13 +580,27 @@
         0
       ],
       "image": [
-        "1",
+        "228",
         0
       ]
     },
     "class_type": "ControlNetApplyAdvanced",
     "_meta": {
       "title": "Apply ControlNet (Advanced)"
+    }
+  },
+  "228": {
+    "inputs": {
+      "low_threshold": 0.4,
+      "high_threshold": 0.8,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "Canny",
+    "_meta": {
+      "title": "Canny"
     }
   }
 }
