@@ -49,6 +49,10 @@ function TaskComfyRender(task, req, queue) {
     var rd_style = req.body.rd_style;
     var depthStrength = parseFloat(req.body.depthStrength);
     var poseStrength = parseFloat(req.body.poseStrength);
+    var cannyStrength = -1;
+    if(req.body.cannyStrength!= undefined){
+        cannyStrength = parseFloat(req.body.cannyStrength);
+    }
 
     var cropWidth = parseFloat(req.body.cropWidth);
     var cropHeight = parseFloat(req.body.cropHeight);
@@ -69,6 +73,8 @@ function TaskComfyRender(task, req, queue) {
 
     console.log("cropWidth:" + cropWidth);
     console.log("cropHeight:" + cropHeight);
+
+    console.log("canny:" + cannyStrength);
 
     //lock character
     var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
@@ -118,7 +124,7 @@ function TaskComfyRender(task, req, queue) {
         if(!isLockCharacter){
             applyCrop = false;
             task.pipeline = "adv_photo_realism";
-            prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+            prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
         }
         else{
             processRDStyle == "real_photo_sharpen";
