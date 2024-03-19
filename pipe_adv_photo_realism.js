@@ -54,7 +54,9 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
 
     prompt["181"]["inputs"]["strength"] = poseStrength;
     prompt["182"]["inputs"]["strength"] = depthStrength;
-    prompt["227"]["inputs"]["strength"] = cannyStrength;
+    if(cannyStrength >= 0){
+        prompt["227"]["inputs"]["strength"] = cannyStrength;
+    }
     
 
     //lora
