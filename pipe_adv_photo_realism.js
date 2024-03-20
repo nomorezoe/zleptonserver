@@ -11,15 +11,16 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
 
     console.log("PipeAdvancePhotoRealism");
     let promptFile;
-    if(cannyStrength >= 0){
-        console.log("Canny");
-        promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo_canny.json');//');
-    }
-    else{
-        promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo.json');//');
-    }
+    promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo.json');//');
+
+    
    
     let prompt = JSON.parse(promptFile);
+
+    if(cannyStrength >= 0){
+        Tool.ApplyCanny("1", "182", "192",prompt, cannyStrength);
+     }
+
 
     prompt["1"]["inputs"]["image"]=imgData;
 
@@ -55,9 +56,7 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
 
     prompt["181"]["inputs"]["strength"] = poseStrength;
     prompt["182"]["inputs"]["strength"] = depthStrength;
-    if(cannyStrength >= 0){
-        prompt["227"]["inputs"]["strength"] = cannyStrength;
-    }
+   
     
 
     //lora

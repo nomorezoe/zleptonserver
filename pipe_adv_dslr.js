@@ -8,11 +8,15 @@ function PipeAdvanceDSLR() {
 }
 
 
-PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info){
+PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength,  isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvanceDSLR");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_dslr.json');//');
     let prompt = JSON.parse(promptFile);
+
+    if(cannyStrength >= 0){
+        Tool.ApplyCanny("1", "182", "45", prompt, cannyStrength);
+     }
 
     prompt["1"]["inputs"]["image"]=imgData;
 

@@ -8,12 +8,15 @@ function PipeAdvanceBWGrain() {
 }
 
 
-PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info){
+PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvanceBWGrain");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_grain.json');//');
     let prompt = JSON.parse(promptFile);
 
+    if(cannyStrength >= 0){
+        Tool.ApplyCanny("44", "41", "3", prompt, cannyStrength);
+     }
 
     let tailText = ",Warm color temperature, serene facial expression";
     

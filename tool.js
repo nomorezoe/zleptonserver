@@ -280,5 +280,72 @@ Tool.ApplyPromptNote = function (promptjson, prompt){
     promptjson["10000"] = noteJson;
 }
 
+Tool.ApplyCanny = function(inputImageId, inputID, kSampler, prompt, cannyStrength){
+    console.log("ApplyCanny");
+    let cannyControlNetLoader=  {
+        "inputs": {
+          "control_net_name": "diffusers_xl_canny_full.safetensors"
+        },
+        "class_type": "ControlNetLoader",
+        "_meta": {
+          "title": "Load ControlNet Model"
+        }
+      };
+
+    let cannyApply ={
+        "inputs": {
+          "strength": 0.8,
+          "start_percent": 0.2,
+          "end_percent": 0.35,
+          "positive": [
+            "182",
+            0
+          ],
+          "negative": [
+            "182",
+            1
+          ],
+          "control_net": [
+            "300",
+            0
+          ],
+          "image": [
+            "302",
+            0
+          ]
+        },
+        "class_type": "ControlNetApplyAdvanced",
+        "_meta": {
+          "title": "Apply ControlNet (Advanced)"
+        }
+      };
+      let cannyPreproceesor =  {
+        "inputs": {
+          "low_threshold": 0.4,
+          "high_threshold": 0.8,
+          "image": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "Canny",
+        "_meta": {
+          "title": "Canny"
+        }
+      }
+
+      cannyPreproceesor["inputs"]["image"][0] = inputImageId;
+      cannyApply["inputs"]["positive"][0] = inputID;
+      cannyApply["inputs"]["negative"][0] = inputID;
+
+      prompt[kSampler]["inputs"]["positive"][0] = "301";
+      prompt[kSampler]["inputs"]["negative"][0] = "301";
+      cannyApply["inputs"]["strength"] = cannyStrength;
+
+      prompt["300"] = cannyControlNetLoader;
+      prompt["301"] = cannyApply;
+      prompt["302"] = cannyPreproceesor;
+}
+
 
 module.exports = Tool;

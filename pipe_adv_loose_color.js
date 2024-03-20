@@ -8,12 +8,15 @@ function PipeAdvanceLooseColor() {
 }
 
 
-PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath, info){
+PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvanceLooseColor");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_loose_color_2.json');//');
     let prompt = JSON.parse(promptFile);
 
+    if(cannyStrength >= 0){
+        Tool.ApplyCanny("44", "41", "3", prompt, cannyStrength);
+     }
 
     let tailText = ",Warm color temperature, serene facial expression";
     
