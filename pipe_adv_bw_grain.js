@@ -14,7 +14,7 @@ PipeAdvanceBWGrain.process = function(imgData, positivePrompt, negtivePrompt, mo
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_grain.json');//');
     let prompt = JSON.parse(promptFile);
 
-    if(cannyStrength >= 0){
+    if(cannyStrength > 0){
         Tool.ApplyCanny("44", "41", "3", prompt, cannyStrength);
      }
 

@@ -17,7 +17,7 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
    
     let prompt = JSON.parse(promptFile);
 
-    if(cannyStrength >= 0){
+    if(cannyStrength > 0){
         Tool.ApplyCanny("1", "182", "192",prompt, cannyStrength);
      }
 

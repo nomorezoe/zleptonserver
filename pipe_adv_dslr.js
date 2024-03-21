@@ -14,7 +14,7 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_dslr.json');//');
     let prompt = JSON.parse(promptFile);
 
-    if(cannyStrength >= 0){
+    if(cannyStrength > 0){
         Tool.ApplyCanny("1", "182", "45", prompt, cannyStrength);
      }
 
