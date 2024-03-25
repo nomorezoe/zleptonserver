@@ -18,7 +18,7 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
     let prompt = JSON.parse(promptFile);
 
     if(cannyStrength > 0){
-        Tool.ApplyCanny("1", "182", "192",prompt, cannyStrength);
+        Tool.ApplyCanny("1", "182", "192",prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "diffuserscontrolnet-canny-sdxl-1.0.safetensors");
      }
 
 

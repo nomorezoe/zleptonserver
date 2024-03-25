@@ -165,7 +165,9 @@
         },
         {
             "pipe": "adv_photo_realism",
-            "cannyStrength": 0.8
+            "poseStrength": 0.0,
+            "depthStrength": 0.4,
+            "cannyStrength": 1.0
         }
     ]
 }
