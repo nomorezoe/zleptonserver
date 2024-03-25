@@ -15,7 +15,7 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
     let prompt = JSON.parse(promptFile);
 
     if(cannyStrength > 0){
-        Tool.ApplyCanny("1", "182", "45", prompt, cannyStrength);
+        Tool.ApplyCanny("1", "182", "45", prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "diffuserscontrolnet-canny-sdxl-1.0.safetensors");
      }
 
     prompt["1"]["inputs"]["image"]=imgData;
@@ -35,6 +35,10 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
 
     prompt["181"]["inputs"]["strength"] = poseStrength;
     prompt["182"]["inputs"]["strength"] = depthStrength;
+
+    //depth
+    //prompt["182"]["inputs"]["start_percent"] = 0;
+    //prompt["182"]["inputs"]["end_percent"] = 0.65;
 
     console.log("loras" + loras);
     if(loras.indexOf("real-humans-PublicPrompts") != -1){

@@ -155,5 +155,17 @@
             "poseStrength": 0.5,
             "depthStrength": 0.4
         }
+    ],
+    "ksampler_canny_settings": [
+        {
+            "pipe": "adv_dslr",
+            "poseStrength": 0.0,
+            "depthStrength": 0.4,
+            "cannyStrength": 1.0
+        },
+        {
+            "pipe": "adv_photo_realism",
+            "cannyStrength": 0.8
+        }
     ]
 }

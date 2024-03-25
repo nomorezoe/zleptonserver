@@ -280,7 +280,7 @@ Tool.ApplyPromptNote = function (promptjson, prompt){
     promptjson["10000"] = noteJson;
 }
 
-Tool.ApplyCanny = function(inputImageId, inputID, kSampler, prompt, cannyStrength){
+Tool.ApplyCanny = function(inputImageId, inputID, kSampler, prompt, cannyStrength, startPercent = 0.2, endPercent = 0.35, lowThreshold = 0.4, highThreshold = 0.8, control_net_name = "diffusers_xl_canny_full.safetensors"){
     console.log("ApplyCanny");
     let cannyControlNetLoader=  {
         "inputs": {
@@ -334,9 +334,17 @@ Tool.ApplyCanny = function(inputImageId, inputID, kSampler, prompt, cannyStrengt
         }
       }
 
+      cannyControlNetLoader["inputs"]["control_net_name"] = control_net_name;
+
       cannyPreproceesor["inputs"]["image"][0] = inputImageId;
+      cannyPreproceesor["inputs"]["low_threshold"] = lowThreshold;
+      cannyPreproceesor["inputs"]["high_threshold"] = highThreshold;
+
       cannyApply["inputs"]["positive"][0] = inputID;
       cannyApply["inputs"]["negative"][0] = inputID;
+      cannyApply["inputs"]["start_percent"] = startPercent;
+      cannyApply["inputs"]["end_percent"] = endPercent;
+
 
       prompt[kSampler]["inputs"]["positive"][0] = "301";
       prompt[kSampler]["inputs"]["negative"][0] = "301";
