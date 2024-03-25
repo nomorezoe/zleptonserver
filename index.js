@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/imgs', express.static('imgs'));
-
+app.use('/save', express.static('save'));
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
