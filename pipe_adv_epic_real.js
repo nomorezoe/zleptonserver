@@ -14,8 +14,13 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
     let promptFile = null;
     let prompt = null;
     if(hasAnimal){
-        promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real.json');
+        console.log("has animal");
+        promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real_animal.json');
         prompt = JSON.parse(promptFile);
+
+        if(cannyStrength > 0){
+            Tool.ApplyCanny("1", "232", "246", prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "control_v11p_sd15_canny.pth");
+        }
     }
     else{
         promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real.json');//');
@@ -53,6 +58,10 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
 
     prompt["232"]["inputs"]["strength"] = depthStrength;
     prompt["181"]["inputs"]["strength"] = poseStrength;
+
+    if(hasAnimal){
+       
+    }
 
     return prompt;
 }
