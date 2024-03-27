@@ -398,7 +398,7 @@
   },
   "247": {
     "inputs": {
-      "control_net_name": "control_sd15_animal_openpose.pth"
+      "control_net_name": "control_sd15_animal_openpose_fp16.pth"
     },
     "class_type": "ControlNetLoader",
     "_meta": {
