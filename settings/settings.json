@@ -166,7 +166,7 @@
             "sampler": "dpmpp_sde",
             "scheduler": "karras",
             "poseStrength": 0.5,
-            "depthStrength": 0.4
+            "depthStrength": 0.5
         }
     ],
     "ksampler_canny_settings": [
