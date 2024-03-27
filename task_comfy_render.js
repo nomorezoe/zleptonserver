@@ -167,7 +167,7 @@ function TaskComfyRender(task, req, queue) {
         if(!isLockCharacter){
             applyCrop = false;
             task.pipeline = "adv_epic_real";
-            prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+            prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
         }
         else{
             processRDStyle == "delibrerate_photo";

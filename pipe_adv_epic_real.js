@@ -7,17 +7,29 @@ function PipeAdvanceEpicReal() {
 
 }
 
-PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength,  isLockCharacter, characterFile, fullCharacterPath, info){
+PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength,  isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal){
     console.log("PipeAdvanceEpicReal.process");
 
  
-    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real.json');//');
-    let prompt = JSON.parse(promptFile);
+    let promptFile = null;
+    let prompt = null;
+    if(hasAnimal){
+        promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real.json');
+        prompt = JSON.parse(promptFile);
+    }
+    else{
+        promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real.json');//');
+        prompt = JSON.parse(promptFile);
 
-    /*if(cannyStrength > 0){
-        Tool.ApplyCanny("44", "41", "3", prompt, cannyStrength);
-     }
-     */
+        if(cannyStrength > 0){
+            Tool.ApplyCanny("1", "232", "45", prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "control_v11p_sd15_canny.pth");
+        }
+    }
+    
+   
+
+    
+    
     let tailText = " HDR, masterpiece, high quality, high resolution, 4K, HDR, ";
     
     positivePrompt += tailText;
@@ -39,7 +51,8 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
     prompt["45"]["inputs"]["sampler_name"] = sampler;
     prompt["45"]["inputs"]["scheduler"] = scheduler;
 
-    //prompt["41"]["inputs"]["strength"] = depthStrength;
+    prompt["232"]["inputs"]["strength"] = depthStrength;
+    prompt["181"]["inputs"]["strength"] = poseStrength;
 
     return prompt;
 }
