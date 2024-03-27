@@ -63,6 +63,11 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
        
     }
 
+    console.log("loras" + loras);
+    if(loras.indexOf("BetterPhotography") != -1){
+        prompt["54"]["inputs"]["switch_2"] = "On";
+        console.log("lora BetterPhotography On");
+    }
     return prompt;
 }
 
