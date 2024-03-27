@@ -248,7 +248,7 @@ Tool.checkIsSamePipeLine = function (prompt, refFile) {
                         return false;
                     }
                 }
-                
+
 
             }
         }
@@ -259,9 +259,9 @@ Tool.checkIsSamePipeLine = function (prompt, refFile) {
     }
 }
 
-Tool.ApplyFaceParams = function (promptjson, faceParams){
-    if(faceParams){
-        promptjson["220"]["inputs"]["seed"] =  Tool.randomInt();
+Tool.ApplyFaceParams = function (promptjson, faceParams) {
+    if (faceParams) {
+        promptjson["220"]["inputs"]["seed"] = Tool.randomInt();
         promptjson["220"]["inputs"]["denoise"] = faceParams.face_denoise;
         promptjson["220"]["inputs"]["cfg"] = faceParams.face_cfg;
         promptjson["220"]["inputs"]["steps"] = faceParams.face_samplingsteps;
@@ -270,9 +270,9 @@ Tool.ApplyFaceParams = function (promptjson, faceParams){
     }
 }
 
-Tool.ApplyPromptNote = function (promptjson, prompt){
+Tool.ApplyPromptNote = function (promptjson, prompt) {
     let noteJson = {
-        "text":"",
+        "text": "",
         "class_type": "Note"
     };
 
@@ -280,79 +280,153 @@ Tool.ApplyPromptNote = function (promptjson, prompt){
     promptjson["10000"] = noteJson;
 }
 
-Tool.ApplyCanny = function(inputImageId, inputID, kSampler, prompt, cannyStrength, startPercent = 0.2, endPercent = 0.35, lowThreshold = 0.4, highThreshold = 0.8, control_net_name = "diffusers_xl_canny_full.safetensors"){
-    console.log("ApplyCanny");
-    let cannyControlNetLoader=  {
+Tool.ApplyOpenPoseAnimal = function (inputImageId, inputID, kSampler, prompt) {
+    //400
+    let openPoseLoader = {
         "inputs": {
-          "control_net_name": "diffusers_xl_canny_full.safetensors"
+            "control_net_name": "control_sd15_animal_openpose.pth"
         },
         "class_type": "ControlNetLoader",
         "_meta": {
-          "title": "Load ControlNet Model"
+            "title": "Load ControlNet Model"
         }
-      };
-
-    let cannyApply ={
+    }
+    //401
+    let openPoseApply = {
         "inputs": {
-          "strength": 0.8,
-          "start_percent": 0.2,
-          "end_percent": 0.35,
-          "positive": [
-            "182",
-            0
-          ],
-          "negative": [
-            "182",
-            1
-          ],
-          "control_net": [
-            "300",
-            0
-          ],
-          "image": [
-            "302",
-            0
-          ]
+            "strength": 0.5,
+            "start_percent": 0,
+            "end_percent": 0.65,
+            "positive": [
+                "133",
+                0
+            ],
+            "negative": [
+                "134",
+                0
+            ],
+            "control_net": [
+                "400",
+                0
+            ],
+            "image": [
+                "402",
+                0
+            ]
         },
         "class_type": "ControlNetApplyAdvanced",
         "_meta": {
-          "title": "Apply ControlNet (Advanced)"
+            "title": "Apply ControlNet (Advanced)"
         }
-      };
-      let cannyPreproceesor =  {
+    }
+
+    //402
+    let openPosePreprocessor = {
         "inputs": {
-          "low_threshold": 0.4,
-          "high_threshold": 0.8,
-          "image": [
-            "1",
-            0
-          ]
+            "detect_hand": "enable",
+            "detect_body": "enable",
+            "detect_face": "enable",
+            "resolution": 512,
+            "bbox_detector": "yolox_l.onnx",
+            "pose_estimator": "dw-ll_ucoco_384.onnx",
+            "image": [
+                "1",
+                0
+            ]
+        },
+        "class_type": "DWPreprocessor",
+        "_meta": {
+            "title": "DWPose Estimator"
+        }
+    }
+
+    openPosePreprocessor["inputs"]["image"][0] = inputImageId;
+
+    openPoseApply["inputs"]["positive"][0] = inputID;
+    openPoseApply["inputs"]["negative"][0] = inputID;
+
+    prompt[kSampler]["inputs"]["positive"][0] = "401";
+    prompt[kSampler]["inputs"]["negative"][0] = "401";
+
+
+    prompt["400"] = openPoseLoader;
+    prompt["401"] = openPoseApply;
+    prompt["402"] = openPosePreprocessor;
+}
+
+Tool.ApplyCanny = function (inputImageId, inputID, kSampler, prompt, cannyStrength, startPercent = 0.2, endPercent = 0.35, lowThreshold = 0.4, highThreshold = 0.8, control_net_name = "diffusers_xl_canny_full.safetensors") {
+    console.log("ApplyCanny");
+    let cannyControlNetLoader = {
+        "inputs": {
+            "control_net_name": "diffusers_xl_canny_full.safetensors"
+        },
+        "class_type": "ControlNetLoader",
+        "_meta": {
+            "title": "Load ControlNet Model"
+        }
+    };
+
+    let cannyApply = {
+        "inputs": {
+            "strength": 0.8,
+            "start_percent": 0.2,
+            "end_percent": 0.35,
+            "positive": [
+                "182",
+                0
+            ],
+            "negative": [
+                "182",
+                1
+            ],
+            "control_net": [
+                "300",
+                0
+            ],
+            "image": [
+                "302",
+                0
+            ]
+        },
+        "class_type": "ControlNetApplyAdvanced",
+        "_meta": {
+            "title": "Apply ControlNet (Advanced)"
+        }
+    };
+    let cannyPreproceesor = {
+        "inputs": {
+            "low_threshold": 0.4,
+            "high_threshold": 0.8,
+            "image": [
+                "1",
+                0
+            ]
         },
         "class_type": "Canny",
         "_meta": {
-          "title": "Canny"
+            "title": "Canny"
         }
-      }
+    }
 
-      cannyControlNetLoader["inputs"]["control_net_name"] = control_net_name;
+    cannyControlNetLoader["inputs"]["control_net_name"] = control_net_name;
 
-      cannyPreproceesor["inputs"]["image"][0] = inputImageId;
-      cannyPreproceesor["inputs"]["low_threshold"] = lowThreshold;
-      cannyPreproceesor["inputs"]["high_threshold"] = highThreshold;
+    cannyPreproceesor["inputs"]["image"][0] = inputImageId;
+    cannyPreproceesor["inputs"]["low_threshold"] = lowThreshold;
+    cannyPreproceesor["inputs"]["high_threshold"] = highThreshold;
 
-      cannyApply["inputs"]["positive"][0] = inputID;
-      cannyApply["inputs"]["negative"][0] = inputID;
-      cannyApply["inputs"]["start_percent"] = startPercent;
-      cannyApply["inputs"]["end_percent"] = endPercent;
+    cannyApply["inputs"]["positive"][0] = inputID;
+    cannyApply["inputs"]["negative"][0] = inputID;
+    cannyApply["inputs"]["start_percent"] = startPercent;
+    cannyApply["inputs"]["end_percent"] = endPercent;
 
 
-      prompt[kSampler]["inputs"]["positive"][0] = "301";
-      prompt[kSampler]["inputs"]["negative"][0] = "301";
-      cannyApply["inputs"]["strength"] = cannyStrength;
+    prompt[kSampler]["inputs"]["positive"][0] = "301";
+    prompt[kSampler]["inputs"]["negative"][0] = "301";
+    cannyApply["inputs"]["strength"] = cannyStrength;
 
-      prompt["300"] = cannyControlNetLoader;
-      prompt["301"] = cannyApply;
-      prompt["302"] = cannyPreproceesor;
+    prompt["300"] = cannyControlNetLoader;
+    prompt["301"] = cannyApply;
+    prompt["302"] = cannyPreproceesor;
 }
 
 

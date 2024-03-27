@@ -10,6 +10,11 @@
         "isxl": true
     },
     {
+        "name": "epicrealism",
+        "file": "epicrealism_naturalSinRC1VAE.safetensors",
+        "isxl": false
+    },
+    {
         "name": "realistic_vision",
         "file": "realisticVisionV60B1_v60B1VAE.safetensors",
         "isxl": false

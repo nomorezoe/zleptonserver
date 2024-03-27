@@ -141,6 +141,12 @@
         "loras":"Cinematic_Hollywood_Film,BetterPhotography"
     },
     {
+        "id": "dslr",
+        "model": "epicrealism",
+        "style": "base",
+        "pipe": "adv_epic_real"
+    },
+    {
         "id": "origami",
         "model": "Deliberate_v4",
         "style": "sai-origami",

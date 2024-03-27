@@ -18,6 +18,7 @@ const PipeAdvanceLooseColor = require('./pipe_adv_loose_color');
 const PipeAdvanceBWLooseColor =  require('./pipe_adv_bw_loose_color');
 const PipeAdvanceDSLR = require("./pipe_adv_dslr");
 const PipeAdvanceBWGrain = require('./pipe_adv_bw_grain');
+const PipeAdvanceEpicReal = require('./pipe_adv_epic_real')
 
 function TaskComfyRender(task, req, queue) {
     console.log('TaskComfyRender');
@@ -50,8 +51,13 @@ function TaskComfyRender(task, req, queue) {
     var depthStrength = parseFloat(req.body.depthStrength);
     var poseStrength = parseFloat(req.body.poseStrength);
     var cannyStrength = -1;
+    var hasAnimal = false;
     if(req.body.cannyStrength!= undefined){
         cannyStrength = parseFloat(req.body.cannyStrength);
+    }
+
+    if(req.body.hasAnimal != undefined){
+        hasAnimal = parseInt(req.body.hasAnimal) == 1;
     }
 
     var cropWidth = parseFloat(req.body.cropWidth);
@@ -75,6 +81,7 @@ function TaskComfyRender(task, req, queue) {
     console.log("cropHeight:" + cropHeight);
 
     console.log("canny:" + cannyStrength);
+    console.log("hasAnimal" + hasAnimal);
 
     //lock character
     var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
@@ -152,6 +159,15 @@ function TaskComfyRender(task, req, queue) {
             applyCrop = false;
             task.pipeline = "adv_dslr";
             prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+        }
+        else{
+            processRDStyle == "delibrerate_photo";
+        }
+    }else if(processRDStyle == "adv_epic_real"){
+        if(!isLockCharacter){
+            applyCrop = false;
+            task.pipeline = "adv_epic_real";
+            prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
         }
         else{
             processRDStyle == "delibrerate_photo";
