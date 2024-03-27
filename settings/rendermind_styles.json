@@ -134,7 +134,7 @@
         "pipe": "illustration"
     },
     {
-        "id": "dslr",
+        "id": "cinematic",
         "model": "juggernautXL",
         "style": "base",
         "pipe": "adv_dslr",
