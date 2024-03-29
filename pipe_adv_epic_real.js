@@ -7,7 +7,7 @@ function PipeAdvanceEpicReal() {
 
 }
 
-PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength,  isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal){
+PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength,  hasBackDrop,  isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal){
     console.log("PipeAdvanceEpicReal.process");
 
  
@@ -21,6 +21,8 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
         if(cannyStrength > 0){
             Tool.ApplyCanny("1", "232", "246", prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "control_v11p_sd15_canny.pth");
         }
+
+
     }
     else{
         promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real.json');//');
@@ -28,6 +30,10 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
 
         if(cannyStrength > 0){
             Tool.ApplyCanny("1", "232", "45", prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "control_v11p_sd15_canny.pth");
+        }
+
+        if(hasBackDrop){
+            prompt["232"]["inputs"]["end_percent"] = 0.75;
         }
     }
     

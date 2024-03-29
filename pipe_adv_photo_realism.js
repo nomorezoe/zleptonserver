@@ -7,7 +7,7 @@ function PipeAdvancePhotoRealism() {
 
 }
 
-PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info){
+PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength,  hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info){
 
     console.log("PipeAdvancePhotoRealism");
     let promptFile;
@@ -19,6 +19,11 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
 
     if(cannyStrength > 0){
         Tool.ApplyCanny("1", "182", "192",prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "diffuserscontrolnet-canny-sdxl-1.0.safetensors");
+
+        if(hasBackDrop){
+            prompt["182"]["inputs"]["end_percent"] = 0.75;
+            prompt["33"]["inputs"][ "resolution"] = 1024;
+        }
      }
 
 

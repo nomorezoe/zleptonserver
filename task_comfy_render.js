@@ -142,7 +142,7 @@ function TaskComfyRender(task, req, queue) {
         if(!isLockCharacter){
             applyCrop = false;
             task.pipeline = "adv_photo_realism";
-            prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+            prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
         }
         else{
             processRDStyle == "real_photo_sharpen";
@@ -169,7 +169,7 @@ function TaskComfyRender(task, req, queue) {
         if(!isLockCharacter){
             applyCrop = false;
             task.pipeline = "adv_dslr";
-            prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+            prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
         }
         else{
             processRDStyle == "delibrerate_photo";
@@ -178,7 +178,7 @@ function TaskComfyRender(task, req, queue) {
         if(!isLockCharacter){
             applyCrop = false;
             task.pipeline = "adv_epic_real";
-            prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
+            prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
         }
         else{
             processRDStyle == "delibrerate_photo";
