@@ -148,7 +148,8 @@
             "sampler": "euler_ancestral",
             "scheduler": "normal",
             "poseStrength": 0.5,
-            "depthStrength": 0.4
+            "depthStrength": 0.4,
+            "cannyStrength": 0.0
         },
         {
             "pipe": "adv_dslr",
@@ -157,7 +158,8 @@
             "sampler": "dpmpp_sde",
             "scheduler": "karras",
             "poseStrength": 0.5,
-            "depthStrength": 0.4
+            "depthStrength": 0.4,
+            "cannyStrength": 0.0
         },
         {
             "pipe": "adv_epic_real",
@@ -166,7 +168,8 @@
             "sampler": "dpmpp_sde",
             "scheduler": "karras",
             "poseStrength": 0.5,
-            "depthStrength": 0.5
+            "depthStrength": 0.5,
+            "cannyStrength": 0.0
         }
     ],
     "ksampler_canny_settings": [
@@ -184,6 +187,7 @@
         },
         {
             "pipe": "adv_epic_real",
+            "poseStrength": 0.5,
             "depthStrength": 0.5,
             "cannyStrength": 0.3
         }
