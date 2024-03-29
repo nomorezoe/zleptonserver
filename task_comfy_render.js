@@ -21,11 +21,16 @@ const PipeAdvanceBWGrain = require('./pipe_adv_bw_grain');
 const PipeAdvanceEpicReal = require('./pipe_adv_epic_real')
 
 function TaskComfyRender(task, req, queue) {
-    console.log('TaskComfyRender');
-
-    var rawImg = req.files.imageByteArray.data;
-    imgData = Buffer.from(rawImg).toString('base64');
-
+    console.log('TaskComfyRender' + req.body.cfg);
+    let imgData;
+    if(req.body.file_imageData){
+        imgData = req.body.file_imageData;
+    }
+    else{
+        var rawImg = req.files.imageByteArray.data;
+        imgData = Buffer.from(rawImg).toString('base64');
+    }
+    
     //capture
     var captureFile =  uuidv4() + "capture.png";
     fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
@@ -56,6 +61,11 @@ function TaskComfyRender(task, req, queue) {
         cannyStrength = parseFloat(req.body.cannyStrength);
     }
 
+    var hasBackDrop = false;
+    if(req.body.hasBackDrop != undefined){
+        hasBackDrop = parseInt(req.body.hasBackDrop) == 1;
+    }
+
     if(req.body.hasAnimal != undefined){
         hasAnimal = parseInt(req.body.hasAnimal) == 1;
     }
@@ -82,6 +92,7 @@ function TaskComfyRender(task, req, queue) {
 
     console.log("canny:" + cannyStrength);
     console.log("hasAnimal" + hasAnimal);
+    console.log("hasBackDrop" + hasBackDrop);
 
     //lock character
     var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
