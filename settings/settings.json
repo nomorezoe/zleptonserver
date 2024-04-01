@@ -172,17 +172,23 @@
             "cannyStrength": 0.0
         }
     ],
-    "ksampler_canny_settings": [
+    "ksampler_backdrop_settings": [
         {
             "pipe": "adv_dslr",
-            "poseStrength": 0.5,
+            "sampler": "dpmpp_sde",
+            "scheduler": "karras",
+            "poseStrength": 0.0,
             "depthStrength": 0.5,
-            "cannyStrength": 0.3
+            "cannyStrength": 0.52
         },
         {
             "pipe": "adv_photo_realism",
-            "poseStrength": 0.5,
-            "depthStrength": 0.5,
+            "sampler": "dpmpp_2m",
+            "scheduler": "karras",
+            "steps": 21,
+            "cfg": 5,
+            "poseStrength": 0.0,
+            "depthStrength": 0.26,
             "cannyStrength": 0.3
         },
         {
