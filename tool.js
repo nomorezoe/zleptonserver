@@ -429,5 +429,7 @@ Tool.ApplyCanny = function (inputImageId, inputID, kSampler, prompt, cannyStreng
     prompt["302"] = cannyPreproceesor;
 }
 
+Tool.renderParams = {};
+
 
 module.exports = Tool;

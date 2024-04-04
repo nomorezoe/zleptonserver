@@ -15,31 +15,32 @@ const DeliberatePhotographyRender = require('./pipe_deliberate_photography');
 const IllustrationComicRender = require('./pipe_illustration_comic');
 const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism');
 const PipeAdvanceLooseColor = require('./pipe_adv_loose_color');
-const PipeAdvanceBWLooseColor =  require('./pipe_adv_bw_loose_color');
+const PipeAdvanceBWLooseColor = require('./pipe_adv_bw_loose_color');
 const PipeAdvanceDSLR = require("./pipe_adv_dslr");
 const PipeAdvanceBWGrain = require('./pipe_adv_bw_grain');
 const PipeAdvanceEpicReal = require('./pipe_adv_epic_real')
 
 function TaskComfyRender(task, req, queue) {
+    Tool.renderParams = {};
     console.log('TaskComfyRender' + req.body.cfg);
     let imgData;
-    if(req.body.file_imageData){
+    if (req.body.file_imageData) {
         imgData = req.body.file_imageData;
     }
-    else{
+    else {
         var rawImg = req.files.imageByteArray.data;
         imgData = Buffer.from(rawImg).toString('base64');
     }
-    
+
     //capture
-    var captureFile =  uuidv4() + "capture.png";
+    var captureFile = uuidv4() + "capture.png";
     fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
-         encoding: "base64",
-     });
-     
+        encoding: "base64",
+    });
+
     task.sendSocketMsg("generateScreenCapture", captureFile);
-    
-     //
+
+    //
     var reqModel = req.body.model == undefined ? "dynavisionXL" : req.body.model;
     var model = Tool.getModelFile(reqModel);
 
@@ -51,22 +52,42 @@ function TaskComfyRender(task, req, queue) {
     var negtext = req.body.negtext;
     var pretext = req.body.pretext;
     var style = req.body.style;
-    var lora = req.body.lora;
+    var lora = req.body.loras;
+    var lora_weights = req.body.lora_weights;
     var rd_style = req.body.rd_style;
     var depthStrength = parseFloat(req.body.depthStrength);
+    var depthStart = parseFloat(req.body.depthStart);
+    var depthEnd = parseFloat(req.body.depthEnd);
+
     var poseStrength = parseFloat(req.body.poseStrength);
+    var poseStart = parseFloat(req.body.poseStart);
+    var poseEnd = parseFloat(req.body.poseEnd);
+
     var cannyStrength = -1;
-    var hasAnimal = false;
-    if(req.body.cannyStrength!= undefined){
+    var cannyStart = -1;
+    var cannyEnd = -1;
+    if (req.body.cannyStrength != undefined) {
         cannyStrength = parseFloat(req.body.cannyStrength);
+        cannyStart = parseFloat(req.body.cannyStart);
+        cannyEnd = parseFloat(req.body.cannyEnd);
+    }
+
+    var animalStrength = -1;
+    var animalStart = -1;
+    var animalEnd = -1;
+    if (req.body.animalStrength != undefined) {
+        animalStrength = parseFloat(req.body.animalStrength);
+        animalStart = parseFloat(req.body.animalStart);
+        animalEnd = parseFloat(req.body.animalEnd);
     }
 
     var hasBackDrop = false;
-    if(req.body.hasBackDrop != undefined){
+    if (req.body.hasBackDrop != undefined) {
         hasBackDrop = parseInt(req.body.hasBackDrop) == 1;
     }
 
-    if(req.body.hasAnimal != undefined){
+    var hasAnimal = false;
+    if (req.body.hasAnimal != undefined) {
         hasAnimal = parseInt(req.body.hasAnimal) == 1;
     }
 
@@ -76,6 +97,7 @@ function TaskComfyRender(task, req, queue) {
     console.log("rd_style:" + rd_style);
     console.log("style:" + style);
     console.log("lora:" + lora);
+    console.log("lora_weights:" + lora_weights);
     console.log("pretext:" + pretext);
     console.log("2_model:" + model);
     console.log("cfg:" + cfg);
@@ -84,15 +106,42 @@ function TaskComfyRender(task, req, queue) {
     console.log("sampler:" + sampler);
     console.log("scheduler:" + scheduler);
     console.log("negtext:" + negtext);
+
     console.log("depthStrength:" + depthStrength);
+    console.log("depthStart:" + depthStart);
+    console.log("depthEnd:" + depthEnd);
+
     console.log("poseStrength:" + poseStrength);
+    console.log("poseStart:" + poseStart);
+    console.log("poseEnd:" + poseEnd);
 
     console.log("cropWidth:" + cropWidth);
     console.log("cropHeight:" + cropHeight);
 
-    console.log("canny:" + cannyStrength);
+    console.log("cannyStrength:" + cannyStrength);
+    console.log("cannyStart:" + cannyStart);
+    console.log("cannyEnd:" + cannyEnd);
+
     console.log("hasAnimal" + hasAnimal);
     console.log("hasBackDrop" + hasBackDrop);
+
+    console.log("animalStrength:" + animalStrength);
+    console.log("animalStart:" + animalStart);
+    console.log("animalEnd:" + animalEnd);
+
+    Tool.renderParams.lora_weights = {};
+    Tool.renderParams.depthStart = depthStart;
+    Tool.renderParams.depthEnd = depthEnd;
+    Tool.renderParams.poseStart = poseStart;
+    Tool.renderParams.poseEnd = poseEnd;
+    Tool.renderParams.cannyStart = cannyStart;
+    Tool.renderParams.cannyEnd = cannyEnd;
+
+    Tool.renderParams.animalStrength = animalStrength;
+    Tool.renderParams.animalStart = animalStart;
+    Tool.renderParams.animalEnd = animalEnd;
+
+
 
     //lock character
     var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
@@ -115,9 +164,13 @@ function TaskComfyRender(task, req, queue) {
     var loras = [];
     if (lora != "" && lora != null) {
         loras = lora.split(",");
+
+        for (let i = 0; i < loras.length; i++) {
+            Tool.renderParams.lora_weights[loras[i]] = lora_weights[i];
+        }
     }
 
-    let processRDStyle = Tool.getRenderStyle(rd_style, reqModel, loras, style, sampler, sampleSteps,scheduler,cfg, depthStrength, poseStrength);
+    let processRDStyle = Tool.getRenderStyle(rd_style, reqModel, loras, style, sampler, sampleSteps, scheduler, cfg, depthStrength, poseStrength);
     if (processRDStyle != null) {
         console.log("processRDStyle:" + processRDStyle);
     }
@@ -128,65 +181,65 @@ function TaskComfyRender(task, req, queue) {
     let info = originalPosPrompt;
 
     //new pipe
-    if(processRDStyle == "adv_loose_color"){
-        if(!isLockCharacter){
+    if (processRDStyle == "adv_loose_color") {
+        if (!isLockCharacter) {
             // applyCrop = false;
             task.pipeline = "adv_loose_color";
             prompt = PipeAdvanceLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
         }
-        else{
+        else {
             processRDStyle == "illustration";
         }
     }
-    else if(processRDStyle == "adv_photo_realism"){
-        if(!isLockCharacter){
+    else if (processRDStyle == "adv_photo_realism") {
+        if (!isLockCharacter) {
             applyCrop = false;
             task.pipeline = "adv_photo_realism";
             prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
         }
-        else{
+        else {
             processRDStyle == "real_photo_sharpen";
         }
-    }else if(processRDStyle == "adv_bw_loose"){
-        if(!isLockCharacter){
+    } else if (processRDStyle == "adv_bw_loose") {
+        if (!isLockCharacter) {
             //applyCrop = false;
             task.pipeline = "adv_bw_loose";
-            prompt =PipeAdvanceBWLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+            prompt = PipeAdvanceBWLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
         }
-        else{
+        else {
             processRDStyle == "illustration_tone";
         }
-    }else if(processRDStyle == "adv_bw_grain"){
-        if(!isLockCharacter){
+    } else if (processRDStyle == "adv_bw_grain") {
+        if (!isLockCharacter) {
             //applyCrop = false;
             task.pipeline = "adv_bw_grain";
-            prompt =PipeAdvanceBWGrain.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+            prompt = PipeAdvanceBWGrain.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
         }
-        else{
+        else {
             processRDStyle == "illustration_tone_grain";
         }
-    }else if(processRDStyle == "adv_dslr"){
-        if(!isLockCharacter){
+    } else if (processRDStyle == "adv_dslr") {
+        if (!isLockCharacter) {
             applyCrop = false;
             task.pipeline = "adv_dslr";
             prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
         }
-        else{
+        else {
             processRDStyle == "delibrerate_photo";
         }
-    }else if(processRDStyle == "adv_epic_real"){
-        if(!isLockCharacter){
+    } else if (processRDStyle == "adv_epic_real") {
+        if (!isLockCharacter) {
             applyCrop = false;
             task.pipeline = "adv_epic_real";
             prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
         }
-        else{
+        else {
             processRDStyle == "delibrerate_photo";
         }
     }
 
     //old pipe
-    if( prompt == null){
+    if (prompt == null) {
         // process 
         if (processRDStyle == "illustration") {//&& !isLockCharacter) {
             task.pipeline = "illustration";
@@ -199,12 +252,12 @@ function TaskComfyRender(task, req, queue) {
         else if (processRDStyle == "real_photo_sharpen") {// && !isLockCharacter) {
             task.pipeline = "real_photo_sharpen";
             prompt = RealismPhotographySharpenRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
-            
+
         }
         else if (processRDStyle == "real_photo") {//&& !isLockCharacter) {
             task.pipeline = "real_photo";
             prompt = RealismPhotographyRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
-            
+
         }
         else if (processRDStyle == "delibrerate_photo") {// && !isLockCharacter) {
             task.pipeline = "delibrerate_photo";
@@ -224,7 +277,7 @@ function TaskComfyRender(task, req, queue) {
     }
 
     task.pipeline += "_" + isLockCharacter;
-    
+
 
 
     if (prompt == null) {
@@ -232,16 +285,16 @@ function TaskComfyRender(task, req, queue) {
         return;
     }
 
-    if(applyCrop){
+    if (applyCrop) {
         Tool.applyCropInfoForLatentImage(prompt);
     }
-    
+
     Tool.applyCropInfo(prompt, cropWidth, cropHeight);
-    
+
     Tool.applyRandomFileName(prompt);
 
     //Tool.ApplyPromptNote(prompt, originalPosPrompt);
-   
+
     sendRequest(prompt, queue, task);
 }
 
@@ -271,7 +324,7 @@ function sendRequest(prompt, queue, task) {
 
             reshttps.on('data', (d) => {
                 datastring += d;
-               // console.log("ondata");
+                // console.log("ondata");
             });
 
             reshttps.on('end', (d) => {
@@ -292,7 +345,7 @@ function sendRequest(prompt, queue, task) {
             reshttps.on("error", function (error) {
                 //callback(error);
                 console.error(error);
-          });
+            });
 
         }
         else {

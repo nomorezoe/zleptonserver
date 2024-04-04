@@ -141,8 +141,8 @@
             "sampler": "euler",
             "scheduler": "normal",
             "depthStrength": 0.8,
-            "cannyStart":0,
-            "cannyEnd":0.75
+            "depthStart":0,
+            "depthEnd":0.75
         },
         {
             "pipe": "adv_photo_realism",
@@ -241,6 +241,24 @@
             "animalStrength": 0.0,
             "animalStart":0,
             "animalEnd":1
+        },
+        {
+            "pipe": "adv_bw_grain",
+            "cannyStrength": 0.0,
+            "cannyStart":0,
+            "cannyEnd":0.75
+        },
+        {
+            "pipe": "adv_bw_loose",
+            "cannyStrength": 0.0,
+            "cannyStart":0,
+            "cannyEnd":0.75
+        },
+        {
+            "pipe": "adv_loose_color",
+            "cannyStrength": 0.0,
+            "cannyStart":0,
+            "cannyEnd":0.75
         }
     ]
 }
