@@ -4,28 +4,34 @@
         "model": "realism_engine_sdxl",
         "style": "base",
         "pipe": "adv_photo_realism",
-        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+        "loras": "Cinematic_Hollywood_Film,BetterPhotography",
+        "lora_weights": "1.5,1.5",
+        "optional_loras": "real-humans-PublicPrompts",
+        "optional_lora_weights": "0.95"
     },
     {
         "id": "loose_color",
         "model": "sd_xl_base_1.0_0.9vae",
         "style": "base",
         "pipe": "adv_loose_color",
-        "loras": "colscottstyle"
+        "loras": "colscottstyle",
+        "lora_weights": "0.6"
     },
     {
         "id": "bw_loose_film_grain",
         "model": "sd_xl_base_1.0_0.9vae",
         "style": "base",
         "pipe": "adv_bw_grain",
-        "loras": "bwstyle"
+        "loras": "bwstyle",
+        "lora_weights": "0.6"
     },
     {
         "id": "bw_loose",
         "model": "sd_xl_base_1.0_0.9vae",
         "style": "base",
         "pipe": "adv_bw_loose",
-        "loras": "bwstyle"
+        "loras": "bwstyle",
+        "lora_weights": "0.6"
     },
     {
         "id": "print_ad",
@@ -38,14 +44,14 @@
         "model": "realism_engine_sdxl",
         "style": "ads-fashion editorial",
         "pipe": "real_photo",
-        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+        "loras": "Cinematic_Hollywood_Film,BetterPhotography"
     },
     {
         "id": "glamour_photography",
         "model": "realism_engine_sdxl",
         "style": "ads-luxury",
         "pipe": "real_photo",
-        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+        "loras": "Cinematic_Hollywood_Film,BetterPhotography"
     },
     {
         "id": "loose_sketch_wash",
@@ -64,7 +70,7 @@
         "model": "Deliberate_v4",
         "style": "fashion-illustration-quick-sketch-9",
         "pipe": "illustration",
-        "note":"duplicated"
+        "note": "duplicated"
     },
     {
         "id": "classic_animation",
@@ -95,7 +101,7 @@
         "model": "Deliberate_v4",
         "style": "engraving-illustration",
         "pipe": "illustration",
-        "note":"Realistic Pencil"
+        "note": "Realistic Pencil"
     },
     {
         "id": "fantasy_digital_art",
@@ -138,7 +144,10 @@
         "model": "juggernautXL",
         "style": "base",
         "pipe": "adv_dslr",
-        "loras":"Cinematic_Hollywood_Film,BetterPhotography"
+        "loras": "Cinematic_Hollywood_Film,BetterPhotography",
+        "lora_weights": "1.5,1.5",
+        "optional_loras": "real-humans-PublicPrompts",
+        "optional_lora_weights": "0.95"
     },
     {
         "id": "dslr",
