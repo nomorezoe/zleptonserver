@@ -24,13 +24,8 @@ function TaskComfyRender(task, req, queue) {
     Tool.renderParams = {};
     console.log('TaskComfyRender' + req.body.cfg);
     let imgData;
-    if (req.body.file_imageData) {
-        imgData = req.body.file_imageData;
-    }
-    else {
-        var rawImg = req.files.imageByteArray.data;
-        imgData = Buffer.from(rawImg).toString('base64');
-    }
+    var rawImg = req.files.imageByteArray.data;
+    imgData = Buffer.from(rawImg).toString('base64');
 
     //capture
     var captureFile = uuidv4() + "capture.png";

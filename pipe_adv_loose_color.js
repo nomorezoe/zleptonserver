@@ -15,8 +15,12 @@ PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt,
     let prompt = JSON.parse(promptFile);
 
     if(cannyStrength > 0){
-        Tool.ApplyCanny("44", "41", "3", prompt, cannyStrength);
+        Tool.ApplyCanny("44", "41", "3", prompt, cannyStrength, Tool.renderParams.cannyStart, Tool.renderParams.cannyEnd);
      }
+
+    if(Tool.renderParams.lora_weights["colscottstyle"] != undefined){
+        prompt["29"]["inputs"]["strength_model"] = Tool.renderParams.lora_weights["colscottstyle"];
+    }
 
     let tailText = ",Warm color temperature, serene facial expression";
     
@@ -40,7 +44,8 @@ PipeAdvanceLooseColor.process = function(imgData, positivePrompt, negtivePrompt,
     prompt["3"]["inputs"]["scheduler"] = scheduler;
 
     prompt["41"]["inputs"]["strength"] = depthStrength;
-
+    prompt["41"]["inputs"]["start_percent"] = Tool.renderParams.depthStart;
+    prompt["41"]["inputs"]["end_percent"] = Tool.renderParams.depthEnd;
     return prompt;
 }
 

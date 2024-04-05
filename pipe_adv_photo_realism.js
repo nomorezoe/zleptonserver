@@ -18,10 +18,10 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
     let prompt = JSON.parse(promptFile);
 
     if(cannyStrength > 0){
-        Tool.ApplyCanny("1", "182", "192",prompt, cannyStrength, 0.0, 0.75, 0.01, 0.25, "diffuserscontrolnet-canny-sdxl-1.0.safetensors");
+        Tool.ApplyCanny("1", "182", "192",prompt, cannyStrength, Tool.renderParams.cannyStart, Tool.renderParams.cannyEnd, 0.01, 0.25, "diffuserscontrolnet-canny-sdxl-1.0.safetensors");
 
         if(hasBackDrop){
-            prompt["182"]["inputs"]["end_percent"] = 0.75;
+           // prompt["182"]["inputs"]["end_percent"] = 0.75;
             prompt["33"]["inputs"][ "resolution"] = 1024;
         }
      }
@@ -60,16 +60,38 @@ PipeAdvancePhotoRealism.process = function(imgData, positivePrompt, negtivePromp
     prompt["193"]["inputs"]["scheduler"] = scheduler;
 
     prompt["181"]["inputs"]["strength"] = poseStrength;
+    prompt["181"]["inputs"]["start_percent"] = Tool.renderParams.poseStart;
+    prompt["181"]["inputs"]["end_percent"] = Tool.renderParams.poseEnd;
+
     prompt["182"]["inputs"]["strength"] = depthStrength;
+    prompt["182"]["inputs"]["start_percent"] = Tool.renderParams.depthStart;
+    prompt["182"]["inputs"]["end_percent"] = Tool.renderParams.depthEnd;
    
     
 
     //lora
    
     console.log("loras" + loras);
-    if(loras.indexOf("real-humans-PublicPrompts") != -1){
+    if (Tool.renderParams.lora_weights["real-humans-PublicPrompts"] != undefined) {
         prompt["52"]["inputs"]["switch_1"] = "On";
+        prompt["52"]["inputs"]["model_weight_1"] = Tool.renderParams.lora_weights["real-humans-PublicPrompts"];
         console.log("lora real-humans-PublicPrompts On");
+    }
+
+    if (Tool.renderParams.lora_weights["Cinematic_Hollywood_Film"] != undefined) {
+        prompt["54"]["inputs"]["model_weight_1"] = Tool.renderParams.lora_weights["Cinematic_Hollywood_Film"];
+        console.log("lora Cinematic_Hollywood_Film On");
+    }
+    else{
+        prompt["54"]["inputs"]["switch_1"] = "Off";
+    }
+
+    if (Tool.renderParams.lora_weights["BetterPhotography"] != undefined) {
+        prompt["54"]["inputs"]["model_weight_2"] = Tool.renderParams.lora_weights["BetterPhotography"];
+        console.log("lora BetterPhotography On");
+    }
+    else{
+        prompt["54"]["inputs"]["switch_2"] = "Off";
     }
     return prompt;
 }
