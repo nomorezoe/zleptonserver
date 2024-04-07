@@ -10,6 +10,7 @@ const PipeAdvancePhotoRealismUpscale = require("./pipe_adv_photo_realism_upscale
 const PipeAdvanceDSLRUpscale = require("./pipe_adv_photo_dslr_upscale");
 const PipeAdvanceLooseColorUpscale = require('./pipe_adv_loose_color_upscale');
 const PipeAdvanceBWLooseUpscale = require('./pipe_adv_bw_loose_color_upscale');
+const PipeAdvanceEpicReal = require("./pipe_adv_epic_real_upscale");
 
 function TaskComfyUpscale(task, req, queue) {
 
@@ -129,6 +130,10 @@ function TaskComfyUpscale(task, req, queue) {
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_loose_color_2.json")){
         task.pipeline = "upscale_loose_color";
         promptjson = PipeAdvanceLooseColorUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+    }
+    else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_epic_real.json")){
+        task.pipeline = "upscale_real_epic";
+        promptjson = PipeAdvanceEpicReal.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && 
         (Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_loose_color_2.json")
