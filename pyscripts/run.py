@@ -5,20 +5,20 @@ import numpy as np
 
 def predict_on_image(model, img, conf):
     result = model(img, conf=conf)[0]
-
+    print("2")
     # detection
     # result.boxes.xyxy   # box with xyxy format, (N, 4)
     cls = result.boxes.cls.cpu().numpy()    # cls, (N, 1)
     probs = result.boxes.conf.cpu().numpy()  # confidence score, (N, 1)
     boxes = result.boxes.xyxy.cpu().numpy()   # box with xyxy format, (N, 4)
-
+    print("3")
     # segmentation
     masks = result.masks.data.cpu().numpy()     # masks, (N, H, W)
     masks = np.moveaxis(masks, 0, -1) # masks, (H, W, N)
     # rescale masks to original image
     masks = scale_image(masks, result.masks.orig_shape)
     masks = np.moveaxis(masks, -1, 0) # masks, (N, H, W)
-
+    print("4")
     return boxes, masks, cls, probs
 
 
@@ -54,10 +54,10 @@ def overlay(image, mask, color, alpha, resize=None):
 
 # Load a model
 model = YOLO('ultralytics/segm/person_yolov8m-seg.pt')
-
+print("1")
 # load image by OpenCV like numpy.array
 img = cv2.imread('test_load.png')
-
+print("2")
 # predict by YOLOv8
 boxes, masks, cls, probs = predict_on_image(model, img, conf=0.5)
 
