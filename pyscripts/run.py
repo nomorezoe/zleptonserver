@@ -63,7 +63,7 @@ boxes, masks, cls, probs = predict_on_image(model, img, conf=0.5)
 
 # overlay masks on original image
 image_with_masks = np.copy(img)
-print("len:" + len(masks))
+print("len:" + str(len(masks)))
 for mask_i in masks:
     image_with_masks = overlay(image_with_masks, mask_i, color=(0,255,0), alpha=0.3)
 
