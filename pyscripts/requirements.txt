@@ -1,0 +1,3 @@
+ultralytics=8.0.145
+numpy
+cv2
