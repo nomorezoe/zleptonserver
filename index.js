@@ -1,13 +1,13 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
-
+const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 //const { readFileSync } = require('fs');
 //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 //const ExifReader = require('exifreader');
-
+const OUTPUT_FOLDER = "/imgs/";
 //const http = require('http');
 const fs = require('fs');
 const https = require('https');
@@ -23,7 +23,7 @@ const Task = require('./task');
 const Queue = require('./queue');
 const SocketManager = require('./socket_manager');
 const QueueManager = require('./queue_manager');
-
+const GetCharacterMask = require("./get_character_mask")
 
 server.setTimeout(600000);
 
@@ -50,7 +50,7 @@ app.use(bodyParser.urlencoded({
 app.get('/', (req, res) => {
     res.send('Hello World !');
 
-   
+
 
 });
 
@@ -168,7 +168,7 @@ app.use('/inpaint', function (req, res, next) {
 
     var session = req.body.session;
     let queue = new Queue(session);
-    let task = new Task("inpaint",  0,req);
+    let task = new Task("inpaint", 0, req);
     queue.tasks.push(task);
 
     QueueManager.instance.addToQueue(queue);
@@ -182,6 +182,16 @@ app.use('/inpaint', function (req, res, next) {
 
 })
 //inpaint -end
+
+
+//get mask start
+app.use('/getmask', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/getmask', (req, res) => {
+    GetCharacterMask.process(req, res);
+})
+//get mask end
 
 
 app.get('/styles', (req, res) => {
@@ -222,56 +232,80 @@ app.use('/test', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).get('/test', (req, res) => {
-    req = {};
-    req.files = {};
-    req.files.imageByteArray = {};
+    let filename = "./pipe/test_batch.json"
 
-    let imageData = require('fs').readFileSync("./images/test_input.png");
-    req.files.imageByteArray.data = imageData;
+    const promptFile = fs.readFileSync(filename);//');
+    let prompt = JSON.parse(promptFile);
+    var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
+    const options = {
+        hostname: require('./tool').RequestURL,
+        path: '/run',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length,
+            'Authorization': "Bearer ozlh7xvpezbtwlr9tseg14imf4fhqo5v"
+        }
+    };
 
-    req.body = {};
-    req.body.model = "dreamshaper";
-    req.body.cfg = 7;
-    req.body.prompt = "a lady in the forest"
-    req.body.sampleSteps = 20;
-    req.body.depthStrength = 0.53;
-    req.body.poseStrength = 1.0;
-    req.body.negtext = "";
+    
+    var datastring = "";
+    const reqhttps = https.request(options, (reshttps) => {
+        console.log('statusCode:', reshttps.statusCode);
+        console.log('headers:', reshttps.headers);
 
-    var session = "test";
-    let queue = new Queue(session);
-    let task = new Task("render", 0, req);
-    queue.tasks.push(task);
 
-    QueueManager.instance.addToQueue(queue);
+        if (reshttps.statusCode == 200) {
+            console.log("200");
 
-    res.json({
-        success: true,
-        queue_count: QueueManager.instance.remainQueueCount()
+            reshttps.on('data', (d) => {
+                datastring += d;
+                // console.log("ondata");
+            });
+
+            reshttps.on('end', (d) => {
+                console.error("end");
+                const jsonobj = JSON.parse(datastring);
+                for (var i = 0; i < jsonobj.length; i++) {
+                    var imgname = uuidv4() + ".png";
+                   // task.imageFileNames.push(imgname);
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
+                        encoding: "base64",
+                    });
+                }
+
+            });
+
+            reshttps.on("error", function (error) {
+                //callback(error);
+                console.error(error);
+            });
+        }
     });
 
-    QueueManager.instance.getNextQueue();
+    reqhttps.write(data);
+    reqhttps.end();
 })
 
 startAutoRemoveFileProcess();
 
-function startAutoRemoveFileProcess(){
+function startAutoRemoveFileProcess() {
     removeFile();
     setInterval(() => {
         removeFile();
-      }, 86400000);
+    }, 86400000);
 }
 
-function removeFile(){
+function removeFile() {
     console.log("removeFile");
-    let d = Date.now() - 24 * 60  * 60 * 1000 ;
-    let time =  new Date(d);
-    let dateString = time.getFullYear() + "-" +(time. getMonth()  + 1) +"-"+ time.getDate();
+    let d = Date.now() - 24 * 60 * 60 * 1000;
+    let time = new Date(d);
+    let dateString = time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate();
 
-    let cmd = "find ./imgs/ -type f ! -newermt '"+ dateString +"' -exec rm -f {} \\;";
+    let cmd = "find ./imgs/ -type f ! -newermt '" + dateString + "' -exec rm -f {} \\;";
     var exec = require('child_process').exec;
 
-    exec(cmd, function(error, stdout, stderr) {
+    exec(cmd, function (error, stdout, stderr) {
         // command output is in stdout
     });
 }
