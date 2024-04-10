@@ -19,6 +19,7 @@ const PipeAdvanceBWLooseColor = require('./pipe_adv_bw_loose_color');
 const PipeAdvanceDSLR = require("./pipe_adv_dslr");
 const PipeAdvanceBWGrain = require('./pipe_adv_bw_grain');
 const PipeAdvanceEpicReal = require('./pipe_adv_epic_real')
+const CharacterTool = require("./character_tool");
 
 function TaskComfyRender(task, req, queue) {
     Tool.renderParams = {};
@@ -139,18 +140,16 @@ function TaskComfyRender(task, req, queue) {
 
 
     //lock character
-    var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.characterFile != undefined);
-    var characterFile = "";
-    var fullCharacterPath = "";
-    if (isLockCharacter) {
-        characterFile = req.body.characterFile;
-        console.log("lockcharacter:" + characterFile);
-
-        if (req.body.fullCharacterFile != undefined) {
-            fullCharacterPath = req.body.fullCharacterFile;
-            console.log("fullCharacterPath:" + fullCharacterPath);
-        }
+    CharacterTool.lockChParams = {};
+    CharacterTool.lockChParams.isLockCharacter = false;
+    if (req.body.lockCharacter == 1 && req.body.fullCharacterFile != undefined) {
+        CharacterTool.lockChParams.isLockCharacter = true;
+        CharacterTool.lockChParams.fullCharacterPath = req.body.fullCharacterFile;
     }
+
+    //adapter
+    var fullCharacterPath = CharacterTool.lockChParams.fullCharacterPath;
+    var isLockCharacter = CharacterTool.lockChParams.isLockCharacter;
 
     //add pretext
     let posPrompt = pretext + originalPosPrompt;
@@ -189,14 +188,10 @@ function TaskComfyRender(task, req, queue) {
         }
     }
     else if (processRDStyle == "adv_photo_realism") {
-        if (!isLockCharacter) {
-            applyCrop = false;
-            task.pipeline = "adv_photo_realism";
-            prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
-        }
-        else {
-            processRDStyle == "real_photo_sharpen";
-        }
+        applyCrop = false;
+        task.pipeline = "adv_photo_realism";
+        prompt = PipeAdvancePhotoRealism.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, info);
+
     } else if (processRDStyle == "adv_bw_loose") {
         if (!isLockCharacter) {
             //applyCrop = false;

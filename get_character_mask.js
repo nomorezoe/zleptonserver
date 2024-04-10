@@ -6,6 +6,24 @@ function GetCharacterMask() {
 
 }
 
+GetCharacterMask.currentTask = null;
+GetCharacterMask.tasks = [];
+
+GetCharacterMask.queueProcess = function (req, res) {
+    GetCharacterMask.tasks.push([req, res]);
+    GetCharacterMask.getNextQueue();
+}
+
+GetCharacterMask.getNextQueue = function () {
+    if (GetCharacterMask.currentTask == null) {
+        if (GetCharacterMask.tasks.length > 0) {
+            GetCharacterMask.currentTask = GetCharacterMask.tasks.splice(0, 1)[0];
+            console.log(" GetCharacterMask.tasks" + GetCharacterMask.tasks.length);
+            GetCharacterMask.process(GetCharacterMask.currentTask[0], GetCharacterMask.currentTask [1]);
+        }
+    }
+}
+
 GetCharacterMask.process = function (req, res) {
     var url = req.body.img_url;
     console.log("url" + url);
@@ -29,17 +47,24 @@ GetCharacterMask.process = function (req, res) {
 
     childPython.on('error', function (err) {
         console.log("error" + err);
+
+        GetCharacterMask.currentTask = null;
+        GetCharacterMask.getNextQueue();
     });
 
 
     childPython.on('exit', (code) => {
         console.log("exit" + code + ":" + result);
+        if (code == 0) {
+            res.json({
+                success: true,
+                file: file,
+                count: count
+            });
+        }
 
-        res.json({
-            success: true,
-            file: file,
-            count: count
-        });
+        GetCharacterMask.currentTask = null;
+        GetCharacterMask.getNextQueue();
 
     });
 

@@ -189,7 +189,7 @@ app.use('/getmask', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).post('/getmask', (req, res) => {
-    GetCharacterMask.process(req, res);
+    GetCharacterMask.queueProcess(req, res);
 })
 //get mask end
 
