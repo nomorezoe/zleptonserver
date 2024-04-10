@@ -159,9 +159,11 @@ function TaskComfyRender(task, req, queue) {
     var loras = [];
     if (lora != "" && lora != null) {
         loras = lora.split(",");
+        lora_weight_items = lora_weights.split(",");
 
         for (let i = 0; i < loras.length; i++) {
-            Tool.renderParams.lora_weights[loras[i]] = lora_weights[i];
+            Tool.renderParams.lora_weights[loras[i]] = parseFloat(lora_weight_items[i]);
+            //console.log("lora weights: " + loras[i] +":"+ lora_weight_items[i])
         }
     }
 
