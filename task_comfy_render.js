@@ -148,6 +148,7 @@ function TaskComfyRender(task, req, queue) {
     }
 
     //adapter
+    var characterFile = null;
     var fullCharacterPath = CharacterTool.lockChParams.fullCharacterPath;
     var isLockCharacter = CharacterTool.lockChParams.isLockCharacter;
 
