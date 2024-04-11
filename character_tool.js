@@ -7,9 +7,10 @@ function CharacterTool() {
 
 }
 
+const BATCH = 4;
 CharacterTool.lockChParams = {};
 
-CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer_url, image_id, model_id, sampler_id, vae_id, neg_id, vae_decode_id, save_image_id) {
+CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer_url, image_id, model_id, sampler_id, vae_id, neg_id, vae_decode_id, save_image_id, model_vae_id) {
     //"100001"
     let loadImageFromUrl = {
         "inputs": {
@@ -357,55 +358,61 @@ CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer
     prompt["100477"] = UltralyticsDetectorProvider_face;
 
     //"100476"
-    let ImpactSimpleDetectorSEGS_render = {
-        "inputs": {
-            "bbox_threshold": 0.5,
-            "bbox_dilation": 0,
-            "crop_factor": 3,
-            "drop_size": 50,
-            "sub_threshold": 0.5,
-            "sub_dilation": 0,
-            "sub_bbox_expansion": 0,
-            "sam_mask_hint_threshold": 0.7,
-            "post_dilation": 0,
-            "bbox_detector": [
-                "100477",
-                0
-            ],
-            "image": [
-                vae_decode_id,
-                0
-            ],
-            "sam_model_opt": [
-                "100397",
-                0
-            ]
-        },
-        "class_type": "ImpactSimpleDetectorSEGS",
-        "_meta": {
-            "title": "Simple Detector (SEGS)"
-        }
-    }
-    prompt["100476"] = ImpactSimpleDetectorSEGS_render;
+    for (let b = 0; b < BATCH; b++) {
 
-    ///"100484": 
-    let ImpactSEGSOrderedFilter_render = {
-        "inputs": {
-            "target": "x1",
-            "order": false,
-            "take_start": img_ch_index,
-            "take_count": 1,
-            "segs": [
-                "100476",
-                0
-            ]
-        },
-        "class_type": "ImpactSEGSOrderedFilter",
-        "_meta": {
-            "title": "SEGS Filter (ordered)"
+        let ImpactSimpleDetectorSEGS_render_Id = (100476 + b * 10000).toString();
+        let ImpactSimpleDetectorSEGS_render = {
+            "inputs": {
+                "bbox_threshold": 0.5,
+                "bbox_dilation": 0,
+                "crop_factor": 3,
+                "drop_size": 50,
+                "sub_threshold": 0.5,
+                "sub_dilation": 0,
+                "sub_bbox_expansion": 0,
+                "sam_mask_hint_threshold": 0.7,
+                "post_dilation": 0,
+                "bbox_detector": [
+                    "100477",
+                    0
+                ],
+                "image": [
+                    (parseInt(vae_decode_id) + b * 10000).toString(),
+                    0
+                ],
+                "sam_model_opt": [
+                    "100397",
+                    0
+                ]
+            },
+            "class_type": "ImpactSimpleDetectorSEGS",
+            "_meta": {
+                "title": "Simple Detector (SEGS)"
+            }
         }
+        prompt[ImpactSimpleDetectorSEGS_render_Id] = ImpactSimpleDetectorSEGS_render;
+
+        ///"100484": 
+        let ImpactSEGSOrderedFilter_render_Id = (100484 + b * 10000).toString();
+        let ImpactSEGSOrderedFilter_render = {
+            "inputs": {
+                "target": "x1",
+                "order": false,
+                "take_start": img_ch_index,
+                "take_count": 1,
+                "segs": [
+                    ImpactSimpleDetectorSEGS_render_Id,
+                    0
+                ]
+            },
+            "class_type": "ImpactSEGSOrderedFilter",
+            "_meta": {
+                "title": "SEGS Filter (ordered)"
+            }
+        }
+        prompt[ImpactSEGSOrderedFilter_render_Id] = ImpactSEGSOrderedFilter_render;
     }
-    prompt["100484"] = ImpactSEGSOrderedFilter_render;
+
 
     //"100503": 
     let ImpactSimpleDetectorSEGS_face_ref = {
@@ -580,7 +587,52 @@ CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer
     prompt["100525"] = CLIPTextEncode_face;
 
 
-    for (let b = 0; b < 1; b++) {
+    //insert latent for batch
+    let latentinputs = prompt[vae_decode_id]["inputs"]["samples"][0];
+    delete prompt[save_image_id];
+    delete prompt[vae_decode_id];
+    for (let b = 0; b < BATCH; b++) {
+
+
+        let LatentFromBatch_id = (200224 + b * 10000).toString();
+         //"200224"
+         let LatentFromBatch = {
+            "inputs": {
+                "batch_index": b,
+                "length": 1,
+                "samples": [
+                    latentinputs,
+                    0
+                ]
+            },
+            "class_type": "LatentFromBatch",
+            "_meta": {
+                "title": "Latent From Batch"
+            }
+        }
+        prompt[LatentFromBatch_id] = LatentFromBatch;
+
+
+        let vaeDecodeID = (parseInt(vae_decode_id) + b * 10000).toString();
+        console.log("vaeDecodeID: " + vaeDecodeID);
+        let VAEDecode = {
+            "inputs": {
+                "samples": [
+                    LatentFromBatch_id,
+                    0
+                ],
+                "vae": [
+                    model_vae_id,
+                    2
+                ]
+            },
+            "class_type": "VAEDecode",
+            "_meta": {
+                "title": "VAE Decode"
+            }
+        };
+        prompt[vaeDecodeID] = VAEDecode;
+
         //"100524": 
         let DetailerForEach_Face_Id = (100524 + b * 10000).toString();
         let DetailerForEach_Face = {
@@ -602,11 +654,11 @@ CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer
                 "inpaint_model": false,
                 "noise_mask_feather": 20,
                 "image": [
-                    vae_decode_id,
+                    vaeDecodeID,
                     0
                 ],
                 "segs": [
-                    "100484100484",
+                    (100484 + 10000 * b).toString(),
                     0
                 ],
                 "model": [
@@ -636,32 +688,36 @@ CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer
             }
         }
         prompt[DetailerForEach_Face_Id] = DetailerForEach_Face;
-    }
+
+       
 
 
-    //insert latent for batch
-    let latentinputs = prompt[vae_decode_id]["inputs"]["samples"][0];
-    //"200224"
-    let LatentFromBatch_0 = {
-        "inputs": {
-            "batch_index": 0,
-            "length": 1,
-            "samples": [
-                latentinputs,
-                0
-            ]
-        },
-        "class_type": "LatentFromBatch",
-        "_meta": {
-            "title": "Latent From Batch"
+
+        //redirect image
+        let saveImageID = (parseInt(save_image_id) + b * 10000).toString();
+        console.log("saveImageID:" + saveImageID);
+        let SaveImage = {
+            "inputs": {
+                "filename_prefix": "ComfyUI",
+                "images": [
+                    DetailerForEach_Face_Id,
+                    0
+                ]
+            },
+            "class_type": "SaveImage",
+            "_meta": {
+                "title": "Save Image"
+            }
         }
+        prompt[saveImageID] = SaveImage;
+
+
     }
 
-    prompt[vae_decode_id]["inputs"]["samples"][0] = "200224";
-    prompt["200224"] = LatentFromBatch_0;
+    var captureFile ="save.json";
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt),'utf8' );
 
-    //redirect image
-    prompt[save_image_id]["inputs"]["images"][0] = "100524";
+
 }
 
 module.exports = CharacterTool;
