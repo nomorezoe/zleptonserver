@@ -1,6 +1,6 @@
 "strict mode"
-const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
 
 function CharacterTool() {
@@ -9,7 +9,7 @@ function CharacterTool() {
 
 CharacterTool.lockChParams = {};
 
-CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer_url, image_id, model_id, sampler_id) {
+CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer_url, image_id, model_id, sampler_id, vae_id, neg_id, vae_decode_id, save_image_id) {
     //"100001"
     let loadImageFromUrl = {
         "inputs": {
@@ -339,7 +339,329 @@ CharacterTool.AddAPerson = function (prompt, refer_ch_index, img_ch_index, refer
     }
     prompt["100431"] = SegsToCombinedMask_render;
 
-    prompt[sampler_id]["inputs"]["model"][0] = "100417"
+    prompt[sampler_id]["inputs"]["model"][0] = "100417";
+
+
+    //step 2
+    //"100477"
+    let UltralyticsDetectorProvider_face = {
+        "inputs": {
+            "model_name": "bbox/face_yolov8s.pt"
+        },
+        "class_type": "UltralyticsDetectorProvider",
+        "_meta": {
+            "title": "UltralyticsDetectorProvider"
+        }
+    }
+
+    prompt["100477"] = UltralyticsDetectorProvider_face;
+
+    //"100476"
+    let ImpactSimpleDetectorSEGS_render = {
+        "inputs": {
+            "bbox_threshold": 0.5,
+            "bbox_dilation": 0,
+            "crop_factor": 3,
+            "drop_size": 50,
+            "sub_threshold": 0.5,
+            "sub_dilation": 0,
+            "sub_bbox_expansion": 0,
+            "sam_mask_hint_threshold": 0.7,
+            "post_dilation": 0,
+            "bbox_detector": [
+                "100477",
+                0
+            ],
+            "image": [
+                vae_decode_id,
+                0
+            ],
+            "sam_model_opt": [
+                "100397",
+                0
+            ]
+        },
+        "class_type": "ImpactSimpleDetectorSEGS",
+        "_meta": {
+            "title": "Simple Detector (SEGS)"
+        }
+    }
+    prompt["100476"] = ImpactSimpleDetectorSEGS_render;
+
+    ///"100484": 
+    let ImpactSEGSOrderedFilter_render = {
+        "inputs": {
+            "target": "x1",
+            "order": false,
+            "take_start": img_ch_index,
+            "take_count": 1,
+            "segs": [
+                "100476",
+                0
+            ]
+        },
+        "class_type": "ImpactSEGSOrderedFilter",
+        "_meta": {
+            "title": "SEGS Filter (ordered)"
+        }
+    }
+    prompt["100484"] = ImpactSEGSOrderedFilter_render;
+
+    //"100503": 
+    let ImpactSimpleDetectorSEGS_face_ref = {
+        "inputs": {
+            "bbox_threshold": 0.47000000000000003,
+            "bbox_dilation": 0,
+            "crop_factor": 3,
+            "drop_size": 50,
+            "sub_threshold": 0.5,
+            "sub_dilation": 0,
+            "sub_bbox_expansion": 0,
+            "sam_mask_hint_threshold": 0.7,
+            "post_dilation": 0,
+            "bbox_detector": [
+                "100477",
+                0
+            ],
+            "image": [
+                "100448",
+                0
+            ],
+            "sam_model_opt": [
+                "100397",
+                0
+            ]
+        },
+        "class_type": "ImpactSimpleDetectorSEGS",
+        "_meta": {
+            "title": "Simple Detector (SEGS)"
+        }
+    }
+    prompt["100503"] = ImpactSimpleDetectorSEGS_face_ref;
+
+    //"100513": 
+    let SEGSToImageList_face_ref = {
+        "inputs": {
+            "segs": [
+                "100503",
+                0
+            ]
+        },
+        "class_type": "SEGSToImageList",
+        "_meta": {
+            "title": "SEGSToImageList"
+        }
+    }
+    prompt["100513"] = SEGSToImageList_face_ref;
+
+    //"100514": 
+    let SegsToCombinedMask_face_ref = {
+        "inputs": {
+            "segs": [
+                "100503",
+                0
+            ]
+        },
+        "class_type": "SegsToCombinedMask",
+        "_meta": {
+            "title": "SEGS to MASK (combined)"
+        }
+    }
+    prompt["100514"] = SegsToCombinedMask_face_ref;
+
+    //"100515": 
+    let MaskToImage_face_ref = {
+        "inputs": {
+            "mask": [
+                "100514",
+                0
+            ]
+        },
+        "class_type": "MaskToImage",
+        "_meta": {
+            "title": "Convert Mask to Image"
+        }
+    }
+    prompt["100515"] = MaskToImage_face_ref;
+
+    //"100509"
+    let CutByMask_face_ref = {
+        "inputs": {
+            "force_resize_width": 0,
+            "force_resize_height": 0,
+            "image": [
+                "100513",
+                0
+            ],
+            "mask": [
+                "100515",
+                0
+            ]
+        },
+        "class_type": "Cut By Mask",
+        "_meta": {
+            "title": "Cut By Mask"
+        }
+    }
+    prompt["100509"] = CutByMask_face_ref;
+
+    //"100516": 
+    let AlphaChanelRemove_face_ref = {
+        "inputs": {
+            "images": [
+                "100509",
+                0
+            ]
+        },
+        "class_type": "AlphaChanelRemove",
+        "_meta": {
+            "title": "AlphaChanelRemove"
+        }
+    }
+    prompt["100516"] = AlphaChanelRemove_face_ref;
+
+    //"100531": 
+    let IPAdapterUnifiedLoader_face = {
+        "inputs": {
+            "preset": "PLUS FACE (portraits)",
+            "model": [
+                model_id,
+                0
+            ]
+        },
+        "class_type": "IPAdapterUnifiedLoader",
+        "_meta": {
+            "title": "IPAdapter Unified Loader"
+        }
+    }
+    prompt["100531"] = IPAdapterUnifiedLoader_face;
+
+    //"100528": 
+    let IPAdapter_face = {
+        "inputs": {
+            "weight": 1,
+            "start_at": 0,
+            "end_at": 1,
+            "model": [
+                "4",
+                0
+            ],
+            "ipadapter": [
+                "100531",
+                1
+            ],
+            "image": [
+                "100516",
+                0
+            ]
+        },
+        "class_type": "IPAdapter",
+        "_meta": {
+            "title": "IPAdapter"
+        }
+    }
+    prompt["100528"] = IPAdapter_face;
+
+
+    //"100525": 
+    let CLIPTextEncode_face = {
+        "inputs": {
+            "text": "detailed face",
+            "clip": [
+                model_id,
+                1
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Prompt)"
+        }
+    }
+    prompt["100525"] = CLIPTextEncode_face;
+
+
+    for (let b = 0; b < 1; b++) {
+        //"100524": 
+        let DetailerForEach_Face_Id = (100524 + b * 10000).toString();
+        let DetailerForEach_Face = {
+            "inputs": {
+                "guide_size": 384,
+                "guide_size_for": true,
+                "max_size": 1024,
+                "seed": Tool.randomInt(),
+                "steps": 20,
+                "cfg": 8,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 0.36,
+                "feather": 5,
+                "noise_mask": true,
+                "force_inpaint": true,
+                "wildcard": "",
+                "cycle": 1,
+                "inpaint_model": false,
+                "noise_mask_feather": 20,
+                "image": [
+                    vae_decode_id,
+                    0
+                ],
+                "segs": [
+                    "100484100484",
+                    0
+                ],
+                "model": [
+                    "100528",
+                    0
+                ],
+                "clip": [
+                    model_id,
+                    1
+                ],
+                "vae": [
+                    vae_id,
+                    0
+                ],
+                "positive": [
+                    "100525",
+                    0
+                ],
+                "negative": [
+                    neg_id,
+                    0
+                ]
+            },
+            "class_type": "DetailerForEach",
+            "_meta": {
+                "title": "Detailer (SEGS)"
+            }
+        }
+        prompt[DetailerForEach_Face_Id] = DetailerForEach_Face;
+    }
+
+
+    //insert latent for batch
+    let latentinputs = prompt[vae_decode_id]["inputs"]["samples"][0];
+    //"200224"
+    let LatentFromBatch_0 = {
+        "inputs": {
+            "batch_index": 0,
+            "length": 1,
+            "samples": [
+                latentinputs,
+                0
+            ]
+        },
+        "class_type": "LatentFromBatch",
+        "_meta": {
+            "title": "Latent From Batch"
+        }
+    }
+
+    prompt[vae_decode_id]["inputs"]["samples"][0] = "200224";
+    prompt["200224"] = LatentFromBatch_0;
+
+    //redirect image
+    prompt[save_image_id]["inputs"]["images"][0] = "100524";
 }
 
 module.exports = CharacterTool;
