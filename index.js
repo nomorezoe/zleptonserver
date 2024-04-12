@@ -57,6 +57,42 @@ app.get('/', (req, res) => {
 app.use('/imgs', express.static('imgs'));
 app.use('/save', express.static('save'));
 
+
+
+
+app.get('/capturefiles', (req, res) => {
+    const fs = require('fs'); 
+  
+    // Function to get current filenames 
+    // in directory 
+    let filenames = fs.readdirSync("imgs");
+    let capturenames = [];
+
+   
+    
+    console.log("\nCurrent directory filenames:"); 
+    filenames.forEach(file => { 
+        if(file.indexOf("capture") != -1){
+            capturenames.push(file);
+        }
+    }); 
+
+    console.log(capturenames.length);
+
+    capturenames.sort(function(a, b) {
+        return fs.statSync("./imgs/" + b).mtime.getTime()-
+               fs.statSync("./imgs/" + a).mtime.getTime();
+    });
+
+    res.writeHead(200, {"Content-Type": "text/html"});  
+    for (i in capturenames){
+        
+        res.write( "https://api.rendermind.ai:3000/imgs/" + capturenames[i] + "</br>");  
+     
+    }
+    res.end();  
+    
+});
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });
@@ -189,6 +225,7 @@ app.use('/getmask', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).post('/getmask', (req, res) => {
+    console.log("getmask");
     GetCharacterMask.queueProcess(req, res);
 })
 //get mask end
@@ -232,7 +269,7 @@ app.use('/test', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).get('/test', (req, res) => {
-    let filename = "./pipe/test_batch.json"
+    let filename = "./pipe/test_2person.json"
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
