@@ -72,7 +72,7 @@ app.get('/capturefiles', (req, res) => {
     
     console.log("\nCurrent directory filenames:"); 
     filenames.forEach(file => { 
-        if(file.indexOf("capture") != -1){
+        if(file.indexOf("upscale") != -1){
             capturenames.push(file);
         }
     }); 
