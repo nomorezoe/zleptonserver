@@ -56,17 +56,26 @@ def overlay(image, mask, color, alpha, resize=None):
 def run(url, filename):
     # Load a model
 
-    f = open(os.path.dirname(os.path.realpath(__file__)) + '/../imgs/'+filename +'.png','wb')
-    f.write(urllib.request.urlopen(url).read())
-    f.close()
+    if url:
+        f = open(os.path.dirname(os.path.realpath(__file__)) + '/../imgs/'+filename +'.png','wb')
+        f.write(urllib.request.urlopen(url).read())
+        f.close()
+    
+    img  = cv2.imread(os.path.dirname(os.path.realpath(__file__)) + '/../imgs/'+filename +'.png')
 
+    if url:
+         img = cv2.resize(img,None,fx=0.5,fy=0.5)
+    else:
+         img = cv2.resize(img,None,fx=0.38,fy=0.38)
+         
+    h, w, c = img.shape
     model = YOLO(os.path.dirname(os.path.realpath(__file__)) + '/ultralytics/segm/person_yolov8m-seg.pt')
 
     # load image by OpenCV like numpy.array
     #img = cv2.imread('test_load.png')
     #print("2")
     # predict by YOLOv8
-    boxes, masks, cls, probs = predict_on_image(model, os.path.dirname(os.path.realpath(__file__)) + '/../imgs/'+filename +'.png', conf=0.5)
+    boxes, masks, cls, probs = predict_on_image(model, img, conf=0.5)
 
     segs_with_order = []
     i = 0
@@ -82,7 +91,7 @@ def run(url, filename):
     i = 0
     for x1, index in sorted_list:
         mask_i = masks[index]
-        image_with_masks = 0 * np.ones((896,1152,3), np.uint8)
+        image_with_masks = 0 * np.ones((h,w,3), np.uint8)
         image_with_masks = overlay(image_with_masks, mask_i, color=(255,255,255), alpha=1)
         # Saving the image
         cv2.imwrite(os.path.dirname(os.path.realpath(__file__)) + '/../imgs/'+ filename + str(i) + ".png", image_with_masks)
