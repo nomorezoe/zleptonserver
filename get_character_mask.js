@@ -87,6 +87,11 @@ GetCharacterMask.process = function (req, res) {
                 count: count
             });
         }
+        else{
+            res.json({
+                success: false
+            });
+        }
 
         GetCharacterMask.currentTask = null;
         GetCharacterMask.getNextQueue();
