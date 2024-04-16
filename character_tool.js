@@ -330,7 +330,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
             "inputs": {
                 "target": "x1",
                 "order": false,
-                "take_start": index_pairs[i][1],
+                "take_start": index_pairs[i][0],
                 "take_count": 1,
                 "segs": [
                     "100428",
@@ -342,7 +342,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 "title": "SEGS Filter (ordered)"
             }
         }
-        console.log('ImpactSEGSOrderedFilter_RenderImage'  + i + ":"+ index_pairs[i][1]);
+        console.log('ImpactSEGSOrderedFilter_RenderImage'  + i + ":"+ index_pairs[i][0]);
         prompt[ImpactSEGSOrderedFilter_RenderImage_Id] = ImpactSEGSOrderedFilter_RenderImage;
 
         //100431
