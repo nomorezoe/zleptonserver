@@ -97,12 +97,7 @@ PipeAdvancePhotoRealism.process = function (imgData, positivePrompt, negtiveProm
 
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
-        let pair = CharacterTool.characerLockPair;
-        console.log("pair" + pair.length);
-        if (pair.length == 0) {
-            pair = [[0, 0]];
-        }
-        CharacterTool.AddAPerson(prompt, pair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "192", "69", "68", "194", "223", "4");
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "192", "69", "68", "194", "223", "4");
     }
     return prompt;
 }

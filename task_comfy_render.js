@@ -148,6 +148,9 @@ function TaskComfyRender(task, req, queue) {
         CharacterTool.lockChParams.fullCharacterPath = req.body.fullCharacterFile;
         console.log("req.body.characerLockPair"  + req.body.characerLockPair);
         CharacterTool.characerLockPair = JSON.parse(req.body.characerLockPair);
+        if (CharacterTool.characerLockPair.length == 0) {
+            CharacterTool.characerLockPair = [[0, 0]];
+        }
     }
 
     //adapter
@@ -215,14 +218,9 @@ function TaskComfyRender(task, req, queue) {
             processRDStyle == "illustration_tone_grain";
         }
     } else if (processRDStyle == "adv_dslr") {
-        if (!isLockCharacter) {
             applyCrop = false;
             task.pipeline = "adv_dslr";
             prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
-        }
-        else {
-            processRDStyle == "delibrerate_photo";
-        }
     } else if (processRDStyle == "adv_epic_real") {
         if (!isLockCharacter) {
             applyCrop = false;

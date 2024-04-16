@@ -2,6 +2,7 @@
 const fs = require('fs');
 const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
+const CharacterTool = require("./character_tool");
 
 function PipeAdvanceDSLR() {
 
@@ -72,6 +73,12 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
     else{
         prompt["54"]["inputs"]["switch_2"] = "Off";
     }
+
+    //ch lock
+    if (CharacterTool.lockChParams.isLockCharacter) {
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "45", "69", "134", "49", "224", "4");
+    }
+
     return prompt;
 }
 
