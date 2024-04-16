@@ -142,9 +142,12 @@ function TaskComfyRender(task, req, queue) {
     //lock character
     CharacterTool.lockChParams = {};
     CharacterTool.lockChParams.isLockCharacter = false;
+    CharacterTool.characerLockPair = [];
     if (req.body.lockCharacter == 1 && req.body.fullCharacterFile != undefined) {
         CharacterTool.lockChParams.isLockCharacter = true;
         CharacterTool.lockChParams.fullCharacterPath = req.body.fullCharacterFile;
+        console.log("req.body.characerLockPair"  + req.body.characerLockPair);
+        CharacterTool.characerLockPair = JSON.parse(req.body.characerLockPair);
     }
 
     //adapter
@@ -286,6 +289,9 @@ function TaskComfyRender(task, req, queue) {
 
     Tool.applyRandomFileName(prompt);
 
+    //var captureFile = "save.json";
+    //fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
+
     //Tool.ApplyPromptNote(prompt, originalPosPrompt);
 
     sendRequest(prompt, queue, task);
@@ -337,7 +343,7 @@ function sendRequest(prompt, queue, task) {
 
             reshttps.on("error", function (error) {
                 //callback(error);
-                console.error(error);
+                console.error("ERR:"+error);
             });
 
         }
