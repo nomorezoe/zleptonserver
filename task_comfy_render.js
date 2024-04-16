@@ -222,14 +222,9 @@ function TaskComfyRender(task, req, queue) {
             task.pipeline = "adv_dslr";
             prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
     } else if (processRDStyle == "adv_epic_real") {
-        if (!isLockCharacter) {
             applyCrop = false;
             task.pipeline = "adv_epic_real";
             prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
-        }
-        else {
-            processRDStyle == "delibrerate_photo";
-        }
     }
 
     //old pipe

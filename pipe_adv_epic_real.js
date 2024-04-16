@@ -2,6 +2,7 @@
 const fs = require('fs');
 const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
+const CharacterTool = require("./character_tool");
 
 function PipeAdvanceEpicReal() {
 
@@ -84,6 +85,11 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
         prompt["54"]["inputs"]["model_weight_2"] = Tool.renderParams.lora_weights["BetterPhotography"];
         console.log("lora BetterPhotography On");
         
+    }
+
+    //ch lock
+    if (CharacterTool.lockChParams.isLockCharacter) {
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "45", "245", "230", "49", "224", "4");
     }
 
     return prompt;
