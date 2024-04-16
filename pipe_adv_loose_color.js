@@ -2,6 +2,7 @@
 const fs = require('fs');
 const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
+const CharacterTool = require("./character_tool");
 
 function PipeAdvanceLooseColor() {
 

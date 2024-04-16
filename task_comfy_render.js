@@ -227,6 +227,7 @@ function TaskComfyRender(task, req, queue) {
             prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
     }
 
+    isLockCharacter = false;
     //old pipe
     if (prompt == null) {
         // process 
