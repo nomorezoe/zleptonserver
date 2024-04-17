@@ -164,7 +164,7 @@
             "pipe": "adv_dslr",
             "steps": 5,
             "cfg": 2,
-            "sampler": "dpmpp_2m_sde",
+            "sampler": "dpmpp_sde",
             "scheduler": "karras",
             "poseStrength": 0.5,
             "poseStart":0,
