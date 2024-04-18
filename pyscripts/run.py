@@ -64,9 +64,9 @@ def run(url, filename):
     img  = cv2.imread(os.path.dirname(os.path.realpath(__file__)) + '/../imgs/'+filename +'.png')
 
     if url:
-         img = cv2.resize(img,None,fx=0.5,fy=0.5)
+         img = cv2.resize(img,None,fx=0.33,fy=0.33)
     else:
-         img = cv2.resize(img,None,fx=0.38,fy=0.38)
+         img = cv2.resize(img,None,fx=0.25,fy=0.25)
          
     h, w, c = img.shape
     model = YOLO(os.path.dirname(os.path.realpath(__file__)) + '/ultralytics/segm/person_yolov8m-seg.pt')
@@ -75,7 +75,7 @@ def run(url, filename):
     #img = cv2.imread('test_load.png')
     #print("2")
     # predict by YOLOv8
-    boxes, masks, cls, probs = predict_on_image(model, img, conf=0.5)
+    boxes, masks, cls, probs = predict_on_image(model, img, conf=0.25)
 
     segs_with_order = []
     i = 0
