@@ -1,4 +1,5 @@
 "strict mode"
+const GetCharacterMask = require("./get_character_mask")
 
 function SocketManager() {
 
@@ -22,7 +23,8 @@ SocketManager.removeSocket = function (socket_id) {
 
     console.log("removeSocket" + socket_id);
     let key = socketInfos[socket_id];
-
+    
+    GetCharacterMask.RemoveKey(key);
     delete users[key];
     delete socketInfos[socket_id];
 }

@@ -131,10 +131,11 @@ module.exports = TaskComfyInPaint;
 TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt, denoise, cfg, samplingsteps, sampler, scheduler){
      //load workflow
      console.log("TaskComfyInPaint.advanceProcess");
-     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint.json');
+     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint_2.json');
      let promptjson = JSON.parse(promptFile);
 
      Tool.applyImage(promptjson, "198", null, fullFilePath);
+     Tool.applyImage(promptjson, "214", null, fullFilePath);
 
     
      var dWidth = 1152;
@@ -151,10 +152,10 @@ TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt
     console.log("dWidth" + dWidth);
     console.log("dHeight" + dHeight);
     
-    promptjson["213"]["inputs"]["image"] = maskBytes;
+    promptjson["218"]["inputs"]["image"] = maskBytes;
 
-    promptjson["215"]["inputs"]["width"] = dWidth;
-    promptjson["215"]["inputs"]["height"] = dHeight;
+    promptjson[ "220"]["inputs"]["width"] = dWidth;
+    promptjson[ "220"]["inputs"]["height"] = dHeight;
 
     promptjson["86"]["inputs"]["seed"] = Tool.randomInt();
     promptjson["87"]["inputs"]["text"] = prompt;
@@ -173,7 +174,7 @@ TaskComfyInPaint.advanceProcess = function(fullFilePath, tags, maskBytes, prompt
 TaskComfyInPaint.advanceProcessLockCharacter = function(fullFilePath, tags, maskBytes, prompt, ipimageURL, denoise, cfg, samplingsteps, sampler, scheduler){
     //load workflow
     console.log("TaskComfyInPaint.advanceProcessLockCharacter");
-    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint_lock_ch.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint_lock_ch_2.json');
     let promptjson = JSON.parse(promptFile);
 
     Tool.applyImage(promptjson, "198", null, fullFilePath);
@@ -193,10 +194,10 @@ TaskComfyInPaint.advanceProcessLockCharacter = function(fullFilePath, tags, mask
    console.log("dWidth" + dWidth);
    console.log("dHeight" + dHeight);
    
-   promptjson["213"]["inputs"]["image"] = maskBytes;
+   promptjson["215"]["inputs"]["image"] = maskBytes;
 
-   promptjson["215"]["inputs"]["width"] = dWidth;
-   promptjson["215"]["inputs"]["height"] = dHeight;
+   promptjson["217"]["inputs"]["width"] = dWidth;
+   promptjson["217"]["inputs"]["height"] = dHeight;
 
    promptjson["86"]["inputs"]["seed"] = Tool.randomInt();
    promptjson["87"]["inputs"]["text"] = prompt;
@@ -215,7 +216,7 @@ TaskComfyInPaint.advanceProcessLockCharacter = function(fullFilePath, tags, mask
 TaskComfyInPaint.advanceProcessExpressyourself = function(fullFilePath, tags, maskBytes, prompt, denoise, cfg, samplingsteps, sampler, scheduler){
     //load workflow
     console.log("TaskComfyInPaint.advanceProcessExpressyourself");
-    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint_yourself.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_inpaint_yourself_2.json');
     let promptjson = JSON.parse(promptFile);
 
     Tool.applyImage(promptjson, "198", null, fullFilePath);
@@ -236,10 +237,10 @@ TaskComfyInPaint.advanceProcessExpressyourself = function(fullFilePath, tags, ma
    console.log("dWidth" + dWidth);
    console.log("dHeight" + dHeight);
    
-   promptjson["213"]["inputs"]["image"] = maskBytes;
+   promptjson["218"]["inputs"]["image"] = maskBytes;
 
-   promptjson["215"]["inputs"]["width"] = dWidth;
-   promptjson["215"]["inputs"]["height"] = dHeight;
+   promptjson["220"]["inputs"]["width"] = dWidth;
+   promptjson["220"]["inputs"]["height"] = dHeight;
 
    promptjson["86"]["inputs"]["seed"] = Tool.randomInt();
    promptjson["87"]["inputs"]["text"] = prompt;
