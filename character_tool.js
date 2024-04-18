@@ -127,7 +127,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 "title": "SEGS Filter (ordered)"
             }
         }
-        console.log('ImpactSEGSOrderedFilter_referImage'  + i + ":"+ index_pairs[i][1]);
+        console.log('ImpactSEGSOrderedFilter_referImage' + i + ":" + index_pairs[i][1]);
         prompt[ImpactSEGSOrderedFilter_referImage_Id] = ImpactSEGSOrderedFilter_referImage;
 
         //100399
@@ -342,7 +342,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 "title": "SEGS Filter (ordered)"
             }
         }
-        console.log('ImpactSEGSOrderedFilter_RenderImage'  + i + ":"+ index_pairs[i][0]);
+        console.log('ImpactSEGSOrderedFilter_RenderImage' + i + ":" + index_pairs[i][0]);
         prompt[ImpactSEGSOrderedFilter_RenderImage_Id] = ImpactSEGSOrderedFilter_RenderImage;
 
         //100431
@@ -434,7 +434,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 }
             }
 
-            console.log('ImpactSEGSOrderedFilter_render'  + i + ":"+ index_pairs[i][0]);
+            console.log('ImpactSEGSOrderedFilter_render' + i + ":" + index_pairs[i][0]);
             prompt[ImpactSEGSOrderedFilter_render_Id] = ImpactSEGSOrderedFilter_render;
         }
     }
@@ -731,7 +731,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                     ],
                     "vae": [
                         vae_id,
-                        0
+                        (vae_id == model_vae_id) ? 2 : 0
                     ],
                     "positive": [
                         (100525 + i * 1000).toString(),
@@ -754,7 +754,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
 
         //redirect image
 
-        
+
         //"200224"
         let saveImageID = (parseInt(save_image_id) + b * 10000).toString();
         console.log("saveImageID:" + saveImageID);

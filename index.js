@@ -269,7 +269,8 @@ app.use('/test', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).get('/test', (req, res) => {
-    let filename = "./pipe/test_2person.json"
+   // let filename = "./pipe/test_2person.json"
+   let filename = "./pipe/test_super_scale.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);

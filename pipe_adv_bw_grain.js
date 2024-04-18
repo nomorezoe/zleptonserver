@@ -2,6 +2,7 @@
 const fs = require('fs');
 const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
+const CharacterTool = require("./character_tool");
 
 function PipeAdvanceBWGrain() {
 
@@ -46,6 +47,10 @@ PipeAdvanceBWGrain.process = function (imgData, positivePrompt, negtivePrompt, m
     prompt["41"]["inputs"]["start_percent"] = Tool.renderParams.depthStart;
     prompt["41"]["inputs"]["end_percent"] = Tool.renderParams.depthEnd;
 
+    //ch lock
+    if (CharacterTool.lockChParams.isLockCharacter) {
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "44", "29", "3", "4", "7", "8", "9", "4");
+    }
     return prompt;
 }
 

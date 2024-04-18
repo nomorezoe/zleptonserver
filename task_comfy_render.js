@@ -146,7 +146,7 @@ function TaskComfyRender(task, req, queue) {
     if (req.body.lockCharacter == 1 && req.body.fullCharacterFile != undefined) {
         CharacterTool.lockChParams.isLockCharacter = true;
         CharacterTool.lockChParams.fullCharacterPath = req.body.fullCharacterFile;
-        console.log("req.body.characerLockPair"  + req.body.characerLockPair);
+        console.log("req.body.characerLockPair" + req.body.characerLockPair);
         CharacterTool.characerLockPair = JSON.parse(req.body.characerLockPair);
         if (CharacterTool.characerLockPair.length == 0) {
             CharacterTool.characerLockPair = [[0, 0]];
@@ -185,14 +185,10 @@ function TaskComfyRender(task, req, queue) {
 
     //new pipe
     if (processRDStyle == "adv_loose_color") {
-        if (!isLockCharacter) {
-            // applyCrop = false;
-            task.pipeline = "adv_loose_color";
-            prompt = PipeAdvanceLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
-        }
-        else {
-            processRDStyle == "illustration";
-        }
+        // applyCrop = false;
+        task.pipeline = "adv_loose_color";
+        prompt = PipeAdvanceLooseColor.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, isLockCharacter, characterFile, fullCharacterPath, info);
+
     }
     else if (processRDStyle == "adv_photo_realism") {
         applyCrop = false;
@@ -218,13 +214,13 @@ function TaskComfyRender(task, req, queue) {
             processRDStyle == "illustration_tone_grain";
         }
     } else if (processRDStyle == "adv_dslr") {
-            applyCrop = false;
-            task.pipeline = "adv_dslr";
-            prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
+        applyCrop = false;
+        task.pipeline = "adv_dslr";
+        prompt = PipeAdvanceDSLR.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info);
     } else if (processRDStyle == "adv_epic_real") {
-            applyCrop = false;
-            task.pipeline = "adv_epic_real";
-            prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
+        applyCrop = false;
+        task.pipeline = "adv_epic_real";
+        prompt = PipeAdvanceEpicReal.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, cannyStrength, hasBackDrop, isLockCharacter, characterFile, fullCharacterPath, info, hasAnimal);
     }
 
     isLockCharacter = false;
@@ -283,8 +279,8 @@ function TaskComfyRender(task, req, queue) {
 
     Tool.applyRandomFileName(prompt);
 
-    //var captureFile = "save.json";
-    //fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
+    var captureFile = "save.json";
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
 
     //Tool.ApplyPromptNote(prompt, originalPosPrompt);
 
@@ -337,7 +333,7 @@ function sendRequest(prompt, queue, task) {
 
             reshttps.on("error", function (error) {
                 //callback(error);
-                console.error("ERR:"+error);
+                console.error("ERR:" + error);
             });
 
         }
