@@ -75,7 +75,7 @@ def run(url, filename):
     #img = cv2.imread('test_load.png')
     #print("2")
     # predict by YOLOv8
-    boxes, masks, cls, probs = predict_on_image(model, img, conf=0.9)
+    boxes, masks, cls, probs = predict_on_image(model, img, conf=0.5)
 
     segs_with_order = []
     i = 0
