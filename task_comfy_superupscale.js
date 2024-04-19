@@ -19,7 +19,8 @@ function TaskComfySuperUpscale(task, req, queue) {
     let prompt = JSON.parse(promptFile);
 
     prompt["236"]["inputs"]["url"]=fullfilepath;
-
+    Tool.applyRandomFileName(prompt);
+    
     task.pipeline = "super_upscale";
     //
     Tool.applyRandomFileName(prompt);
