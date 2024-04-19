@@ -6,6 +6,7 @@ const TaskComfyUpscale = require("./task_comfy_upscale");
 const TaskComfyTweak = require('./task_comfy_tweak');
 const SocketManager = require("./socket_manager");
 const TaskComfySuperUpscale = require("./task_comfy_superupscale");
+const TaskComfyMask = require("./task_comfy_mask");
 
 function Task(type, index, req) {
     this.type = type;
@@ -43,6 +44,9 @@ Task.prototype = {
                 break;
             case "superUpscale":
                 TaskComfySuperUpscale(this, this.req, queue);
+                break;
+            case "mask":
+                TaskComfyMask(this, this.req, queue);
                 break;
         }
     },
@@ -85,6 +89,9 @@ Task.prototype = {
             case "superUpscale":
                 return 300;
                 break;
+            case "mask":
+                return 30;
+                break;
         }
     },
 
@@ -105,6 +112,9 @@ Task.prototype = {
             case "superUpscale":
                 return 120;
                 break;
+            case "mask":
+                return 30;
+                break;
         }
     },
 
@@ -123,6 +133,9 @@ Task.prototype = {
             }
             else if (this.type == "superUpscale") {
                 socket.emit("completeSuperUpscaleTask", this.imageFileNames.join(','));
+            }
+            else if (this.type == "mask") {
+                socket.emit("completeMaskTask", this.imageFileNames.join(','));
             }
             else {
                 console.log("here");

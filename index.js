@@ -249,7 +249,21 @@ app.use('/getmask', function (req, res, next) {
     next();
 }).post('/getmask', (req, res) => {
     console.log("getmask");
-    GetCharacterMask.queueProcess(req, res);
+    //GetCharacterMask.queueProcess(req, res);
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("mask", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addMaskToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
 })
 //get mask end
 

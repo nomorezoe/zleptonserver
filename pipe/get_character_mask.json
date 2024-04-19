@@ -1,0 +1,336 @@
+{
+  "1": {
+    "inputs": {
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 0,
+      "crop_factor": 3,
+      "drop_size": 50,
+      "sub_threshold": 0.5,
+      "sub_dilation": 0,
+      "sub_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7,
+      "post_dilation": 0,
+      "bbox_detector": [
+        "20",
+        0
+      ],
+      "image": [
+        "5",
+        0
+      ],
+      "sam_model_opt": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "ImpactSimpleDetectorSEGS",
+    "_meta": {
+      "title": "Simple Detector (SEGS)"
+    }
+  },
+  "2": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 0,
+      "take_count": 1,
+      "segs": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "3": {
+    "inputs": {
+      "segs": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "5": {
+    "inputs": {
+      "image": "test_load (2).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "7": {
+    "inputs": {
+      "mask": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "8": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 1,
+      "take_count": 1,
+      "segs": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "9": {
+    "inputs": {
+      "segs": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "11": {
+    "inputs": {
+      "mask": [
+        "9",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "12": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 2,
+      "take_count": 1,
+      "segs": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "13": {
+    "inputs": {
+      "segs": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "15": {
+    "inputs": {
+      "mask": [
+        "13",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "16": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 3,
+      "take_count": 1,
+      "segs": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "17": {
+    "inputs": {
+      "segs": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "19": {
+    "inputs": {
+      "mask": [
+        "17",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "20": {
+    "inputs": {
+      "model_name": "segm/person_yolov8m-seg.pt"
+    },
+    "class_type": "UltralyticsDetectorProvider",
+    "_meta": {
+      "title": "UltralyticsDetectorProvider"
+    }
+  },
+  "21": {
+    "inputs": {
+      "model_name": "sam_vit_b_01ec64.pth",
+      "device_mode": "AUTO"
+    },
+    "class_type": "SAMLoader",
+    "_meta": {
+      "title": "SAMLoader (Impact)"
+    }
+  },
+  "33": {
+    "inputs": {
+      "segs": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "ImpactIsNotEmptySEGS",
+    "_meta": {
+      "title": "SEGS isn't Empty"
+    }
+  },
+  "38": {
+    "inputs": {
+      "boolean": [
+        "33",
+        0
+      ],
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "19",
+        0
+      ]
+    },
+    "class_type": "SaveImage_plus",
+    "_meta": {
+      "title": "SaveImage_plus"
+    }
+  },
+  "39": {
+    "inputs": {
+      "segs": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "ImpactIsNotEmptySEGS",
+    "_meta": {
+      "title": "SEGS isn't Empty"
+    }
+  },
+  "40": {
+    "inputs": {
+      "boolean": [
+        "39",
+        0
+      ],
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "7",
+        0
+      ]
+    },
+    "class_type": "SaveImage_plus",
+    "_meta": {
+      "title": "SaveImage_plus"
+    }
+  },
+  "41": {
+    "inputs": {
+      "boolean": [
+        "42",
+        0
+      ],
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "SaveImage_plus",
+    "_meta": {
+      "title": "SaveImage_plus"
+    }
+  },
+  "42": {
+    "inputs": {
+      "segs": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "ImpactIsNotEmptySEGS",
+    "_meta": {
+      "title": "SEGS isn't Empty"
+    }
+  },
+  "43": {
+    "inputs": {
+      "boolean": [
+        "44",
+        0
+      ],
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "SaveImage_plus",
+    "_meta": {
+      "title": "SaveImage_plus"
+    }
+  },
+  "44": {
+    "inputs": {
+      "segs": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "ImpactIsNotEmptySEGS",
+    "_meta": {
+      "title": "SEGS isn't Empty"
+    }
+  }
+}

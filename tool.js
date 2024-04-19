@@ -129,7 +129,7 @@ Tool.applyRandomFileName = function (prompt) {
     for (var i in prompt) {
         if (prompt[i]["class_type"] == "SaveImage") {
             prompt[i]["inputs"]["filename_prefix"] = uuidv4();
-            return;
+            //return;
         }
     }
 }

@@ -15,6 +15,12 @@ QueueManager.prototype.addToQueue = function (queue) {
     this.sendQueueStatus();
 }
 
+QueueManager.prototype.addMaskToQueue = function (queue) {
+    this.queues =  [queue].concat(this.queues);
+    console.log("add queue" + this.queues.length);
+    this.sendQueueStatus();
+}
+
 QueueManager.prototype.getNextQueue = function () {
     if (this.currentQueue.length >= this.QUEUE_COUNT) {
         return;
