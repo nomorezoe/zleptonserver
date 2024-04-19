@@ -58,7 +58,39 @@ app.use('/imgs', express.static('imgs'));
 app.use('/save', express.static('save'));
 
 
+app.get('/capturefiles_2', (req, res) => {
+    const fs = require('fs'); 
+  
+    // Function to get current filenames 
+    // in directory 
+    let filenames = fs.readdirSync("imgs");
+    let capturenames = [];
 
+   
+    
+    console.log("\nCurrent directory filenames:"); 
+    filenames.forEach(file => { 
+        if(file.indexOf("capture") != -1){
+            capturenames.push(file);
+        }
+    }); 
+
+    console.log(capturenames.length);
+
+    capturenames.sort(function(a, b) {
+        return fs.statSync("./imgs/" + b).mtime.getTime()-
+               fs.statSync("./imgs/" + a).mtime.getTime();
+    });
+
+    res.writeHead(200, {"Content-Type": "text/html"});  
+    for (i in capturenames){
+        
+        res.write( "https://api.rendermind.ai:3000/imgs/" + capturenames[i] + "</br>");  
+     
+    }
+    res.end();  
+    
+});
 
 app.get('/capturefiles', (req, res) => {
     const fs = require('fs'); 
