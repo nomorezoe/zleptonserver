@@ -598,13 +598,14 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
 
         //"100528": 
         let IPAdapter_face_Id = (100528 + i * 1000).toString();
+        let modle_ID = (i == 0) ? model_vae_id : (100528 + (i - 1) * 1000).toString();
         let IPAdapter_face = {
             "inputs": {
                 "weight": 1,
                 "start_at": 0,
                 "end_at": 1,
                 "model": [
-                    model_vae_id,
+                    modle_ID,
                     0
                 ],
                 "ipadapter": [
