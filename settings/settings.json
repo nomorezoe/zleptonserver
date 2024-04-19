@@ -147,7 +147,7 @@
         {
             "pipe": "adv_photo_realism",
             "steps": 25,
-            "cfg": 8,
+            "cfg": 4,
             "sampler": "dpmpp_2s_ancestral",
             "scheduler": "karras",
             "poseStrength": 0.5,
