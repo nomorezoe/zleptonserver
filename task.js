@@ -5,6 +5,7 @@ const TaskComfyInPaint = require("./task_comfy_inpaint");
 const TaskComfyUpscale = require("./task_comfy_upscale");
 const TaskComfyTweak = require('./task_comfy_tweak');
 const SocketManager = require("./socket_manager");
+const TaskComfySuperUpscale = require("./task_comfy_superupscale");
 
 function Task(type, index, req) {
     this.type = type;
@@ -20,7 +21,7 @@ Task.prototype = {
 
     excuteTask: function (queue) {
         this.key = queue.key;
-        this.timer  = Date.now();
+        this.timer = Date.now();
         this.id = queue.id;
         switch (this.type) {
             case "render":
@@ -40,29 +41,32 @@ Task.prototype = {
                 this.pipeline = "tweak";
                 TaskComfyTweak(this, this.req, queue);
                 break;
+            case "superUpscale":
+                TaskComfySuperUpscale(this, this.req, queue);
+                break;
         }
     },
 
-    getDuration: function(){
+    getDuration: function () {
         switch (this.type) {
             case "render":
-                console.log("render duration"+this.req.body.model);
-                switch(this.req.body.model){
+                console.log("render duration" + this.req.body.model);
+                switch (this.req.body.model) {
                     case "dynavisionXL":
-                    return 240;
-                    break;
-                case "realism_engine_sdxl":
-                    return 240;
-                    break;
-                case "realistic_vision_v6":
-                    return 240;
-                    break;
-                case "dreamshaper":
-                    return 240;
-                    break;
-                case "Deliberate_v5":
-                    return 240;
-                    break;
+                        return 240;
+                        break;
+                    case "realism_engine_sdxl":
+                        return 240;
+                        break;
+                    case "realistic_vision_v6":
+                        return 240;
+                        break;
+                    case "dreamshaper":
+                        return 240;
+                        break;
+                    case "Deliberate_v5":
+                        return 240;
+                        break;
                 }
                 return 240;
                 /*if(this.req.model == ""){
@@ -78,10 +82,13 @@ Task.prototype = {
             case "tweak":
                 return 120;
                 break;
-        } 
+            case "superUpscale":
+                return 300;
+                break;
+        }
     },
 
-    getDownloadDuration: function(){
+    getDownloadDuration: function () {
         switch (this.type) {
             case "render":
                 return 60;
@@ -95,50 +102,56 @@ Task.prototype = {
             case "tweak":
                 return 60;
                 break;
-        } 
+            case "superUpscale":
+                return 120;
+                break;
+        }
     },
 
-    sendCompleteTaskSuccess: function(){
-        let socket =  SocketManager.getSocketByKey(this.key);
-        if(socket){
+    sendCompleteTaskSuccess: function () {
+        let socket = SocketManager.getSocketByKey(this.key);
+        if (socket) {
             socket.emit("completeDownload", this.id);
-            if(this.type == "render"){
+            if (this.type == "render") {
                 socket.emit("completeRenderTask", this.imageFileNames.join(','));
             }
-            else if(this.type == "upscale"){
+            else if (this.type == "upscale") {
                 socket.emit("completeUpscaleTask", this.imageFileNames.join(','));
             }
-            else if(this.type == "tweak"){
+            else if (this.type == "tweak") {
                 socket.emit("completeTweakTask", this.imageFileNames.join(','));
             }
-            else{
+            else if (this.type == "superUpscale") {
+                socket.emit("completeSuperUpscaleTask", this.imageFileNames.join(','));
+            }
+            else {
                 console.log("here");
                 socket.emit("completeInpaintTask", this.imageFileNames.join(','));
             }
         }
     },
 
-    sendSocketMsg: function(evt, msg){
-        let socket =  SocketManager.getSocketByKey(this.key);
-        if(socket){
+    sendSocketMsg: function (evt, msg) {
+        let socket = SocketManager.getSocketByKey(this.key);
+        if (socket) {
             socket.emit(evt, msg);
         }
     },
 
-    sendCompletePipeline: function(){
-       let timer = Date.now();
-        let socket =  SocketManager.getSocketByKey(this.key);
-        if(socket){
-            let sendObject  = {};
+    sendCompletePipeline: function () {
+        let timer = Date.now();
+        let socket = SocketManager.getSocketByKey(this.key);
+        if (socket) {
+            let sendObject = {};
             sendObject.pipeline = this.pipeline;
-            sendObject.time  =  timer - this.timer;
+            sendObject.time = timer - this.timer;
             socket.emit("completePipeline", JSON.stringify(sendObject));
         }
     },
 
-    sendCompleteDownload: function(){
-        let socket =  SocketManager.getSocketByKey(this.key);
-        if(socket){
+    sendCompleteDownload: function () {
+        let socket = SocketManager.getSocketByKey(this.key);
+        if (socket) {
             socket.emit("completeDownload", this.id);
         }
     }

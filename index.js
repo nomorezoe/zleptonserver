@@ -174,6 +174,29 @@ app.use('/upscale', function (req, res, next) {
 })
 //upscale - end
 
+//superUpscale - start
+app.use('/superUpscale', function (req, res, next) {
+    //req.clearTimeout(); // clear request timeout
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/superUpscale', (req, res) => {
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("superUpscale", 0, req);
+    queue.tasks.push(task);
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+
+})
+//superUpscale - end
+
 //tweak - start
 app.post('/tweak', (req, res) => {
 

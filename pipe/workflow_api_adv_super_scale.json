@@ -1,0 +1,439 @@
+{
+    "37": {
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "crop_w": 0,
+        "crop_h": 0,
+        "target_width": 1024,
+        "target_height": 1024,
+        "text_g": [
+          "63",
+          0
+        ],
+        "text_l": [
+          "63",
+          0
+        ],
+        "clip": [
+          "207",
+          1
+        ]
+      },
+      "class_type": "CLIPTextEncodeSDXL",
+      "_meta": {
+        "title": "CLIPTextEncodeSDXL"
+      }
+    },
+    "38": {
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "crop_w": 0,
+        "crop_h": 0,
+        "target_width": 1024,
+        "target_height": 1024,
+        "text_g": [
+          "66",
+          0
+        ],
+        "text_l": [
+          "66",
+          0
+        ],
+        "clip": [
+          "207",
+          1
+        ]
+      },
+      "class_type": "CLIPTextEncodeSDXL",
+      "_meta": {
+        "title": "CLIPTextEncodeSDXL"
+      }
+    },
+    "63": {
+      "inputs": {
+        "delimiter": "",
+        "clean_whitespace": "true",
+        "text_a": [
+          "64",
+          0
+        ],
+        "text_b": [
+          "65",
+          0
+        ]
+      },
+      "class_type": "Text Concatenate",
+      "_meta": {
+        "title": "Text Concatenate"
+      }
+    },
+    "64": {
+      "inputs": {
+        "prompt": ""
+      },
+      "class_type": "CR Prompt Text",
+      "_meta": {
+        "title": "⚙️ CR Prompt Text"
+      }
+    },
+    "65": {
+      "inputs": {
+        "prompt": "very detailed, masterpiece, intricate details, UHD, 8K"
+      },
+      "class_type": "CR Prompt Text",
+      "_meta": {
+        "title": "⚙️ CR Prompt Text"
+      }
+    },
+    "66": {
+      "inputs": {
+        "delimiter": "",
+        "clean_whitespace": "true",
+        "text_a": [
+          "67",
+          0
+        ],
+        "text_b": [
+          "68",
+          0
+        ]
+      },
+      "class_type": "Text Concatenate",
+      "_meta": {
+        "title": "Text Concatenate"
+      }
+    },
+    "67": {
+      "inputs": {
+        "prompt": ""
+      },
+      "class_type": "CR Prompt Text",
+      "_meta": {
+        "title": "⚙️ CR Prompt Text"
+      }
+    },
+    "68": {
+      "inputs": {
+        "prompt": "lowres, medium quality, lack of details, bad quality, worst quality, blur, blurry, pixelated, jpeg artifacts"
+      },
+      "class_type": "CR Prompt Text",
+      "_meta": {
+        "title": "⚙️ CR Prompt Text"
+      }
+    },
+    "152": {
+      "inputs": {
+        "ckpt_name": "turbovisionxlSuperFastXLBasedOnNew_tvxlV431Bakedvae.safetensors"
+      },
+      "class_type": "CheckpointLoaderSimple",
+      "_meta": {
+        "title": "Load Checkpoint"
+      }
+    },
+    "162": {
+      "inputs": {
+        "upscale_model": [
+          "163",
+          0
+        ],
+        "image": [
+          "236",
+          0
+        ]
+      },
+      "class_type": "ImageUpscaleWithModel",
+      "_meta": {
+        "title": "Upscale Image (using Model)"
+      }
+    },
+    "163": {
+      "inputs": {
+        "model_name": "4x-UltraSharp.pth"
+      },
+      "class_type": "UpscaleModelLoader",
+      "_meta": {
+        "title": "Load Upscale Model"
+      }
+    },
+    "164": {
+      "inputs": {
+        "images": [
+          "167",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "167": {
+      "inputs": {
+        "upscale_method": "bicubic",
+        "scale_by": 0.5,
+        "image": [
+          "162",
+          0
+        ]
+      },
+      "class_type": "ImageScaleBy",
+      "_meta": {
+        "title": "Upscale Image By"
+      }
+    },
+    "168": {
+      "inputs": {
+        "upscale_by": [
+          "234",
+          0
+        ],
+        "seed": 413015202455163,
+        "steps": 10,
+        "cfg": 5,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": [
+          "235",
+          0
+        ],
+        "mode_type": "Linear",
+        "tile_width": [
+          "220",
+          0
+        ],
+        "tile_height": [
+          "227",
+          0
+        ],
+        "mask_blur": 8,
+        "tile_padding": 64,
+        "seam_fix_mode": "Half Tile + Intersections",
+        "seam_fix_denoise": [
+          "235",
+          0
+        ],
+        "seam_fix_width": 184,
+        "seam_fix_mask_blur": 32,
+        "seam_fix_padding": 64,
+        "force_uniform_tiles": "enable",
+        "tiled_decode": false,
+        "image": [
+          "167",
+          0
+        ],
+        "model": [
+          "207",
+          0
+        ],
+        "positive": [
+          "37",
+          0
+        ],
+        "negative": [
+          "38",
+          0
+        ],
+        "vae": [
+          "152",
+          2
+        ],
+        "upscale_model": [
+          "163",
+          0
+        ]
+      },
+      "class_type": "UltimateSDUpscale",
+      "_meta": {
+        "title": "Ultimate SD Upscale"
+      }
+    },
+    "180": {
+      "inputs": {
+        "filename_prefix": "Ziggy/2024-04-18/i",
+        "images": [
+          "168",
+          0
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    },
+    "207": {
+      "inputs": {
+        "lora_name": "add-detail-xl.safetensors",
+        "strength_model": 1,
+        "strength_clip": 1,
+        "model": [
+          "152",
+          0
+        ],
+        "clip": [
+          "152",
+          1
+        ]
+      },
+      "class_type": "LoraLoader",
+      "_meta": {
+        "title": "Load LoRA"
+      }
+    },
+    "217": {
+      "inputs": {
+        "image": [
+          "236",
+          0
+        ]
+      },
+      "class_type": "Get image size",
+      "_meta": {
+        "title": "Get image size"
+      }
+    },
+    "220": {
+      "inputs": {
+        "_float": [
+          "221",
+          0
+        ]
+      },
+      "class_type": "CR Float To Integer",
+      "_meta": {
+        "title": "🔧 CR Float To Integer"
+      }
+    },
+    "221": {
+      "inputs": {
+        "Value_A": [
+          "224",
+          0
+        ],
+        "Value_B": [
+          "226",
+          0
+        ]
+      },
+      "class_type": "Multiply",
+      "_meta": {
+        "title": "Multiply"
+      }
+    },
+    "224": {
+      "inputs": {
+        "Value": [
+          "217",
+          0
+        ]
+      },
+      "class_type": "Int to float",
+      "_meta": {
+        "title": "Int to float"
+      }
+    },
+    "226": {
+      "inputs": {
+        "value": 1
+      },
+      "class_type": "Float Input [Dream]",
+      "_meta": {
+        "title": "Tile Size (Ratio from the original)"
+      }
+    },
+    "227": {
+      "inputs": {
+        "_float": [
+          "228",
+          0
+        ]
+      },
+      "class_type": "CR Float To Integer",
+      "_meta": {
+        "title": "🔧 CR Float To Integer"
+      }
+    },
+    "228": {
+      "inputs": {
+        "Value_A": [
+          "229",
+          0
+        ],
+        "Value_B": [
+          "226",
+          0
+        ]
+      },
+      "class_type": "Multiply",
+      "_meta": {
+        "title": "Multiply"
+      }
+    },
+    "229": {
+      "inputs": {
+        "Value": [
+          "217",
+          1
+        ]
+      },
+      "class_type": "Int to float",
+      "_meta": {
+        "title": "Int to float"
+      }
+    },
+    "232": {
+      "inputs": {
+        "control_net_name": "control-lora-canny-rank128.safetensors"
+      },
+      "class_type": "ControlNetLoader",
+      "_meta": {
+        "title": "Load ControlNet Model"
+      }
+    },
+    "233": {
+      "inputs": {
+        "resolution": [
+          "217",
+          0
+        ],
+        "image": [
+          "236",
+          0
+        ]
+      },
+      "class_type": "Zoe-DepthMapPreprocessor",
+      "_meta": {
+        "title": "Zoe Depth Map"
+      }
+    },
+    "234": {
+      "inputs": {
+        "Value": 2
+      },
+      "class_type": "Float",
+      "_meta": {
+        "title": "Upscale"
+      }
+    },
+    "235": {
+      "inputs": {
+        "Value": 0.2
+      },
+      "class_type": "Float",
+      "_meta": {
+        "title": "Hallucination"
+      }
+    },
+    "236": {
+      "inputs": {
+        "url": "https://api.rendermind.ai:3000/save/test_load.png",
+        "keep_alpha_channel": false,
+        "output_mode": false
+      },
+      "class_type": "LoadImageFromUrl",
+      "_meta": {
+        "title": "Load Image From URL"
+      }
+    }
+  }
