@@ -131,7 +131,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
         prompt[ImpactSEGSOrderedFilter_referImage_Id] = ImpactSEGSOrderedFilter_referImage;
 
         //100399
-        let SEGSToImageList_Id = (100399 + i * 1000).toString();
+       /*let SEGSToImageList_Id = (100399 + i * 1000).toString();
         let SEGSToImageList = {
             "inputs": {
                 "segs": [
@@ -145,7 +145,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
             }
         }
         prompt[SEGSToImageList_Id] = SEGSToImageList;
-
+        */
         //"100409": 
         let SegsToCombinedMask_Id = (100409 + i * 1000).toString();
         let SegsToCombinedMask = {
@@ -185,7 +185,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 "force_resize_width": 0,
                 "force_resize_height": 0,
                 "image": [
-                    SEGSToImageList_Id,
+                    "100001",
                     0
                 ],
                 "mask": [
@@ -601,11 +601,11 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
         let modle_ID = (i == 0) ? model_vae_id : (100528 + (i - 1) * 1000).toString();
         let IPAdapter_face = {
             "inputs": {
-                "weight": 1,
+                "weight": 0.75,
                 "start_at": 0,
-                "end_at": 1,
+                "end_at": 0.9,
                 "model": [
-                    modle_ID,
+                    "100531",
                     0
                 ],
                 "ipadapter": [

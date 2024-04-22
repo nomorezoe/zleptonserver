@@ -97,7 +97,12 @@ PipeAdvancePhotoRealism.process = function (imgData, positivePrompt, negtiveProm
 
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
-        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "192", "69", "68", "194", "223", "4");
+        prompt["192"]["inputs"]["end_at_step"] = 23;
+        prompt["193"]["inputs"]["start_at_step"] = 23;
+        prompt["54"]["inputs"]["model_weight_1"] = 0.20;
+        prompt["54"]["inputs"]["model_weight_2"] = 0.20;
+        prompt["52"]["inputs"]["model_weight_1"] = 0.20;
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "192", "69", "134", "194", "223", "4");
     }
     return prompt;
 }
