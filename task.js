@@ -7,6 +7,8 @@ const TaskComfyTweak = require('./task_comfy_tweak');
 const SocketManager = require("./socket_manager");
 const TaskComfySuperUpscale = require("./task_comfy_superupscale");
 const TaskComfyMask = require("./task_comfy_mask");
+const TaskComfyChCreator = require("./task_comfy_ch_creator");
+const TaskComfyStyleTransfer = require("./task_comfy_style_transfer");
 
 function Task(type, index, req) {
     this.type = type;
@@ -47,6 +49,12 @@ Task.prototype = {
                 break;
             case "mask":
                 TaskComfyMask(this, this.req, queue);
+                break;
+            case "chcreator":
+                TaskComfyChCreator(this, this.req, queue);
+                break;
+            case "styletransfer":
+                TaskComfyStyleTransfer(this, this.req, queue);
                 break;
         }
     },
@@ -92,6 +100,9 @@ Task.prototype = {
             case "mask":
                 return 30;
                 break;
+            case "styletransfer":
+                return 120;
+                break;
         }
     },
 
@@ -115,6 +126,9 @@ Task.prototype = {
             case "mask":
                 return 30;
                 break;
+            case "styletransfer":
+                return 120;
+                break;
         }
     },
 
@@ -137,8 +151,13 @@ Task.prototype = {
             else if (this.type == "mask") {
                 socket.emit("completeMaskTask", this.imageFileNames.join(','));
             }
-            else {
-                console.log("here");
+            else if (this.type == "chcreator") {
+                socket.emit("completeChCreatorTask", this.imageFileNames.join(','));
+            }
+            else if (this.type == "styletransfer") {
+                socket.emit("completeStyleTransferTask", this.imageFileNames.join(','));
+            }
+            else if (this.type == "inpaint"){
                 socket.emit("completeInpaintTask", this.imageFileNames.join(','));
             }
         }

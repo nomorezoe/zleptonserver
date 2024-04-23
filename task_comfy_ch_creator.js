@@ -6,24 +6,20 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
 
-function TaskComfySuperUpscale(task, req, queue) {
-    console.log("TaskComfySuperUpscale");
+function TaskComfyChCreator(task, req, queue) {
+    console.log("TaskComfyChCreator");
 
     var session = req.body.session;
 
-    var fullfilepath = req.body.fullfilepath;
+    let imgData;
+    var rawImg = req.files.imageByteArray.data;
+    imgData = Buffer.from(rawImg).toString('base64');
 
-    console.log("fullfilepath" + fullfilepath);
-
-    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_super_scale.json');
-    let prompt = JSON.parse(promptFile);
-
-    prompt["236"]["inputs"]["url"]=fullfilepath;
-    
-    task.pipeline = "super_upscale";
-    //
-    Tool.applyRandomFileName(prompt);
-    sendRequest(prompt, queue, task);
+    //capture
+    var captureFile = uuidv4() + "ch.png";
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
+        encoding: "base64",
+    });
 }
 
 function sendRequest(promptjson, queue, task) {
@@ -86,4 +82,4 @@ function sendRequest(promptjson, queue, task) {
     reqhttps.end();
 }
 
-module.exports = TaskComfySuperUpscale;
+module.exports = TaskComfyChCreator;

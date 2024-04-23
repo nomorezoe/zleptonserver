@@ -6,23 +6,39 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const ExifReader = require('exifreader');
 
-function TaskComfySuperUpscale(task, req, queue) {
-    console.log("TaskComfySuperUpscale");
+function TaskComfyStyleTransfer(task, req, queue) {
+    console.log("TaskComfyStyleTransfer");
 
     var session = req.body.session;
 
-    var fullfilepath = req.body.fullfilepath;
+    let imgData_a, imgData_b, imgData_c, imgData_d;
+    var rawImg_a = req.files.imageByteArray_a.data;
+    imgData_a = Buffer.from(rawImg_a).toString('base64');
+    var rawImg_b = req.files.imageByteArray_b.data;
+    imgData_b = Buffer.from(rawImg_b).toString('base64');
+    var rawImg_c = req.files.imageByteArray_c.data;
+    imgData_c = Buffer.from(rawImg_c).toString('base64');
 
-    console.log("fullfilepath" + fullfilepath);
+    var rawImg_d = req.files.imageByteArray_d.data;
+    imgData_d = Buffer.from(rawImg_d).toString('base64');
 
-    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_super_scale.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_style_transfer.json');
     let prompt = JSON.parse(promptFile);
 
-    prompt["236"]["inputs"]["url"]=fullfilepath;
-    
-    task.pipeline = "super_upscale";
-    //
+    let file = req.body.img_url;
+
+    prompt["232"]["inputs"]["image"] = imgData_a;
+    prompt["240"]["inputs"]["image"] = imgData_b;
+    prompt["243"]["inputs"]["image"] = imgData_c;
+    prompt["246"]["inputs"]["image"] = imgData_d;
+
+    prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
+
+    Tool.applyImage(prompt, "1", null, file);
+   
     Tool.applyRandomFileName(prompt);
+    
+    task.pipeline = "style_transfer";
     sendRequest(prompt, queue, task);
 }
 
@@ -59,13 +75,13 @@ function sendRequest(promptjson, queue, task) {
 
             reshttps.on('end', (d) => {
                 let jsonobj = JSON.parse(datastring);
-                console.log("onend_super_upscale: " + task.key + " , time: ");
+                console.log("onend_style_transfer: " + task.key + " , time: ");
                 for (var i = 0; i < jsonobj.length; i++) {
 
-                    var upscaleImageName = uuidv4() + "_s_upscale.png";
-                    console.log("upscaleImageName:" + upscaleImageName);
-                    task.imageFileNames.push(upscaleImageName);
-                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i], {
+                    var styleImageName = uuidv4() + "_style.png";
+                    console.log("styleImageName:" + styleImageName);
+                    task.imageFileNames.push(styleImageName);
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + styleImageName, jsonobj[i], {
                         encoding: "base64",
                     });
                 }
@@ -86,4 +102,4 @@ function sendRequest(promptjson, queue, task) {
     reqhttps.end();
 }
 
-module.exports = TaskComfySuperUpscale;
+module.exports = TaskComfyStyleTransfer;

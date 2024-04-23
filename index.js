@@ -299,6 +299,52 @@ app.use('/getmask', function (req, res, next) {
 })
 //get mask end
 
+//ch creator start
+app.use('/chcreator', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/chcreator', (req, res) => {
+    console.log("chcreator");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("chcreator", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addMaskToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+//ch creator end
+
+//style transfer start
+app.use('/styletransfer', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/styletransfer', (req, res) => {
+    console.log("styletransfer");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("styletransfer", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addMaskToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+//ch creator end
+
 
 app.get('/styles', (req, res) => {
     let json = require('fs').readFileSync("./settings/styles.json");
