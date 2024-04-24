@@ -369,6 +369,7 @@
   "216": {
     "inputs": {
       "weight": 1,
+      "weight_type": "standard",
       "start_at": 0,
       "end_at": 1,
       "model": [
