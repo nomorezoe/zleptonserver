@@ -146,8 +146,10 @@ function TaskComfyRender(task, req, queue) {
     if (req.body.lockCharacter == 1 && req.body.fullCharacterFile != undefined) {
         CharacterTool.lockChParams.isLockCharacter = true;
         CharacterTool.lockChParams.fullCharacterPath = req.body.fullCharacterFile;
-        console.log("req.body.characerLockPair" + req.body.characerLockPair);
+        
         CharacterTool.characerLockPair = JSON.parse(req.body.characerLockPair);
+       //CharacterTool.characerLockPair = [[0,0],[1,1]];
+        console.log("req.body.characerLockPair" + CharacterTool.characerLockPair);
         if (CharacterTool.characerLockPair.length == 0) {
             CharacterTool.characerLockPair = [[0, 0]];
         }
@@ -221,7 +223,7 @@ function TaskComfyRender(task, req, queue) {
         }
         else if (processRDStyle == "illustration_comic") {//&& !isLockCharacter) {
             task.pipeline = "illustration_comic";
-            prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath);
+            prompt = IllustrationComicRender.process(imgData, posPrompt, negtext, model, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength);
         }
         else if (processRDStyle == "real_photo_sharpen") {// && !isLockCharacter) {
             task.pipeline = "real_photo_sharpen";

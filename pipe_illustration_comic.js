@@ -2,26 +2,27 @@
 const fs = require('fs');
 const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
+const CharacterTool = require("./character_tool");
 
 function IllustrationComicRender() {
 
 }
 
-IllustrationComicRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath) {
+IllustrationComicRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength) {
     console.log("IllustrationComicRender");
-    const promptFile = fs.readFileSync(isLockCharacter?'./pipe/workflow_api_illustration_comic_ch_lock.json':'./pipe/workflow_api_illustration_comic.json');//');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_illustration_comic.json');//');
     let prompt = JSON.parse(promptFile);
  
     prompt["1"]["inputs"]["image"]=imgData;
 
     //lockcharacter
-    if (isLockCharacter) {
+    /*if (isLockCharacter) {
         console.log("isLockCharacter:");
         let value = Tool.applyImage(prompt, "57", characterFile, fullCharacterPath);
         if(!value){
             return null;
         }
-    }
+    }*/
     
     prompt["49"]["inputs"]["text_positive"] = positivePrompt;
     prompt["49"]["inputs"]["text_negative"] = negtivePrompt;
@@ -38,6 +39,11 @@ IllustrationComicRender.process = function (imgData, positivePrompt, negtiveProm
 
     //prompt["4"]["inputs"]["ckpt_name"] = modelFile;
     
+    //ch lock
+    if (CharacterTool.lockChParams.isLockCharacter) {
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "50", "13", "4", "48", "19", "20", "4");
+    }
+
     return prompt;
 }
 
