@@ -602,6 +602,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
         let IPAdapter_face = {
             "inputs": {
                 "weight": 0.75,
+                "weight_type": "standard",
                 "start_at": 0,
                 "end_at": 0.9,
                 "model": [
