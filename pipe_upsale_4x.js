@@ -12,12 +12,12 @@ Upscale4X.process = function (fullFilaName, denoise, cfg, samplingsteps, sampler
     console.log("Upscale4X.process");
 
     isLockCharacter = isLockCharacter && fullCharacterPath != null && fullCharacterPath != undefined && fullCharacterPath != "";
-
-    const promptFile = fs.readFileSync(isLockCharacter ? './pipe/workflow_api_4x_upscale_ch_lock.json' : './pipe/workflow_api_4x_upscale.json');
+    //isLockCharacter ? './pipe/workflow_api_4x_upscale_ch_lock.json' : 
+    const promptFile = fs.readFileSync('./pipe/workflow_api_4x_upscale.json');
     let promptjson = JSON.parse(promptFile);
 
     //lockcharacter
-    if (isLockCharacter) {
+    /*if (isLockCharacter) {
         console.log("isLockCharacter:");
         let value = Tool.applyImage(promptjson, "36", null, fullCharacterPath);
         if (!value) {
@@ -29,7 +29,7 @@ Upscale4X.process = function (fullFilaName, denoise, cfg, samplingsteps, sampler
             promptjson["32"]["inputs"]["ipadapter_file"] = "ip-adapter_sd15.bin";
             promptjson["33"]["inputs"]["clip_name"] = "model_15.safetensors";
         }
-    }
+    }*/
 
     Tool.applyImage(promptjson, "2", null, fullFilaName);
     // promptjson["2"]["inputs"]["image"] = imgBytes;
