@@ -103,6 +103,9 @@ Task.prototype = {
             case "styletransfer":
                 return 120;
                 break;
+            case "chcreator":
+                return 120;
+                break;
         }
     },
 
@@ -127,6 +130,9 @@ Task.prototype = {
                 return 30;
                 break;
             case "styletransfer":
+                return 120;
+                break;
+            case "chcreator":
                 return 120;
                 break;
         }
@@ -157,7 +163,7 @@ Task.prototype = {
             else if (this.type == "styletransfer") {
                 socket.emit("completeStyleTransferTask", this.imageFileNames.join(','));
             }
-            else if (this.type == "inpaint"){
+            else if (this.type == "inpaint") {
                 socket.emit("completeInpaintTask", this.imageFileNames.join(','));
             }
         }

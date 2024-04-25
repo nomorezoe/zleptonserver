@@ -1,0 +1,1003 @@
+{
+    "1": {
+      "inputs": {
+        "image": "Screenshot 2024-04-23 at 09.25.36 (1).png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load_Face"
+      }
+    },
+    "22": {
+      "inputs": {
+        "control_net_name": "OpenPoseXL2.safetensors"
+      },
+      "class_type": "ControlNetLoader",
+      "_meta": {
+        "title": "Load ControlNet Model"
+      }
+    },
+    "26": {
+      "inputs": {
+        "images": [
+          "28",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "28": {
+      "inputs": {
+        "detect_hand": "enable",
+        "detect_body": "enable",
+        "detect_face": "enable",
+        "resolution": 1024,
+        "bbox_detector": "yolox_l.onnx",
+        "pose_estimator": "dw-ll_ucoco_384.onnx",
+        "image": [
+          "608",
+          0
+        ]
+      },
+      "class_type": "DWPreprocessor",
+      "_meta": {
+        "title": "DWPose Estimator"
+      }
+    },
+    "29": {
+      "inputs": {
+        "control_net_name": "control-lora-depth-rank256.safetensors"
+      },
+      "class_type": "ControlNetLoader",
+      "_meta": {
+        "title": "Load ControlNet Model"
+      }
+    },
+    "33": {
+      "inputs": {
+        "a": 6.28,
+        "bg_threshold": 0.1,
+        "resolution": 512,
+        "image": [
+          "608",
+          0
+        ]
+      },
+      "class_type": "MiDaS-DepthMapPreprocessor",
+      "_meta": {
+        "title": "MiDaS Depth Map"
+      }
+    },
+    "143": {
+      "inputs": {
+        "strength": 0.55,
+        "start_percent": 0,
+        "end_percent": 0.65,
+        "positive": [
+          "642",
+          0
+        ],
+        "negative": [
+          "643",
+          0
+        ],
+        "control_net": [
+          "22",
+          0
+        ],
+        "image": [
+          "28",
+          0
+        ]
+      },
+      "class_type": "ControlNetApplyAdvanced",
+      "_meta": {
+        "title": "Apply ControlNet (Advanced)"
+      }
+    },
+    "144": {
+      "inputs": {
+        "strength": 0.55,
+        "start_percent": 0,
+        "end_percent": 0.65,
+        "positive": [
+          "143",
+          0
+        ],
+        "negative": [
+          "143",
+          1
+        ],
+        "control_net": [
+          "29",
+          0
+        ],
+        "image": [
+          "33",
+          0
+        ]
+      },
+      "class_type": "ControlNetApplyAdvanced",
+      "_meta": {
+        "title": "Apply ControlNet (Advanced)"
+      }
+    },
+    "336": {
+      "inputs": {
+        "image": "1728cd53-be1e-413a-8421-c6b6baf217fb.png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load_reference_pose"
+      }
+    },
+    "421": {
+      "inputs": {
+        "preset": "PLUS FACE (portraits)",
+        "model": [
+          "638",
+          0
+        ]
+      },
+      "class_type": "IPAdapterUnifiedLoader",
+      "_meta": {
+        "title": "IPAdapter Unified Loader"
+      }
+    },
+    "444": {
+      "inputs": {},
+      "class_type": "BRIA_RMBG_ModelLoader_Zho",
+      "_meta": {
+        "title": "🧹BRIA_RMBG Model Loader"
+      }
+    },
+    "533": {
+      "inputs": {
+        "image": "Screenshot 2024-04-23 at 09.26.01 (1).png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load_Torso"
+      }
+    },
+    "534": {
+      "inputs": {
+        "image": "Screenshot 2024-04-23 at 09.25.44 (1).png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load_Pant"
+      }
+    },
+    "535": {
+      "inputs": {
+        "rmbgmodel": [
+          "444",
+          0
+        ],
+        "image": [
+          "1",
+          0
+        ]
+      },
+      "class_type": "BRIA_RMBG_Zho",
+      "_meta": {
+        "title": "🧹BRIA RMBG"
+      }
+    },
+    "536": {
+      "inputs": {
+        "mask": [
+          "535",
+          1
+        ]
+      },
+      "class_type": "MaskPreview+",
+      "_meta": {
+        "title": "🔧 Mask Preview"
+      }
+    },
+    "537": {
+      "inputs": {
+        "images": [
+          "535",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "538": {
+      "inputs": {
+        "images": [
+          "535",
+          0
+        ]
+      },
+      "class_type": "AlphaChanelRemove",
+      "_meta": {
+        "title": "AlphaChanelRemove"
+      }
+    },
+    "539": {
+      "inputs": {
+        "images": [
+          "538",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "542": {
+      "inputs": {
+        "rmbgmodel": [
+          "444",
+          0
+        ],
+        "image": [
+          "533",
+          0
+        ]
+      },
+      "class_type": "BRIA_RMBG_Zho",
+      "_meta": {
+        "title": "🧹BRIA RMBG"
+      }
+    },
+    "543": {
+      "inputs": {
+        "mask": [
+          "542",
+          1
+        ]
+      },
+      "class_type": "MaskPreview+",
+      "_meta": {
+        "title": "🔧 Mask Preview"
+      }
+    },
+    "544": {
+      "inputs": {
+        "images": [
+          "542",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "545": {
+      "inputs": {
+        "images": [
+          "542",
+          0
+        ]
+      },
+      "class_type": "AlphaChanelRemove",
+      "_meta": {
+        "title": "AlphaChanelRemove"
+      }
+    },
+    "546": {
+      "inputs": {
+        "images": [
+          "545",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "547": {
+      "inputs": {
+        "rmbgmodel": [
+          "444",
+          0
+        ],
+        "image": [
+          "534",
+          0
+        ]
+      },
+      "class_type": "BRIA_RMBG_Zho",
+      "_meta": {
+        "title": "🧹BRIA RMBG"
+      }
+    },
+    "548": {
+      "inputs": {
+        "mask": [
+          "547",
+          1
+        ]
+      },
+      "class_type": "MaskPreview+",
+      "_meta": {
+        "title": "🔧 Mask Preview"
+      }
+    },
+    "549": {
+      "inputs": {
+        "images": [
+          "547",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "550": {
+      "inputs": {
+        "images": [
+          "547",
+          0
+        ]
+      },
+      "class_type": "AlphaChanelRemove",
+      "_meta": {
+        "title": "AlphaChanelRemove"
+      }
+    },
+    "551": {
+      "inputs": {
+        "images": [
+          "550",
+          0
+        ]
+      },
+      "class_type": "PreviewImage",
+      "_meta": {
+        "title": "Preview Image"
+      }
+    },
+    "568": {
+      "inputs": {
+        "preset": "PLUS (high strength)",
+        "model": [
+          "638",
+          0
+        ]
+      },
+      "class_type": "IPAdapterUnifiedLoader",
+      "_meta": {
+        "title": "IPAdapter Unified Loader"
+      }
+    },
+    "574": {
+      "inputs": {
+        "weight": 1,
+        "start_at": 0,
+        "end_at": 0.8,
+        "weight_type": "standard",
+        "model": [
+          "638",
+          0
+        ],
+        "ipadapter": [
+          "421",
+          1
+        ],
+        "image": [
+          "538",
+          0
+        ],
+        "attn_mask": [
+          "630",
+          0
+        ]
+      },
+      "class_type": "IPAdapter",
+      "_meta": {
+        "title": "IPAdapter"
+      }
+    },
+    "575": {
+      "inputs": {
+        "weight": 1,
+        "start_at": 0,
+        "end_at": 0.8,
+        "weight_type": "standard",
+        "model": [
+          "574",
+          0
+        ],
+        "ipadapter": [
+          "568",
+          1
+        ],
+        "image": [
+          "545",
+          0
+        ],
+        "attn_mask": [
+          "633",
+          0
+        ]
+      },
+      "class_type": "IPAdapter",
+      "_meta": {
+        "title": "IPAdapter"
+      }
+    },
+    "576": {
+      "inputs": {
+        "weight": 1,
+        "start_at": 0,
+        "end_at": 0.8,
+        "weight_type": "standard",
+        "model": [
+          "575",
+          0
+        ],
+        "ipadapter": [
+          "568",
+          1
+        ],
+        "image": [
+          "550",
+          0
+        ],
+        "attn_mask": [
+          "636",
+          0
+        ]
+      },
+      "class_type": "IPAdapter",
+      "_meta": {
+        "title": "IPAdapter"
+      }
+    },
+    "577": {
+      "inputs": {
+        "filename_prefix": "ComfyUI",
+        "images": [
+          "613",
+          0
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    },
+    "589": {
+      "inputs": {
+        "guide_size": 384,
+        "guide_size_for": true,
+        "max_size": 1024,
+        "seed": 557875686868086,
+        "steps": 25,
+        "cfg": 4,
+        "sampler_name": "ddpm",
+        "scheduler": "karras",
+        "denoise": 0.9500000000000001,
+        "feather": 5,
+        "noise_mask": true,
+        "force_inpaint": true,
+        "wildcard": "",
+        "cycle": 1,
+        "inpaint_model": false,
+        "noise_mask_feather": 20,
+        "image": [
+          "608",
+          0
+        ],
+        "segs": [
+          "604",
+          0
+        ],
+        "model": [
+          "576",
+          0
+        ],
+        "clip": [
+          "638",
+          1
+        ],
+        "vae": [
+          "640",
+          0
+        ],
+        "positive": [
+          "144",
+          0
+        ],
+        "negative": [
+          "144",
+          1
+        ]
+      },
+      "class_type": "DetailerForEach",
+      "_meta": {
+        "title": "Detailer (SEGS)"
+      }
+    },
+    "603": {
+      "inputs": {
+        "a": 6.283185307179586,
+        "bg_threshold": 0.1
+      },
+      "class_type": "MiDaS_DepthMap_Preprocessor_Provider_for_SEGS //Inspire",
+      "_meta": {
+        "title": "MiDaS Depth Map Preprocessor Provider (SEGS)"
+      }
+    },
+    "604": {
+      "inputs": {
+        "strength": 0.86,
+        "start_percent": 0,
+        "end_percent": 0.903,
+        "segs": [
+          "621",
+          0
+        ],
+        "control_net": [
+          "605",
+          0
+        ],
+        "segs_preprocessor": [
+          "603",
+          0
+        ]
+      },
+      "class_type": "ImpactControlNetApplyAdvancedSEGS",
+      "_meta": {
+        "title": "ControlNetApplyAdvanced (SEGS)"
+      }
+    },
+    "605": {
+      "inputs": {
+        "control_net_name": "depth-zoe-xl-v1.0-controlnet.safetensors"
+      },
+      "class_type": "ControlNetLoader",
+      "_meta": {
+        "title": "Load ControlNet Model"
+      }
+    },
+    "607": {
+      "inputs": {
+        "image": [
+          "336",
+          0
+        ]
+      },
+      "class_type": "CM_NearestSDXLResolution",
+      "_meta": {
+        "title": "NearestSDXLResolution"
+      }
+    },
+    "608": {
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": [
+          "607",
+          0
+        ],
+        "height": [
+          "607",
+          1
+        ],
+        "crop": "disabled",
+        "image": [
+          "336",
+          0
+        ]
+      },
+      "class_type": "ImageScale",
+      "_meta": {
+        "title": "Upscale Image"
+      }
+    },
+    "609": {
+      "inputs": {
+        "seed": 121244806465571,
+        "steps": 20,
+        "cfg": 8,
+        "sampler_name": "dpmpp_2m",
+        "scheduler": "karras",
+        "denoise": 0.2,
+        "model": [
+          "637",
+          0
+        ],
+        "positive": [
+          "611",
+          0
+        ],
+        "negative": [
+          "611",
+          0
+        ],
+        "latent_image": [
+          "612",
+          0
+        ]
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "611": {
+      "inputs": {
+        "conditioning": [
+          "642",
+          0
+        ]
+      },
+      "class_type": "ConditioningZeroOut",
+      "_meta": {
+        "title": "ConditioningZeroOut"
+      }
+    },
+    "612": {
+      "inputs": {
+        "pixels": [
+          "589",
+          0
+        ],
+        "vae": [
+          "640",
+          0
+        ]
+      },
+      "class_type": "VAEEncode",
+      "_meta": {
+        "title": "VAE Encode"
+      }
+    },
+    "613": {
+      "inputs": {
+        "samples": [
+          "609",
+          0
+        ],
+        "vae": [
+          "640",
+          0
+        ]
+      },
+      "class_type": "VAEDecode",
+      "_meta": {
+        "title": "VAE Decode"
+      }
+    },
+    "621": {
+      "inputs": {
+        "combined": false,
+        "crop_factor": 3,
+        "bbox_fill": false,
+        "drop_size": 10,
+        "contour_fill": false,
+        "mask": [
+          "623",
+          0
+        ]
+      },
+      "class_type": "MaskToSEGS",
+      "_meta": {
+        "title": "MASK to SEGS"
+      }
+    },
+    "622": {
+      "inputs": {
+        "masks_a": [
+          "630",
+          0
+        ],
+        "masks_b": [
+          "633",
+          0
+        ]
+      },
+      "class_type": "Masks Add",
+      "_meta": {
+        "title": "Masks Add"
+      }
+    },
+    "623": {
+      "inputs": {
+        "masks_a": [
+          "622",
+          0
+        ],
+        "masks_b": [
+          "636",
+          0
+        ]
+      },
+      "class_type": "Masks Add",
+      "_meta": {
+        "title": "Masks Add"
+      }
+    },
+    "629": {
+      "inputs": {
+        "image": "0bca8bbe-685d-42d5-9b13-8de17caf4e21 (1).png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load Image face"
+      }
+    },
+    "630": {
+      "inputs": {
+        "channel": "red",
+        "image": [
+          "645",
+          0
+        ]
+      },
+      "class_type": "ImageToMask",
+      "_meta": {
+        "title": "Convert Image to Mask"
+      }
+    },
+    "632": {
+      "inputs": {
+        "image": "0bca8bbe-685d-42d5-9b13-8de17caf4e21 (1).png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load Image body"
+      }
+    },
+    "633": {
+      "inputs": {
+        "channel": "red",
+        "image": [
+          "646",
+          0
+        ]
+      },
+      "class_type": "ImageToMask",
+      "_meta": {
+        "title": "Convert Image to Mask"
+      }
+    },
+    "635": {
+      "inputs": {
+        "image": "0bca8bbe-685d-42d5-9b13-8de17caf4e21 (1).png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load Image pants"
+      }
+    },
+    "636": {
+      "inputs": {
+        "channel": "red",
+        "image": [
+          "647",
+          0
+        ]
+      },
+      "class_type": "ImageToMask",
+      "_meta": {
+        "title": "Convert Image to Mask"
+      }
+    },
+    "637": {
+      "inputs": {
+        "ckpt_name": "juggernautXL_v7Rundiffusion.safetensors"
+      },
+      "class_type": "CheckpointLoaderSimple",
+      "_meta": {
+        "title": "Load Checkpoint"
+      }
+    },
+    "638": {
+      "inputs": {
+        "model": [
+          "637",
+          0
+        ],
+        "clip": [
+          "637",
+          1
+        ],
+        "lora_stack": [
+          "641",
+          0
+        ]
+      },
+      "class_type": "CR Apply LoRA Stack",
+      "_meta": {
+        "title": "💊 CR Apply LoRA Stack"
+      }
+    },
+    "639": {
+      "inputs": {
+        "text_positive": "portrait photo, \na european man, nike sneaker,\ncinematic lighting, masterpiece, high quality, high resolution, 4K, HDR, ",
+        "text_negative": "Asymmetrical Eyes, Mismatched Eyes, Distorted Eyes, film grain, noise, Unaligned Eyes, Blurry Eyes, Overexaggerated Eyes, Inconsistent Lighting on Eyes, Unnatural Eye Color, Floating Eyes, Missing Eyelids, ugly, deformed, noisy, blurry, low contrast, realistic, ugly breasts, tripod, camera, anime, animation, cartoon, 3D, drawing, painting, (censorship, censored, worst quality, low quality, normal quality, lowres, low details, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) (ugly hands, ugly anatomy, ugly body, ugly face, ugly teeth, ugly arms, ugly legs, deformities:1.3) ugly fingers, bad fingers, (((ugly nipples, bad nipples, deformed nipples))), (((Bad teeth, ugly teeth)))",
+        "style": "base",
+        "log_prompt": true,
+        "style_positive": true,
+        "style_negative": true
+      },
+      "class_type": "SDXLPromptStyler",
+      "_meta": {
+        "title": "SDXL Prompt Styler"
+      }
+    },
+    "640": {
+      "inputs": {
+        "vae_name": "sdxl_vae.safetensors"
+      },
+      "class_type": "VAELoader",
+      "_meta": {
+        "title": "Load VAE"
+      }
+    },
+    "641": {
+      "inputs": {
+        "switch_1": "Off",
+        "lora_name_1": "None",
+        "model_weight_1": 1,
+        "clip_weight_1": 1,
+        "switch_2": "Off",
+        "lora_name_2": "None",
+        "model_weight_2": 1,
+        "clip_weight_2": 1,
+        "switch_3": "Off",
+        "lora_name_3": "None",
+        "model_weight_3": 1,
+        "clip_weight_3": 1
+      },
+      "class_type": "CR LoRA Stack",
+      "_meta": {
+        "title": "💊 CR LoRA Stack"
+      }
+    },
+    "642": {
+      "inputs": {
+        "width": [
+          "607",
+          0
+        ],
+        "height": [
+          "607",
+          1
+        ],
+        "crop_w": 0,
+        "crop_h": 0,
+        "target_width": 4096,
+        "target_height": 4096,
+        "text_g": [
+          "639",
+          0
+        ],
+        "text_l": [
+          "639",
+          0
+        ],
+        "clip": [
+          "638",
+          1
+        ]
+      },
+      "class_type": "CLIPTextEncodeSDXL",
+      "_meta": {
+        "title": "CLIPTextEncodeSDXL"
+      }
+    },
+    "643": {
+      "inputs": {
+        "width": [
+          "607",
+          0
+        ],
+        "height": [
+          "607",
+          1
+        ],
+        "crop_w": 0,
+        "crop_h": 0,
+        "target_width": 4096,
+        "target_height": 4096,
+        "text_g": [
+          "639",
+          1
+        ],
+        "text_l": [
+          "639",
+          1
+        ],
+        "clip": [
+          "638",
+          1
+        ]
+      },
+      "class_type": "CLIPTextEncodeSDXL",
+      "_meta": {
+        "title": "CLIPTextEncodeSDXL"
+      }
+    },
+    "645": {
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": [
+          "607",
+          0
+        ],
+        "height": [
+          "607",
+          1
+        ],
+        "crop": "disabled",
+        "image": [
+          "629",
+          0
+        ]
+      },
+      "class_type": "ImageScale",
+      "_meta": {
+        "title": "Upscale Image"
+      }
+    },
+    "646": {
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": [
+          "607",
+          0
+        ],
+        "height": [
+          "607",
+          1
+        ],
+        "crop": "disabled",
+        "image": [
+          "632",
+          0
+        ]
+      },
+      "class_type": "ImageScale",
+      "_meta": {
+        "title": "Upscale Image"
+      }
+    },
+    "647": {
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": [
+          "607",
+          0
+        ],
+        "height": [
+          "607",
+          1
+        ],
+        "crop": "disabled",
+        "image": [
+          "635",
+          0
+        ]
+      },
+      "class_type": "ImageScale",
+      "_meta": {
+        "title": "Upscale Image"
+      }
+    }
+  }

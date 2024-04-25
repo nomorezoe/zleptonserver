@@ -11,15 +11,48 @@ function TaskComfyChCreator(task, req, queue) {
 
     var session = req.body.session;
 
-    let imgData;
-    var rawImg = req.files.imageByteArray.data;
-    imgData = Buffer.from(rawImg).toString('base64');
+    let imgData_face_mask, imgData_body_mask, imgData_pants_mask;
+    var rawImg_face_mask = req.files.imageByteArray_face_mask.data;
+    imgData_face_mask = Buffer.from(rawImg_face_mask).toString('base64');
+    var rawImg_body_mask = req.files.imageByteArray_body_mask.data;
+    imgData_body_mask = Buffer.from(rawImg_body_mask).toString('base64');
+    var rawImg_pants_mask = req.files.imageByteArray_pants_mask.data;
+    imgData_pants_mask = Buffer.from(rawImg_pants_mask).toString('base64')
+    
+    let imgData_face, imgData_body, imgData_pants;
+    var rawImg_face = req.files.imageByteArray_face.data;
+    imgData_face = Buffer.from(rawImg_face).toString('base64');
+    var rawImg_body = req.files.imageByteArray_body.data;
+    imgData_body = Buffer.from(rawImg_body).toString('base64');
+    var rawImg_pants = req.files.imageByteArray_pants.data;
+    imgData_pants = Buffer.from(rawImg_pants).toString('base64');
 
-    //capture
-    var captureFile = uuidv4() + "ch.png";
-    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
-        encoding: "base64",
-    });
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_ch_inpaint.json');
+    let prompt = JSON.parse(promptFile);
+
+    let file = req.body.fullFilePath;
+
+    prompt["629"]["inputs"]["image"] = imgData_face_mask;
+    prompt["632"]["inputs"]["image"] = imgData_body_mask;
+    prompt["635"]["inputs"]["image"] = imgData_pants_mask;
+
+    prompt["1"]["inputs"]["image"] = imgData_face;
+    prompt["533"]["inputs"]["image"] = imgData_body;
+    prompt["534"]["inputs"]["image"] = imgData_pants;
+
+    Tool.applyImage(prompt, "336", null, file);
+
+    Tool.applyRandomFileName(prompt);
+    prompt["589"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["609"]["inputs"]["seed"] = Tool.randomInt();
+    
+    task.pipeline = "chinpaint";
+
+    var captureFile = "save.json";
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
+
+    
+    sendRequest(prompt, queue, task);
 }
 
 function sendRequest(promptjson, queue, task) {
@@ -55,11 +88,11 @@ function sendRequest(promptjson, queue, task) {
 
             reshttps.on('end', (d) => {
                 let jsonobj = JSON.parse(datastring);
-                console.log("onend_super_upscale: " + task.key + " , time: ");
+                console.log("onend_ch_inpaint: " + task.key + " , time: ");
                 for (var i = 0; i < jsonobj.length; i++) {
 
-                    var upscaleImageName = uuidv4() + "_s_upscale.png";
-                    console.log("upscaleImageName:" + upscaleImageName);
+                    var upscaleImageName = uuidv4() + "_ch_inpaint.png";
+                    console.log("chinpaint_img_name:" + upscaleImageName);
                     task.imageFileNames.push(upscaleImageName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + upscaleImageName, jsonobj[i], {
                         encoding: "base64",
