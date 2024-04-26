@@ -18,7 +18,7 @@ function TaskComfyChCreator(task, req, queue) {
     imgData_body_mask = Buffer.from(rawImg_body_mask).toString('base64');
     var rawImg_pants_mask = req.files.imageByteArray_pants_mask.data;
     imgData_pants_mask = Buffer.from(rawImg_pants_mask).toString('base64')
-    
+
     let imgData_face, imgData_body, imgData_pants;
     var rawImg_face = req.files.imageByteArray_face.data;
     imgData_face = Buffer.from(rawImg_face).toString('base64');
@@ -31,6 +31,8 @@ function TaskComfyChCreator(task, req, queue) {
     let prompt = JSON.parse(promptFile);
 
     let file = req.body.fullFilePath;
+    var reqModel = req.body.checkpoints;
+
 
     prompt["629"]["inputs"]["image"] = imgData_face_mask;
     prompt["632"]["inputs"]["image"] = imgData_body_mask;
@@ -45,13 +47,21 @@ function TaskComfyChCreator(task, req, queue) {
     Tool.applyRandomFileName(prompt);
     prompt["589"]["inputs"]["seed"] = Tool.randomInt();
     prompt["609"]["inputs"]["seed"] = Tool.randomInt();
-    
+
     task.pipeline = "chinpaint";
 
-    var captureFile = "save.json";
-    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
+    //var captureFile = "save.json";
+    //fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
 
-    
+    console.log("reqModel: " + reqModel);
+    var model = Tool.getModelFile(reqModel);
+    if (reqModel == "juggernautXL_v7") {
+        model = "juggernautXL_v7Rundiffusion.safetensors";
+    }
+    console.log("model: " + model);
+    //console.log("tags: " + req.body.tags);
+    prompt["637"]["inputs"]["ckpt_name"] = model;
+
     sendRequest(prompt, queue, task);
 }
 
@@ -76,7 +86,7 @@ function sendRequest(promptjson, queue, task) {
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
-     
+
         if (reshttps.statusCode == 200) {
 
             queue.completeTask();
