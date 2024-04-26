@@ -62,6 +62,41 @@ function TaskComfyChCreator(task, req, queue) {
     //console.log("tags: " + req.body.tags);
     prompt["637"]["inputs"]["ckpt_name"] = model;
 
+    let original_model = null;
+    let style = null;
+    var jsonSettings = null;
+    if (req.body.tags != undefined) {
+        console.log("tags: " + req.body.tags.prompt);
+        var tagString = req.body.tags
+        var tags = JSON.parse(tagString);
+        if (tags.prompt) {
+            var jsonString = tags.prompt.value;
+            //console.log("EXif:" + jsonString);
+            jsonSettings = JSON.parse(jsonString);
+            for (let i in jsonSettings) {
+                if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
+                    style = jsonSettings[i]["inputs"]["style"];
+                    console.log("find style:" + style);
+                    break;
+                }
+            }
+            // get old model
+            for (var i in jsonSettings) {
+                if (jsonSettings[i]["class_type"] == "CheckpointLoaderSimple") {
+                    original_model = jsonSettings[i]["inputs"]["ckpt_name"];
+                    console.log("find model:" + original_model);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (original_model == model) {
+        console.log("same model" + model + ":" + style);
+        prompt["639"]["inputs"]["style"] = style;
+
+    }
+
     sendRequest(prompt, queue, task);
 }
 
