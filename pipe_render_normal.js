@@ -2,14 +2,15 @@
 const fs = require('fs');
 const Tool = require('./tool');
 const OUTPUT_FOLDER = "/imgs/";
+const CharacterTool = require("./character_tool");
 
 function NormalRender() {
 
 }
 
-NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength, isLockCharacter, characterFile, fullCharacterPath) {
+NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFile, loras, style, cfg, sampleSteps, sampler, scheduler, poseStrength, depthStrength) {
 
-    const promptFile = fs.readFileSync(isLockCharacter ? './pipe/workflow_api_ipadapter.json' : './pipe/workflow_api.json');//');
+    const promptFile = fs.readFileSync('./pipe/workflow_api.json');//');
     let prompt = JSON.parse(promptFile);
 
     //style
@@ -40,6 +41,7 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
     }
 
     //lockcharacter
+    /*
     if (isLockCharacter) {
         console.log("isLockCharacter:");
         let value = Tool.applyImage(prompt, "22", characterFile, fullCharacterPath);
@@ -52,7 +54,7 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
             prompt["25"]["inputs"]["clip_name"] = "model_15.safetensors";
         }
     }
-
+    */
 
     prompt["2"]["inputs"]["image"] = imgData;
     //prompt["13"]["inputs"]["text"] = positivePrompt;
@@ -79,6 +81,10 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
         prompt["4"]["inputs"]["control_net_name"] = "control_v11f1p_sd15_depth.pth";
     }
 
+    //ch lock
+    if (CharacterTool.lockChParams.isLockCharacter) {
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "2", "20", "6", "7", "14", "11", "12", "7");
+    }
     return prompt;
 }
 
