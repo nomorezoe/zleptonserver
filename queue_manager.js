@@ -16,8 +16,16 @@ QueueManager.prototype.addToQueue = function (queue) {
 }
 
 QueueManager.prototype.addMaskToQueue = function (queue) {
-    this.queues =  [queue].concat(this.queues);
+    let i = 0; 
+    for (i = 0; i < this.queues.length; i++){
+        if(this.queues[i].tasks.length &&  this.queues[i].tasks[0].type != "mask"){
+            break;
+        }
+    }
+    this.queues.splice(i, 0, queue);
+
     console.log("add queue" + this.queues.length);
+    
     this.sendQueueStatus();
 }
 

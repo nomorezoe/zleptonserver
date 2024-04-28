@@ -311,7 +311,7 @@ app.use('/chcreator', function (req, res, next) {
     let task = new Task("chcreator", 0, req);
     queue.tasks.push(task);
 
-    QueueManager.instance.addMaskToQueue(queue);
+    QueueManager.instance.addToQueue(queue);
 
     res.json({
         success: true,
@@ -334,7 +334,7 @@ app.use('/styletransfer', function (req, res, next) {
     let task = new Task("styletransfer", 0, req);
     queue.tasks.push(task);
 
-    QueueManager.instance.addMaskToQueue(queue);
+    QueueManager.instance.addToQueue(queue);
 
     res.json({
         success: true,
