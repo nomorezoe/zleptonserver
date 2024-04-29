@@ -51,6 +51,7 @@ function TaskComfyRender(task, req, queue) {
     var lora = req.body.loras;
     var lora_weights = req.body.lora_weights;
     var rd_style = req.body.rd_style;
+    rd_style = Tool.getRDStyleByDescription(rd_style);
     var depthStrength = parseFloat(req.body.depthStrength);
     var depthStart = parseFloat(req.body.depthStart);
     var depthEnd = parseFloat(req.body.depthEnd);

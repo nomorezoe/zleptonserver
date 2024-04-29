@@ -107,6 +107,34 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSte
     return null;
 }
 
+Tool.getRDStyleByDescription = function (des) {
+    switch (des) {
+        case "Cinematic":
+            return "cinematic";
+            break;
+        case "Loose Color":
+            return "loose_color";
+            break;
+        case "B/W Loose (Film Grain)":
+            return "bw_loose_film_grain";
+            break;
+        case "Photorealism":
+            return "photorealism";
+            break;
+        case "DSLR":
+            return "dslr";
+            break;
+        case "B/W Loose":
+            return "bw_loose";
+            break;
+        case "Classic Animation":
+            return "classic_animation";
+            break;
+
+    }
+    return des;
+}
+
 Tool.getIsPhotoStyle = function (model, style) {
     for (let i = 0; i < Tool.rdStyleJson.length; i++) {
         if (Tool.getModelFile(Tool.rdStyleJson[i].model) == model && Tool.rdStyleJson[i].style == style) {
@@ -220,6 +248,7 @@ Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath) {
 }
 
 Tool.checkIsSamePipeLine = function (prompt, refFile) {
+    console.log("checkIsSamePipeLine:" + refFile);
     if (prompt == null) {
         return false;
     }
@@ -228,8 +257,9 @@ Tool.checkIsSamePipeLine = function (prompt, refFile) {
         let refPrompt = JSON.parse(promptFile);
 
         for (let i in refPrompt) {
+            console.log(i + ":" + refPrompt[i] + ":" + prompt[i]);
             if (refPrompt[i].class_type != prompt[i].class_type) {
-                console.log("BREAK " + i + ":" + refPrompt[i].class_type)
+                console.log("BREAK " + i + ":" + refPrompt[i].class_type + ":" + prompt[i].class_type)
                 return false;
 
             }
@@ -255,6 +285,7 @@ Tool.checkIsSamePipeLine = function (prompt, refFile) {
         return true;
     }
     catch (error) {
+        console.log("BREAK error:" + error);
         return false;
     }
 }
