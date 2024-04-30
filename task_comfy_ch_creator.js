@@ -19,7 +19,7 @@ function TaskComfyChCreator(task, req, queue) {
     var rawImg_pants_mask = req.files.imageByteArray_pants_mask.data;
     imgData_pants_mask = Buffer.from(rawImg_pants_mask).toString('base64');
 
-    fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask_0.png", imgData_face_mask,{
+    /*fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask_0.png", imgData_face_mask,{
         encoding: "base64",
     });
     fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask_1.png", imgData_body_mask,{
@@ -28,6 +28,7 @@ function TaskComfyChCreator(task, req, queue) {
     fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask_2.png", imgData_pants_mask,{
         encoding: "base64",
     });
+    */
     
 
     
