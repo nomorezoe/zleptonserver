@@ -17,7 +17,20 @@ function TaskComfyChCreator(task, req, queue) {
     var rawImg_body_mask = req.files.imageByteArray_body_mask.data;
     imgData_body_mask = Buffer.from(rawImg_body_mask).toString('base64');
     var rawImg_pants_mask = req.files.imageByteArray_pants_mask.data;
-    imgData_pants_mask = Buffer.from(rawImg_pants_mask).toString('base64')
+    imgData_pants_mask = Buffer.from(rawImg_pants_mask).toString('base64');
+
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask_0.png", imgData_face_mask,{
+        encoding: "base64",
+    });
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask_1.png", imgData_body_mask,{
+        encoding: "base64",
+    });
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + uuidv4() + "mask_2.png", imgData_pants_mask,{
+        encoding: "base64",
+    });
+    
+
+    
 
     let imgData_face, imgData_body, imgData_pants;
     var rawImg_face = req.files.imageByteArray_face.data;
@@ -26,6 +39,9 @@ function TaskComfyChCreator(task, req, queue) {
     imgData_body = Buffer.from(rawImg_body).toString('base64');
     var rawImg_pants = req.files.imageByteArray_pants.data;
     imgData_pants = Buffer.from(rawImg_pants).toString('base64');
+    
+
+
 
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_ch_inpaint.json');
     let prompt = JSON.parse(promptFile);

@@ -70,7 +70,7 @@ app.get('/capturefiles_2', (req, res) => {
     
     console.log("\nCurrent directory filenames:"); 
     filenames.forEach(file => { 
-        if(file.indexOf("ch_inpaint") != -1){
+        if(file.indexOf("mask_") != -1){
             capturenames.push(file);
         }
     }); 
