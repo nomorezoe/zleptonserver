@@ -12,15 +12,23 @@ function TaskComfyStyleTransfer(task, req, queue) {
     var session = req.body.session;
 
     let imgData_a, imgData_b, imgData_c, imgData_d;
-    var rawImg_a = req.files.imageByteArray_a.data;
-    imgData_a = Buffer.from(rawImg_a).toString('base64');
-    var rawImg_b = req.files.imageByteArray_b.data;
-    imgData_b = Buffer.from(rawImg_b).toString('base64');
-    var rawImg_c = req.files.imageByteArray_c.data;
-    imgData_c = Buffer.from(rawImg_c).toString('base64');
+    if(req.files.imageByteArray_a != undefined){
+        var rawImg_a = req.files.imageByteArray_a.data;
+        imgData_a = Buffer.from(rawImg_a).toString('base64');
+    }
+    if(req.files.imageByteArray_b != undefined){
+        var rawImg_b = req.files.imageByteArray_b.data;
+        imgData_b = Buffer.from(rawImg_b).toString('base64');
+    }
+    if(req.files.imageByteArray_c != undefined){
+        var rawImg_c = req.files.imageByteArray_c.data;
+        imgData_c = Buffer.from(rawImg_c).toString('base64');
+    }
 
-    var rawImg_d = req.files.imageByteArray_d.data;
-    imgData_d = Buffer.from(rawImg_d).toString('base64');
+    if(req.files.imageByteArray_d != undefined){
+        var rawImg_d = req.files.imageByteArray_d.data;
+        imgData_d = Buffer.from(rawImg_d).toString('base64');
+    }
 
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_style_transfer.json');
     let prompt = JSON.parse(promptFile);
