@@ -76,6 +76,9 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
 
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
+        prompt["52"]["inputs"]["model_weight_1"] = 0.20;
+        prompt["54"]["inputs"]["model_weight_1"] = 0.20;
+        prompt["54"]["inputs"]["model_weight_2"] = 0.20;
         CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "45", "69", "134", "49", "224", "4");
     }
 
