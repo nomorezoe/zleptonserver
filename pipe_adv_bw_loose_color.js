@@ -47,6 +47,7 @@ PipeAdvanceBWLooseColor.process = function (imgData, positivePrompt, negtiveProm
 
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
+        prompt["29"]["inputs"]["strength_model"] = 0.20;
         CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "44", "29", "3", "4", "7", "8", "9","4");
     }
     return prompt;

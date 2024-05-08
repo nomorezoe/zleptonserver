@@ -83,6 +83,9 @@ NormalRender.process = function (imgData, positivePrompt, negtivePrompt, modelFi
 
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
+        prompt["21"]["inputs"]["model_weight_1"] =0.20;
+        prompt["21"]["inputs"]["model_weight_2"] =0.20;
+        prompt["21"]["inputs"]["model_weight_3"] =0.20;
         CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "2", "20", "6", "7", "14", "11", "12", "7");
     }
     return prompt;

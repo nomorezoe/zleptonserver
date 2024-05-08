@@ -89,6 +89,7 @@ PipeAdvanceEpicReal.process= function(imgData, positivePrompt, negtivePrompt, mo
 
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
+        prompt["54"]["inputs"]["model_weight_2"] = 0.20;
         CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "45", "245", "230", "49", "224", "4");
     }
 
