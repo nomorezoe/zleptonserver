@@ -12,6 +12,7 @@ function TaskComfyStyleTransfer(task, req, queue) {
     var session = req.body.session;
 
     let imgData_a, imgData_b, imgData_c, imgData_d;
+    let posPrompt;
     if(req.files.imageByteArray_a != undefined){
         var rawImg_a = req.files.imageByteArray_a.data;
         imgData_a = Buffer.from(rawImg_a).toString('base64');
@@ -30,6 +31,8 @@ function TaskComfyStyleTransfer(task, req, queue) {
         imgData_d = Buffer.from(rawImg_d).toString('base64');
     }
 
+    posPrompt = req.body.prompt;
+
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_style_transfer.json');
     let prompt = JSON.parse(promptFile);
 
@@ -39,6 +42,7 @@ function TaskComfyStyleTransfer(task, req, queue) {
     prompt["240"]["inputs"]["image"] = imgData_b;
     prompt["243"]["inputs"]["image"] = imgData_c;
     prompt["246"]["inputs"]["image"] = imgData_d;
+    prompt["55"]["inputs"]["text_positive"] = posPrompt;
 
     prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
 
