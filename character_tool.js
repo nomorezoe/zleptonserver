@@ -8,7 +8,7 @@ function CharacterTool() {
 }
 
 const BATCH = 4;
-CharacterTool.BATCH = 4;
+//CharacterTool.BATCH = 4;
 CharacterTool.lockChParams = {};
 
 CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, model_final_id, sampler_id, vae_id, neg_id, vae_decode_id, save_image_id, model_vae_id) {

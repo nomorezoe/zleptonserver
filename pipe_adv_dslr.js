@@ -80,7 +80,7 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
         prompt["54"]["inputs"]["model_weight_1"] = 0.20;
         prompt["54"]["inputs"]["model_weight_2"] = 0.20;
         CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "53", "45", "69", "134", "49", "224", "4");
-
+        /*
         for (let b = 0; b < CharacterTool.BATCH; b++){
             for (let i = 0; i < pair; i++) {
                 //"100524": 
@@ -89,6 +89,7 @@ PipeAdvanceDSLR.process = function(imgData, positivePrompt, negtivePrompt, model
                 prompt[DetailerForEach_Face_Id]["cfg"]= 2.0;
             }
         }
+        */
        
     }
 
