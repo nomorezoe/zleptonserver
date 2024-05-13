@@ -11,7 +11,7 @@
   },
   "4": {
     "inputs": {
-      "ckpt_name": "juggernautXL_v9Rdphoto2Lightning.safetensors"
+      "ckpt_name": "juggernautXL_v7Rundiffusion.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
