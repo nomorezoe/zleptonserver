@@ -24,7 +24,7 @@ const Queue = require('./queue');
 const SocketManager = require('./socket_manager');
 const QueueManager = require('./queue_manager');
 const GetCharacterMask = require("./get_character_mask")
-
+const Tool = require('./tool');
 server.setTimeout(600000);
 
 
@@ -70,7 +70,7 @@ app.get('/capturefiles_2', (req, res) => {
     
     console.log("\nCurrent directory filenames:"); 
     filenames.forEach(file => { 
-        if(file.indexOf("mask_") != -1){
+        if(file.indexOf("capture") != -1){
             capturenames.push(file);
         }
     }); 
@@ -385,10 +385,15 @@ app.use('/test', function (req, res, next) {
     next();
 }).get('/test', (req, res) => {
    // let filename = "./pipe/test_2person.json"
-   let filename = "./pipe/test_super_scale.json";
+   let filename = "./pipe/workflow_api_adv_epic_real_animal.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
+
+    prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
+    Tool.applyImage (prompt, "1", "man_capture.png", null);
+    Tool.applyImage (prompt, "248", "cat_capture.png", null);
+
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {
         hostname: require('./tool').RequestURL,
