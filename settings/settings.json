@@ -191,9 +191,9 @@
             "cannyStrength": 0.0,
             "cannyStart":0,
             "cannyEnd":0.75,
-            "animalStrength": 0.0,
+            "animalStrength": 0.4,
             "animalStart":0,
-            "animalEnd":1
+            "animalEnd":0.42
         }
     ],
     "ksampler_backdrop_settings": [
@@ -238,9 +238,9 @@
             "cannyStrength": 0.3,
             "cannyStart":0,
             "cannyEnd":0.75,
-            "animalStrength": 0.0,
+            "animalStrength": 0.4,
             "animalStart":0,
-            "animalEnd":1
+            "animalEnd":0.42
         },
         {
             "pipe": "adv_bw_grain",
