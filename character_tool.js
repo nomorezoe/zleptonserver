@@ -116,7 +116,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
             "inputs": {
                 "target": "x1",
                 "order": false,
-                "take_start": index_pairs[i][1],
+                "take_start": index_pairs[i][0],
                 "take_count": 1,
                 "segs": [
                     "100396",
@@ -128,7 +128,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 "title": "SEGS Filter (ordered)"
             }
         }
-        console.log('ImpactSEGSOrderedFilter_referImage' + i + ":" + index_pairs[i][1]);
+        console.log('ImpactSEGSOrderedFilter_referImage' + i + ":" + index_pairs[i][0]);
         prompt[ImpactSEGSOrderedFilter_referImage_Id] = ImpactSEGSOrderedFilter_referImage;
 
         //100399
@@ -331,7 +331,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
             "inputs": {
                 "target": "x1",
                 "order": false,
-                "take_start": index_pairs[i][0],
+                "take_start": index_pairs[i][1],
                 "take_count": 1,
                 "segs": [
                     "100428",
@@ -343,7 +343,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 "title": "SEGS Filter (ordered)"
             }
         }
-        console.log('ImpactSEGSOrderedFilter_RenderImage' + i + ":" + index_pairs[i][0]);
+        console.log('ImpactSEGSOrderedFilter_RenderImage' + i + ":" + index_pairs[i][1]);
         prompt[ImpactSEGSOrderedFilter_RenderImage_Id] = ImpactSEGSOrderedFilter_RenderImage;
 
         //100431
@@ -422,7 +422,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 "inputs": {
                     "target": "x1",
                     "order": false,
-                    "take_start": index_pairs[i][0],
+                    "take_start": index_pairs[i][1],
                     "take_count": 1,
                     "segs": [
                         ImpactSimpleDetectorSEGS_render_Id,
@@ -435,7 +435,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
                 }
             }
 
-            console.log('ImpactSEGSOrderedFilter_render' + i + ":" + index_pairs[i][0]);
+            console.log('ImpactSEGSOrderedFilter_render' + i + ":" + index_pairs[i][1]);
             prompt[ImpactSEGSOrderedFilter_render_Id] = ImpactSEGSOrderedFilter_render;
         }
     }
