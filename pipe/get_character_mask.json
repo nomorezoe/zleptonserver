@@ -8,7 +8,7 @@
       "sub_threshold": 0.5,
       "sub_dilation": 0,
       "sub_bbox_expansion": 0,
-      "sam_mask_hint_threshold": 0.7,
+      "sam_mask_hint_threshold": 0.7000000000000001,
       "post_dilation": 0,
       "bbox_detector": [
         "20",
@@ -33,7 +33,7 @@
       "target": "x1",
       "order": false,
       "take_start": 0,
-      "take_count": 1,
+      "take_count": 4,
       "segs": [
         "1",
         0
@@ -44,158 +44,14 @@
       "title": "SEGS Filter (ordered)"
     }
   },
-  "3": {
-    "inputs": {
-      "segs": [
-        "2",
-        0
-      ]
-    },
-    "class_type": "SegsToCombinedMask",
-    "_meta": {
-      "title": "SEGS to MASK (combined)"
-    }
-  },
   "5": {
     "inputs": {
-      "image": "test_load (2).png",
+      "image": "rendermindjobs (73).png",
       "upload": "image"
     },
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
-    }
-  },
-  "7": {
-    "inputs": {
-      "mask": [
-        "3",
-        0
-      ]
-    },
-    "class_type": "MaskToImage",
-    "_meta": {
-      "title": "Convert Mask to Image"
-    }
-  },
-  "8": {
-    "inputs": {
-      "target": "x1",
-      "order": false,
-      "take_start": 1,
-      "take_count": 1,
-      "segs": [
-        "1",
-        0
-      ]
-    },
-    "class_type": "ImpactSEGSOrderedFilter",
-    "_meta": {
-      "title": "SEGS Filter (ordered)"
-    }
-  },
-  "9": {
-    "inputs": {
-      "segs": [
-        "8",
-        0
-      ]
-    },
-    "class_type": "SegsToCombinedMask",
-    "_meta": {
-      "title": "SEGS to MASK (combined)"
-    }
-  },
-  "11": {
-    "inputs": {
-      "mask": [
-        "9",
-        0
-      ]
-    },
-    "class_type": "MaskToImage",
-    "_meta": {
-      "title": "Convert Mask to Image"
-    }
-  },
-  "12": {
-    "inputs": {
-      "target": "x1",
-      "order": false,
-      "take_start": 2,
-      "take_count": 1,
-      "segs": [
-        "1",
-        0
-      ]
-    },
-    "class_type": "ImpactSEGSOrderedFilter",
-    "_meta": {
-      "title": "SEGS Filter (ordered)"
-    }
-  },
-  "13": {
-    "inputs": {
-      "segs": [
-        "12",
-        0
-      ]
-    },
-    "class_type": "SegsToCombinedMask",
-    "_meta": {
-      "title": "SEGS to MASK (combined)"
-    }
-  },
-  "15": {
-    "inputs": {
-      "mask": [
-        "13",
-        0
-      ]
-    },
-    "class_type": "MaskToImage",
-    "_meta": {
-      "title": "Convert Mask to Image"
-    }
-  },
-  "16": {
-    "inputs": {
-      "target": "x1",
-      "order": false,
-      "take_start": 3,
-      "take_count": 1,
-      "segs": [
-        "1",
-        0
-      ]
-    },
-    "class_type": "ImpactSEGSOrderedFilter",
-    "_meta": {
-      "title": "SEGS Filter (ordered)"
-    }
-  },
-  "17": {
-    "inputs": {
-      "segs": [
-        "16",
-        0
-      ]
-    },
-    "class_type": "SegsToCombinedMask",
-    "_meta": {
-      "title": "SEGS to MASK (combined)"
-    }
-  },
-  "19": {
-    "inputs": {
-      "mask": [
-        "17",
-        0
-      ]
-    },
-    "class_type": "MaskToImage",
-    "_meta": {
-      "title": "Convert Mask to Image"
     }
   },
   "20": {
@@ -217,120 +73,41 @@
       "title": "SAMLoader (Impact)"
     }
   },
-  "33": {
+  "57": {
     "inputs": {
-      "segs": [
-        "16",
+      "masks": [
+        "62",
         0
       ]
     },
-    "class_type": "ImpactIsNotEmptySEGS",
+    "class_type": "Convert Masks to Images",
     "_meta": {
-      "title": "SEGS isn't Empty"
+      "title": "Convert Masks to Images"
     }
   },
-  "38": {
-    "inputs": {
-      "boolean": [
-        "33",
-        0
-      ],
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "19",
-        0
-      ]
-    },
-    "class_type": "SaveImage_plus",
-    "_meta": {
-      "title": "SaveImage_plus"
-    }
-  },
-  "39": {
+  "62": {
     "inputs": {
       "segs": [
         "2",
         0
       ]
     },
-    "class_type": "ImpactIsNotEmptySEGS",
+    "class_type": "ImpactSEGSToMaskList",
     "_meta": {
-      "title": "SEGS isn't Empty"
+      "title": "SEGS to Mask List"
     }
   },
-  "40": {
+  "64": {
     "inputs": {
-      "boolean": [
-        "39",
-        0
-      ],
       "filename_prefix": "ComfyUI",
       "images": [
-        "7",
+        "57",
         0
       ]
     },
-    "class_type": "SaveImage_plus",
+    "class_type": "SaveImage",
     "_meta": {
-      "title": "SaveImage_plus"
-    }
-  },
-  "41": {
-    "inputs": {
-      "boolean": [
-        "42",
-        0
-      ],
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "11",
-        0
-      ]
-    },
-    "class_type": "SaveImage_plus",
-    "_meta": {
-      "title": "SaveImage_plus"
-    }
-  },
-  "42": {
-    "inputs": {
-      "segs": [
-        "8",
-        0
-      ]
-    },
-    "class_type": "ImpactIsNotEmptySEGS",
-    "_meta": {
-      "title": "SEGS isn't Empty"
-    }
-  },
-  "43": {
-    "inputs": {
-      "boolean": [
-        "44",
-        0
-      ],
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "15",
-        0
-      ]
-    },
-    "class_type": "SaveImage_plus",
-    "_meta": {
-      "title": "SaveImage_plus"
-    }
-  },
-  "44": {
-    "inputs": {
-      "segs": [
-        "12",
-        0
-      ]
-    },
-    "class_type": "ImpactIsNotEmptySEGS",
-    "_meta": {
-      "title": "SEGS isn't Empty"
+      "title": "Save Image"
     }
   }
 }
