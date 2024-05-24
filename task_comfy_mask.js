@@ -15,6 +15,8 @@ function TaskComfyMask(task, req, queue) {
     console.log("get_character_mask_update");
     let prompt = JSON.parse(promptFile);
 
+    let isUpscaleImage = false;
+
     if(req.body.img_url == undefined){
         var rawMaskImg = req.files.imageByteArray.data;
         var buffer = Buffer.from(rawMaskImg);
@@ -25,9 +27,11 @@ function TaskComfyMask(task, req, queue) {
     {
         var maskUrl = req.body.img_url;
         Tool.applyImage(prompt, "5", null, maskUrl);
+        isUpscaleImage = true;
+        prompt["1"]["inputs"]["crop_factor"] = 6;
     }
     
-
+    
     task.pipeline = "get_mask";
     //
     Tool.applyRandomFileName(prompt);

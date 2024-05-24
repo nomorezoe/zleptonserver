@@ -81,7 +81,7 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
         "inputs": {
             "bbox_threshold": 0.5,
             "bbox_dilation": 0,
-            "crop_factor": 3,
+            "crop_factor": 6,
             "drop_size": 50,
             "sub_threshold": 0.5,
             "sub_dilation": 0,
