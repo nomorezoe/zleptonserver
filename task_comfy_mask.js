@@ -11,7 +11,8 @@ function TaskComfyMask(task, req, queue) {
 
     var session = req.body.session;
     
-    const promptFile = fs.readFileSync('./pipe/get_character_mask.json');
+    const promptFile = fs.readFileSync('./pipe/get_character_mask_update.json');
+    console.log("get_character_mask_update");
     let prompt = JSON.parse(promptFile);
 
     if(req.body.img_url == undefined){

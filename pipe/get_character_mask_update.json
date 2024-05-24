@@ -1,0 +1,113 @@
+{
+  "1": {
+    "inputs": {
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 0,
+      "crop_factor": 3,
+      "drop_size": 50,
+      "sub_threshold": 0.5,
+      "sub_dilation": 0,
+      "sub_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7,
+      "post_dilation": 0,
+      "bbox_detector": [
+        "20",
+        0
+      ],
+      "image": [
+        "5",
+        0
+      ],
+      "sam_model_opt": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "ImpactSimpleDetectorSEGS",
+    "_meta": {
+      "title": "Simple Detector (SEGS)"
+    }
+  },
+  "2": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 0,
+      "take_count": 4,
+      "segs": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "5": {
+    "inputs": {
+      "image": "rendermindjobs (73).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "20": {
+    "inputs": {
+      "model_name": "segm/person_yolov8m-seg.pt"
+    },
+    "class_type": "UltralyticsDetectorProvider",
+    "_meta": {
+      "title": "UltralyticsDetectorProvider"
+    }
+  },
+  "21": {
+    "inputs": {
+      "model_name": "sam_vit_b_01ec64.pth",
+      "device_mode": "AUTO"
+    },
+    "class_type": "SAMLoader",
+    "_meta": {
+      "title": "SAMLoader (Impact)"
+    }
+  },
+  "57": {
+    "inputs": {
+      "masks": [
+        "62",
+        0
+      ]
+    },
+    "class_type": "Convert Masks to Images",
+    "_meta": {
+      "title": "Convert Masks to Images"
+    }
+  },
+  "62": {
+    "inputs": {
+      "segs": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSToMaskList",
+    "_meta": {
+      "title": "SEGS to Mask List"
+    }
+  },
+  "64": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "57",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}
