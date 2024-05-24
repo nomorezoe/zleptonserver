@@ -8,7 +8,7 @@
       "sub_threshold": 0.5,
       "sub_dilation": 0,
       "sub_bbox_expansion": 0,
-      "sam_mask_hint_threshold": 0.7000000000000001,
+      "sam_mask_hint_threshold": 0.7,
       "post_dilation": 0,
       "bbox_detector": [
         "20",
