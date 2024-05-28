@@ -1,0 +1,587 @@
+{
+  "1": {
+    "inputs": {
+      "image": "man_capture.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "realismEngineSDXL_v20VAE.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "22": {
+    "inputs": {
+      "control_net_name": "OpenPoseXL2.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "26": {
+    "inputs": {
+      "images": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "28": {
+    "inputs": {
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": 512,
+      "bbox_detector": "yolox_l.onnx",
+      "pose_estimator": "dw-ll_ucoco_384.onnx",
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "DWPreprocessor",
+    "_meta": {
+      "title": "DWPose Estimator"
+    }
+  },
+  "29": {
+    "inputs": {
+      "control_net_name": "control-lora-depth-rank128.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "31": {
+    "inputs": {
+      "images": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "33": {
+    "inputs": {
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 512,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "_meta": {
+      "title": "MiDaS Depth Map"
+    }
+  },
+  "51": {
+    "inputs": {
+      "width": [
+        "183",
+        0
+      ],
+      "height": [
+        "183",
+        1
+      ],
+      "batch_size": 4
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "52": {
+    "inputs": {
+      "switch_1": "Off",
+      "lora_name_1": "None",
+      "model_weight_1": 0.9500000000000001,
+      "clip_weight_1": 1,
+      "switch_2": "Off",
+      "lora_name_2": "None",
+      "model_weight_2": 1,
+      "clip_weight_2": 1,
+      "switch_3": "Off",
+      "lora_name_3": "None",
+      "model_weight_3": 1,
+      "clip_weight_3": 1,
+      "lora_stack": [
+        "54",
+        0
+      ]
+    },
+    "class_type": "CR LoRA Stack",
+    "_meta": {
+      "title": "💊 CR LoRA Stack"
+    }
+  },
+  "54": {
+    "inputs": {
+      "switch_1": "On",
+      "lora_name_1": "Cinematic Hollywood Film_sdxl.safetensors",
+      "model_weight_1": 0.2,
+      "clip_weight_1": 1,
+      "switch_2": "On",
+      "lora_name_2": "SDXL1.0_Essenz-series-by-AI_Characters_Style_BetterPhotography-v1.2-'Skynet'.safetensors",
+      "model_weight_2": 0.2,
+      "clip_weight_2": 1,
+      "switch_3": "Off",
+      "lora_name_3": "None",
+      "model_weight_3": 1,
+      "clip_weight_3": 1
+    },
+    "class_type": "CR LoRA Stack",
+    "_meta": {
+      "title": "💊 CR LoRA Stack"
+    }
+  },
+  "55": {
+    "inputs": {
+      "text_positive": "Cinematic Hollywood Film, photo in phst artstyle, a couple is jogging in the city  cinematic lighting,  masterpiece,  high quality,  high resolution,  4K,  HDR,",
+      "text_negative": "bare chest, asian, low res, (worst quality, greyscale), watermark, face paint, username, signature, text, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, , blur, distortion, fused fingers, too many fingers, too many legs, long neck, cut off hands, large ass, large chest, bare chest. (three legs),((((ugly)))),(((duplicate))),((morbid)),((mutilated)),[out of frame], (three hands),((poorly drawn hands))",
+      "style": "base",
+      "log_prompt": true,
+      "style_positive": true,
+      "style_negative": true
+    },
+    "class_type": "SDXLPromptStyler",
+    "_meta": {
+      "title": "SDXL Prompt Styler"
+    }
+  },
+  "65": {
+    "inputs": {
+      "ckpt_name": "sdXL_v10RefinerVAEFix.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "67": {
+    "inputs": {
+      "ascore": 6.67,
+      "width": 1024,
+      "height": 1024,
+      "text": "",
+      "clip": [
+        "65",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXLRefiner",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXLRefiner"
+    }
+  },
+  "68": {
+    "inputs": {
+      "ascore": 6,
+      "width": 1024,
+      "height": 1024,
+      "text": "",
+      "clip": [
+        "65",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXLRefiner",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXLRefiner"
+    }
+  },
+  "69": {
+    "inputs": {
+      "vae_name": "sdxl_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "133": {
+    "inputs": {
+      "width": [
+        "183",
+        0
+      ],
+      "height": [
+        "183",
+        1
+      ],
+      "crop_w": 0,
+      "crop_h": 0,
+      "target_width": 4096,
+      "target_height": 4096,
+      "text_g": [
+        "55",
+        0
+      ],
+      "text_l": [
+        "55",
+        0
+      ],
+      "clip": [
+        "149",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXL",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXL"
+    }
+  },
+  "134": {
+    "inputs": {
+      "width": [
+        "183",
+        0
+      ],
+      "height": [
+        "183",
+        1
+      ],
+      "crop_w": 0,
+      "crop_h": 0,
+      "target_width": 4096,
+      "target_height": 4096,
+      "text_g": [
+        "55",
+        1
+      ],
+      "text_l": [
+        "55",
+        1
+      ],
+      "clip": [
+        "149",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXL",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXL"
+    }
+  },
+  "149": {
+    "inputs": {
+      "stop_at_clip_layer": -2,
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPSetLastLayer",
+    "_meta": {
+      "title": "CLIP Set Last Layer"
+    }
+  },
+  "181": {
+    "inputs": {
+      "strength": 0.5,
+      "start_percent": 0,
+      "end_percent": 0.65,
+      "positive": [
+        "133",
+        0
+      ],
+      "negative": [
+        "134",
+        0
+      ],
+      "control_net": [
+        "22",
+        0
+      ],
+      "image": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced",
+    "_meta": {
+      "title": "Apply ControlNet (Advanced)"
+    }
+  },
+  "182": {
+    "inputs": {
+      "strength": 0.4,
+      "start_percent": 0,
+      "end_percent": 0.65,
+      "positive": [
+        "181",
+        0
+      ],
+      "negative": [
+        "181",
+        1
+      ],
+      "control_net": [
+        "29",
+        0
+      ],
+      "image": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced",
+    "_meta": {
+      "title": "Apply ControlNet (Advanced)"
+    }
+  },
+  "183": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "aspect_ratio": "4:3 landscape 1152x896",
+      "swap_dimensions": "Off",
+      "upscale_factor1": 1,
+      "upscale_factor2": 1,
+      "batch_size": 4
+    },
+    "class_type": "CR Aspect Ratio SDXL",
+    "_meta": {
+      "title": "CR Aspect Ratio SDXL (Legacy)"
+    }
+  },
+  "192": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 1101546188458975,
+      "steps": 25,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2s_ancestral",
+      "scheduler": "karras",
+      "start_at_step": 0,
+      "end_at_step": 23,
+      "return_with_leftover_noise": "enable",
+      "model": [
+        "601516",
+        0
+      ],
+      "positive": [
+        "182",
+        0
+      ],
+      "negative": [
+        "182",
+        1
+      ],
+      "latent_image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "193": {
+    "inputs": {
+      "add_noise": "disable",
+      "noise_seed": 632082206058105,
+      "steps": 25,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2s_ancestral",
+      "scheduler": "karras",
+      "start_at_step": 23,
+      "end_at_step": 10000,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "65",
+        0
+      ],
+      "positive": [
+        "67",
+        0
+      ],
+      "negative": [
+        "68",
+        0
+      ],
+      "latent_image": [
+        "192",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "194": {
+    "inputs": {
+      "samples": [
+        "193",
+        0
+      ],
+      "vae": [
+        "69",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "601516": {
+    "inputs": {
+      "weight": 0.89,
+      "start_at": 0,
+      "end_at": 1,
+      "weight_type": "style transfer (SDXL only)",
+      "model": [
+        "601525",
+        0
+      ],
+      "ipadapter": [
+        "601525",
+        1
+      ],
+      "image": [
+        "601522",
+        0
+      ]
+    },
+    "class_type": "IPAdapter",
+    "_meta": {
+      "title": "IPAdapter"
+    }
+  },
+  "601517": {
+    "inputs": {
+      "image": "295px-Seattle_Sun_(218456237) (2).jpeg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "601518": {
+    "inputs": {
+      "image": "5c8272e2-48e4-4e6f-a1c6-cdcbe2f9fbd3 (2).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "601519": {
+    "inputs": {
+      "image": "3d_pixels-gigapixel-scale-2_00x.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "601520": {
+    "inputs": {
+      "image": "1728cd53-be1e-413a-8421-c6b6baf217fb (1).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "601522": {
+    "inputs": {
+      "image1": [
+        "601517",
+        0
+      ],
+      "image2": [
+        "601523",
+        0
+      ]
+    },
+    "class_type": "ImageBatch",
+    "_meta": {
+      "title": "Batch Images"
+    }
+  },
+  "601523": {
+    "inputs": {
+      "image1": [
+        "601518",
+        0
+      ],
+      "image2": [
+        "601524",
+        0
+      ]
+    },
+    "class_type": "ImageBatch",
+    "_meta": {
+      "title": "Batch Images"
+    }
+  },
+  "601524": {
+    "inputs": {
+      "image1": [
+        "601519",
+        0
+      ],
+      "image2": [
+        "601520",
+        0
+      ]
+    },
+    "class_type": "ImageBatch",
+    "_meta": {
+      "title": "Batch Images"
+    }
+  },
+  "601525": {
+    "inputs": {
+      "preset": "PLUS (high strength)",
+      "model": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "IPAdapterUnifiedLoader",
+    "_meta": {
+      "title": "IPAdapter Unified Loader"
+    }
+  },
+  "601526": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "194",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

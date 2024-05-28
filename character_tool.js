@@ -132,21 +132,21 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
         prompt[ImpactSEGSOrderedFilter_referImage_Id] = ImpactSEGSOrderedFilter_referImage;
 
         //100399
-       /*let SEGSToImageList_Id = (100399 + i * 1000).toString();
-        let SEGSToImageList = {
-            "inputs": {
-                "segs": [
-                    ImpactSEGSOrderedFilter_referImage_Id,
-                    0
-                ]
-            },
-            "class_type": "SEGSToImageList",
-            "_meta": {
-                "title": "SEGSToImageList"
-            }
-        }
-        prompt[SEGSToImageList_Id] = SEGSToImageList;
-        */
+        /*let SEGSToImageList_Id = (100399 + i * 1000).toString();
+         let SEGSToImageList = {
+             "inputs": {
+                 "segs": [
+                     ImpactSEGSOrderedFilter_referImage_Id,
+                     0
+                 ]
+             },
+             "class_type": "SEGSToImageList",
+             "_meta": {
+                 "title": "SEGSToImageList"
+             }
+         }
+         prompt[SEGSToImageList_Id] = SEGSToImageList;
+         */
         //"100409": 
         let SegsToCombinedMask_Id = (100409 + i * 1000).toString();
         let SegsToCombinedMask = {
@@ -781,4 +781,37 @@ CharacterTool.AddAPerson = function (prompt, index_pairs, refer_url, image_id, m
 
 }
 
+
+CharacterTool.AddAPersonForStyleTransfer = function (prompt, index_pairs, refer_url, image_id, model_final_id, sampler_id, vae_id, neg_id, vae_decode_id, save_image_id, model_vae_id, clip_id) {
+    CharacterTool.AddAPerson(prompt, index_pairs, refer_url, image_id, model_final_id, sampler_id, vae_id, neg_id, vae_decode_id, save_image_id, model_vae_id);
+
+    let pair = index_pairs.length;
+    for (let b = 0; b < BATCH; b++) {
+        let vaeDecodeID = (parseInt(vae_decode_id) + b * 10000).toString();
+        prompt[vaeDecodeID]["inputs"]["vae"][1] = 0;
+
+
+        for (let i = 0; i < pair; i++) {
+
+            //"100524": 
+            DetailerForEach_Face_Id = (100524 + b * 10000 + i * 1000).toString();
+
+            prompt[DetailerForEach_Face_Id]["inputs"]["clip"] = [
+                clip_id,
+                0
+            ];
+            prompt[DetailerForEach_Face_Id]["inputs"]["vae"][1] = 0;
+
+
+        }
+    }
+    for (let i = 0; i < pair; i++) {
+        let CLIPTextEncode_face_Id = (100525 + i * 1000).toString();
+        prompt[CLIPTextEncode_face_Id]["inputs"]["clip"] = [
+            clip_id,
+            0
+        ];
+    }
+
+}
 module.exports = CharacterTool;

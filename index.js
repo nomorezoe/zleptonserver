@@ -182,6 +182,32 @@ app.use('/render', function (req, res, next) {
 })
 //render - end
 
+//styletransferrender - start
+app.use('/styletransferrender', function (req, res, next) {
+    //req.clearTimeout(); // clear request timeout
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/styletransferrender', (req, res) => {
+    console.log("styletransferrender");
+    var session = req.body.session;
+
+    let queue = new Queue(session);
+    //for (let i = 0; i < BATCH_COUNT; i++) {
+    let task = new Task("styletransferrender", 0, req);
+    queue.tasks.push(task);
+    //}
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+//styletransferrender - end
+
 
 //upscale - start
 app.use('/upscale', function (req, res, next) {
