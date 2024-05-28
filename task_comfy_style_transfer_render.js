@@ -12,24 +12,19 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
 
     var session = req.body.session;
 
-    let imgData_a, imgData_b, imgData_c, imgData_d;
+    let url_a, url_b, url_c, url_d;
     let posPrompt;
-    if(req.files.imageByteArray_a != undefined){
-        var rawImg_a = req.files.imageByteArray_a.data;
-        imgData_a = Buffer.from(rawImg_a).toString('base64');
+    if(req.body.url_a != undefined){
+        url_a = req.body.url_a;
     }
-    if(req.files.imageByteArray_b != undefined){
-        var rawImg_b = req.files.imageByteArray_b.data;
-        imgData_b = Buffer.from(rawImg_b).toString('base64');
+    if(req.body.url_b != undefined){
+        url_b = req.body.url_b;
     }
-    if(req.files.imageByteArray_c != undefined){
-        var rawImg_c = req.files.imageByteArray_c.data;
-        imgData_c = Buffer.from(rawImg_c).toString('base64');
+    if(req.body.url_c != undefined){
+        url_c = req.body.url_c;
     }
-
-    if(req.files.imageByteArray_d != undefined){
-        var rawImg_d = req.files.imageByteArray_d.data;
-        imgData_d = Buffer.from(rawImg_d).toString('base64');
+    if(req.body.url_d != undefined){
+        url_d = req.body.url_d;
     }
 
     posPrompt = req.body.prompt;
@@ -52,7 +47,7 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
         console.log("req.body.characerLockPair" + CharacterTool.characerLockPair);
     }
 
-    let prompt = processChLockStyleTransfer(req, imgData_a, imgData_b, imgData_c, imgData_d, posPrompt);
+    let prompt = processChLockStyleTransfer(req, url_a, url_b, url_c, url_d, posPrompt);
     
     var cropWidth = parseFloat(req.body.cropWidth);
     var cropHeight = parseFloat(req.body.cropHeight);
@@ -65,17 +60,23 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
     sendRequest(prompt, queue, task);
 }
 
-function processChLockStyleTransfer(req, imgData_a, imgData_b, imgData_c, imgData_d, posPrompt){
+function processChLockStyleTransfer(req, url_a, url_b, url_c, url_d, posPrompt){
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_style_transfer_ch_lock.json');
     let prompt = JSON.parse(promptFile);
 
     var rawImg = req.files.imageByteArray.data;
     let imgData = Buffer.from(rawImg).toString('base64');
 
-    prompt["601517"]["inputs"]["image"] = imgData_a;
+    /*prompt["601517"]["inputs"]["image"] = imgData_a;
     prompt["601518"]["inputs"]["image"] = imgData_b;
     prompt["601519"]["inputs"]["image"] = imgData_c;
     prompt["601520"]["inputs"]["image"] = imgData_d;
+    */
+    Tool.applyImage(prompt, "601517", null, url_a);
+    Tool.applyImage(prompt, "601518", null, url_b);
+    Tool.applyImage(prompt, "601519", null, url_c);
+    Tool.applyImage(prompt, "601520", null, url_d);
+
     prompt["55"]["inputs"]["text_positive"] = posPrompt;
 
     prompt["192"]["inputs"]["noise_seed"] =  Tool.randomInt();
