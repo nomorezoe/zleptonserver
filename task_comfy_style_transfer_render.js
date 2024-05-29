@@ -47,7 +47,18 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
         console.log("req.body.characerLockPair" + CharacterTool.characerLockPair);
     }
 
-    let prompt = processChLockStyleTransfer(req, url_a, url_b, url_c, url_d, posPrompt);
+    var rawImg = req.files.imageByteArray.data;
+    let imgData = Buffer.from(rawImg).toString('base64');
+
+     //capture
+     var captureFile = uuidv4() + "capture.png";
+     fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
+         encoding: "base64",
+     });
+ 
+     task.sendSocketMsg("generateScreenCapture", captureFile);
+
+    let prompt = processChLockStyleTransfer(imgData, url_a, url_b, url_c, url_d, posPrompt);
     
     var cropWidth = parseFloat(req.body.cropWidth);
     var cropHeight = parseFloat(req.body.cropHeight);
@@ -60,12 +71,9 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
     sendRequest(prompt, queue, task);
 }
 
-function processChLockStyleTransfer(req, url_a, url_b, url_c, url_d, posPrompt){
+function processChLockStyleTransfer(imgData, url_a, url_b, url_c, url_d, posPrompt){
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_style_transfer_ch_lock.json');
     let prompt = JSON.parse(promptFile);
-
-    var rawImg = req.files.imageByteArray.data;
-    let imgData = Buffer.from(rawImg).toString('base64');
 
     /*prompt["601517"]["inputs"]["image"] = imgData_a;
     prompt["601518"]["inputs"]["image"] = imgData_b;
