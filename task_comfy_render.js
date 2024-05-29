@@ -34,7 +34,7 @@ function TaskComfyRender(task, req, queue) {
         encoding: "base64",
     });
 
-    task.sendSocketMsg("generateScreenCapture", captureFile);
+    //task.sendSocketMsg("generateScreenCapture", captureFile);
 
     //
     var reqModel = req.body.model == undefined ? "dynavisionXL" : req.body.model;

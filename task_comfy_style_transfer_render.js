@@ -56,7 +56,7 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
          encoding: "base64",
      });
  
-     task.sendSocketMsg("generateScreenCapture", captureFile);
+     //task.sendSocketMsg("generateScreenCapture", captureFile);
 
     let prompt = processChLockStyleTransfer(imgData, url_a, url_b, url_c, url_d, posPrompt);
     
