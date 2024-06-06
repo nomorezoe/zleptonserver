@@ -1,5 +1,6 @@
 "strict mode"
 
+const Queue = require("./queue");
 const SocketManager = require("./socket_manager");
 
 function QueueManager() {
@@ -16,6 +17,19 @@ QueueManager.prototype.addToQueue = function (queue) {
 }
 
 QueueManager.prototype.addMaskToQueue = function (queue) {
+
+    //remove curernt
+    for (let k = 0; k < this.queues.length; k++){
+        if(this.queues[k].key == queue.key){
+            if(this.queues[k].getType() == "mask"){
+                this.queues.splice(k, 1);
+                console.log("remove," +k);
+                break;
+            }
+        }
+    }
+
+    // add to queue
     let i = 0; 
     for (i = 0; i < this.queues.length; i++){
         if(this.queues[i].tasks.length &&  this.queues[i].tasks[0].type != "mask"){
@@ -39,15 +53,41 @@ QueueManager.prototype.getNextQueue = function () {
         return;
     }
 
-    while (this.currentQueue.length < this.QUEUE_COUNT && this.queues.length > 0) {
-        let q = this.queues.splice(0, 1)[0];
-        this.currentQueue.push(q);
-        q.excuteQueue();
+    let seek = 0;
+
+    while (this.currentQueue.length < this.QUEUE_COUNT && seek < this.queues.length) {
+        let q = this.queues[seek];
+        if(this.canStart(q)){
+            this.queues.splice(seek, 1);
+            this.currentQueue.push(q);
+            q.excuteQueue();
+        }
+        else{
+            seek ++;
+        }
     }
 
     console.log("new queue start" + this.queues.length);
     this.sendQueueStatus();
 
+}
+
+QueueManager.prototype.canStart = function(queue){
+    for(let i = 0; i < this.currentQueue.length; i++){
+        if(queue.key == this.currentQueue[i].key){
+            if(this.formatType(queue.getType()) == this.formatType(this.currentQueue[i].getType())){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+QueueManager.prototype.formatType = function(type){
+    if(type == "styletransferrender"){
+        return "render";
+    }
+    return type;
 }
 
 QueueManager.prototype.completeAQueue = function (queue) {

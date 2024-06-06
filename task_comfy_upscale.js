@@ -10,7 +10,7 @@ const PipeAdvancePhotoRealismUpscale = require("./pipe_adv_photo_realism_upscale
 const PipeAdvanceDSLRUpscale = require("./pipe_adv_photo_dslr_upscale");
 const PipeAdvanceLooseColorUpscale = require('./pipe_adv_loose_color_upscale');
 const PipeAdvanceBWLooseUpscale = require('./pipe_adv_bw_loose_color_upscale');
-const PipeAdvanceEpicReal = require("./pipe_adv_epic_real_upscale");
+const PipeAdvanceEpicRealUpscale = require("./pipe_adv_epic_real_upscale");
 const PipeIllustrationComicUpscale = require("./pipe_illustration_coimic_upscale")
 
 function TaskComfyUpscale(task, req, queue) {
@@ -82,7 +82,7 @@ function TaskComfyUpscale(task, req, queue) {
         var tags = JSON.parse(tagString);
         if (tags.prompt) {
             var jsonString = tags.prompt.value;
-            //console.log("EXif:" + jsonString);
+            console.log("EXif:" + jsonString);
             jsonSettings = JSON.parse(jsonString);
             for (let i in jsonSettings) {
                 if (jsonSettings[i]["class_type"] == "SDXLPromptStyler") {
@@ -118,7 +118,7 @@ function TaskComfyUpscale(task, req, queue) {
 
         }
     }
-
+    
     let promptjson;
     if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
         task.pipeline = "upscale_photorealism";
@@ -134,7 +134,7 @@ function TaskComfyUpscale(task, req, queue) {
     }
     else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_epic_real.json")){
         task.pipeline = "upscale_real_epic";
-        promptjson = PipeAdvanceEpicReal.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
+        promptjson =  PipeAdvanceEpicRealUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
     else if(!isLockCharacter && 
         (Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_loose_color_2.json")

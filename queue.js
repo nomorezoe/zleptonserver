@@ -12,6 +12,17 @@ function Queue(sessionkey) {
 }
 
 Queue.prototype = {
+    getType: function(){
+        if(this.currentTask != null){
+            return this.currentTask.type;
+        }
+
+        if(this.tasks.length >0){
+            return this.tasks[0].type;
+        }
+        return null;
+    },
+    
     excuteQueue: function () {
         this.estimateTaskDuration = this.tasks[0].getDuration();
         this.downloadDuration = this.tasks[0].getDownloadDuration();
