@@ -16,18 +16,27 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
     let posPrompt;
     if(req.body.url_a != undefined){
         url_a = req.body.url_a;
+        console.log("url_a is :" + url_a );
     }
     if(req.body.url_b != undefined){
         url_b = req.body.url_b;
+        console.log("url_b is :" + url_b );
     }
     if(req.body.url_c != undefined){
         url_c = req.body.url_c;
+        console.log("url_c is :" + url_c );
     }
     if(req.body.url_d != undefined){
         url_d = req.body.url_d;
+        console.log("url_d is :" + url_d );
     }
 
     posPrompt = req.body.prompt;
+
+    if(req.body.pretext != undefined){
+        console.log("pretext is :" + req.body.pretext );
+        posPrompt = req.body.pretext +", " + posPrompt;
+    }
 
     //lock character
     CharacterTool.lockChParams = {};
