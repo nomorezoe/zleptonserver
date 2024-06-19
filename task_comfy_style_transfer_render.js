@@ -34,8 +34,14 @@ function TaskComfyRenderStyleTransfer(task, req, queue) {
     posPrompt = req.body.prompt;
 
     if(req.body.pretext != undefined){
-        console.log("pretext is :" + req.body.pretext );
-        posPrompt = req.body.pretext +", " + posPrompt;
+       
+        if(req.body.pretext.endsWith(',')|| req.body.pretext.endsWith(', ')){
+            posPrompt = req.body.pretext + posPrompt;
+        }
+        else{
+            posPrompt = req.body.pretext +", " + posPrompt;
+        }
+        console.log("posPrompt is :" + posPrompt );
     }
 
     //lock character
