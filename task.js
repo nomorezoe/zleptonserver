@@ -10,6 +10,7 @@ const TaskComfyMask = require("./task_comfy_mask");
 const TaskComfyChCreator = require("./task_comfy_ch_creator");
 const TaskComfyStyleTransfer = require("./task_comfy_style_transfer");
 const TaskComfyRenderStyleTransfer = require("./task_comfy_style_transfer_render");
+const TaskComfyScribble = require("./task_comfy_scribble");
 
 function Task(type, index, req) {
     this.type = type;
@@ -59,6 +60,9 @@ Task.prototype = {
                 break;
             case "styletransferrender":
                 TaskComfyRenderStyleTransfer(this, this.req, queue);
+                break;
+            case "scribble":
+                TaskComfyScribble(this, this.req, queue);
                 break;
         }
     },
@@ -113,6 +117,9 @@ Task.prototype = {
             case "styletransferrender":
                 return 240;
                 break;
+            case "scribble":
+                return 60;
+                break;
         }
     },
 
@@ -143,6 +150,9 @@ Task.prototype = {
                 return 120;
                 break;
             case "styletransferrender":
+                return 60;
+                break;
+            case "scribble":
                 return 60;
                 break;
         }
@@ -178,6 +188,9 @@ Task.prototype = {
             }
             else if (this.type == "styletransferrender") {
                 socket.emit("completeStyleTransferRender", this.imageFileNames.join(','));
+            }
+            else if(this.type == "scribble"){
+                socket.emit("completeScribble", this.imageFileNames.join(','));
             }
         }
     },

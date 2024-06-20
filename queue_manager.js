@@ -23,7 +23,6 @@ QueueManager.prototype.addMaskToQueue = function (queue) {
         if(this.queues[k].key == queue.key){
             if(this.queues[k].getType() == "mask"){
                 this.queues.splice(k, 1);
-                console.log("remove," +k);
                 break;
             }
         }
@@ -42,6 +41,34 @@ QueueManager.prototype.addMaskToQueue = function (queue) {
     
     this.sendQueueStatus();
 }
+
+QueueManager.prototype.addScribbleToQueue = function (queue) {
+
+    //remove curernt
+    for (let k = 0; k < this.queues.length; k++){
+        if(this.queues[k].key == queue.key){
+            if(this.queues[k].getType() == "scribble"){
+                this.queues.splice(k, 1);
+                break;
+            }
+        }
+    }
+
+    // add to queue
+    let i = 0; 
+    for (i = 0; i < this.queues.length; i++){
+        if(this.queues[i].tasks.length &&  this.queues[i].tasks[0].type != "mask"){
+            break;
+        }
+    }
+    this.queues.splice(i, 0, queue);
+
+    console.log("add queue" + this.queues.length);
+    
+    this.sendQueueStatus();
+}
+
+
 
 QueueManager.prototype.getNextQueue = function () {
     if (this.currentQueue.length >= this.QUEUE_COUNT) {
