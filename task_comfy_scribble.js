@@ -11,8 +11,12 @@ function TaskComfyScribble(task, req, queue) {
 
     var session = req.body.session;
 
-    if(req.body.strength){
+    var strength = 1;
+    if(req.body.strength && req.body.strength != undefined  && req.body.strength != "undefined"){
         console.log("req.body.strength: " + req.body.strength);
+        strength = parseFloat(req.body.strength)/100.0;
+        strength = Math.max(strength, 0.01);
+        console.log("req.body.strength: " + strength);
     }
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
@@ -20,7 +24,8 @@ function TaskComfyScribble(task, req, queue) {
     const promptFile = fs.readFileSync('./pipe/workflow_api_scribble.json');
     let prompt = JSON.parse(promptFile);
 
-    prompt["54"]["inputs"]["image"]=imgData;
+    prompt["54"]["inputs"]["image"]= imgData;
+    prompt["42"]["inputs"]["denoise"] = strength;
 
     task.pipeline = "scribble";
     //
