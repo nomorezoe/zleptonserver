@@ -29,6 +29,7 @@ function TaskComfyScribble(task, req, queue) {
 
     if(req.body.prompt){
         prompt["48"]["inputs"]["text"]= req.body.prompt;
+        console.log("prompt"+req.body.prompt);
     }
 
     task.pipeline = "scribble";
