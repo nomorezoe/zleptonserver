@@ -27,6 +27,10 @@ function TaskComfyScribble(task, req, queue) {
     prompt["54"]["inputs"]["image"]= imgData;
     prompt["42"]["inputs"]["denoise"] = strength;
 
+    if(req.body.prompt){
+        prompt["48"]["inputs"]["text"]= req.body.prompt;
+    }
+
     task.pipeline = "scribble";
     //
     Tool.applyRandomFileName(prompt);

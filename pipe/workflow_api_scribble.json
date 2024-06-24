@@ -104,7 +104,7 @@
   },
   "48": {
     "inputs": {
-      "text": "\n",
+      "text": "",
       "clip": [
         "46",
         1
@@ -145,7 +145,7 @@
   },
   "52": {
     "inputs": {
-      "strength": 0.6,
+      "strength": 1.0,
       "conditioning": [
         "48",
         0
@@ -166,7 +166,7 @@
   },
   "53": {
     "inputs": {
-      "control_net_name": "control_v11p_sd15_scribble.pth"
+      "control_net_name": "control_v11f1p_sd15_depth.pth"
     },
     "class_type": "ControlNetLoader",
     "_meta": {
