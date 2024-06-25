@@ -20,8 +20,16 @@ function TaskComfyScribble(task, req, queue) {
     }
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
+
+     //capture
+     /*var captureFile = uuidv4() + "_scribble_capture.png";
+     fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
+         encoding: "base64",
+     });
+     */
+
     
-    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_openpose.json');
     let prompt = JSON.parse(promptFile);
 
     prompt["54"]["inputs"]["image"]= imgData;
