@@ -11,33 +11,55 @@ function TaskComfyScribble(task, req, queue) {
 
     var session = req.body.session;
 
+    var isSuperFast = true;
+
+    if(req.body.superfast != undefined){
+        isSuperFast = parseInt(req.body.superfast) == 1;
+    }
+
+    console.log("isSuperFast"+isSuperFast);
+
+   
+
     var strength = 1;
-    if(req.body.strength && req.body.strength != undefined  && req.body.strength != "undefined"){
+    if (req.body.strength && req.body.strength != undefined && req.body.strength != "undefined") {
         console.log("req.body.strength: " + req.body.strength);
-        strength = parseFloat(req.body.strength)/100.0;
+        strength = parseFloat(req.body.strength) / 100.0;
         strength = Math.max(strength, 0.01);
         console.log("req.body.strength: " + strength);
     }
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
+   // console.log("imgData: " + imgData);
 
-     //capture
-     /*var captureFile = uuidv4() + "_scribble_capture.png";
-     fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
-         encoding: "base64",
-     });
-     */
+    //capture
+    /*var captureFile = uuidv4() + "_scribble_capture.png";
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
+        encoding: "base64",
+    });
+    */
 
-    
-    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_openpose.json');
-    let prompt = JSON.parse(promptFile);
+    let prompt = null;
+    if(isSuperFast == 1){
+        let promptFile = fs.readFileSync('./pipe/workflow_api_scribble.json');
+        prompt = JSON.parse(promptFile);
+    }
+    else{
+        let promptFile = fs.readFileSync('./pipe/workflow_api_scribble_openpose.json');
+        prompt = JSON.parse(promptFile);
+    }
 
-    prompt["54"]["inputs"]["image"]= imgData;
+    prompt["54"]["inputs"]["image"] = imgData;
     prompt["42"]["inputs"]["denoise"] = strength;
 
-    if(req.body.prompt){
-        prompt["48"]["inputs"]["text"]= req.body.prompt;
-        console.log("prompt"+req.body.prompt);
+    if (req.body.prompt) {
+        // prompt["48"]["inputs"]["text"]= req.body.prompt;
+        prompt["65"]["inputs"]["text_positive"] = req.body.prompt;
+        console.log("prompt" + req.body.prompt);
+    }
+
+    if (req.body.style) {
+        prompt["65"]["inputs"]["style"] = getStyle(req.body.style);
     }
 
     task.pipeline = "scribble";
@@ -45,6 +67,27 @@ function TaskComfyScribble(task, req, queue) {
     Tool.applyRandomFileName(prompt);
     sendRequest(prompt, queue, task);
 
+}
+
+function getStyle(value) {
+    let style = "base";
+    switch (value) {
+        case "photo":
+            break;
+        case "illustrated":
+            break;
+        case "anime":
+            style = "sai-anime";
+            break;
+        case "cgi":
+            style = "sai-digital art";
+            break;
+        case "hd":
+            style = "artstyle-hyperrealism";
+            break;
+    }
+
+    return style;
 }
 
 function sendRequest(promptjson, queue, task) {
@@ -68,7 +111,7 @@ function sendRequest(promptjson, queue, task) {
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
-     
+
         if (reshttps.statusCode == 200) {
 
             queue.completeTask();

@@ -11,6 +11,7 @@ const TaskComfyChCreator = require("./task_comfy_ch_creator");
 const TaskComfyStyleTransfer = require("./task_comfy_style_transfer");
 const TaskComfyRenderStyleTransfer = require("./task_comfy_style_transfer_render");
 const TaskComfyScribble = require("./task_comfy_scribble");
+const TaskComfyScribbleUpscale = require("./task_comfy_scribble_upscale");
 
 function Task(type, index, req) {
     this.type = type;
@@ -63,6 +64,9 @@ Task.prototype = {
                 break;
             case "scribble":
                 TaskComfyScribble(this, this.req, queue);
+                break;
+            case "rt_upscale":
+                TaskComfyScribbleUpscale(this, this.req, queue);
                 break;
         }
     },
@@ -118,9 +122,12 @@ Task.prototype = {
                 return 240;
                 break;
             case "scribble":
-                return 60;
+                return 20;
                 break;
-        }
+            case "rt_upscale":
+                return 20;
+                break;
+    }
     },
 
     getDownloadDuration: function () {
@@ -153,7 +160,10 @@ Task.prototype = {
                 return 60;
                 break;
             case "scribble":
-                return 60;
+                return 30;
+                break;
+            case "rt_upscale":
+                return 30;
                 break;
         }
     },
@@ -192,6 +202,10 @@ Task.prototype = {
             else if(this.type == "scribble"){
                 socket.emit("completeScribble", this.imageFileNames.join(','));
             }
+            else if(this.type == "rt_upscale"){
+                socket.emit("completeRTUpscale", this.imageFileNames.join(','));
+            }
+            
         }
     },
 

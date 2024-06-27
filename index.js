@@ -425,6 +425,28 @@ app.use('/scribble', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 });
 
+app.use('/rt_upscale', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/rt_upscale', (req, res) => {
+    
+    console.log("rt_upscale");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("rt_upscale", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
 app.use('/test', function (req, res, next) {
     //req.clearTimeout(); // clear request timeout
     req.setTimeout(300000); //set a 20s timeout for this request
