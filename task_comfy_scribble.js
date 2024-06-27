@@ -75,15 +75,19 @@ function getStyle(value) {
         case "photo":
             break;
         case "illustrated":
+        case "dslr":
             style = "vector-graphic";
             break;
         case "anime":
+        case "cinematic":
             style = "sai-anime";
             break;
         case "cgi":
+        case "bw_loose":
             style = "sai-digital art";
             break;
         case "hd":
+        case "animation":
             style = "artstyle-hyperrealism";
             break;
     }
