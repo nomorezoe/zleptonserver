@@ -75,6 +75,7 @@ function getStyle(value) {
         case "photo":
             break;
         case "illustrated":
+            style = "vector-graphic";
             break;
         case "anime":
             style = "sai-anime";
