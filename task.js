@@ -122,7 +122,7 @@ Task.prototype = {
                 return 240;
                 break;
             case "scribble":
-                return 20;
+                return 10;
                 break;
             case "rt_upscale":
                 return 20;
@@ -160,7 +160,7 @@ Task.prototype = {
                 return 60;
                 break;
             case "scribble":
-                return 30;
+                return 15;
                 break;
             case "rt_upscale":
                 return 30;
