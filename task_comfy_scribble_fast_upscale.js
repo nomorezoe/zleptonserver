@@ -6,18 +6,18 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 
-function TaskComfyScribbleUpscale(task, req, queue) {
-    console.log("TaskComfyScribbleUpscale");
+function TaskComfyScribbleFastUpscale(task, req, queue) {
+    console.log("TaskComfyScribbleFastUpscale");
 
     var session = req.body.session;
 
-    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_upscale_2x.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_fast_upscale.json');
     let prompt = JSON.parse(promptFile);
 
    
     prompt["1"]["inputs"]["image"] = req.body.imageData;
 
-    task.pipeline = "scribble_upscale";
+    task.pipeline = "scribble_fast_upscale";
     //
     Tool.applyRandomFileName(prompt);
     sendRequest(prompt, queue, task);
@@ -79,4 +79,4 @@ function sendRequest(promptjson, queue, task) {
     reqhttps.end();
 }
 
-module.exports = TaskComfyScribbleUpscale;
+module.exports = TaskComfyScribbleFastUpscale;

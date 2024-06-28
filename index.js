@@ -425,16 +425,38 @@ app.use('/scribble', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 });
 
-app.use('/rt_upscale', function (req, res, next) {
+app.use('/rt_fast_upscale', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
-}).post('/rt_upscale', (req, res) => {
+}).post('/rt_fast_upscale', (req, res) => {
     
-    console.log("rt_upscale");
+    console.log("rt_fast_upscale");
 
     var session = req.body.session;
     let queue = new Queue(session);
-    let task = new Task("rt_upscale", 0, req);
+    let task = new Task("rt_fast_upscale", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
+app.use('/rt_enhance', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/rt_enhance', (req, res) => {
+    
+    console.log("rt_enhance");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("rt_enhance", 0, req);
     queue.tasks.push(task);
 
     QueueManager.instance.addToQueue(queue);
