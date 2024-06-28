@@ -62,6 +62,8 @@ function TaskComfyScribble(task, req, queue) {
         prompt["65"]["inputs"]["style"] = getStyle(req.body.style);
     }
 
+    prompt["42"]["inputs"]["seed"] = Tool.randomInt();
+
     task.pipeline = "scribble";
     //
     Tool.applyRandomFileName(prompt);

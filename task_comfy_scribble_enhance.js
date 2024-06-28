@@ -15,6 +15,7 @@ function TaskComfyScribbleEnhance(task, req, queue) {
     let prompt = JSON.parse(promptFile);
    
     prompt["1"]["inputs"]["image"] = req.body.imageData;
+    prompt["2"]["inputs"]["seed"] = Tool.randomInt();
 
     task.pipeline = "scribble_enhance";
     //

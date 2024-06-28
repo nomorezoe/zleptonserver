@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "image": "0bca8bbe-685d-42d5-9b13-8de17caf4e21 (1).png",
+      "image": "download (1).png",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -9,33 +9,51 @@
       "title": "Load Image"
     }
   },
-  "3": {
+  "13": {
     "inputs": {
-      "upscale_method": "bilinear",
-      "width": 1024,
-      "height": 1024,
-      "crop": "disabled",
-      "image": [
-        "1",
-        0
-      ]
+      "ckpt_name": "epicrealism_naturalSinRC1VAE.safetensors"
     },
-    "class_type": "ImageScale",
+    "class_type": "CheckpointLoaderSimple",
     "_meta": {
-      "title": "Upscale Image"
+      "title": "Load Checkpoint"
     }
   },
-  "5": {
+  "16": {
     "inputs": {
       "filename_prefix": "ComfyUI",
       "images": [
-        "3",
+        "19",
         0
       ]
     },
     "class_type": "SaveImage",
     "_meta": {
       "title": "Save Image"
+    }
+  },
+  "18": {
+    "inputs": {
+      "model_name": "RealESRGAN_x2plus.pth"
+    },
+    "class_type": "UpscaleModelLoader",
+    "_meta": {
+      "title": "Load Upscale Model"
+    }
+  },
+  "19": {
+    "inputs": {
+      "upscale_model": [
+        "18",
+        0
+      ],
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ImageUpscaleWithModel",
+    "_meta": {
+      "title": "Upscale Image (using Model)"
     }
   }
 }
