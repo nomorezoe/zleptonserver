@@ -24,8 +24,8 @@ function TaskComfyScribble(task, req, queue) {
     var strength = 1;
     if (req.body.strength && req.body.strength != undefined && req.body.strength != "undefined") {
         console.log("req.body.strength: " + req.body.strength);
-        strength = parseFloat(req.body.strength) / 100.0;
-        strength = Math.max(strength, 0.01);
+        strength = parseFloat(req.body.strength) / 10.0;
+        //strength = Math.max(strength, 0.01);
         console.log("req.body.strength: " + strength);
     }
     var rawImg = req.files.imageByteArray.data;
@@ -50,7 +50,7 @@ function TaskComfyScribble(task, req, queue) {
     }
 
     prompt["54"]["inputs"]["image"] = imgData;
-    prompt["42"]["inputs"]["denoise"] = strength;
+    prompt["42"]["inputs"]["cfg"] = strength;
 
     if (req.body.prompt) {
         // prompt["48"]["inputs"]["text"]= req.body.prompt;
