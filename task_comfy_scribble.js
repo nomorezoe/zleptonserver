@@ -51,8 +51,8 @@ function TaskComfyScribble(task, req, queue) {
 
     prompt["54"]["inputs"]["image"] = imgData;
 
-    prompt["42"]["inputs"]["denoise"] = 0.1 + (strength * 0.9);
-    prompt["42"]["inputs"]["cfg"] = 7 + (strength * 13);
+    //prompt["42"]["inputs"]["denoise"] = 0.1 + (strength * 0.9);
+    //prompt["42"]["inputs"]["cfg"] = 7 + (strength * 13);
 
     //prompt["42"]["inputs"]["cfg"] = strength;
 
