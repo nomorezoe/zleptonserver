@@ -11,7 +11,7 @@ function TaskComfyScribbleFastUpscale(task, req, queue) {
 
     var session = req.body.session;
 
-    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_fast_upscale.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_fast_upscale_face_detailer.json');
     let prompt = JSON.parse(promptFile);
 
    
