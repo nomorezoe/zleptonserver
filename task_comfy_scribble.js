@@ -50,7 +50,7 @@ function TaskComfyScribble(task, req, queue) {
     }
 
     prompt["54"]["inputs"]["image"] = imgData;
-    prompt["42"]["inputs"]["cfg"] = strength;
+    //prompt["42"]["inputs"]["cfg"] = strength;
 
     if (req.body.prompt) {
         // prompt["48"]["inputs"]["text"]= req.body.prompt;
