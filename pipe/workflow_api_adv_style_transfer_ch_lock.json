@@ -451,7 +451,7 @@
       "weight": 0.89,
       "start_at": 0,
       "end_at": 1,
-      "weight_type": "style transfer (SDXL only)",
+      "weight_type": "style transfer",
       "model": [
         "601525",
         0

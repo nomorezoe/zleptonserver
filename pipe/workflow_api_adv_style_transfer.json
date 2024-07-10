@@ -375,7 +375,7 @@
     "236": {
       "inputs": {
         "weight": 0.8,
-        "weight_type": "style transfer (SDXL)",
+        "weight_type": "style transfer",
         "start_at": 0,
         "end_at": 1,
         "embeds_scaling": "V only",
