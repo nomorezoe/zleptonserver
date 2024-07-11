@@ -6,12 +6,12 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 
-function TaskComfyScribbleEnhance(task, req, queue) {
-    console.log("TaskComfyScribbleEnhance");
+function TaskComfyScribbleEnhance4X(task, req, queue) {
+    console.log("TaskComfyScribbleEnhance4X");
 
     var session = req.body.session;
 
-    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_upscale_2x.json');
+    const promptFile = fs.readFileSync('./pipe/workflow_api_scribble_upscale_4x_face.json');
     let prompt = JSON.parse(promptFile);
    
     if(req.body.imageUrl != undefined){
@@ -20,10 +20,10 @@ function TaskComfyScribbleEnhance(task, req, queue) {
     else{
         prompt["2"]["inputs"]["image"] = req.body.imageData;
     }
-    
-    prompt["2"]["inputs"]["seed"] = Tool.randomInt();
+   // prompt["1"]["inputs"]["image"] = req.body.imageData;
+  //  prompt["2"]["inputs"]["seed"] = Tool.randomInt();
 
-    task.pipeline = "scribble_enhance";
+    task.pipeline = "scribble_enhance_4x";
     //
     Tool.applyRandomFileName(prompt);
     sendRequest(prompt, queue, task);
@@ -66,8 +66,8 @@ function sendRequest(promptjson, queue, task) {
                 //console.log("onendscribble: " + datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
 
-                    var imgName =  uuidv4() + "_enhance.png";
-                    console.log("enhance_ImageName:" + imgName);
+                    var imgName =  uuidv4() + "_enhance_4x.png";
+                    console.log("enhance_4xImageName:" + imgName);
                     task.imageFileNames.push(imgName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgName, jsonobj[i],{
                         encoding: "base64",
@@ -90,4 +90,4 @@ function sendRequest(promptjson, queue, task) {
     reqhttps.end();
 }
 
-module.exports = TaskComfyScribbleEnhance;
+module.exports = TaskComfyScribbleEnhance4X;

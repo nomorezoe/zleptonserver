@@ -469,20 +469,63 @@ app.use('/rt_enhance', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 });
 
+app.use('/rt_enhance_4x', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/rt_enhance_4x', (req, res) => {
+    
+    console.log("rt_enhance_4x");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("rt_enhance_4x", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
+app.use('/rt_enhance_8x', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/rt_enhance_8x', (req, res) => {
+    
+    console.log("rt_enhance_8x");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("rt_enhance_8x", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
 app.use('/test', function (req, res, next) {
     //req.clearTimeout(); // clear request timeout
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).get('/test', (req, res) => {
    // let filename = "./pipe/test_2person.json"
-   let filename = "./pipe/workflow_api_adv_epic_real_animal.json";
+   let filename = "./pipe/test_work_flow.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
 
-    prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    Tool.applyImage (prompt, "1", "man_capture.png", null);
-    Tool.applyImage (prompt, "248", "cat_capture.png", null);
+   // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
+    Tool.applyImage (prompt, "1", "test.jpg", null);
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {
@@ -516,6 +559,143 @@ app.use('/test', function (req, res, next) {
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
                     var imgname = uuidv4() + ".png";
+                   // task.imageFileNames.push(imgname);
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
+                        encoding: "base64",
+                    });
+                }
+
+            });
+
+            reshttps.on("error", function (error) {
+                //callback(error);
+                console.error(error);
+            });
+        }
+    });
+
+    reqhttps.write(data);
+    reqhttps.end();
+})
+
+app.use('/test_style', function (req, res, next) {
+    //req.clearTimeout(); // clear request timeout
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).get('/test_style', (req, res) => {
+    console.log("test_style");
+    // let filename = "./pipe/test_2person.json"
+    let filename = "./pipe/new_style_transfer.json";
+
+    const promptFile = fs.readFileSync(filename);//');
+    let prompt = JSON.parse(promptFile);
+
+    //prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
+    Tool.applyImage (prompt, "10", "sketch.png", null);
+
+    Tool.applyImage (prompt, "17", "style_1.png", null);
+    Tool.applyImage (prompt, "18", "style_2.png", null);
+
+    var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
+    const options = {
+        hostname: require('./tool').RequestURL,
+        path: '/run',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length,
+            'Authorization': "Bearer ozlh7xvpezbtwlr9tseg14imf4fhqo5v"
+        }
+    };
+
+    
+    var datastring = "";
+    const reqhttps = https.request(options, (reshttps) => {
+        console.log('statusCode:', reshttps.statusCode);
+        console.log('headers:', reshttps.headers);
+
+
+        if (reshttps.statusCode == 200) {
+            console.log("200");
+
+            reshttps.on('data', (d) => {
+                datastring += d;
+                console.log("ondata");
+            });
+
+            reshttps.on('end', (d) => {
+                console.log("end");
+                const jsonobj = JSON.parse(datastring);
+                for (var i = 0; i < jsonobj.length; i++) {
+                    var imgname = uuidv4() + ".png";
+                   // task.imageFileNames.push(imgname);
+                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
+                        encoding: "base64",
+                    });
+                }
+
+            });
+
+            reshttps.on("error", function (error) {
+                //callback(error);
+                console.error(error);
+            });
+        }
+    });
+
+    reqhttps.write(data);
+    reqhttps.end();
+})
+
+
+app.use('/test_adv', function (req, res, next) {
+    //req.clearTimeout(); // clear request timeout
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).get('/test_adv', (req, res) => {
+    console.log("test_adv");
+   // let filename = "./pipe/test_2person.json"
+   let filename = "./pipe/workflow_api_img_txt.json";
+
+    const promptFile = fs.readFileSync(filename);//');
+    let prompt = JSON.parse(promptFile);
+
+   // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
+    Tool.applyImage (prompt, "2", "save.png", null);
+
+    var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
+    const options = {
+        hostname: require('./tool').RequestURL,
+        path: '/run',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length,
+            'Authorization': "Bearer ozlh7xvpezbtwlr9tseg14imf4fhqo5v"
+        }
+    };
+
+    
+    var datastring = "";
+    const reqhttps = https.request(options, (reshttps) => {
+        console.log('statusCode:', reshttps.statusCode);
+        console.log('headers:', reshttps.headers);
+
+
+        if (reshttps.statusCode == 200) {
+            console.log("200");
+
+            reshttps.on('data', (d) => {
+                datastring += d;
+                // console.log("ondata");
+            });
+
+            reshttps.on('end', (d) => {
+                console.error("end");
+                const jsonobj = JSON.parse(datastring);
+                for (var i = 0; i < jsonobj.length; i++) {
+                    var imgname = uuidv4() + ".txt";
+                    console.log("jsonobj"+ jsonobj[i]);
                    // task.imageFileNames.push(imgname);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
                         encoding: "base64",

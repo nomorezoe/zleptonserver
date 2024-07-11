@@ -13,6 +13,9 @@ const TaskComfyRenderStyleTransfer = require("./task_comfy_style_transfer_render
 const TaskComfyScribble = require("./task_comfy_scribble");
 const TaskComfyScribbleFastUpscale = require("./task_comfy_scribble_fast_upscale");
 const TaskComfyScribbleEnhance = require("./task_comfy_scribble_enhance");
+const TaskComfyScribbleEnhance4X = require("./task_comfy_scribble_enhance_4x");
+const TaskComfyScribbleEnhance8X = require("./task_comfy_scribble_enhance_8x");
+
 
 function Task(type, index, req) {
     this.type = type;
@@ -71,6 +74,12 @@ Task.prototype = {
                 break;
             case "rt_enhance":
                 TaskComfyScribbleEnhance(this, this.req, queue);
+                break;
+            case "rt_enhance_4x":
+                TaskComfyScribbleEnhance4X(this, this.req, queue);
+                break;
+            case "rt_enhance_8x":
+                TaskComfyScribbleEnhance8X(this, this.req, queue);
                 break;
         }
     },
@@ -134,6 +143,12 @@ Task.prototype = {
             case "rt_enhance":
                 return 20;
                 break;
+            case "rt_enhance_4x":
+                return 120;
+                break;
+            case "rt_enhance_8x":
+                return 120;
+                break;
     }
     },
 
@@ -170,10 +185,16 @@ Task.prototype = {
                 return 15;
                 break;
             case "rt_fast_upscale":
-                return 30;
+                return 60;
                 break;
             case "rt_enhance":
-                return 30;
+                return 60;
+                break;
+            case "rt_enhance_4x":
+                return 120;
+                break;
+            case "rt_enhance_8x":
+                return 120;
                 break;
         }
     },
@@ -217,6 +238,12 @@ Task.prototype = {
             }
             else if(this.type == "rt_enhance"){
                 socket.emit("completeRTEnhance", this.imageFileNames.join(','));
+            }
+            else if(this.type == "rt_enhance_4x"){
+                socket.emit("completeRTEnhance4X", this.imageFileNames.join(','));
+            }
+            else if(this.type == "rt_enhance_8x"){
+                socket.emit("completeRTEnhance8X", this.imageFileNames.join(','));
             }
         }
     },

@@ -1,7 +1,7 @@
 {
   "2": {
     "inputs": {
-      "image": "download.png",
+      "image": "ComfyUI_02230_SAI.png",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -166,7 +166,7 @@
   },
   "21": {
     "inputs": {
-      "supir_model": "SUPIR-v0Q.ckpt",
+      "supir_model": "SUPIR-v0F.ckpt",
       "fp8_unet": false,
       "diffusion_dtype": "auto",
       "high_vram": false,
@@ -199,8 +199,8 @@
   },
   "25": {
     "inputs": {
-      "upscale_by": 2,
-      "seed": 720738182146116,
+      "upscale_by": 4,
+      "seed": 1096284251033227,
       "steps": 25,
       "cfg": 7,
       "sampler_name": "dpmpp_2m",
@@ -259,7 +259,7 @@
   },
   "27": {
     "inputs": {
-      "text": "beautiful 25 year old fashion model in latex, best quality,8K",
+      "text": "best quality,8K",
       "clip": [
         "22",
         1
@@ -287,7 +287,7 @@
     "inputs": {
       "filename_prefix": "ComfyUI",
       "images": [
-        "40",
+        "25",
         0
       ]
     },
@@ -324,77 +324,6 @@
     "class_type": "CM_NearestSDXLResolution",
     "_meta": {
       "title": "NearestSDXLResolution"
-    }
-  },
-  "40": {
-    "inputs": {
-      "guide_size": 512,
-      "guide_size_for": true,
-      "max_size": 1024,
-      "seed": 1049761693162276,
-      "steps": 20,
-      "cfg": 8,
-      "sampler_name": "euler",
-      "scheduler": "normal",
-      "denoise": 0.5,
-      "feather": 5,
-      "noise_mask": true,
-      "force_inpaint": true,
-      "bbox_threshold": 0.8,
-      "bbox_dilation": 50,
-      "bbox_crop_factor": 3,
-      "sam_detection_hint": "center-1",
-      "sam_dilation": 20,
-      "sam_threshold": 0.93,
-      "sam_bbox_expansion": 0,
-      "sam_mask_hint_threshold": 0.7,
-      "sam_mask_hint_use_negative": "False",
-      "drop_size": 10,
-      "wildcard": "",
-      "cycle": 1,
-      "inpaint_model": false,
-      "noise_mask_feather": 20,
-      "image": [
-        "25",
-        0
-      ],
-      "model": [
-        "22",
-        0
-      ],
-      "clip": [
-        "22",
-        1
-      ],
-      "vae": [
-        "22",
-        2
-      ],
-      "positive": [
-        "27",
-        0
-      ],
-      "negative": [
-        "31",
-        0
-      ],
-      "bbox_detector": [
-        "43",
-        0
-      ]
-    },
-    "class_type": "FaceDetailer",
-    "_meta": {
-      "title": "FaceDetailer"
-    }
-  },
-  "43": {
-    "inputs": {
-      "model_name": "bbox/face_yolov8m.pt"
-    },
-    "class_type": "UltralyticsDetectorProvider",
-    "_meta": {
-      "title": "UltralyticsDetectorProvider"
     }
   }
 }
