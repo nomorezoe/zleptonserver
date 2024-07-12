@@ -15,6 +15,7 @@ const TaskComfyScribbleFastUpscale = require("./task_comfy_scribble_fast_upscale
 const TaskComfyScribbleEnhance = require("./task_comfy_scribble_enhance");
 const TaskComfyScribbleEnhance4X = require("./task_comfy_scribble_enhance_4x");
 const TaskComfyScribbleEnhance8X = require("./task_comfy_scribble_enhance_8x");
+const TaskAdvanceStyleTransfer = require("./task_adv_style_transfer");
 
 
 function Task(type, index, req) {
@@ -80,6 +81,9 @@ Task.prototype = {
                 break;
             case "rt_enhance_8x":
                 TaskComfyScribbleEnhance8X(this, this.req, queue);
+                break;
+            case "adv_styletransfer":
+                TaskAdvanceStyleTransfer(this, this.req, queue);
                 break;
         }
     },
@@ -149,6 +153,9 @@ Task.prototype = {
             case "rt_enhance_8x":
                 return 120;
                 break;
+            case "adv_styletransfer":
+                return 120;
+                break;
     }
     },
 
@@ -196,6 +203,9 @@ Task.prototype = {
             case "rt_enhance_8x":
                 return 120;
                 break;
+            case "adv_styletransfer":
+                return 120;
+                break;
         }
     },
 
@@ -223,6 +233,9 @@ Task.prototype = {
             }
             else if (this.type == "styletransfer") {
                 socket.emit("completeStyleTransferTask", this.imageFileNames.join(','));
+            }
+            else if (this.type == "adv_styletransfer") {
+                socket.emit("completeAdvStyleTransferTask", this.imageFileNames.join(','));
             }
             else if (this.type == "inpaint") {
                 socket.emit("completeInpaintTask", this.imageFileNames.join(','));
