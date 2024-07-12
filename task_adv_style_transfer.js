@@ -42,6 +42,25 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("shapePrecision: " + req.body.shapePrecision);
     console.log("originalClarity: " + req.body.originalClarity);
 
+    //req.body.shapePrecision
+    let shapeV = parseFloat(req.body.shapePrecision)/100.0;
+    //default 
+    prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.8;
+    prompt["21"]["inputs"]["end_percent"]= 0.6 + (shapeV - 0.5) * 0.8;
+    console.log("shapeV: " + prompt["21"]["inputs"]["strength"]);
+
+    //req.body.styleStrength
+    let styleV = parseFloat(req.body.shapePrecision)/100.0;
+    prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
+    console.log("styleV: " + prompt["28"]["inputs"]["weight"]);
+
+
+    //req.body.originalClarity
+    let clarityV = parseFloat(req.body.originalClarity)/100.0;
+    prompt["3"]["inputs"]["denoise"] = 0.8 + (clarityV - 0.5) * 0.4;
+    console.log("clarityV: " + prompt["3"]["inputs"]["denoise"]);
+
+
     //var captureFile = "save.json";
     //fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
 

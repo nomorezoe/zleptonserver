@@ -272,7 +272,7 @@
   },
   "28": {
     "inputs": {
-      "weight": 1,
+      "weight": 0.9,
       "weight_type": "style transfer",
       "start_at": 0,
       "end_at": 1,
