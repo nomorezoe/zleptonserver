@@ -20,8 +20,15 @@ function TaskComfyScribbleEnhance(task, req, queue) {
     else{
         prompt["2"]["inputs"]["image"] = req.body.imageData;
     }
+
+    var value = parseInt(req.body.enhanceValue.substr(0,1));
+    console.log("enhance value:"  + value);
     
-    prompt["2"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["25"]["inputs"]["upscale_by"] = value;
+    
+    prompt["7"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["25"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["40"]["inputs"]["seed"] = Tool.randomInt();
 
     task.pipeline = "scribble_enhance";
     //

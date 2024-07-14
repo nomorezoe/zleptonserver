@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 
 function TaskAdvanceStyleTransfer(task, req, queue) {
-    
+
     console.log("TaskAdvanceStyleTransfer");
 
     var session = req.body.session;
@@ -18,7 +18,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
 
     for (let i = 0; i < 5; i++) {
         if (req.body["img_ref_" + i] != undefined) {
-            addImageJson(prompt, req.body["img_ref_" + i], i + 1);
+            Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
         }
     }
 
@@ -26,13 +26,13 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         prompt["21"]["inputs"]["image"] = ["25", 0];
         delete prompt["26"];
     }
-    else{
+    else {
         delete prompt["25"];
     }
 
     Tool.applyImage(prompt, "10", null, req.body.url);
-    console.log("req.body.is_superstyle"+req.body.is_superstyle);
-    if(parseInt(req.body.is_superstyle) == 1){
+    console.log("req.body.is_superstyle" + req.body.is_superstyle);
+    if (parseInt(req.body.is_superstyle) == 1) {
         console.log("is_superstyle");
         prompt["28"]["inputs"]["weight_type"] = "strong style transfer";
     }
@@ -42,44 +42,44 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("originalClarity: " + req.body.originalClarity);
 
     //req.body.shapePrecision
-    let shapeV = parseFloat(req.body.shapePrecision)/100.0;
-    console.log("shapeV:"+ shapeV);
+    let shapeV = parseFloat(req.body.shapePrecision) / 100.0;
+    console.log("shapeV:" + shapeV);
     //default 
-    if(shapeV>=0.5){
+    if (shapeV >= 0.5) {
         prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.8;
-        prompt["21"]["inputs"]["end_percent"]= 0.6 + (shapeV - 0.5) * 0.8;
+        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.8;
     }
-    else{
+    else {
         prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 1.2;
-        prompt["21"]["inputs"]["end_percent"]= 0.6 + (shapeV - 0.5) * 1.2;
+        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 1.2;
     }
-  
+
     console.log("shapeV: " + prompt["21"]["inputs"]["strength"]);
 
     //req.body.styleStrength
-    let styleV = parseFloat(req.body.styleStrength)/100.0;
-    console.log("styleV:"+ styleV);
-    if(styleV>=0.5){
+    let styleV = parseFloat(req.body.styleStrength) / 100.0;
+    console.log("styleV:" + styleV);
+    if (styleV >= 0.5) {
         prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
     }
-    else{
+    else {
         prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 1.8;
     }
-   
+
     console.log("styleV: " + prompt["28"]["inputs"]["weight"]);
 
 
     //req.body.originalClarity
-    let clarityV = parseFloat(req.body.originalClarity)/100.0;
-    console.log("clarityV:"+ clarityV);
+    let clarityV = parseFloat(req.body.originalClarity) / 100.0;
+    console.log("clarityV:" + clarityV);
 
-    if(clarityV>=0.5){
+    if (clarityV >= 0.5) {
         prompt["3"]["inputs"]["denoise"] = 0.8 + (clarityV - 0.5) * 0.4;
     }
-    else{
+    else {
         prompt["3"]["inputs"]["denoise"] = 0.8 + (clarityV - 0.5) * 1.6;
     }
-    
+
     console.log("clarityV: " + prompt["3"]["inputs"]["denoise"]);
 
 
@@ -90,62 +90,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     sendRequest(prompt, queue, task);
 }
 
-function addImageJson(prompt, img_ref, index) {
-    //load image
-    let json = {
-        "inputs": {
-            "url": "",
-            "keep_alpha_channel": false,
-            "output_mode": false
-        },
-        "class_type": "LoadImageFromUrl"
-    }
-    json["inputs"]["url"] = img_ref;
-    let jsonIndex = (index + 10000).toString();
-    prompt[jsonIndex] = json;
 
-    let json2 = {
-        "inputs": {
-            "interpolation": "LANCZOS",
-            "crop_position": "center",
-            "sharpening": 0,
-            "image": [
-                jsonIndex,
-                0
-            ]
-        },
-        "class_type": "PrepImageForClipVision",
-        "_meta": {
-            "title": "Prep Image For ClipVision"
-        }
-    }
-
-    let jsonIndex2 = (index + 10001).toString();
-    prompt[jsonIndex2] = json2;
-
-    let json3 = {
-        "inputs": {
-            "weight": 1,
-            "ipadapter": [
-                "15",
-                1
-            ],
-            "image": [
-                jsonIndex2,
-                0
-            ]
-        },
-        "class_type": "IPAdapterEncoder",
-        "_meta": {
-            "title": "IPAdapter Encoder"
-        }
-    }
-
-    let jsonIndex3 = (index + 10002).toString();
-    prompt[jsonIndex3] = json3;
-
-    prompt["29"]["inputs"]["embed" + index.toString()] = [jsonIndex3, 0];
-}
 
 
 function sendRequest(promptjson, queue, task) {

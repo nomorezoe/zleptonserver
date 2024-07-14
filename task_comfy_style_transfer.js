@@ -11,37 +11,21 @@ function TaskComfyStyleTransfer(task, req, queue) {
 
     var session = req.body.session;
 
-    let imgData_a, imgData_b, imgData_c, imgData_d;
-    let posPrompt;
-    if(req.files.imageByteArray_a != undefined){
-        var rawImg_a = req.files.imageByteArray_a.data;
-        imgData_a = Buffer.from(rawImg_a).toString('base64');
-    }
-    if(req.files.imageByteArray_b != undefined){
-        var rawImg_b = req.files.imageByteArray_b.data;
-        imgData_b = Buffer.from(rawImg_b).toString('base64');
-    }
-    if(req.files.imageByteArray_c != undefined){
-        var rawImg_c = req.files.imageByteArray_c.data;
-        imgData_c = Buffer.from(rawImg_c).toString('base64');
-    }
-
-    if(req.files.imageByteArray_d != undefined){
-        var rawImg_d = req.files.imageByteArray_d.data;
-        imgData_d = Buffer.from(rawImg_d).toString('base64');
-    }
-
-    posPrompt = req.body.prompt;
-
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_style_transfer.json');
     let prompt = JSON.parse(promptFile);
 
+    for (let i = 0; i < 5; i++) {
+        if (req.files["imageByteArray_" + i] != undefined) {
+            console.log("addStyleTransferImageJson: "+ i);
+            var rawImage = req.files["imageByteArray_" + i].data;
+            var imageData = Buffer.from(rawImage).toString('base64');
+            Tool.addStyleTransferImageJson(prompt, imageData, true, i + 1, "238", "225");
+        }
+    }
+
+    let posPrompt = req.body.prompt;
     let file = req.body.img_url;
 
-    prompt["232"]["inputs"]["image"] = imgData_a;
-    prompt["240"]["inputs"]["image"] = imgData_b;
-    prompt["243"]["inputs"]["image"] = imgData_c;
-    prompt["246"]["inputs"]["image"] = imgData_d;
     prompt["55"]["inputs"]["text_positive"] = posPrompt;
 
     prompt["45"]["inputs"]["seed"] =  Tool.randomInt();
@@ -51,6 +35,8 @@ function TaskComfyStyleTransfer(task, req, queue) {
     Tool.applyRandomFileName(prompt);
     
     task.pipeline = "style_transfer";
+
+    
     sendRequest(prompt, queue, task);
 }
 

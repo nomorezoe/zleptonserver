@@ -462,5 +462,83 @@ Tool.ApplyCanny = function (inputImageId, inputID, kSampler, prompt, cannyStreng
 
 Tool.renderParams = {};
 
+/* index start from 1*/
+Tool.addStyleTransferImageJson = function (prompt, img_ref, isImageData, index, ipAdapterCombineEmbedsIndex, ipadapterIndex) {
+
+    let jsonIndex = (index + 100000 + (index - 1) * 100).toString();
+    if (!isImageData) {
+        //load image
+        let json = {
+            "inputs": {
+                "url": "",
+                "keep_alpha_channel": false,
+                "output_mode": false
+            },
+            "class_type": "LoadImageFromUrl"
+        }
+        json["inputs"]["url"] = img_ref;
+
+        prompt[jsonIndex] = json;
+    }
+    else {
+        let json = {
+            "inputs": {
+                "image": "thumb_illustration refference (1).jpg",
+                "upload": "image"
+            },
+            "class_type": "LoadImage",
+            "_meta": {
+                "title": "Load Image"
+            }
+        }
+
+        json["inputs"]["image"] = img_ref;
+        prompt[jsonIndex] = json;
+    }
+
+
+    let json2 = {
+        "inputs": {
+            "interpolation": "LANCZOS",
+            "crop_position": "center",
+            "sharpening": 0,
+            "image": [
+                jsonIndex,
+                0
+            ]
+        },
+        "class_type": "PrepImageForClipVision",
+        "_meta": {
+            "title": "Prep Image For ClipVision"
+        }
+    }
+
+    let jsonIndex2 = (index + 100001 + (index - 1) * 100).toString();
+    prompt[jsonIndex2] = json2;
+
+    let json3 = {
+        "inputs": {
+            "weight": 1,
+            "ipadapter": [
+                ipadapterIndex,
+                1
+            ],
+            "image": [
+                jsonIndex2,
+                0
+            ]
+        },
+        "class_type": "IPAdapterEncoder",
+        "_meta": {
+            "title": "IPAdapter Encoder"
+        }
+    }
+
+    let jsonIndex3 = (index + 100002 + (index - 1) * 100).toString();
+    prompt[jsonIndex3] = json3;
+
+    prompt[ipAdapterCombineEmbedsIndex]["inputs"]["embed" + index.toString()] = [jsonIndex3, 0];
+}
+
 
 module.exports = Tool;

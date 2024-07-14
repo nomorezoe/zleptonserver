@@ -376,7 +376,7 @@
       "end_at_step": 23,
       "return_with_leftover_noise": "enable",
       "model": [
-        "601516",
+        "601527",
         0
       ],
       "positive": [
@@ -446,118 +446,6 @@
       "title": "VAE Decode"
     }
   },
-  "601516": {
-    "inputs": {
-      "weight": 0.89,
-      "start_at": 0,
-      "end_at": 1,
-      "weight_type": "style transfer",
-      "model": [
-        "601525",
-        0
-      ],
-      "ipadapter": [
-        "601525",
-        1
-      ],
-      "image": [
-        "601522",
-        0
-      ]
-    },
-    "class_type": "IPAdapter",
-    "_meta": {
-      "title": "IPAdapter"
-    }
-  },
-  "601517": {
-    "inputs": {
-      "image": "295px-Seattle_Sun_(218456237) (2).jpeg",
-      "upload": "image"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
-  },
-  "601518": {
-    "inputs": {
-      "image": "5c8272e2-48e4-4e6f-a1c6-cdcbe2f9fbd3 (2).png",
-      "upload": "image"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
-  },
-  "601519": {
-    "inputs": {
-      "image": "3d_pixels-gigapixel-scale-2_00x.png",
-      "upload": "image"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
-  },
-  "601520": {
-    "inputs": {
-      "image": "1728cd53-be1e-413a-8421-c6b6baf217fb (1).png",
-      "upload": "image"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
-  },
-  "601522": {
-    "inputs": {
-      "image1": [
-        "601517",
-        0
-      ],
-      "image2": [
-        "601523",
-        0
-      ]
-    },
-    "class_type": "ImageBatch",
-    "_meta": {
-      "title": "Batch Images"
-    }
-  },
-  "601523": {
-    "inputs": {
-      "image1": [
-        "601518",
-        0
-      ],
-      "image2": [
-        "601524",
-        0
-      ]
-    },
-    "class_type": "ImageBatch",
-    "_meta": {
-      "title": "Batch Images"
-    }
-  },
-  "601524": {
-    "inputs": {
-      "image1": [
-        "601519",
-        0
-      ],
-      "image2": [
-        "601520",
-        0
-      ]
-    },
-    "class_type": "ImageBatch",
-    "_meta": {
-      "title": "Batch Images"
-    }
-  },
   "601525": {
     "inputs": {
       "preset": "PLUS (high strength)",
@@ -582,6 +470,86 @@
     "class_type": "SaveImage",
     "_meta": {
       "title": "Save Image"
+    }
+  },
+  "601527": {
+    "inputs": {
+      "weight": 1,
+      "weight_type": "linear",
+      "start_at": 0,
+      "end_at": 1,
+      "embeds_scaling": "V only",
+      "model": [
+        "601525",
+        0
+      ],
+      "ipadapter": [
+        "601525",
+        1
+      ],
+      "pos_embed": [
+        "601528",
+        0
+      ]
+    },
+    "class_type": "IPAdapterEmbeds",
+    "_meta": {
+      "title": "IPAdapter Embeds"
+    }
+  },
+  "601528": {
+    "inputs": {
+      "method": "concat",
+      "embed1": [
+        "100003",
+        0
+      ]
+    },
+    "class_type": "IPAdapterCombineEmbeds",
+    "_meta": {
+      "title": "IPAdapter Combine Embeds"
+    }
+  },
+  "100003": {
+    "inputs": {
+      "weight": 1,
+      "ipadapter": [
+        "601525",
+        1
+      ],
+      "image": [
+        "100002",
+        0
+      ]
+    },
+    "class_type": "IPAdapterEncoder",
+    "_meta": {
+      "title": "IPAdapter Encoder"
+    }
+  },
+  "100001": {
+    "inputs": {
+      "image": "0bca8bbe-685d-42d5-9b13-8de17caf4e21 (1).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "100002": {
+    "inputs": {
+      "interpolation": "LANCZOS",
+      "crop_position": "top",
+      "sharpening": 0,
+      "image": [
+        "100001",
+        0
+      ]
+    },
+    "class_type": "PrepImageForClipVision",
+    "_meta": {
+      "title": "Prep Image For ClipVision"
     }
   }
 }
