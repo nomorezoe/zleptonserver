@@ -135,8 +135,14 @@
   },
   "56": {
     "inputs": {
-      "width": 512,
-      "height": 512,
+      "width": [
+        "67",
+        0
+      ],
+      "height": [
+        "67",
+        1
+      ],
       "batch_size": 1
     },
     "class_type": "EmptyLatentImage",
@@ -183,6 +189,18 @@
     "class_type": "SDXLPromptStyler",
     "_meta": {
       "title": "SDXL Prompt Styler"
+    }
+  },
+  "67": {
+    "inputs": {
+      "image": [
+        "54",
+        0
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
     }
   }
 }
