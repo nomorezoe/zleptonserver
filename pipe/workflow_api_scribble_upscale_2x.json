@@ -151,7 +151,7 @@
         1
       ],
       "interpolation": "lanczos",
-      "method": "keep portion",
+      "method": "keep proportion",
       "condition": "always",
       "multiple_of": 32,
       "image": [
