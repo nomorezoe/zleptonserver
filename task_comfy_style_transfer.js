@@ -14,14 +14,28 @@ function TaskComfyStyleTransfer(task, req, queue) {
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_style_transfer.json');
     let prompt = JSON.parse(promptFile);
 
-    for (let i = 0; i < 5; i++) {
-        if (req.files["imageByteArray_" + i] != undefined) {
-            console.log("addStyleTransferImageJson: "+ i);
-            var rawImage = req.files["imageByteArray_" + i].data;
-            var imageData = Buffer.from(rawImage).toString('base64');
-            Tool.addStyleTransferImageJson(prompt, imageData, true, i + 1, "238", "225");
+
+    if(req.body.is_links != undefined){
+        for (let i = 0; i < 5; i++) {
+            if (req.body["image_ref_urls_" + i] != undefined) {
+                console.log("addStyleTransferImageJson: "+ i);
+                var linkvalue = req.body["image_ref_urls_" + i];
+                Tool.addStyleTransferImageJson(prompt, linkvalue, false, i + 1, "238", "225");
+            }
+        }
+
+    }
+    else{
+        for (let i = 0; i < 5; i++) {
+            if (req.files["imageByteArray_" + i] != undefined) {
+                console.log("addStyleTransferImageJson: "+ i);
+                var rawImage = req.files["imageByteArray_" + i].data;
+                var imageData = Buffer.from(rawImage).toString('base64');
+                Tool.addStyleTransferImageJson(prompt, imageData, true, i + 1, "238", "225");
+            }
         }
     }
+    
 
     let posPrompt = req.body.prompt;
     let file = req.body.img_url;
