@@ -152,9 +152,9 @@
   },
   "61": {
     "inputs": {
-      "strength": 0.4,
+      "strength": 0.65,
       "start_percent": 0,
-      "end_percent": 0.4,
+      "end_percent": 0.65,
       "positive": [
         "63",
         0
@@ -197,9 +197,9 @@
   },
   "63": {
     "inputs": {
-      "strength": 0.4,
+      "strength": 0.65,
       "start_percent": 0,
-      "end_percent": 0.4,
+      "end_percent": 0.65,
       "positive": [
         "48",
         0
