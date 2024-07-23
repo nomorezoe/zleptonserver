@@ -15,6 +15,7 @@ function TaskComfyScribbleEnhance(task, req, queue) {
     let prompt = JSON.parse(promptFile);
    
     if(req.body.imageUrl != undefined){
+        console.log("enhance image url:"  +  req.body.imageUrl);
         Tool.applyImage(prompt, "2", null, req.body.imageUrl);
     }
     else{
