@@ -220,7 +220,7 @@
   },
   "22": {
     "inputs": {
-      "control_net_name": "t2i-adapter-lineart-sdxl-1.0.fp16.safetensors"
+      "control_net_name": "xinsir_diffusion_pytorch_model_V2.safetensors"
     },
     "class_type": "ControlNetLoader",
     "_meta": {
