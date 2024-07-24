@@ -190,7 +190,7 @@
   },
   "22": {
     "inputs": {
-      "ckpt_name": "juggernautXL_v9Rdphoto2Lightning.safetensors"
+      "ckpt_name": "dreamshaperXL_v21TurboDPMSDE.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -203,7 +203,7 @@
       "seed": 720738182146116,
       "steps": 25,
       "cfg": 3.5,
-      "sampler_name": "euler",
+      "sampler_name": "dpmpp_sde",
       "scheduler": "sgm_uniform",
       "denoise": 0.2,
       "mode_type": "None",
@@ -272,7 +272,7 @@
   },
   "31": {
     "inputs": {
-      "text": "Asian girl, water mark",
+      "text": "(bad anatomy:1.4), (bad proportions:1.3), (deformed:1.3), (ugly:1.2), (mutated:1.2), (extra limbs:1.4), (missing limbs:1.3), (disconnected limbs:1.3), (mutation:1.2), (malformed:1.2), (disfigured:1.3), (cloned face:1.3), (gross proportions:1.3), (mutated hands:1.4), (poorly drawn hands:1.4), (extra hands:1.4), (fused hands:1.3), (missing hands:1.3), (disconnected hands:1.3), (extra fingers:1.4), (missing fingers:1.3), (too many fingers:1.4), (long fingers:1.3), (mutated fingers:1.3), (interlocked fingers:1.2), (extra arms:1.3), (missing arms:1.3), (disconnected arms:1.3), (extra legs:1.3), (missing legs:1.3), (disconnected legs:1.3), (fusion:1.2), (poorly drawn face:1.4), (bad face:1.3), (fused face:1.3), (cloned face:1.3), (weird face:1.2), (double face:1.3), (missing face:1.4), (floating face:1.3), (disconnected face:1.3), (malformed face:1.3), (asymmetrical face:1.2), (cropped face:1.2), (out of frame face:1.2), (extra eyes:1.4), (missing eyes:1.3), (floating eyes:1.3), (disconnected eyes:1.3), (crossed eyes:1.2), (misaligned eyes:1.2), (asymmetrical eyes:1.2), (weird eyes:1.2), (extra mouth:1.3), (missing mouth:1.3), (floating mouth:1.3), (disconnected mouth:1.3), (weird mouth:1.2), (bad mouth:1.2), (extra nose:1.3), (missing nose:1.3), (floating nose:1.3), (disconnected nose:1.3), (weird nose:1.2), (bad nose:1.2), (extra ears:1.3), (missing ears:1.3), (floating ears:1.3), (disconnected ears:1.3), (weird ears:1.2), (bad ears:1.2), (extra head:1.4), (missing head:1.4), (floating head:1.3), (disconnected head:1.4), (weird head:1.2), (bad head:1.2), (extra feet:1.3), (missing feet:1.3), (floating feet:1.3), (disconnected feet:1.3), (weird feet:1.2), (bad feet:1.2), (extra animal ears:1.2), (missing animal ears:1.2), (floating animal ears:1.2), (disconnected animal ears:1.2), (Asian:1.4), (Asian woman:1.4), (Asian girl:1.4), (East Asian:1.4), (Southeast Asian:1.4), (Chinese:1.4), (Japanese:1.4), (Korean:1.4), (Vietnamese:1.4), (Filipina:1.4), (Thai:1.4), (Mongolian:1.4), (Asian features:1.4), (almond-shaped eyes:1.4), (black hair:1.4), (straight black hair:1.4), (dark hair:1.4), (pale skin:1.4), (yellow skin tone:1.4), (slanted eyes:1.4), (epicanthic fold:1.4), (Asian clothing:1.4), (kimono:1.4), (hanbok:1.4), (cheongsam:1.4), (Asian makeup:1.4), (Asian accessories:1.4)",
       "clip": [
         "22",
         1
@@ -334,7 +334,7 @@
       "seed": 1049761693162276,
       "steps": 20,
       "cfg": 3.5,
-      "sampler_name": "euler",
+      "sampler_name": "dpmpp_sde",
       "scheduler": "sgm_uniform",
       "denoise": 0.5,
       "feather": 5,
