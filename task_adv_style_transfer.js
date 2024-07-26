@@ -17,7 +17,10 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     let prompt = JSON.parse(promptFile);
 
     for (let i = 0; i < 5; i++) {
-        if (req.body["img_ref_" + i] != undefined) {
+        if (req.body["img_ref_" + i] != undefined
+            && req.body["img_ref_" + i] != null
+            && req.body["img_ref_" + i] != "null"
+        ) {
             Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
         }
     }

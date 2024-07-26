@@ -17,7 +17,9 @@ function TaskComfyStyleTransfer(task, req, queue) {
 
     if(req.body.is_links != undefined){
         for (let i = 0; i < 5; i++) {
-            if (req.body["image_ref_urls_" + i] != undefined) {
+            if (req.body["image_ref_urls_" + i] != undefined && req.body["image_ref_urls_" + i]!= null &&
+                req.body["image_ref_urls_" + i] != "null"
+            ) {
                 console.log("addStyleTransferImageJson: "+ i);
                 var linkvalue = req.body["image_ref_urls_" + i];
                 Tool.addStyleTransferImageJson(prompt, linkvalue, false, i + 1, "238", "225");
