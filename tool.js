@@ -230,7 +230,7 @@ Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath, folder = O
         prompt[index] = json;
     }
     else {
-        console.log("oldFilePath")
+        console.log("oldFilePath: " + oldFilePath)
         try {
             var rawImg = fs.readFileSync(__dirname + folder + oldFilePath);
         }
