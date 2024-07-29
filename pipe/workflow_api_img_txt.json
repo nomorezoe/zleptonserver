@@ -1,0 +1,70 @@
+{
+  "1": {
+    "inputs": {
+      "prompt": "",
+      "repo_id": "Salesforce/blip-image-captioning-base",
+      "inference_mode": "gpu_float16",
+      "get_model_online": true,
+      "image": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "AutoLabel",
+    "_meta": {
+      "title": "Auto Label"
+    }
+  },
+  "2": {
+    "inputs": {
+      "image": "4e95069e-8f48-4281-a56a-f102baf630a9_enhance.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "10": {
+    "inputs": {
+      "filename": "%time_%seed",
+      "path": "",
+      "extension": "png",
+      "steps": 20,
+      "cfg": 8,
+      "modelname": "Deliberate_v5.safetensors",
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "positive": [
+        "1",
+        0
+      ],
+      "negative": "unknown",
+      "seed_value": 0,
+      "width": 512,
+      "height": 512,
+      "lossless_webp": true,
+      "quality_jpeg_or_webp": 100,
+      "counter": 0,
+      "time_format": "%Y-%m-%d-%H%M%S",
+      "images": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "Save Image w/Metadata",
+    "_meta": {
+      "title": "Save Image w/Metadata"
+    }
+  },
+  "11": {
+    "inputs": {
+      "image": "0bca8bbe-685d-42d5-9b13-8de17caf4e21 (1).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  }
+}

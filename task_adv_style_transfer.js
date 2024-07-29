@@ -33,7 +33,21 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         delete prompt["25"];
     }
 
-    Tool.applyImage(prompt, "10", null, req.body.url);
+    if (req.body.url != undefined) {
+        Tool.applyImage(prompt, "10", null, req.body.url);
+    }
+    else {
+        var rawImg = req.files.imageByteArray.data;
+        imgData = Buffer.from(rawImg).toString('base64');
+
+        /*var captureFile = uuidv4() + "_scribble_capture.png";
+    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
+        encoding: "base64",
+    });*/
+    
+        prompt["10"]["inputs"]["image"] = imgData;
+    }
+
     console.log("req.body.is_superstyle" + req.body.is_superstyle);
     if (parseInt(req.body.is_superstyle) == 1) {
         console.log("is_superstyle");

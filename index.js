@@ -25,6 +25,9 @@ const SocketManager = require('./socket_manager');
 const QueueManager = require('./queue_manager');
 const GetCharacterMask = require("./get_character_mask")
 const Tool = require('./tool');
+const path = require('path');
+const ExifReader = require('exifreader')
+
 server.setTimeout(600000);
 
 
@@ -46,11 +49,17 @@ app.use(bodyParser.urlencoded({
 }));
 
 
+///for mobile unity purpose
+app.use(express.static(path.join(__dirname, 'upload')));
+app.get("/upload", (req, res) => {
+    res.sendFile("index.html", { root: path.join(__dirname, 'upload') });
+});
+///
+
+
 
 app.get('/', (req, res) => {
     res.send('Hello World !');
-
-
 
 });
 
@@ -59,71 +68,71 @@ app.use('/save', express.static('save'));
 
 
 app.get('/capturefiles_2', (req, res) => {
-    const fs = require('fs'); 
-  
+    const fs = require('fs');
+
     // Function to get current filenames 
     // in directory 
     let filenames = fs.readdirSync("imgs");
     let capturenames = [];
 
-   
-    
-    console.log("\nCurrent directory filenames:"); 
-    filenames.forEach(file => { 
-        if(file.indexOf("capture") != -1){
+
+
+    console.log("\nCurrent directory filenames:");
+    filenames.forEach(file => {
+        if (file.indexOf("capture") != -1) {
             capturenames.push(file);
         }
-    }); 
+    });
 
     console.log(capturenames.length);
 
-    capturenames.sort(function(a, b) {
-        return fs.statSync("./imgs/" + b).mtime.getTime()-
-               fs.statSync("./imgs/" + a).mtime.getTime();
+    capturenames.sort(function (a, b) {
+        return fs.statSync("./imgs/" + b).mtime.getTime() -
+            fs.statSync("./imgs/" + a).mtime.getTime();
     });
 
-    res.writeHead(200, {"Content-Type": "text/html"});  
-    for (i in capturenames){
-        
-        res.write( "https://api.rendermind.ai:3000/imgs/" + capturenames[i] + "</br>");  
-     
+    res.writeHead(200, { "Content-Type": "text/html" });
+    for (i in capturenames) {
+
+        res.write("https://api.rendermind.ai:3000/imgs/" + capturenames[i] + "</br>");
+
     }
-    res.end();  
-    
+    res.end();
+
 });
 
 app.get('/capturefiles', (req, res) => {
-    const fs = require('fs'); 
-  
+    const fs = require('fs');
+
     // Function to get current filenames 
     // in directory 
     let filenames = fs.readdirSync("imgs");
     let capturenames = [];
 
-   
-    
-    console.log("\nCurrent directory filenames:"); 
-    filenames.forEach(file => { 
-        if(file.indexOf("upscale") != -1){
+
+
+    console.log("\nCurrent directory filenames:");
+    filenames.forEach(file => {
+        if (file.indexOf("upscale") != -1) {
             capturenames.push(file);
         }
-    }); 
+    });
 
     console.log(capturenames.length);
 
-    capturenames.sort(function(a, b) {
-        return fs.statSync("./imgs/" + b).mtime.getTime()-
-               fs.statSync("./imgs/" + a).mtime.getTime();
+    capturenames.sort(function (a, b) {
+        return fs.statSync("./imgs/" + b).mtime.getTime() -
+            fs.statSync("./imgs/" + a).mtime.getTime();
     });
 
-    res.writeHead(200, {"Content-Type": "text/html"});  
-    for (i in capturenames){
-        
-        res.write( "https://api.rendermind.ai:3000/imgs/" + capturenames[i] + "</br>");  
-     
+    res.writeHead(200, { "Content-Type": "text/html" });
+    for (i in capturenames) {
+
+        res.write("https://api.rendermind.ai:3000/imgs/" + capturenames[i] + "</br>");
+
     }
-    res.end();  
-    
+    res.end();
+
 });
 server.listen(3000, () => {
     console.log('listening on *:3000');
@@ -430,7 +439,7 @@ app.use('/scribble', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).post('/scribble', (req, res) => {
-    
+
     console.log("scribble");
 
     var session = req.body.session;
@@ -452,7 +461,7 @@ app.use('/rt_fast_upscale', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).post('/rt_fast_upscale', (req, res) => {
-    
+
     console.log("rt_fast_upscale");
 
     var session = req.body.session;
@@ -474,7 +483,7 @@ app.use('/rt_enhance', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).post('/rt_enhance', (req, res) => {
-    
+
     console.log("rt_enhance");
 
     var session = req.body.session;
@@ -496,7 +505,7 @@ app.use('/rt_enhance_4x', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).post('/rt_enhance_4x', (req, res) => {
-    
+
     console.log("rt_enhance_4x");
 
     var session = req.body.session;
@@ -518,7 +527,7 @@ app.use('/rt_enhance_8x', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).post('/rt_enhance_8x', (req, res) => {
-    
+
     console.log("rt_enhance_8x");
 
     var session = req.body.session;
@@ -536,19 +545,42 @@ app.use('/rt_enhance_8x', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 });
 
+
+app.use('/get_desc', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/get_desc', (req, res) => {
+
+    console.log("get_desc");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("get_desc", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
 app.use('/test', function (req, res, next) {
     //req.clearTimeout(); // clear request timeout
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
 }).get('/test', (req, res) => {
-   // let filename = "./pipe/test_2person.json"
-   let filename = "./pipe/test_work_flow.json";
+    // let filename = "./pipe/test_2person.json"
+    let filename = "./pipe/test_work_flow.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
 
-   // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    Tool.applyImage (prompt, "1", "test.jpg", null);
+    // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
+    Tool.applyImage(prompt, "1", "test.jpg", null);
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {
@@ -562,7 +594,7 @@ app.use('/test', function (req, res, next) {
         }
     };
 
-    
+
     var datastring = "";
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
@@ -582,7 +614,7 @@ app.use('/test', function (req, res, next) {
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
                     var imgname = uuidv4() + ".png";
-                   // task.imageFileNames.push(imgname);
+                    // task.imageFileNames.push(imgname);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
                         encoding: "base64",
                     });
@@ -614,10 +646,10 @@ app.use('/test_style', function (req, res, next) {
     let prompt = JSON.parse(promptFile);
 
     //prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    Tool.applyImage (prompt, "10", "sketch.png", null);
+    Tool.applyImage(prompt, "10", "sketch.png", null);
 
-    Tool.applyImage (prompt, "17", "style_1.png", null);
-    Tool.applyImage (prompt, "18", "style_2.png", null);
+    Tool.applyImage(prompt, "17", "style_1.png", null);
+    Tool.applyImage(prompt, "18", "style_2.png", null);
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {
@@ -631,7 +663,7 @@ app.use('/test_style', function (req, res, next) {
         }
     };
 
-    
+
     var datastring = "";
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
@@ -651,7 +683,7 @@ app.use('/test_style', function (req, res, next) {
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
                     var imgname = uuidv4() + ".png";
-                   // task.imageFileNames.push(imgname);
+                    // task.imageFileNames.push(imgname);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
                         encoding: "base64",
                     });
@@ -677,14 +709,15 @@ app.use('/test_adv', function (req, res, next) {
     next();
 }).get('/test_adv', (req, res) => {
     console.log("test_adv");
-   // let filename = "./pipe/test_2person.json"
-   let filename = "./pipe/workflow_api_img_txt.json";
+    // let filename = "./pipe/test_2person.json"
+    let filename = "./pipe/workflow_api_img_txt.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
 
-   // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    Tool.applyImage (prompt, "2", "save.png", null);
+    // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
+    Tool.applyImage(prompt, "2", "0e936581-ca95-4ea3-b935-ffe2dbe77604_adv_style.png", null);
+    Tool.applyImage(prompt, "11", "dot.png", null, "/save/");
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {
@@ -698,7 +731,7 @@ app.use('/test_adv', function (req, res, next) {
         }
     };
 
-    
+
     var datastring = "";
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
@@ -710,19 +743,19 @@ app.use('/test_adv', function (req, res, next) {
 
             reshttps.on('data', (d) => {
                 datastring += d;
-                // console.log("ondata");
+                //console.log("ondata:" + d);
             });
 
             reshttps.on('end', (d) => {
                 console.error("end");
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
-                    var imgname = uuidv4() + ".txt";
-                    console.log("jsonobj"+ jsonobj[i]);
-                   // task.imageFileNames.push(imgname);
-                    fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
-                        encoding: "base64",
-                    });
+                    
+                    var tags = ExifReader.load(Buffer.from(jsonobj[i], "base64"));
+                    let desc = tags.parameters.value.split("Negative prompt")[0];
+                    desc = desc.split("\n")[0];
+                    console.log("desc:"  + desc);
+                    task.imageFileNames.push(desc);
                 }
 
             });

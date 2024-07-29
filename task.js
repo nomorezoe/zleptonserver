@@ -16,6 +16,7 @@ const TaskComfyScribbleEnhance = require("./task_comfy_scribble_enhance");
 const TaskComfyScribbleEnhance4X = require("./task_comfy_scribble_enhance_4x");
 const TaskComfyScribbleEnhance8X = require("./task_comfy_scribble_enhance_8x");
 const TaskAdvanceStyleTransfer = require("./task_adv_style_transfer");
+const TaskComfyGetDescription = require("./task_comfy_get_description");
 
 
 function Task(type, index, req) {
@@ -84,6 +85,9 @@ Task.prototype = {
                 break;
             case "adv_styletransfer":
                 TaskAdvanceStyleTransfer(this, this.req, queue);
+                break;
+            case "get_desc":
+                TaskComfyGetDescription(this, this.req, queue);
                 break;
         }
     },
@@ -156,6 +160,9 @@ Task.prototype = {
             case "adv_styletransfer":
                 return 120;
                 break;
+            case "get_desc":
+                return 60;
+                break;
     }
     },
 
@@ -205,6 +212,9 @@ Task.prototype = {
                 break;
             case "adv_styletransfer":
                 return 120;
+                break;
+            case "get_desc":
+                return 20;
                 break;
         }
     },
@@ -257,6 +267,9 @@ Task.prototype = {
             }
             else if(this.type == "rt_enhance_8x"){
                 socket.emit("completeRTEnhance8X", this.imageFileNames.join(','));
+            }
+            else if(this.type == "get_desc"){
+                socket.emit("completeGetDesc", this.imageFileNames.join(','));
             }
         }
     },

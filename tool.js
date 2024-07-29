@@ -215,7 +215,7 @@ Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
     }
 }
 
-Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath) {
+Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath, folder = OUTPUT_FOLDER) {
     if (fullFilePath != undefined && fullFilePath != "" && fullFilePath != null) {
         console.log("fullFilePath")
         let json = {
@@ -232,7 +232,7 @@ Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath) {
     else {
         console.log("oldFilePath")
         try {
-            var rawImg = fs.readFileSync(__dirname + OUTPUT_FOLDER + oldFilePath);
+            var rawImg = fs.readFileSync(__dirname + folder + oldFilePath);
         }
         catch (err) {
             console.log("read file err");
