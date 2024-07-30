@@ -540,5 +540,84 @@ Tool.addStyleTransferImageJson = function (prompt, img_ref, isImageData, index, 
     prompt[ipAdapterCombineEmbedsIndex]["inputs"]["embed" + index.toString()] = [jsonIndex3, 0];
 }
 
+Tool.addBW2ColorImageJson = function (prompt, index, ipAdapterCombineEmbedsIndex, ipadapterIndex) {
+
+    let jsonIndex = (index + 100000 + (index - 1) * 100).toString();
+    // load image ex
+    let json = {
+        "inputs": {
+            "image": "thumb_illustration refference (1).jpg",
+            "upload": "image"
+        },
+        "class_type": "LoadImage_Ex",
+        "_meta": {
+            "title": "Load Image Ex"
+        }
+    }
+    switch (index) {
+        case 1:
+            json["inputs"]["image"] = "image_alberto_1.png";
+            break;
+        case 2:
+            json["inputs"]["image"] = "image_alberto_2.png";
+            break;
+        case 3:
+            json["inputs"]["image"] = "image_alberto_3.png";
+            break;
+        case 4:
+            json["inputs"]["image"] = "image_alberto_4.png";
+            break;
+        case 5:
+            json["inputs"]["image"] = "image_alberto_5.jpeg";
+            break;
+    }
+
+   
+    prompt[jsonIndex] = json;
+
+
+    let json2 = {
+        "inputs": {
+            "interpolation": "LANCZOS",
+            "crop_position": "center",
+            "sharpening": 0,
+            "image": [
+                jsonIndex,
+                0
+            ]
+        },
+        "class_type": "PrepImageForClipVision",
+        "_meta": {
+            "title": "Prep Image For ClipVision"
+        }
+    }
+
+    let jsonIndex2 = (index + 100001 + (index - 1) * 100).toString();
+    prompt[jsonIndex2] = json2;
+
+    let json3 = {
+        "inputs": {
+            "weight": 1,
+            "ipadapter": [
+                ipadapterIndex,
+                1
+            ],
+            "image": [
+                jsonIndex2,
+                0
+            ]
+        },
+        "class_type": "IPAdapterEncoder",
+        "_meta": {
+            "title": "IPAdapter Encoder"
+        }
+    }
+
+    let jsonIndex3 = (index + 100002 + (index - 1) * 100).toString();
+    prompt[jsonIndex3] = json3;
+
+    prompt[ipAdapterCombineEmbedsIndex]["inputs"]["embed" + index.toString()] = [jsonIndex3, 0];
+}
+
 
 module.exports = Tool;

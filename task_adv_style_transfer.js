@@ -16,14 +16,22 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     let promptFile = fs.readFileSync('./pipe/new_style_transfer_combine.json');
     let prompt = JSON.parse(promptFile);
 
-    for (let i = 0; i < 5; i++) {
-        if (req.body["img_ref_" + i] != undefined
-            && req.body["img_ref_" + i] != null
-            && req.body["img_ref_" + i] != "null"
-        ) {
-            Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
+    if (req.body.type == "bw2color"){
+        for (let i = 0; i < 5; i++) {
+            Tool.addBW2ColorImageJson(prompt, i + 1, "29", "15");
         }
     }
+    else{
+        for (let i = 0; i < 5; i++) {
+            if (req.body["img_ref_" + i] != undefined
+                && req.body["img_ref_" + i] != null
+                && req.body["img_ref_" + i] != "null"
+            ) {
+                Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
+            }
+        }
+    }
+    
 
     if (req.body.type == "bw2color") {
         prompt["21"]["inputs"]["image"] = ["25", 0];
