@@ -11,34 +11,39 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("TaskAdvanceStyleTransfer");
 
     var session = req.body.session;
+    var type = req.body.type;
 
-
-    let promptFile = fs.readFileSync('./pipe/new_style_transfer_combine.json');
+    let promptFile = fs.readFileSync(type == "sketch2photo" ? './pipe/new_style_transfer_combine_no_ipadapter.json' : './pipe/new_style_transfer_combine.json');
     let prompt = JSON.parse(promptFile);
 
-    if (req.body.type == "bw2color"){
-        for (let i = 0; i < 5; i++) {
-            Tool.addBW2ColorImageJson(prompt, i + 1, "29", "15");
-        }
-    }
-    else{
-        for (let i = 0; i < 5; i++) {
-            if (req.body["img_ref_" + i] != undefined
-                && req.body["img_ref_" + i] != null
-                && req.body["img_ref_" + i] != "null"
-            ) {
-                Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
+    switch (type) {
+        case "bw2color":
+            for (let i = 0; i < 5; i++) {
+                Tool.addBW2ColorImageJson(prompt, i + 1, "29", "15");
             }
-        }
-    }
-    
 
-    if (req.body.type == "bw2color") {
-        prompt["21"]["inputs"]["image"] = ["25", 0];
-        delete prompt["26"];
-    }
-    else {
-        delete prompt["25"];
+            //delete LineArtPreprocessor
+            prompt["21"]["inputs"]["image"] = ["25", 0];
+            delete prompt["26"];
+            break;
+        case "sketch2photo":
+
+            //delete ImageInvert
+            delete prompt["25"];
+            break;
+        default:
+            for (let i = 0; i < 5; i++) {
+                if (req.body["img_ref_" + i] != undefined
+                    && req.body["img_ref_" + i] != null
+                    && req.body["img_ref_" + i] != "null"
+                ) {
+                    Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
+                }
+            }
+
+            //delete ImageInvert
+            delete prompt["25"];
+            break;
     }
 
     if (req.body.url != undefined) {
@@ -49,18 +54,21 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         imgData = Buffer.from(rawImg).toString('base64');
 
         /*var captureFile = uuidv4() + "_scribble_capture.png";
-    fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
-        encoding: "base64",
-    });*/
-    
+        fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
+            encoding: "base64",
+        });*/
+
         prompt["10"]["inputs"]["image"] = imgData;
     }
 
     console.log("req.body.is_superstyle" + req.body.is_superstyle);
-    if (parseInt(req.body.is_superstyle) == 1) {
-        console.log("is_superstyle");
-        prompt["28"]["inputs"]["weight_type"] = "strong style transfer";
+    if (prompt["28"] != undefined) {
+        if (parseInt(req.body.is_superstyle) == 1) {
+            console.log("is_superstyle");
+            prompt["28"]["inputs"]["weight_type"] = "strong style transfer";
+        }
     }
+
 
     console.log("styleStrength: " + req.body.styleStrength);
     console.log("shapePrecision: " + req.body.shapePrecision);
@@ -82,20 +90,23 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("shapeV: " + prompt["21"]["inputs"]["strength"]);
 
     //req.body.styleStrength
-    let styleV = parseFloat(req.body.styleStrength) ;/// 100.0
-    console.log("styleV:" + styleV);
-    if (styleV >= 0.5) {
-        prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
-    }
-    else {
-        prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 1.8;
+    if (prompt["28"] != undefined) {
+        let styleV = parseFloat(req.body.styleStrength);/// 100.0
+        console.log("styleV:" + styleV);
+        if (styleV >= 0.5) {
+            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
+        }
+        else {
+            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 1.8;
+        }
+
+        console.log("styleV: " + prompt["28"]["inputs"]["weight"]);
     }
 
-    console.log("styleV: " + prompt["28"]["inputs"]["weight"]);
 
 
     //req.body.originalClarity
-    let clarityV = parseFloat(req.body.originalClarity) ;/// 100.0
+    let clarityV = parseFloat(req.body.originalClarity);/// 100.0
     console.log("clarityV:" + clarityV);
 
     if (clarityV >= 0.5) {
