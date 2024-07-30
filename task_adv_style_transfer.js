@@ -67,7 +67,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("originalClarity: " + req.body.originalClarity);
 
     //req.body.shapePrecision
-    let shapeV = parseFloat(req.body.shapePrecision) / 100.0;
+    let shapeV = parseFloat(req.body.shapePrecision);/// 100.0
     console.log("shapeV:" + shapeV);
     //default 
     if (shapeV >= 0.5) {
@@ -82,7 +82,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("shapeV: " + prompt["21"]["inputs"]["strength"]);
 
     //req.body.styleStrength
-    let styleV = parseFloat(req.body.styleStrength) / 100.0;
+    let styleV = parseFloat(req.body.styleStrength) ;/// 100.0
     console.log("styleV:" + styleV);
     if (styleV >= 0.5) {
         prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
@@ -95,7 +95,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
 
 
     //req.body.originalClarity
-    let clarityV = parseFloat(req.body.originalClarity) / 100.0;
+    let clarityV = parseFloat(req.body.originalClarity) ;/// 100.0
     console.log("clarityV:" + clarityV);
 
     if (clarityV >= 0.5) {
