@@ -71,6 +71,12 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         }
     }
 
+    console.log("prompt: " + req.body.prompt);
+
+    if (req.body.prompt != "undefined" && req.body.prompt != undefined && req.body.prompt != "") {
+        prompt["6"]["inputs"]["text"] = req.body.prompt;
+    }
+
 
     console.log("styleStrength: " + req.body.styleStrength);
     console.log("shapePrecision: " + req.body.shapePrecision);
@@ -81,12 +87,12 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("shapeV:" + shapeV);
     //default 
     if (shapeV >= 0.5) {
-        prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.8;
-        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.8;
+        prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.6;
+        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.6;
     }
     else {
-        prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 1.2;
-        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 1.2;
+        prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.2;
+        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.2;
     }
 
     console.log("shapeV: " + prompt["21"]["inputs"]["strength"]);
@@ -99,7 +105,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
             prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
         }
         else {
-            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 1.8;
+            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.6;
         }
 
         console.log("styleV: " + prompt["28"]["inputs"]["weight"]);
@@ -112,10 +118,10 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     console.log("clarityV:" + clarityV);
 
     if (clarityV >= 0.5) {
-        prompt["3"]["inputs"]["denoise"] = 0.8 + (clarityV - 0.5) * 0.4;
+        prompt["3"]["inputs"]["denoise"] = 0.9 + (clarityV - 0.5) * 0.2;
     }
     else {
-        prompt["3"]["inputs"]["denoise"] = 0.8 + (clarityV - 0.5) * 1.6;
+        prompt["3"]["inputs"]["denoise"] = 0.9 + (clarityV - 0.5) * 1.0;
     }
 
     console.log("clarityV: " + prompt["3"]["inputs"]["denoise"]);
