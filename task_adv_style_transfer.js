@@ -22,6 +22,8 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
                 Tool.addBW2ColorImageJson(prompt, i + 1, "29", "15");
             }
 
+            prompt["4"]["inputs"]["ckpt_name"] = "dreamshaperXL_v21TurboDPMSDE.safetensors";
+
             //delete LineArtPreprocessor
             prompt["21"]["inputs"]["image"] = ["25", 0];
             delete prompt["26"];
