@@ -309,6 +309,7 @@
   "167": {
     "inputs": {
       "amount": 6,
+      "device": "auto",
       "mask": [
         "219",
         0

@@ -288,7 +288,7 @@
           0
         ]
       },
-      "class_type": "Get image size",
+      "class_type": "GetImageSize+",
       "_meta": {
         "title": "Get image size"
       }
