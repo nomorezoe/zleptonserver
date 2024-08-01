@@ -1,0 +1,206 @@
+{
+    "3": {
+      "inputs": {
+        "seed": 637693039568896,
+        "steps": 25,
+        "cfg": 6,
+        "sampler_name": "dpmpp_2m_sde",
+        "scheduler": "karras",
+        "denoise": 1,
+        "model": [
+          "4",
+          0
+        ],
+        "positive": [
+          "11",
+          0
+        ],
+        "negative": [
+          "11",
+          1
+        ],
+        "latent_image": [
+          "5",
+          0
+        ]
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "4": {
+      "inputs": {
+        "ckpt_name": "epicrealism_naturalSinRC1VAE.safetensors"
+      },
+      "class_type": "CheckpointLoaderSimple",
+      "_meta": {
+        "title": "Load Checkpoint"
+      }
+    },
+    "5": {
+      "inputs": {
+        "width": [
+          "13",
+          0
+        ],
+        "height": [
+          "13",
+          1
+        ],
+        "batch_size": 1
+      },
+      "class_type": "EmptyLatentImage",
+      "_meta": {
+        "title": "Empty Latent Image"
+      }
+    },
+    "6": {
+      "inputs": {
+        "text": "reallistic, photo",
+        "clip": [
+          "4",
+          1
+        ]
+      },
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Prompt)"
+      }
+    },
+    "7": {
+      "inputs": {
+        "text": "text, watermark, nude, nsfw",
+        "clip": [
+          "4",
+          1
+        ]
+      },
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Prompt)"
+      }
+    },
+    "8": {
+      "inputs": {
+        "samples": [
+          "3",
+          0
+        ],
+        "vae": [
+          "4",
+          2
+        ]
+      },
+      "class_type": "VAEDecode",
+      "_meta": {
+        "title": "VAE Decode"
+      }
+    },
+    "9": {
+      "inputs": {
+        "filename_prefix": "ComfyUI",
+        "images": [
+          "8",
+          0
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    },
+    "10": {
+      "inputs": {
+        "image": "8ce12b5abf782a37a2a0cbdcba6f9270.jpg",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load Image"
+      }
+    },
+    "11": {
+      "inputs": {
+        "strength": 1,
+        "start_percent": 0,
+        "end_percent": 0.9,
+        "positive": [
+          "6",
+          0
+        ],
+        "negative": [
+          "7",
+          0
+        ],
+        "control_net": [
+          "12",
+          0
+        ],
+        "image": [
+          "15",
+          0
+        ]
+      },
+      "class_type": "ControlNetApplyAdvanced",
+      "_meta": {
+        "title": "Apply ControlNet (Advanced)"
+      }
+    },
+    "12": {
+      "inputs": {
+        "control_net_name": "control_v11p_sd15_scribble.pth"
+      },
+      "class_type": "ControlNetLoader",
+      "_meta": {
+        "title": "Load ControlNet Model"
+      }
+    },
+    "13": {
+      "inputs": {
+        "image": [
+          "10",
+          0
+        ]
+      },
+      "class_type": "CM_NearestSDXLResolution",
+      "_meta": {
+        "title": "NearestSDXLResolution"
+      }
+    },
+    "14": {
+      "inputs": {
+        "upscale_method": "nearest-exact",
+        "width": [
+          "13",
+          0
+        ],
+        "height": [
+          "13",
+          1
+        ],
+        "crop": "disabled",
+        "image": [
+          "10",
+          0
+        ]
+      },
+      "class_type": "ImageScale",
+      "_meta": {
+        "title": "Upscale Image"
+      }
+    },
+    "15": {
+      "inputs": {
+        "resolution": 512,
+        "image": [
+          "14",
+          0
+        ]
+      },
+      "class_type": "ScribblePreprocessor",
+      "_meta": {
+        "title": "Scribble Lines"
+      }
+    }
+  }

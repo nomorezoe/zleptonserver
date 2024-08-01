@@ -13,6 +13,11 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     var session = req.body.session;
     var type = req.body.type;
 
+    if(type == "sketch2photo"){
+        sketchToPhoto(task,req, queue);
+        return;
+    }
+
     let promptFile = fs.readFileSync(type == "sketch2photo" ? './pipe/new_style_transfer_combine_no_ipadapter.json' : './pipe/new_style_transfer_combine.json');
     let prompt = JSON.parse(promptFile);
 
@@ -126,9 +131,36 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
 
     console.log("clarityV: " + prompt["3"]["inputs"]["denoise"]);
 
+    prompt["3"]["inputs"]["seed"] = Tool.randomInt();
 
     //var captureFile = "save.json";
     //fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
+
+    task.pipeline = "adv_style_transfer";
+    sendRequest(prompt, queue, task);
+}
+
+function sketchToPhoto(task, req, queue){
+    console.log("sketchToPhoto");
+
+    let promptFile = fs.readFileSync('./pipe/workflow_api_adv_sketch_to_photo.json');
+    let prompt = JSON.parse(promptFile);
+
+    if (req.body.prompt != "undefined" && req.body.prompt != undefined && req.body.prompt != "") {
+        prompt["6"]["inputs"]["text"] += ", " + req.body.prompt;
+    }
+
+    if (req.body.url != undefined) {
+        Tool.applyImage(prompt, "10", null, req.body.url);
+    }
+    else {
+        var rawImg = req.files.imageByteArray.data;
+        imgData = Buffer.from(rawImg).toString('base64');
+
+        prompt["10"]["inputs"]["image"] = imgData;
+    }
+
+    prompt["3"]["inputs"]["seed"] = Tool.randomInt();
 
     task.pipeline = "adv_style_transfer";
     sendRequest(prompt, queue, task);
