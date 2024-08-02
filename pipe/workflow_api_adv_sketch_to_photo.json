@@ -1,7 +1,7 @@
 {
   "3": {
     "inputs": {
-      "seed": 601216776469847,
+      "seed": 554339316766156,
       "steps": 25,
       "cfg": 6,
       "sampler_name": "dpmpp_2m_sde",
@@ -112,7 +112,7 @@
   },
   "10": {
     "inputs": {
-      "image": "football_sketch.jpg",
+      "image": "8ce12b5abf782a37a2a0cbdcba6f9270.jpg",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -217,7 +217,7 @@
   },
   "17": {
     "inputs": {
-      "strength": 0.9,
+      "strength": 0.5,
       "start_percent": 0,
       "end_percent": 0.9,
       "positive": [
@@ -244,8 +244,8 @@
   },
   "18": {
     "inputs": {
-      "low_threshold": 0.6,
-      "high_threshold": 0.9,
+      "low_threshold": 0.4,
+      "high_threshold": 0.8,
       "image": [
         "14",
         0
