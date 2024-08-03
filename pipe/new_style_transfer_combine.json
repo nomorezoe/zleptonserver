@@ -20,7 +20,7 @@
         1
       ],
       "latent_image": [
-        "13",
+        "100005",
         0
       ]
     },
@@ -166,31 +166,6 @@
       "title": "IPAdapter Unified Loader"
     }
   },
-  "100002": {
-    "inputs": {
-      "interpolation": "LANCZOS",
-      "crop_position": "center",
-      "sharpening": 0,
-      "image": [
-        "100001",
-        0
-      ]
-    },
-    "class_type": "PrepImageForClipVision",
-    "_meta": {
-      "title": "Prep Image For ClipVision"
-    }
-  },
-  "100001": {
-    "inputs": {
-      "image": "rendermindjobs (3) (1).jpeg",
-      "upload": "image"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Reference"
-    }
-  },
   "21": {
     "inputs": {
       "strength": 0.6,
@@ -253,23 +228,6 @@
       "title": "Realistic Lineart"
     }
   },
-  "100003": {
-    "inputs": {
-      "weight": 1,
-      "ipadapter": [
-        "15",
-        1
-      ],
-      "image": [
-        "100002",
-        0
-      ]
-    },
-    "class_type": "IPAdapterEncoder",
-    "_meta": {
-      "title": "IPAdapter Encoder"
-    }
-  },
   "28": {
     "inputs": {
       "weight": 0.9,
@@ -306,6 +264,61 @@
     "class_type": "IPAdapterCombineEmbeds",
     "_meta": {
       "title": "IPAdapter Combine Embeds"
+    }
+  },
+  "100001": {
+    "inputs": {
+      "image": "rendermindjobs (3) (1).jpeg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Reference"
+    }
+  },
+  "100002": {
+    "inputs": {
+      "interpolation": "LANCZOS",
+      "crop_position": "center",
+      "sharpening": 0,
+      "image": [
+        "100001",
+        0
+      ]
+    },
+    "class_type": "PrepImageForClipVision",
+    "_meta": {
+      "title": "Prep Image For ClipVision"
+    }
+  },
+  "100003": {
+    "inputs": {
+      "weight": 1,
+      "ipadapter": [
+        "15",
+        1
+      ],
+      "image": [
+        "100002",
+        0
+      ]
+    },
+    "class_type": "IPAdapterEncoder",
+    "_meta": {
+      "title": "IPAdapter Encoder"
+    }
+  },
+  "100005": {
+    "inputs": {
+      "amount": 4,
+      "samples": [
+        "13",
+        0
+      ]
+    },
+    "class_type": "RepeatLatentBatch",
+    "_meta": {
+      "title": "Repeat Latent Batch"
     }
   }
 }
