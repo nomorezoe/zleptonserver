@@ -17,6 +17,7 @@ const TaskComfyScribbleEnhance4X = require("./task_comfy_scribble_enhance_4x");
 const TaskComfyScribbleEnhance8X = require("./task_comfy_scribble_enhance_8x");
 const TaskAdvanceStyleTransfer = require("./task_adv_style_transfer");
 const TaskComfyGetDescription = require("./task_comfy_get_description");
+const Tool = require("./tool");
 
 
 function Task(type, index, req) {
@@ -63,7 +64,8 @@ Task.prototype = {
                 TaskComfyChCreator(this, this.req, queue);
                 break;
             case "styletransfer":
-                TaskComfyStyleTransfer(this, this.req, queue);
+                //TaskComfyStyleTransfer(this, this.req, queue);
+                TaskAdvanceStyleTransfer(this, Tool.toAdvStyleTransfer(this.req), queue);
                 break;
             case "styletransferrender":
                 TaskComfyRenderStyleTransfer(this, this.req, queue);

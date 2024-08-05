@@ -540,6 +540,28 @@ Tool.addStyleTransferImageJson = function (prompt, img_ref, isImageData, index, 
     prompt[ipAdapterCombineEmbedsIndex]["inputs"]["embed" + index.toString()] = [jsonIndex3, 0];
 }
 
+Tool.toAdvStyleTransfer = function (req) {
+    req.body.url = req.body.img_url;
+    req.body.type = "img2img";
+
+    req.body.styleStrength = "0.5";
+    req.body.shapePrecision = "0.5";
+    req.body.originalClarity = "0.5";
+    req.body.is_superstyle = "0";
+
+    if(req.body.is_links != undefined){
+        for (let i = 0; i < 5; i++) {
+            if (req.body["image_ref_urls_" + i] != undefined && req.body["image_ref_urls_" + i] != null &&
+                req.body["image_ref_urls_" + i] != "null"
+            ) {
+                req.body["img_ref_" + i] = req.body["img_ref_" + i];
+            }
+        }
+    }
+
+    return req;
+}
+
 Tool.addBW2ColorImageJson = function (prompt, index, ipAdapterCombineEmbedsIndex, ipadapterIndex) {
 
     let jsonIndex = (index + 100000 + (index - 1) * 100).toString();
@@ -572,7 +594,7 @@ Tool.addBW2ColorImageJson = function (prompt, index, ipAdapterCombineEmbedsIndex
             break;
     }
 
-   
+
     prompt[jsonIndex] = json;
 
 

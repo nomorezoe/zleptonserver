@@ -13,8 +13,8 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     var session = req.body.session;
     var type = req.body.type;
 
-    if(type == "sketch2photo"){
-        sketchToPhoto(task,req, queue);
+    if (type == "sketch2photo") {
+        sketchToPhoto(task, req, queue);
         return;
     }
 
@@ -39,12 +39,24 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
             delete prompt["25"];
             break;
         default:
-            for (let i = 0; i < 5; i++) {
-                if (req.body["img_ref_" + i] != undefined
-                    && req.body["img_ref_" + i] != null
-                    && req.body["img_ref_" + i] != "null"
-                ) {
-                    Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
+            if (req.body.is_links != undefined) {
+                for (let i = 0; i < 5; i++) {
+                    if (req.body["img_ref_" + i] != undefined
+                        && req.body["img_ref_" + i] != null
+                        && req.body["img_ref_" + i] != "null"
+                    ) {
+                        Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
+                    }
+                }
+            }
+            else {
+                for (let i = 0; i < 5; i++) {
+                    if (req.files["imageByteArray_" + i] != undefined) {
+                        console.log("addStyleTransferImageJson: "+ i);
+                        var rawImage = req.files["imageByteArray_" + i].data;
+                        var imageData = Buffer.from(rawImage).toString('base64');
+                        Tool.addStyleTransferImageJson(prompt, imageData, true, i + 1, "29", "15");
+                    }
                 }
             }
 
@@ -140,7 +152,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     sendRequest(prompt, queue, task);
 }
 
-function sketchToPhoto(task, req, queue){
+function sketchToPhoto(task, req, queue) {
     console.log("sketchToPhoto");
 
     let promptFile = fs.readFileSync('./pipe/workflow_api_adv_sketch_to_photo.json');
