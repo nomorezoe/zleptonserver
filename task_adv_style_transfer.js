@@ -18,13 +18,17 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         return;
     }
 
-    let promptFile = fs.readFileSync(type == "sketch2photo" ? './pipe/new_style_transfer_combine_no_ipadapter.json' : './pipe/new_style_transfer_combine.json');
+    if (type == "sketch2loosecolor") {
+        sketchToLooseColor(task, req, queue);
+        return;
+    }
+
+    let promptFile = fs.readFileSync('./pipe/new_style_transfer_combine.json');
     let prompt = JSON.parse(promptFile);
 
     switch (type) {
-        case "bw2color":
-        case "sketch2loosecolor":
         case "sketch2graphiccolor":
+            console.log("sketch2graphiccolor");
             for (let i = 0; i < 5; i++) {
                 Tool.addBW2ColorImageJson(prompt, i + 1, "29", "15");
             }
@@ -35,18 +39,15 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
             prompt["21"]["inputs"]["image"] = ["25", 0];
             delete prompt["26"];
             break;
-        case "sketch2photo":
-
-            //delete ImageInvert
-            delete prompt["25"];
-            break;
         default:
-            if (req.body.is_links != undefined) {
+            console.log("img2img" + req.body.is_links );
+            if (req.files["imageByteArray_0"] == undefined) {
                 for (let i = 0; i < 5; i++) {
                     if (req.body["img_ref_" + i] != undefined
                         && req.body["img_ref_" + i] != null
                         && req.body["img_ref_" + i] != "null"
                     ) {
+                        console.log("addStyleTransferImageJson: " + req.body["img_ref_" + i]);
                         Tool.addStyleTransferImageJson(prompt, req.body["img_ref_" + i], false, i + 1, "29", "15");
                     }
                 }
@@ -54,7 +55,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
             else {
                 for (let i = 0; i < 5; i++) {
                     if (req.files["imageByteArray_" + i] != undefined) {
-                        console.log("addStyleTransferImageJson: "+ i);
+                        console.log("addStyleTransferImageJson: " + i);
                         var rawImage = req.files["imageByteArray_" + i].data;
                         var imageData = Buffer.from(rawImage).toString('base64');
                         Tool.addStyleTransferImageJson(prompt, imageData, true, i + 1, "29", "15");
@@ -72,7 +73,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     }
     else {
         var rawImg = req.files.imageByteArray.data;
-        imgData = Buffer.from(rawImg).toString('base64');
+        var imgData = Buffer.from(rawImg).toString('base64');
 
         /*var captureFile = uuidv4() + "_scribble_capture.png";
         fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
@@ -105,6 +106,59 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     //fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, JSON.stringify(prompt), 'utf8');
 
     task.pipeline = "adv_style_transfer";
+    sendRequest(prompt, queue, task);
+}
+
+function sketchToLooseColor(task, req, queue) {
+    console.log("sketchToLooseColor");
+
+    let promptFile = fs.readFileSync('./pipe/workflow_api_adv_sketch_to_loose_color.json');
+    let prompt = JSON.parse(promptFile);
+
+    if (req.body.prompt != "undefined" && req.body.prompt != undefined && req.body.prompt != "") {
+        prompt["6"]["inputs"]["text"] += ", " + req.body.prompt;
+    }
+
+    if (req.body.url != undefined) {
+        Tool.applyImage(prompt, "44", null, req.body.url);
+    }
+    else {
+        var rawImg = req.files.imageByteArray.data;
+        imgData = Buffer.from(rawImg).toString('base64');
+
+        prompt["44"]["inputs"]["image"] = imgData;
+    }
+
+    console.log("sketchDetail: " + req.body.sketchDetail);
+    console.log("edgeDetection: " + req.body.edgeDetection);
+
+    //req.body.sketchDetail
+    let sdetail = parseFloat(req.body.sketchDetail);/// 100.0
+    //console.log("sketchDetail:" + sdetail);
+    //default 
+    if (sdetail >= 0.5) {
+        prompt["52"]["inputs"]["strength"] = 0.8 + (sdetail - 0.5) * 0.4;
+    }
+    else {
+        prompt["52"]["inputs"]["strength"] = 0.8 + (sdetail - 0.5) * 0.4;
+    }
+    console.log("sketchDetail:" + prompt["52"]["inputs"]["strength"]);
+
+    //req.body.sketchDetail
+    let edetect = parseFloat(req.body.edgeDetection);/// 100.0
+
+    //default 
+    if (edetect >= 0.5) {
+        prompt["56"]["inputs"]["strength"] = 0.65 + (edetect - 0.5) * 0.1;
+    }
+    else {
+        prompt["56"]["inputs"]["strength"] = 0.65 + (edetect - 0.5) * 0.1;
+    }
+    console.log("edgeDetection:" + prompt["56"]["inputs"]["strength"]);
+
+    prompt["3"]["inputs"]["seed"] = Tool.randomInt();
+
+    task.pipeline = "sketch_to_loose_color";
     sendRequest(prompt, queue, task);
 }
 
@@ -145,7 +199,7 @@ function sketchToPhoto(task, req, queue) {
 
     //req.body.sketchDetail
     let edetect = parseFloat(req.body.edgeDetection);/// 100.0
-    
+
     //default 
     if (edetect >= 0.5) {
         prompt["17"]["inputs"]["strength"] = 0.65 + (edetect - 0.5) * 0.1;
@@ -153,11 +207,11 @@ function sketchToPhoto(task, req, queue) {
     else {
         prompt["17"]["inputs"]["strength"] = 0.65 + (edetect - 0.5) * 0.1;
     }
-    console.log("edgeDetection:" +  prompt["17"]["inputs"]["strength"]);
+    console.log("edgeDetection:" + prompt["17"]["inputs"]["strength"]);
 
     prompt["3"]["inputs"]["seed"] = Tool.randomInt();
 
-    task.pipeline = "adv_style_transfer";
+    task.pipeline = "sketch_to_photo";
     sendRequest(prompt, queue, task);
 }
 

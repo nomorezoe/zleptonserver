@@ -1,0 +1,269 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 657541382620535,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "sgm_uniform",
+      "denoise": 1,
+      "model": [
+        "29",
+        0
+      ],
+      "positive": [
+        "56",
+        0
+      ],
+      "negative": [
+        "56",
+        1
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0_0.9vae.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "5": {
+    "inputs": {
+      "width": 1152,
+      "height": 896,
+      "batch_size": 4
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": "colscottstyle",
+      "clip": [
+        "29",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": " text, watermark, low quality , deformed, bad anatomy, worst quality,  bad hands, text, error, missing fingers, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured,",
+      "clip": [
+        "29",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "4759b36d-c967-42bd-9308-9a8f41e8dc99",
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "29": {
+    "inputs": {
+      "lora_name": "colscottstyle.safetensors",
+      "strength_model": 0.9,
+      "strength_clip": 1,
+      "model": [
+        "4",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "Load LoRA"
+    }
+  },
+  "44": {
+    "inputs": {
+      "image": "Philips_Air_Fryer_Pencils_5_062624_1519_gordonsd (1).jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "52": {
+    "inputs": {
+      "strength": 0.6,
+      "start_percent": 0,
+      "end_percent": 0.9,
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "control_net": [
+        "53",
+        0
+      ],
+      "image": [
+        "54",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced",
+    "_meta": {
+      "title": "Apply ControlNet (Advanced)"
+    }
+  },
+  "53": {
+    "inputs": {
+      "control_net_name": "xinsir_controlnet_scribble.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "54": {
+    "inputs": {
+      "resolution": 1024,
+      "image": [
+        "59",
+        0
+      ]
+    },
+    "class_type": "ScribblePreprocessor",
+    "_meta": {
+      "title": "Scribble Lines"
+    }
+  },
+  "56": {
+    "inputs": {
+      "strength": 0.5,
+      "start_percent": 0,
+      "end_percent": 0.9,
+      "positive": [
+        "52",
+        0
+      ],
+      "negative": [
+        "52",
+        1
+      ],
+      "control_net": [
+        "60",
+        0
+      ],
+      "image": [
+        "57",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced",
+    "_meta": {
+      "title": "Apply ControlNet (Advanced)"
+    }
+  },
+  "57": {
+    "inputs": {
+      "low_threshold": 0.4,
+      "high_threshold": 0.8,
+      "image": [
+        "59",
+        0
+      ]
+    },
+    "class_type": "Canny",
+    "_meta": {
+      "title": "Canny"
+    }
+  },
+  "58": {
+    "inputs": {
+      "image": [
+        "44",
+        0
+      ]
+    },
+    "class_type": "CM_NearestSDXLResolution",
+    "_meta": {
+      "title": "NearestSDXLResolution"
+    }
+  },
+  "59": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": [
+        "58",
+        0
+      ],
+      "height": [
+        "58",
+        1
+      ],
+      "crop": "disabled",
+      "image": [
+        "44",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
+    }
+  },
+  "60": {
+    "inputs": {
+      "control_net_name": "xinsir_diffusion_pytorch_model_V2.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  }
+}
