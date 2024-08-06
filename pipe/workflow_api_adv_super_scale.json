@@ -316,7 +316,7 @@
           0
         ]
       },
-      "class_type": "Multiply",
+      "class_type": "DF_Multiply",
       "_meta": {
         "title": "Multiply"
       }
@@ -328,7 +328,7 @@
           0
         ]
       },
-      "class_type": "Int to float",
+      "class_type": "DF_Int_to_Float",
       "_meta": {
         "title": "Int to float"
       }
@@ -365,7 +365,7 @@
           0
         ]
       },
-      "class_type": "Multiply",
+      "class_type": "DF_Multiply",
       "_meta": {
         "title": "Multiply"
       }
@@ -377,7 +377,7 @@
           1
         ]
       },
-      "class_type": "Int to float",
+      "class_type": "DF_Int_to_Float",
       "_meta": {
         "title": "Int to float"
       }
@@ -411,7 +411,7 @@
       "inputs": {
         "Value": 2
       },
-      "class_type": "Float",
+      "class_type": "DF_Float",
       "_meta": {
         "title": "Upscale"
       }
@@ -420,7 +420,7 @@
       "inputs": {
         "Value": 0.2
       },
-      "class_type": "Float",
+      "class_type": "DF_Float",
       "_meta": {
         "title": "Hallucination"
       }
