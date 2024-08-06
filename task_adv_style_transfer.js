@@ -23,6 +23,8 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
 
     switch (type) {
         case "bw2color":
+        case "sketch2loosecolor":
+        case "sketch2graphiccolor":
             for (let i = 0; i < 5; i++) {
                 Tool.addBW2ColorImageJson(prompt, i + 1, "29", "15");
             }
@@ -125,6 +127,33 @@ function sketchToPhoto(task, req, queue) {
 
         prompt["10"]["inputs"]["image"] = imgData;
     }
+
+    console.log("sketchDetail: " + req.body.sketchDetail);
+    console.log("edgeDetection: " + req.body.edgeDetection);
+
+    //req.body.sketchDetail
+    let sdetail = parseFloat(req.body.sketchDetail);/// 100.0
+    //console.log("sketchDetail:" + sdetail);
+    //default 
+    if (sdetail >= 0.5) {
+        prompt["11"]["inputs"]["strength"] = 0.8 + (sdetail - 0.5) * 0.4;
+    }
+    else {
+        prompt["11"]["inputs"]["strength"] = 0.8 + (sdetail - 0.5) * 0.4;
+    }
+    console.log("sketchDetail:" + prompt["11"]["inputs"]["strength"]);
+
+    //req.body.sketchDetail
+    let edetect = parseFloat(req.body.edgeDetection);/// 100.0
+    
+    //default 
+    if (edetect >= 0.5) {
+        prompt["17"]["inputs"]["strength"] = 0.65 + (edetect - 0.5) * 0.1;
+    }
+    else {
+        prompt["17"]["inputs"]["strength"] = 0.65 + (edetect - 0.5) * 0.1;
+    }
+    console.log("edgeDetection:" +  prompt["17"]["inputs"]["strength"]);
 
     prompt["3"]["inputs"]["seed"] = Tool.randomInt();
 

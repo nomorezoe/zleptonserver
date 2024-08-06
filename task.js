@@ -160,7 +160,7 @@ Task.prototype = {
                 return 120;
                 break;
             case "adv_styletransfer":
-                return 120;
+                return 240;
                 break;
             case "get_desc":
                 return 60;
@@ -213,7 +213,7 @@ Task.prototype = {
                 return 120;
                 break;
             case "adv_styletransfer":
-                return 120;
+                return 240;
                 break;
             case "get_desc":
                 return 20;
