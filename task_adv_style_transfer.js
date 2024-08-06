@@ -94,54 +94,8 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         prompt["6"]["inputs"]["text"] = req.body.prompt;
     }
 
-
-    console.log("styleStrength: " + req.body.styleStrength);
-    console.log("shapePrecision: " + req.body.shapePrecision);
-    console.log("originalClarity: " + req.body.originalClarity);
-
-    //req.body.shapePrecision
-    let shapeV = parseFloat(req.body.shapePrecision);/// 100.0
-    console.log("shapeV:" + shapeV);
-    //default 
-    if (shapeV >= 0.5) {
-        prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.6;
-        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.6;
-    }
-    else {
-        prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.2;
-        prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.2;
-    }
-
-    console.log("shapeV: " + prompt["21"]["inputs"]["strength"]);
-
-    //req.body.styleStrength
-    if (prompt["28"] != undefined) {
-        let styleV = parseFloat(req.body.styleStrength);/// 100.0
-        console.log("styleV:" + styleV);
-        if (styleV >= 0.5) {
-            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
-        }
-        else {
-            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.6;
-        }
-
-        console.log("styleV: " + prompt["28"]["inputs"]["weight"]);
-    }
-
-
-
-    //req.body.originalClarity
-    let clarityV = parseFloat(req.body.originalClarity);/// 100.0
-    console.log("clarityV:" + clarityV);
-
-    if (clarityV >= 0.5) {
-        prompt["3"]["inputs"]["denoise"] = 0.9 + (clarityV - 0.5) * 0.2;
-    }
-    else {
-        prompt["3"]["inputs"]["denoise"] = 0.9 + (clarityV - 0.5) * 1.0;
-    }
-
-    console.log("clarityV: " + prompt["3"]["inputs"]["denoise"]);
+    console.log("sketchDetail: " + req.body.sketchDetail);
+    console.log("edgeDetection: " + req.body.edgeDetection);
 
     prompt["3"]["inputs"]["seed"] = Tool.randomInt();
 
