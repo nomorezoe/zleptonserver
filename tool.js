@@ -549,7 +549,7 @@ Tool.toAdvStyleTransfer = function (req) {
     req.body.originalClarity = "0.5";
     req.body.is_superstyle = "0";
 
-    if(req.body.is_links != undefined){
+    if (req.body.is_links != undefined) {
         for (let i = 0; i < 5; i++) {
             if (req.body["image_ref_urls_" + i] != undefined && req.body["image_ref_urls_" + i] != null &&
                 req.body["image_ref_urls_" + i] != "null"
@@ -639,6 +639,197 @@ Tool.addBW2ColorImageJson = function (prompt, index, ipAdapterCombineEmbedsIndex
     prompt[jsonIndex3] = json3;
 
     prompt[ipAdapterCombineEmbedsIndex]["inputs"]["embed" + index.toString()] = [jsonIndex3, 0];
+}
+
+Tool.addSaveWithMeta = function (json) {
+    for (let i in json) {
+        if (json[i].class_type == "SaveImage") {
+            let inputId = json[i]["inputs"]["images"][0];
+            delete json[i];
+
+            for (let j = 0; j < 4; j++) {
+                let getImageJson = {
+                    "inputs": {
+                        "indexes": "2",
+                        "images": [
+                            "21",
+                            0
+                        ]
+                    },
+                    "class_type": "GetImagesFromBatchIndexed",
+                    "_meta": {
+                        "title": "Get Images From Batch Indexed"
+                    }
+                }
+                getImageJson["inputs"]["images"][0] = inputId;
+                getImageJson["inputs"]["indexes"] = j.toString();
+                let getImageJsonId = (120000 + j).toString();
+                json[getImageJsonId] = getImageJson;
+
+                let saveImageJson = {
+                    "inputs": {
+                        "filename": "%time_%seed",
+                        "path": "",
+                        "extension": "png",
+                        "steps": 20,
+                        "cfg": 8,
+                        "modelname": "epicrealism_naturalSinRC1VAE.safetensors",
+                        "sampler_name": "euler",
+                        "scheduler": "normal",
+                        "positive": "0",
+                        "negative": "unknown",
+                        "seed_value": 0,
+                        "width": 513,
+                        "height": 513,
+                        "lossless_webp": true,
+                        "quality_jpeg_or_webp": 100,
+                        "counter": 0,
+                        "time_format": "%Y-%m-%d-%H%M%S",
+                        "images": [
+                            "29",
+                            0
+                        ]
+                    },
+                    "class_type": "Save Image w/Metadata",
+                    "_meta": {
+                        "title": "Save Image w/Metadata"
+                    }
+                }
+
+                saveImageJson["inputs"]["positive"] = "CUS_NOTES_SAVE_IMAGE_WITH_INDEX," + j + ":";
+                //saveImageJson["inputs"]["seed"] = j;
+                saveImageJson["inputs"]["images"][0] = getImageJsonId;
+                let saveImageJsonId = (130000 + j).toString();
+                json[saveImageJsonId] = saveImageJson;
+            }
+            break;
+        }
+    }
+}
+
+
+Tool.isTweakJson = function (data) {
+    let json = JSON.parse(data);
+    //console.log(json);
+
+    if (json.parameters == undefined) {
+        return -1;
+    }
+
+    if (json.parameters.value == undefined) {
+        return -1;
+    }
+
+    let valueString = json.parameters.value;
+
+    if (valueString.indexOf("CUS_NOTES_SAVE_IMAGE_WITH_INDEX") == -1) {
+        return -1;
+    }
+
+    return 1;
+
+}
+
+Tool.getTweakJson = function (data) {
+    let json = JSON.parse(data);
+    let valueString = json.parameters.value;
+
+    let arr = valueString.split(":")[0];
+    let index = parseInt(arr.split(",")[1]);
+
+    console.log("getTweakJson:" + index);
+
+
+    let promptJson = JSON.parse(json.prompt.value);
+
+    let imgsaveIndex = promptJson["120000"]["inputs"]["images"][0];
+    console.log("imgsaveIndex:" + imgsaveIndex);
+
+    for (let i = 0; i < 4; i++) {
+        let id = (120000 + i).toString();
+        delete promptJson[id];
+
+        let id2 = (130000 + i).toString();
+        delete promptJson[id2];
+    }
+
+    let saveImageJson = {
+        "inputs": {
+            "filename": "%time_%seed",
+            "path": "",
+            "extension": "png",
+            "steps": 20,
+            "cfg": 8,
+            "modelname": "epicrealism_naturalSinRC1VAE.safetensors",
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "positive": "0",
+            "negative": "unknown",
+            "seed_value": 0,
+            "width": 513,
+            "height": 513,
+            "lossless_webp": true,
+            "quality_jpeg_or_webp": 100,
+            "counter": 0,
+            "time_format": "%Y-%m-%d-%H%M%S",
+            "images": [
+                "29",
+                0
+            ]
+        },
+        "class_type": "Save Image w/Metadata",
+        "_meta": {
+            "title": "Save Image w/Metadata"
+        }
+    }
+
+    saveImageJson["inputs"]["images"][0] = imgsaveIndex;
+    saveImageJson["inputs"]["positive"] = "CUS_NOTES_TWEAK_IMAGE";
+
+    promptJson["120000"] = saveImageJson;
+
+
+
+    let latentFromBatch = {
+        "inputs": {
+            "batch_index": 1,
+            "length": 1,
+            "samples": [
+                "5",
+                0
+            ]
+        },
+        "class_type": "LatentFromBatch",
+        "_meta": {
+            "title": "Latent From Batch"
+        }
+    }
+
+    let emptyLatentIndex = -1;
+    for (let i in promptJson) {
+        if (promptJson[i].class_type == "EmptyLatentImage") {
+            emptyLatentIndex = i;
+            break;
+        }
+    }
+
+    console.log("emptyLatentIndex:" + emptyLatentIndex);
+    if (emptyLatentIndex > 0) {
+        for (let i in promptJson) {
+            if (promptJson[i]["inputs"] != undefined
+                && promptJson[i]["inputs"]["latent_image"] != undefined
+                && promptJson[i]["inputs"]["latent_image"][0] == emptyLatentIndex) {
+
+                console.log("inputid:" + i);
+                promptJson["990000"] = latentFromBatch;
+                latentFromBatch["inputs"]["samples"][0] = emptyLatentIndex;
+                promptJson[i]["inputs"]["latent_image"][0] = "990000";
+                break;
+            }
+        }
+    }
+
+    return promptJson;
 }
 
 
