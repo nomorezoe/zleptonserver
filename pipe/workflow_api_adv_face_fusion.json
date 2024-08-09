@@ -1,0 +1,132 @@
+{
+  "1": {
+    "inputs": {
+      "save_mode": true,
+      "send_only": true,
+      "face_model_name": "test",
+      "compute_method": "Mean",
+      "images": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "ReActorBuildFaceModel",
+    "_meta": {
+      "title": "Build Blended Face Model 🌌 ReActor"
+    }
+  },
+  "1003": {
+    "inputs": {
+      "image": "20.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "1004": {
+    "inputs": {
+      "image": "12 (1).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "5": {
+    "inputs": {
+      "image1": [
+        "1003",
+        0
+      ],
+      "image2": [
+        "1004",
+        0
+      ],
+      "image3": [
+        "1005",
+        0
+      ],
+      "image4": [
+        "1006",
+        0
+      ]
+    },
+    "class_type": "ImpactMakeImageBatch",
+    "_meta": {
+      "title": "Make Image Batch"
+    }
+  },
+  "1005": {
+    "inputs": {
+      "image": "19.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "1006": {
+    "inputs": {
+      "image": "9.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "49": {
+    "inputs": {
+      "enabled": true,
+      "swap_model": "inswapper_128.onnx",
+      "facedetection": "retinaface_resnet50",
+      "face_restore_model": "GFPGANv1.4.pth",
+      "face_restore_visibility": 1,
+      "codeformer_weight": 0.5,
+      "detect_gender_input": "no",
+      "detect_gender_source": "no",
+      "input_faces_index": "0",
+      "source_faces_index": "0",
+      "console_log_level": 1,
+      "input_image": [
+        "51",
+        0
+      ],
+      "face_model": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ReActorFaceSwap",
+    "_meta": {
+      "title": "ReActor 🌌 Fast Face Swap"
+    }
+  },
+  "51": {
+    "inputs": {
+      "image": "rev_1_BARBIE_TP_0003_High_Res_JPEG.0.jpeg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "52": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "49",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

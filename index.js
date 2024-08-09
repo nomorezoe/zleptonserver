@@ -568,6 +568,51 @@ app.use('/get_desc', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 });
 
+
+app.use('/adv_tweak', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/adv_tweak', (req, res) => {
+
+    console.log("adv_tweak");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("adv_tweak", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
+app.use('/facefusion', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/facefusion', (req, res) => {
+
+    console.log("facefusion");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("facefusion", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
 app.use('/test', function (req, res, next) {
     //req.clearTimeout(); // clear request timeout
     req.setTimeout(300000); //set a 20s timeout for this request
@@ -640,16 +685,16 @@ app.use('/test_style', function (req, res, next) {
 }).get('/test_style', (req, res) => {
     console.log("test_style");
     // let filename = "./pipe/test_2person.json"
-    let filename = "./pipe/new_style_transfer_combine.json";
+    let filename = "./pipe/test_folder.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
 
     //prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    Tool.applyImage(prompt, "10", "sketch.png", null);
+    //Tool.applyImage(prompt, "10", "sketch.png", null);
 
-    Tool.applyImage(prompt, "17", "style_1.png", null);
-    Tool.applyImage(prompt, "18", "style_2.png", null);
+    //Tool.applyImage(prompt, "17", "style_1.png", null);
+    //Tool.applyImage(prompt, "18", "style_2.png", null);
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {

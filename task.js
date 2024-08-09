@@ -18,6 +18,8 @@ const TaskComfyScribbleEnhance8X = require("./task_comfy_scribble_enhance_8x");
 const TaskAdvanceStyleTransfer = require("./task_adv_style_transfer");
 const TaskComfyGetDescription = require("./task_comfy_get_description");
 const Tool = require("./tool");
+const PipeAdvanceTweak = require("./pipe_adv_tweak");
+const TaskComfyFaceFusion = require("./task_comfy_facefusion");
 
 
 function Task(type, index, req) {
@@ -90,6 +92,12 @@ Task.prototype = {
                 break;
             case "get_desc":
                 TaskComfyGetDescription(this, this.req, queue);
+                break;
+            case "adv_tweak":
+                PipeAdvanceTweak(this, this.req, queue);
+                break;
+            case "facefusion":
+                TaskComfyFaceFusion(this, this.req, queue);
                 break;
         }
     },
@@ -165,7 +173,13 @@ Task.prototype = {
             case "get_desc":
                 return 60;
                 break;
-    }
+            case "adv_tweak":
+                return 240;
+                break;
+            case "facefusion":
+                return 240;
+                break;
+        }
     },
 
     getDownloadDuration: function () {
@@ -218,6 +232,12 @@ Task.prototype = {
             case "get_desc":
                 return 20;
                 break;
+            case "adv_tweak":
+                return 240;
+                break;
+            case "facefusion":
+                return 240;
+                break;
         }
     },
 
@@ -255,23 +275,29 @@ Task.prototype = {
             else if (this.type == "styletransferrender") {
                 socket.emit("completeStyleTransferRender", this.imageFileNames.join(','));
             }
-            else if(this.type == "scribble"){
+            else if (this.type == "scribble") {
                 socket.emit("completeScribble", this.imageFileNames.join(','));
             }
-            else if(this.type == "rt_fast_upscale"){
+            else if (this.type == "rt_fast_upscale") {
                 socket.emit("completeRTFastUpscale", this.imageFileNames.join(','));
             }
-            else if(this.type == "rt_enhance"){
+            else if (this.type == "rt_enhance") {
                 socket.emit("completeRTEnhance", this.imageFileNames.join(','));
             }
-            else if(this.type == "rt_enhance_4x"){
+            else if (this.type == "rt_enhance_4x") {
                 socket.emit("completeRTEnhance4X", this.imageFileNames.join(','));
             }
-            else if(this.type == "rt_enhance_8x"){
+            else if (this.type == "rt_enhance_8x") {
                 socket.emit("completeRTEnhance8X", this.imageFileNames.join(','));
             }
-            else if(this.type == "get_desc"){
+            else if (this.type == "get_desc") {
                 socket.emit("completeGetDesc", this.imageFileNames.join(','));
+            }
+            else if (this.type == "adv_tweak") {
+                socket.emit("completeAdvTweak", this.imageFileNames.join(','));
+            }
+            else if (this.type == "facefusion") {
+                socket.emit("completeAdvFaceFusion", this.imageFileNames.join(','));
             }
         }
     },
