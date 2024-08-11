@@ -15,26 +15,6 @@
       "title": "Build Blended Face Model 🌌 ReActor"
     }
   },
-  "1003": {
-    "inputs": {
-      "image": "20.jpg",
-      "upload": "image"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
-  },
-  "1004": {
-    "inputs": {
-      "image": "12 (1).png",
-      "upload": "image"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
-  },
   "5": {
     "inputs": {
       "image1": [
@@ -59,6 +39,36 @@
       "title": "Make Image Batch"
     }
   },
+  "51": {
+    "inputs": {
+      "image": "rev_1_BARBIE_TP_0003_High_Res_JPEG.0.jpeg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "1003": {
+    "inputs": {
+      "image": "20.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "1004": {
+    "inputs": {
+      "image": "12 (1).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
   "1005": {
     "inputs": {
       "image": "19.jpg",
@@ -79,12 +89,92 @@
       "title": "Load Image"
     }
   },
-  "49": {
+  "1007": {
+    "inputs": {
+      "image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "ReActorUpdateCountFace",
+    "_meta": {
+      "title": "Extends ReActor Update CountFace"
+    }
+  },
+  "1008": {
+    "inputs": {
+      "dup_times": [
+        "1007",
+        0
+      ],
+      "images": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "ImageDuplicator",
+    "_meta": {
+      "title": "ImageDuplicator"
+    }
+  },
+  "1019": {
+    "inputs": {
+      "indexes": "0",
+      "images": [
+        "1008",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed",
+    "_meta": {
+      "title": "Get Images From Batch Indexed"
+    }
+  },
+  "1020": {
+    "inputs": {
+      "indexes": "1",
+      "images": [
+        "1008",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed",
+    "_meta": {
+      "title": "Get Images From Batch Indexed"
+    }
+  },
+  "1021": {
+    "inputs": {
+      "indexes": "2",
+      "images": [
+        "1008",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed",
+    "_meta": {
+      "title": "Get Images From Batch Indexed"
+    }
+  },
+  "1023": {
+    "inputs": {
+      "indexes": "3",
+      "images": [
+        "1008",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed",
+    "_meta": {
+      "title": "Get Images From Batch Indexed"
+    }
+  },
+  "1024": {
     "inputs": {
       "enabled": true,
       "swap_model": "inswapper_128.onnx",
       "facedetection": "retinaface_resnet50",
-      "face_restore_model": "GFPGANv1.4.pth",
+      "face_restore_model": "none",
       "face_restore_visibility": 1,
       "codeformer_weight": 0.5,
       "detect_gender_input": "no",
@@ -93,7 +183,7 @@
       "source_faces_index": "0",
       "console_log_level": 1,
       "input_image": [
-        "51",
+        "1019",
         0
       ],
       "face_model": [
@@ -106,21 +196,131 @@
       "title": "ReActor 🌌 Fast Face Swap"
     }
   },
-  "51": {
+  "1025": {
     "inputs": {
-      "image": "rev_1_BARBIE_TP_0003_High_Res_JPEG.0.jpeg",
-      "upload": "image"
+      "enabled": true,
+      "swap_model": "inswapper_128.onnx",
+      "facedetection": "retinaface_resnet50",
+      "face_restore_model": "none",
+      "face_restore_visibility": 1,
+      "codeformer_weight": 0.5,
+      "detect_gender_input": "no",
+      "detect_gender_source": "no",
+      "input_faces_index": "1",
+      "source_faces_index": "0",
+      "console_log_level": 1,
+      "input_image": [
+        "1020",
+        0
+      ],
+      "face_model": [
+        "1",
+        0
+      ]
     },
-    "class_type": "LoadImage",
+    "class_type": "ReActorFaceSwap",
     "_meta": {
-      "title": "Load Image"
+      "title": "ReActor 🌌 Fast Face Swap"
     }
   },
-  "52": {
+  "1026": {
+    "inputs": {
+      "enabled": true,
+      "swap_model": "inswapper_128.onnx",
+      "facedetection": "retinaface_resnet50",
+      "face_restore_model": "none",
+      "face_restore_visibility": 1,
+      "codeformer_weight": 0.5,
+      "detect_gender_input": "no",
+      "detect_gender_source": "no",
+      "input_faces_index": "2",
+      "source_faces_index": "0",
+      "console_log_level": 1,
+      "input_image": [
+        "1021",
+        0
+      ],
+      "face_model": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ReActorFaceSwap",
+    "_meta": {
+      "title": "ReActor 🌌 Fast Face Swap"
+    }
+  },
+  "1027": {
+    "inputs": {
+      "enabled": true,
+      "swap_model": "inswapper_128.onnx",
+      "facedetection": "retinaface_resnet50",
+      "face_restore_model": "none",
+      "face_restore_visibility": 1,
+      "codeformer_weight": 0.5,
+      "detect_gender_input": "no",
+      "detect_gender_source": "no",
+      "input_faces_index": "3",
+      "source_faces_index": "0",
+      "console_log_level": 1,
+      "input_image": [
+        "1023",
+        0
+      ],
+      "face_model": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ReActorFaceSwap",
+    "_meta": {
+      "title": "ReActor 🌌 Fast Face Swap"
+    }
+  },
+  "1028": {
     "inputs": {
       "filename_prefix": "ComfyUI",
       "images": [
-        "49",
+        "1024",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "1029": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "1025",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "1030": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "1026",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "1031": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "1027",
         0
       ]
     },
