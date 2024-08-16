@@ -320,10 +320,11 @@ app.use('/getmask', function (req, res, next) {
 
     var session = req.body.session;
     let queue = new Queue(session);
+    queue.setPriority(50);
     let task = new Task("mask", 0, req);
     queue.tasks.push(task);
 
-    QueueManager.instance.addMaskToQueue(queue);
+    QueueManager.instance.addNoRepeatToQueue(queue);
 
     res.json({
         success: true,
@@ -444,10 +445,11 @@ app.use('/scribble', function (req, res, next) {
 
     var session = req.body.session;
     let queue = new Queue(session);
+    queue.setPriority(100);
     let task = new Task("scribble", 0, req);
     queue.tasks.push(task);
 
-    QueueManager.instance.addScribbleToQueue(queue);
+    QueueManager.instance.addNoRepeatToQueue(queue);
 
     res.json({
         success: true,
@@ -619,13 +621,17 @@ app.use('/test', function (req, res, next) {
     next();
 }).get('/test', (req, res) => {
     // let filename = "./pipe/test_2person.json"
-    let filename = "./pipe/test_work_flow.json";
+    console.log("/test");
+    let filename = "./pipe/test-flux.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
 
+    //prompt["31"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
+
     // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    Tool.applyImage(prompt, "1", "test.jpg", null);
+    //Tool.applyImage(prompt, "37", "test.jpg", null);
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {
@@ -651,7 +657,7 @@ app.use('/test', function (req, res, next) {
 
             reshttps.on('data', (d) => {
                 datastring += d;
-                // console.log("ondata");
+                console.log("ondata");
             });
 
             reshttps.on('end', (d) => {
@@ -826,6 +832,7 @@ function startAutoRemoveFileProcess() {
 }
 
 function removeFile() {
+    return;
     console.log("removeFile");
     let d = Date.now() - 24 * 60 * 60 * 1000;
     let time = new Date(d);
