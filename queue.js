@@ -9,9 +9,18 @@ function Queue(sessionkey) {
     this.tasks = [];
     this.currentTask = null;
     this.id = uuidv4();
+    this.priority = -1;
 }
 
 Queue.prototype = {
+    setPriority: function (value){
+        this.priority = value;
+    },
+
+    getPriority : function(){
+        return this.priority;
+    },
+
     getType: function(){
         if(this.currentTask != null){
             return this.currentTask.type;
@@ -51,6 +60,7 @@ Queue.prototype = {
             console.log("remainTask" + this.tasks.length);
         }
         catch(e){
+            console.log("error:" + e);
             this.completeTaskFailed();
         }
        

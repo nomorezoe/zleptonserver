@@ -9,65 +9,40 @@ function QueueManager() {
     this.QUEUE_COUNT = 1;
 }
 
-
 QueueManager.prototype.addToQueue = function (queue) {
-    this.queues.push(queue);
+    if(queue.getPriority() <0){
+        this.queues.push(queue);
+    }
+    else{
+        let i = 0;
+        for (i = 0; i < this.queues.length; i++) {
+            console.log("i:" + i);
+            if (this.queues[i].getPriority() < queue.getPriority()) {
+                console.log("break;");
+                break;
+            }
+        }
+        console.log("insert:" + i);
+        this.queues.splice(i, 0, queue);
+    }
     console.log("add queue" + this.queues.length);
     this.sendQueueStatus();
 }
 
-QueueManager.prototype.addMaskToQueue = function (queue) {
+QueueManager.prototype.addNoRepeatToQueue = function (queue) {
 
     //remove curernt
-    for (let k = 0; k < this.queues.length; k++){
-        if(this.queues[k].key == queue.key){
-            if(this.queues[k].getType() == "mask"){
+    for (let k = 0; k < this.queues.length; k++) {
+        if (this.queues[k].key == queue.key) {
+            if (this.queues[k].getType() == queue.getType()) {
                 this.queues.splice(k, 1);
                 break;
             }
         }
     }
 
-    // add to queue
-    let i = 0; 
-    for (i = 0; i < this.queues.length; i++){
-        if(this.queues[i].tasks.length &&  this.queues[i].tasks[0].type != "mask"){
-            break;
-        }
-    }
-    this.queues.splice(i, 0, queue);
-
-    console.log("add queue" + this.queues.length);
-    
-    this.sendQueueStatus();
+    this.addToQueue(queue);
 }
-
-QueueManager.prototype.addScribbleToQueue = function (queue) {
-
-    //remove curernt
-    for (let k = 0; k < this.queues.length; k++){
-        if(this.queues[k].key == queue.key){
-            if(this.queues[k].getType() == "scribble"){
-                this.queues.splice(k, 1);
-                break;
-            }
-        }
-    }
-
-    // add to queue
-    let i = 0; 
-    for (i = 0; i < this.queues.length; i++){
-        if(this.queues[i].tasks.length &&  this.queues[i].tasks[0].type != "mask"){
-            break;
-        }
-    }
-    this.queues.splice(i, 0, queue);
-
-    console.log("add queue" + this.queues.length);
-    
-    this.sendQueueStatus();
-}
-
 
 
 QueueManager.prototype.getNextQueue = function () {
@@ -84,13 +59,13 @@ QueueManager.prototype.getNextQueue = function () {
 
     while (this.currentQueue.length < this.QUEUE_COUNT && seek < this.queues.length) {
         let q = this.queues[seek];
-        if(this.canStart(q)){
+        if (this.canStart(q)) {
             this.queues.splice(seek, 1);
             this.currentQueue.push(q);
             q.excuteQueue();
         }
-        else{
-            seek ++;
+        else {
+            seek++;
         }
     }
 
@@ -99,10 +74,10 @@ QueueManager.prototype.getNextQueue = function () {
 
 }
 
-QueueManager.prototype.canStart = function(queue){
-    for(let i = 0; i < this.currentQueue.length; i++){
-        if(queue.key == this.currentQueue[i].key){
-            if(this.formatType(queue.getType()) == this.formatType(this.currentQueue[i].getType())){
+QueueManager.prototype.canStart = function (queue) {
+    for (let i = 0; i < this.currentQueue.length; i++) {
+        if (queue.key == this.currentQueue[i].key) {
+            if (this.formatType(queue.getType()) == this.formatType(this.currentQueue[i].getType())) {
                 return false;
             }
         }
@@ -110,8 +85,8 @@ QueueManager.prototype.canStart = function(queue){
     return true;
 }
 
-QueueManager.prototype.formatType = function(type){
-    if(type == "styletransferrender"){
+QueueManager.prototype.formatType = function (type) {
+    if (type == "styletransferrender") {
         return "render";
     }
     return type;
@@ -147,7 +122,7 @@ QueueManager.prototype.sendQueueStatus = function () {
     }
 }
 
-QueueManager.prototype.remainQueueCount = function(){
+QueueManager.prototype.remainQueueCount = function () {
     return this.queues.length + this.currentQueue.length;
 }
 
