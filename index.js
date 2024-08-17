@@ -622,13 +622,13 @@ app.use('/test', function (req, res, next) {
 }).get('/test', (req, res) => {
     // let filename = "./pipe/test_2person.json"
     console.log("/test");
-    let filename = "./pipe/test-flux.json";
+    let filename = "./pipe/test-flux_2.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
 
-    //prompt["31"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["109"]["inputs"]["seed"] = Tool.randomInt();
+    //prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
 
     // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
     //Tool.applyImage(prompt, "37", "test.jpg", null);
@@ -832,7 +832,6 @@ function startAutoRemoveFileProcess() {
 }
 
 function removeFile() {
-    return;
     console.log("removeFile");
     let d = Date.now() - 24 * 60 * 60 * 1000;
     let time = new Date(d);
