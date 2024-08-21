@@ -6,6 +6,7 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 
+let BATCH_COUNT = 4;
 function TaskAdvanceStyleTransfer(task, req, queue) {
 
     console.log("TaskAdvanceStyleTransfer");
@@ -41,7 +42,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
             break;
         default:
             console.log("img2img" + req.body.is_links);
-            if (req.files["imageByteArray_0"] == undefined) {
+            if (req.files == undefined || req.files["imageByteArray_0"] == undefined) {
                 for (let i = 0; i < 5; i++) {
                     if (req.body["img_ref_" + i] != undefined
                         && req.body["img_ref_" + i] != null
@@ -97,12 +98,12 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         }
     }
 
-    
+
 
     //req.body.shapePrecision
     console.log("shapePrecision: " + req.body.shapePrecision);
     if (req.body.shapePrecision != undefined) {
-        
+
         let shapeV = parseFloat(req.body.shapePrecision);/// 100.0
         console.log("shapeV:" + shapeV);
         //default 
@@ -121,7 +122,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     //req.body.styleStrength
     console.log("styleStrength: " + req.body.styleStrength);
     if (req.body.styleStrength != undefined && prompt["28"] != undefined) {
-        
+
         let styleV = parseFloat(req.body.styleStrength);/// 100.0
         console.log("styleV:" + styleV);
         if (styleV >= 0.5) {
@@ -259,10 +260,23 @@ function sketchToPhoto(task, req, queue) {
     }
     console.log("edgeDetection:" + prompt["17"]["inputs"]["strength"]);
 
-    prompt["3"]["inputs"]["seed"] = Tool.randomInt();
+    //prompt["3"]["inputs"]["seed"] = Tool.randomInt();
 
     task.pipeline = "sketch_to_photo";
+
+    //non batch
+
+    prompt["3"]["inputs"]["seed"] = Tool.randomInt();
     sendRequest(prompt, queue, task);
+    return;
+
+
+    //batch
+    prompt["5"]["inputs"]["batch_size"] = 1;
+    for (let i = 0; i < BATCH_COUNT; i++) {
+        prompt["3"]["inputs"]["seed"] = Tool.randomInt();
+        sendRequest(prompt, queue, task, true);
+    }
 }
 
 function sendRequest(promptjson, queue, task, isBatched = false) {
@@ -289,7 +303,16 @@ function sendRequest(promptjson, queue, task, isBatched = false) {
 
         if (reshttps.statusCode == 200) {
 
-            queue.completeTask();
+            if (isBatched) {
+                task.requestCompletedCount++;
+                if (task.requestCompletedCount == BATCH_COUNT) {
+                    queue.completeTask();
+                }
+            }
+            else {
+                queue.completeTask();
+            }
+
             console.log("200");
             reshttps.on('data', (d) => {
                 datastring += d;
@@ -308,7 +331,16 @@ function sendRequest(promptjson, queue, task, isBatched = false) {
                         encoding: "base64",
                     });
                 }
-                task.sendCompleteTaskSuccess();
+                if (isBatched) {
+                    task.dataCompletedCount++;
+                    if (task.dataCompletedCount == BATCH_COUNT) {
+                        task.sendCompleteTaskSuccess();
+                    }
+                }
+                else {
+                    task.sendCompleteTaskSuccess();
+                }
+
             });
         }
         else {
