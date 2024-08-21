@@ -40,7 +40,7 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
             delete prompt["26"];
             break;
         default:
-            console.log("img2img" + req.body.is_links );
+            console.log("img2img" + req.body.is_links);
             if (req.files["imageByteArray_0"] == undefined) {
                 for (let i = 0; i < 5; i++) {
                     if (req.body["img_ref_" + i] != undefined
@@ -83,22 +83,72 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
         prompt["10"]["inputs"]["image"] = imgData;
     }
 
+    console.log("prompt: " + req.body.prompt);
+    if (req.body.prompt != "undefined" && req.body.prompt != undefined && req.body.prompt != "") {
+        prompt["6"]["inputs"]["text"] = req.body.prompt;
+    }
+
+
     console.log("req.body.is_superstyle" + req.body.is_superstyle);
-    if (prompt["28"] != undefined) {
+    if (prompt["28"] != undefined && req.body.is_superstyle != undefined) {
         if (parseInt(req.body.is_superstyle) == 1) {
             console.log("is_superstyle");
             prompt["28"]["inputs"]["weight_type"] = "strong style transfer";
         }
     }
 
-    console.log("prompt: " + req.body.prompt);
+    
 
-    if (req.body.prompt != "undefined" && req.body.prompt != undefined && req.body.prompt != "") {
-        prompt["6"]["inputs"]["text"] = req.body.prompt;
+    //req.body.shapePrecision
+    console.log("shapePrecision: " + req.body.shapePrecision);
+    if (req.body.shapePrecision != undefined) {
+        
+        let shapeV = parseFloat(req.body.shapePrecision);/// 100.0
+        console.log("shapeV:" + shapeV);
+        //default 
+        if (shapeV >= 0.5) {
+            prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.6;
+            prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.6;
+        }
+        else {
+            prompt["21"]["inputs"]["strength"] = 0.6 + (shapeV - 0.5) * 0.2;
+            prompt["21"]["inputs"]["end_percent"] = 0.6 + (shapeV - 0.5) * 0.2;
+        }
+
+        console.log("shapeV: " + prompt["21"]["inputs"]["strength"]);
     }
 
-    console.log("sketchDetail: " + req.body.sketchDetail);
-    console.log("edgeDetection: " + req.body.edgeDetection);
+    //req.body.styleStrength
+    console.log("styleStrength: " + req.body.styleStrength);
+    if (req.body.styleStrength != undefined && prompt["28"] != undefined) {
+        
+        let styleV = parseFloat(req.body.styleStrength);/// 100.0
+        console.log("styleV:" + styleV);
+        if (styleV >= 0.5) {
+            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.2;
+        }
+        else {
+            prompt["28"]["inputs"]["weight"] = 0.9 + (styleV - 0.5) * 0.6;
+        }
+
+        console.log("styleV: " + prompt["28"]["inputs"]["weight"]);
+    }
+
+    //req.body.originalClarity
+    console.log("originalClarity: " + req.body.originalClarity);
+    if (req.body.originalClarity != undefined) {
+        let clarityV = parseFloat(req.body.originalClarity);/// 100.0
+        console.log("clarityV:" + clarityV);
+
+        if (clarityV >= 0.5) {
+            prompt["3"]["inputs"]["denoise"] = 0.9 + (clarityV - 0.5) * 0.2;
+        }
+        else {
+            prompt["3"]["inputs"]["denoise"] = 0.9 + (clarityV - 0.5) * 1.0;
+        }
+        console.log("clarityV: " + prompt["3"]["inputs"]["denoise"]);
+    }
+
 
     prompt["3"]["inputs"]["seed"] = Tool.randomInt();
 
@@ -215,10 +265,7 @@ function sketchToPhoto(task, req, queue) {
     sendRequest(prompt, queue, task);
 }
 
-
-
-
-function sendRequest(promptjson, queue, task) {
+function sendRequest(promptjson, queue, task, isBatched = false) {
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
 
