@@ -21,6 +21,10 @@ function TaskComfyGetDescription(task, req, queue) {
     //Tool.applyImage(prompt, "2", "0e936581-ca95-4ea3-b935-ffe2dbe77604_adv_style.png", null);
     Tool.applyImage(prompt, "11", "dot.png", null, "/save/");
 
+    if(req.body.type != undefined){
+        console.log("type:" + req.body.type);
+    }
+
     if (req.body.url != undefined) {
         Tool.applyImage(prompt, "2", null, req.body.url);
     }
@@ -32,10 +36,10 @@ function TaskComfyGetDescription(task, req, queue) {
     }
 
     task.pipeline = "get_desc";
-    sendRequest(prompt, queue, task);
+    sendRequest(prompt, queue, task, req.body.type);
 }
 
-function sendRequest(promptjson, queue, task) {
+function sendRequest(promptjson, queue, task, type) {
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
 
@@ -74,6 +78,11 @@ function sendRequest(promptjson, queue, task) {
                     var tags = ExifReader.load(Buffer.from(jsonobj[i], "base64"));
                     let desc = tags.parameters.value.split("Negative prompt")[0];
                     desc = desc.split("\n")[0];
+                   
+                    if(type == "sketch2photo"){
+                        desc = "Cinematic photo of " + desc;
+                    }
+
                     console.log("desc:" + desc);
                     task.imageFileNames.push(desc);
                 }
