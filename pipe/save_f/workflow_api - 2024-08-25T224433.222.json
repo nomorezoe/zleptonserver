@@ -1,7 +1,7 @@
 {
   "86": {
     "inputs": {
-      "seed": 388622727049278,
+      "seed": 6914456635333897,
       "steps": 25,
       "cfg": 3.5,
       "sampler_name": "dpmpp_2m",
@@ -31,7 +31,7 @@
   },
   "87": {
     "inputs": {
-      "text": "happy smiling face",
+      "text": "",
       "clip": [
         "148",
         0
@@ -60,7 +60,7 @@
   },
   "90": {
     "inputs": {
-      "filename_prefix": "ComfyUI",
+      "filename_prefix": "50d90930-5c55-4943-8f29-7edb91445f23",
       "images": [
         "159",
         0
@@ -358,12 +358,13 @@
   },
   "198": {
     "inputs": {
-      "image": "clipspace/clipspace-mask-1445456.1000000238.png [input]",
-      "upload": "image"
+      "url": "https://rendermind.storyboards.com/images/rendermindjobs?path=%2Fh_drive%2FRendermindJobs%2F50%2Fshooting_board_218%2F1677%2F10%2F3.png",
+      "keep_alpha_channel": false,
+      "output_mode": false
     },
-    "class_type": "LoadImage",
+    "class_type": "LoadImageFromUrl",
     "_meta": {
-      "title": "Load Image"
+      "title": "Load Image From URL"
     }
   },
   "199": {
@@ -413,7 +414,7 @@
   },
   "202": {
     "inputs": {
-      "a": 6.283185307179586,
+      "a": 6.28,
       "bg_threshold": 0.1,
       "resolution": 512,
       "image": [
@@ -523,7 +524,7 @@
   },
   "218": {
     "inputs": {
-      "image": "mask (1).png",
+      "image": "1246da4538664c21bbd1f4d8d3f79dd0",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -547,8 +548,8 @@
   "220": {
     "inputs": {
       "upscale_method": "nearest-exact",
-      "width": 1024,
-      "height": 576,
+      "width": 1152,
+      "height": 896,
       "crop": "disabled",
       "image": [
         "218",
