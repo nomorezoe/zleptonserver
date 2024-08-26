@@ -547,6 +547,28 @@ app.use('/rt_enhance_8x', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 });
 
+app.use('/sp_enhance', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/sp_enhance', (req, res) => {
+
+    console.log("sp_enhance");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("sp_enhance", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+});
+
 
 app.use('/get_desc', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
@@ -622,16 +644,21 @@ app.use('/test', function (req, res, next) {
 }).get('/test', (req, res) => {
     // let filename = "./pipe/test_2person.json"
     console.log("/test");
-    let filename = "./pipe/test-flux_2.json";
+    let filename = "./pipe/flux_v11_inpaint.json";
 
     const promptFile = fs.readFileSync(filename);//');
     let prompt = JSON.parse(promptFile);
 
-    prompt["109"]["inputs"]["seed"] = Tool.randomInt();
-    //prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
+     //prompt["109"]["inputs"]["seed"] = Tool.randomInt();
+     //prompt["145"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["1484"]["inputs"]["noise_seed"] = Tool.randomInt();
 
     // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    //Tool.applyImage(prompt, "37", "test.jpg", null);
+    Tool.applyImage(prompt, "1495", "d06c0deb-6cd2-41d5-aa6f-41c0c655e311_inpaint.png", null);
+    Tool.applyImage(prompt, "1499", "092e58d4-cafa-47da-a5cf-2e47a0bd99fcmask.png", null);
+    
+    //prompt["138"]["inputs"]["Text"] = "a lady on the street in New York City";
+
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": prompt }));
     const options = {
@@ -664,7 +691,7 @@ app.use('/test', function (req, res, next) {
                 console.error("end");
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
-                    var imgname = uuidv4() + ".png";
+                    var imgname = uuidv4() + "canny.png";
                     // task.imageFileNames.push(imgname);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + imgname, jsonobj[i], {
                         encoding: "base64",
@@ -801,11 +828,11 @@ app.use('/test_adv', function (req, res, next) {
                 console.error("end");
                 const jsonobj = JSON.parse(datastring);
                 for (var i = 0; i < jsonobj.length; i++) {
-                    
+
                     var tags = ExifReader.load(Buffer.from(jsonobj[i], "base64"));
                     let desc = tags.parameters.value.split("Negative prompt")[0];
                     desc = desc.split("\n")[0];
-                    console.log("desc:"  + desc);
+                    console.log("desc:" + desc);
                     task.imageFileNames.push(desc);
                 }
 

@@ -15,7 +15,7 @@ const TaskComfyScribbleFastUpscale = require("./task_comfy_scribble_fast_upscale
 const TaskComfyScribbleEnhance = require("./task_comfy_scribble_enhance");
 const TaskComfyScribbleEnhance4X = require("./task_comfy_scribble_enhance_4x");
 const TaskComfyScribbleEnhance8X = require("./task_comfy_scribble_enhance_8x");
-const TaskAdvanceStyleTransfer = require("./task_adv_style_transfer");
+const TaskAdvanceStyleTransfer = require("./task_adv_style_transfer_batched");
 const TaskComfyGetDescription = require("./task_comfy_get_description");
 const Tool = require("./tool");
 const PipeAdvanceTweak = require("./pipe_adv_tweak");
@@ -30,6 +30,8 @@ function Task(type, index, req) {
     this.imageFileNames = [];
     this.timer = 0;
     this.pipeline = "";
+    this.requestCompletedCount = 0;
+    this.dataCompletedCount = 0;
 }
 
 Task.prototype = {
@@ -79,6 +81,7 @@ Task.prototype = {
                 TaskComfyScribbleFastUpscale(this, this.req, queue);
                 break;
             case "rt_enhance":
+            case "sp_enhance":
                 TaskComfyScribbleEnhance(this, this.req, queue);
                 break;
             case "rt_enhance_4x":
@@ -159,6 +162,7 @@ Task.prototype = {
                 return 20;
                 break;
             case "rt_enhance":
+            case "sp_enhance":
                 return 20;
                 break;
             case "rt_enhance_4x":
@@ -218,6 +222,7 @@ Task.prototype = {
                 return 60;
                 break;
             case "rt_enhance":
+            case "sp_enhance":
                 return 60;
                 break;
             case "rt_enhance_4x":
@@ -298,6 +303,9 @@ Task.prototype = {
             }
             else if (this.type == "facefusion") {
                 socket.emit("completeAdvFaceFusion", this.imageFileNames.join(','));
+            }
+            else if (this.type == "sp_enhance") {
+                socket.emit("completeSPEnhance", this.imageFileNames.join(','));
             }
         }
     },
