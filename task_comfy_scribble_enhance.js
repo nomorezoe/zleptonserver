@@ -35,7 +35,13 @@ function TaskComfyScribbleEnhance(task, req, queue) {
     prompt["25"]["inputs"]["seed"] = Tool.randomInt();
     prompt["40"]["inputs"]["seed"] = Tool.randomInt();
 
-    task.pipeline = "scribble_enhance";
+    if (task.type == "sp_enhance") {
+        task.pipeline = task.type;
+    }
+    else {
+        task.pipeline = "scribble_enhance";
+    }
+
     //
     Tool.applyRandomFileName(prompt);
     sendRequest(prompt, queue, task);
