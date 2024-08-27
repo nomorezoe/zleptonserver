@@ -20,6 +20,7 @@ function FluxPipeStageRender(task, req, queue) {
 
     prompt["229"]["inputs"]["clip_l"] =  prompt["229"]["inputs"]["t5xxl"] = text;
     prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
+    //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     prompt["37"]["inputs"]["image"] = imgData;
 
     task.pipeline = "flux_stage_render";
