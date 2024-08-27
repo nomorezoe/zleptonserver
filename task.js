@@ -20,6 +20,8 @@ const TaskComfyGetDescription = require("./task_comfy_get_description");
 const Tool = require("./tool");
 const PipeAdvanceTweak = require("./pipe_adv_tweak");
 const TaskComfyFaceFusion = require("./task_comfy_facefusion");
+const FluxPipeTextToImage = require('./flux_pipe_text_to_image');
+const FluxPipeStageRender = require("./flux_pipe_stage_render");
 
 
 function Task(type, index, req) {
@@ -43,8 +45,15 @@ Task.prototype = {
         switch (this.type) {
             case "render":
                 //TaskRender(this, this.req, queue);
-                this.pipeline = "render_normal";
-                TaskComfyRender(this, this.req, queue);
+
+                if (this.req.body.rd_style == "flux") {
+                    this.pipeline = "render_flux";
+                    FluxPipeStageRender(this, this.req, queue);
+                }
+                else {
+                    this.pipeline = "render_normal";
+                    TaskComfyRender(this, this.req, queue);
+                }
                 break;
             case "upscale":
                 this.pipeline = "upscale_normal";
@@ -101,6 +110,9 @@ Task.prototype = {
                 break;
             case "facefusion":
                 TaskComfyFaceFusion(this, this.req, queue);
+                break;
+            case "ad_txttoimg":
+                FluxPipeTextToImage(this, this.req, queue);
                 break;
         }
     },
@@ -183,6 +195,9 @@ Task.prototype = {
             case "facefusion":
                 return 240;
                 break;
+            case "ad_txttoimg":
+                return 240;
+                break;
         }
     },
 
@@ -241,6 +256,9 @@ Task.prototype = {
                 return 240;
                 break;
             case "facefusion":
+                return 240;
+                break;
+            case "ad_txttoimg":
                 return 240;
                 break;
         }
@@ -306,6 +324,9 @@ Task.prototype = {
             }
             else if (this.type == "sp_enhance") {
                 socket.emit("completeSPEnhance", this.imageFileNames.join(','));
+            }
+            else if (this.type == "ad_txttoimg") {
+                socket.emit("completeTxtToImg", this.imageFileNames.join(','));
             }
         }
     },

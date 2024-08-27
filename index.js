@@ -654,8 +654,8 @@ app.use('/test', function (req, res, next) {
     prompt["1484"]["inputs"]["noise_seed"] = Tool.randomInt();
 
     // prompt["55"]["inputs"]["text_positive"] = "A man is walking with a cat.";
-    Tool.applyImage(prompt, "1495", "d06c0deb-6cd2-41d5-aa6f-41c0c655e311_inpaint.png", null);
-    Tool.applyImage(prompt, "1499", "092e58d4-cafa-47da-a5cf-2e47a0bd99fcmask.png", null);
+    Tool.applyImage(prompt, "1495", "4605ee5f-5364-4f86-8bd7-908052e4a793_inpaint.png", null);
+    Tool.applyImage(prompt, "1499", "a087fcb7-9d8f-450d-ad34-9caf9c8d3037mask.png", null);
     
     //prompt["138"]["inputs"]["Text"] = "a lady on the street in New York City";
 
@@ -780,6 +780,27 @@ app.use('/test_style', function (req, res, next) {
     reqhttps.end();
 })
 
+app.use('/ad_txttoimg', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/ad_txttoimg', (req, res) => {
+    console.log("ad_txttoimg");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("ad_txttoimg", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+
 
 app.use('/test_adv', function (req, res, next) {
     //req.clearTimeout(); // clear request timeout
@@ -859,6 +880,7 @@ function startAutoRemoveFileProcess() {
 }
 
 function removeFile() {
+    //return;
     console.log("removeFile");
     let d = Date.now() - 24 * 60 * 60 * 1000;
     let time = new Date(d);
