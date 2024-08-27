@@ -19,7 +19,7 @@
         "221",
         1
       ],
-      "batch_size": 1
+      "batch_size": 4
     },
     "class_type": "EmptySD3LatentImage",
     "_meta": {
