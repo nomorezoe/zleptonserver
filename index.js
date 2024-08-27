@@ -880,7 +880,7 @@ function startAutoRemoveFileProcess() {
 }
 
 function removeFile() {
-    //return;
+    return;
     console.log("removeFile");
     let d = Date.now() - 24 * 60 * 60 * 1000;
     let time = new Date(d);
