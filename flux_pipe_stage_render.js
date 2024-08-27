@@ -65,7 +65,7 @@ function sendRequest(promptjson, queue, task) {
                 console.log("onend_flux_stage_render: " + task.key + " , time: ");
                 for (var i = 0; i < jsonobj.length; i++) {
 
-                    var styleImageName = uuidv4() + "_flux_stage_render";
+                    var styleImageName = uuidv4() + "_flux_stage_render.png";
                     console.log("flux_stage_render:" + styleImageName);
                     task.imageFileNames.push(styleImageName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + styleImageName, jsonobj[i], {
