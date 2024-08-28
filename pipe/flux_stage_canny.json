@@ -150,7 +150,7 @@
   "227": {
     "inputs": {
       "model_name": "flux-dev",
-      "controlnet_path": "../../controlnet/flux-depth-controlnet_v2.safetensors"
+      "controlnet_path": "../../controlnet/flux-canny-controlnet_v2.safetensors"
     },
     "class_type": "LoadFluxControlNet",
     "_meta": {

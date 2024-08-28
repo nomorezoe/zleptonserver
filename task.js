@@ -50,6 +50,10 @@ Task.prototype = {
                     this.pipeline = "render_flux";
                     FluxPipeStageRender(this, this.req, queue);
                 }
+                else if (this.req.body.rd_style == "flux_txt"){
+                    this.pipeline = "flux_text_to_image";
+                    FluxPipeTextToImage(this, this.req, queue);
+                }
                 else {
                     this.pipeline = "render_normal";
                     TaskComfyRender(this, this.req, queue);
