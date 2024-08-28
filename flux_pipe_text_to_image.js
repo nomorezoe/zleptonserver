@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 
 function FluxPipeTextToImage(task, req, queue) {
-
+    console.log("FluxPipeTextToImage");
     var session = req.body.session;
     var text = req.body.prompt;
 
