@@ -89,8 +89,8 @@
     "inputs": {
       "noise_seed": 0,
       "steps": 25,
-      "timestep_to_start_cfg": 3.5,
-      "true_gs": 8,
+      "timestep_to_start_cfg": 1,
+      "true_gs": 3.5,
       "image_to_image_strength": 0,
       "model": [
         "161",
@@ -150,7 +150,7 @@
   "227": {
     "inputs": {
       "model_name": "flux-dev",
-      "controlnet_path": "../../controlnet/flux-depth-controlnet_v2.safetensors"
+      "controlnet_path": "../../controlnet/flux-depth-controlnet-v3.safetensors"
     },
     "class_type": "LoadFluxControlNet",
     "_meta": {
