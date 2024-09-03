@@ -61,6 +61,9 @@ function TaskComfyScribble(task, req, queue) {
         prompt["65"]["inputs"]["text_positive"] = req.body.prompt;
         console.log("prompt" + req.body.prompt);
     }
+    else{
+        console.log("no prompt");
+    }
 
     if (req.body.style) {
         prompt["65"]["inputs"]["style"] = getStyle(req.body.style);

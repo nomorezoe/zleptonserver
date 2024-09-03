@@ -107,4 +107,23 @@ PipeAdvancePhotoRealism.process = function (imgData, positivePrompt, negtiveProm
     return prompt;
 }
 
+PipeAdvancePhotoRealism.quickProcess = function (posprompt, imgurl, imgData) {
+    console.log("PipeAdvancePhotoRealism.quickProcess");
+    let promptFile;
+    promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo.json');//');
+    let prompt = JSON.parse(promptFile);
+    if (imgData != null) {
+        prompt["1"]["inputs"]["image"] = imgData;
+    }
+    else {
+        Tool.applyImage(prompt, "1", null, imgurl);
+    }
+
+    prompt["55"]["inputs"]["text_positive"] = posprompt;
+    prompt["192"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["193"]["inputs"]["noise_seed"] = Tool.randomInt();
+
+    return prompt;
+}
+
 module.exports = PipeAdvancePhotoRealism;

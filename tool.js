@@ -104,6 +104,16 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSte
         }
     }
 
+    return rdStyle;
+}
+
+Tool.getQuickRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSteps, scheduler, cfg, depthStrength, poseStrength) {
+    for (let i = 0; i < Tool.rdStyleJson.length; i++) {
+        if (Tool.rdStyleJson[i].id == rdStyle) {
+            return Tool.rdStyleJson[i].pipe;
+        }
+    }
+
     return null;
 }
 
@@ -293,11 +303,13 @@ Tool.checkIsSamePipeLine = function (prompt, refFile) {
 Tool.ApplyFaceParams = function (promptjson, faceParams) {
     if (faceParams) {
         promptjson["220"]["inputs"]["seed"] = Tool.randomInt();
+        /*
         promptjson["220"]["inputs"]["denoise"] = faceParams.face_denoise;
         promptjson["220"]["inputs"]["cfg"] = faceParams.face_cfg;
         promptjson["220"]["inputs"]["steps"] = faceParams.face_samplingsteps;
         promptjson["220"]["inputs"]["sampler_name"] = faceParams.face_sampler;
         promptjson["220"]["inputs"]["scheduler"] = faceParams.face_scheduler;
+        */
     }
 }
 
@@ -728,6 +740,16 @@ Tool.isTweakJson = function (data) {
 
     return 1;
 
+}
+
+Tool.getPromptTweakJson = function (promptJson, num = 1) {
+   
+    for (let i in promptJson) {
+        if (promptJson[i]["class_type"] == "CLIPTextEncode") {
+            promptJson[i]["inputs"]["text"] = promptJson[i]["inputs"]["text"] + "," + num;
+        }
+    }
+    return promptJson;
 }
 
 Tool.getTweakJson = function (data) {

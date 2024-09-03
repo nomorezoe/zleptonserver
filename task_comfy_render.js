@@ -304,7 +304,7 @@ function sendRequest(prompt, queue, task) {
 
             reshttps.on('data', (d) => {
                 datastring += d;
-                // console.log("ondata");
+                console.log("ondata");
             });
 
             reshttps.on('end', (d) => {

@@ -6,6 +6,7 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 const FluxPipeStageRender = require('./flux_pipe_stage_render');
+const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism')
 
 let BATCH_COUNT = 4;
 function TaskAdvanceStyleTransfer(task, req, queue) {
@@ -298,9 +299,13 @@ function sketchToStyle(task, req, queue) {
 
     let posPrompt = req.body.prompt;
     let promptjson;
-    switch (req.body.style) {
+    let style = Tool.getQuickRenderStyle(req.body.style);
+    switch (style) {
         case ("flux"):
             promptjson = FluxPipeStageRender.quickProcess(posPrompt, imgurl, imgData);
+            break;
+        case ("adv_photo_realism"):
+            promptjson = PipeAdvancePhotoRealism.quickProcess(posPrompt, imgurl, imgData);
             break;
     }
 

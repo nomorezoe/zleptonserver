@@ -28,6 +28,7 @@ function FluxPipeStageRender(task, req, queue) {
 }
 
 FluxPipeStageRender.quickProcess = function (posprompt, imgurl ,imgData) {
+    console.log("FluxPipeStageRender.quickProcess");
     const promptFile = fs.readFileSync('./pipe/flux_stage_canny.json');//');
     let prompt = JSON.parse(promptFile);
     if(imgData != null){

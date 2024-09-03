@@ -5,6 +5,8 @@ const OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
+//const faceapi = require("./tools/face-api");
+
 
 function TaskComfyFaceFusion(task, req, queue) {
     let promptFile = fs.readFileSync('./pipe/workflow_api_adv_face_fusion.json');
@@ -17,6 +19,8 @@ function TaskComfyFaceFusion(task, req, queue) {
             var rawImg = req.files["imageByteArray_" + i].data;
             imgData = Buffer.from(rawImg).toString('base64');
             prompt[(1003 + i).toString()]["inputs"]["image"] = imgData;
+
+            
         }
         else {
             delete prompt[(1003 + i).toString()];

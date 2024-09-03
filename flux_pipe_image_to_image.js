@@ -18,7 +18,7 @@ function FluxPipeImageToImage(task, req, queue) {
     const promptFile = fs.readFileSync('./pipe/flux_img_2_img.json');//');
     let prompt = JSON.parse(promptFile);
 
-    prompt["229"]["inputs"]["clip_l"] =  prompt["229"]["inputs"]["t5xxl"] = text;
+    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = text;
     prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     prompt["37"]["inputs"]["image"] = imgData;
@@ -62,11 +62,11 @@ function sendRequest(promptjson, queue, task) {
 
             reshttps.on('end', (d) => {
                 let jsonobj = JSON.parse(datastring);
-                console.log("onend_flux_stage_render: " + task.key + " , time: ");
+                console.log("onend_flux_img_2_img: " + task.key + " , time: ");
                 for (var i = 0; i < jsonobj.length; i++) {
 
-                    var styleImageName = uuidv4() + "_flux_stage_render.png";
-                    console.log("flux_stage_render:" + styleImageName);
+                    var styleImageName = uuidv4() + "_flux_img_2_img.png";
+                    console.log("flux_img_2_img:" + styleImageName);
                     task.imageFileNames.push(styleImageName);
                     fs.writeFileSync(__dirname + OUTPUT_FOLDER + styleImageName, jsonobj[i], {
                         encoding: "base64",
