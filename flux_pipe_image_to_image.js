@@ -6,8 +6,8 @@ const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
 
-function FluxPipeStageRender(task, req, queue) {
-    console.log("FluxPipeStageRender");
+function FluxPipeImageToImage(task, req, queue) {
+    console.log("FluxPipeImageToImage");
 
     var session = req.body.session;
     var text = req.body.prompt;
@@ -15,7 +15,7 @@ function FluxPipeStageRender(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-    const promptFile = fs.readFileSync('./pipe/flux_stage_canny.json');//');
+    const promptFile = fs.readFileSync('./pipe/flux_img_2_img.json');//');
     let prompt = JSON.parse(promptFile);
 
     prompt["229"]["inputs"]["clip_l"] =  prompt["229"]["inputs"]["t5xxl"] = text;
@@ -23,24 +23,8 @@ function FluxPipeStageRender(task, req, queue) {
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     prompt["37"]["inputs"]["image"] = imgData;
 
-    task.pipeline = "flux_stage_render";
+    task.pipeline = "flux_image_2_image";
     sendRequest(prompt, queue, task);
-}
-
-FluxPipeStageRender.quickProcess = function (posprompt, imgurl ,imgData) {
-    const promptFile = fs.readFileSync('./pipe/flux_stage_canny.json');//');
-    let prompt = JSON.parse(promptFile);
-    if(imgData != null){
-        prompt["37"]["inputs"]["image"] = imgData;
-    }
-    else{
-        Tool.applyImage(prompt, "37", null, imgurl);
-    }
-   
-    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = posprompt;
-    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
-
-    return prompt;
 }
 
 
@@ -106,4 +90,4 @@ function sendRequest(promptjson, queue, task) {
     reqhttps.end();
 }
 
-module.exports = FluxPipeStageRender;
+module.exports = FluxPipeImageToImage;

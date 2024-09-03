@@ -5,6 +5,7 @@ const OUTPUT_FOLDER = "/imgs/";
 const Tool = require('./tool');
 const { v4: uuidv4 } = require('uuid');
 const { json } = require('body-parser');
+const FluxPipeStageRender = require('./flux_pipe_stage_render');
 
 let BATCH_COUNT = 4;
 function TaskAdvanceStyleTransfer(task, req, queue) {
@@ -13,6 +14,11 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
 
     var session = req.body.session;
     var type = req.body.type;
+
+    if (req.body.style != undefined) {
+        sketchToStyle(task, req, queue);
+        return;
+    }
 
     if (type == "sketch2photo") {
         sketchToPhoto(task, req, queue);
@@ -277,6 +283,28 @@ function sketchToPhoto(task, req, queue) {
         prompt["3"]["inputs"]["seed"] = Tool.randomInt();
         sendRequest(prompt, queue, task, true);
     }
+}
+
+function sketchToStyle(task, req, queue) {
+    let imgurl;
+    let imgData;
+    if (req.body.url != undefined) {
+        imgurl = req.body.url;
+    }
+    else {
+        var rawImg = req.files.imageByteArray.data;
+        imgData = Buffer.from(rawImg).toString('base64');
+    }
+
+    let posPrompt = req.body.prompt;
+    let promptjson;
+    switch (req.body.style) {
+        case ("flux"):
+            promptjson = FluxPipeStageRender.quickProcess(posPrompt, imgurl, imgData);
+            break;
+    }
+
+    sendRequest(promptjson, queue, task);
 }
 
 function sendRequest(promptjson, queue, task, isBatched = false) {

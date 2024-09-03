@@ -637,6 +637,70 @@ app.use('/facefusion', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 });
 
+app.use('/ad_txttoimg', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/ad_txttoimg', (req, res) => {
+    console.log("ad_txttoimg");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("ad_txttoimg", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+
+app.use('/ad_imgtoimg', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/ad_imgtoimg', (req, res) => {
+    console.log("ad_imgtoimg");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("ad_imgtoimg", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+
+app.use('/ad_img_enhance', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/ad_img_enhance', (req, res) => {
+    console.log("ad_img_enhance");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("ad_img_enhance", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+
+
 app.use('/test', function (req, res, next) {
     //req.clearTimeout(); // clear request timeout
     req.setTimeout(300000); //set a 20s timeout for this request
@@ -780,26 +844,7 @@ app.use('/test_style', function (req, res, next) {
     reqhttps.end();
 })
 
-app.use('/ad_txttoimg', function (req, res, next) {
-    req.setTimeout(300000); //set a 20s timeout for this request
-    next();
-}).post('/ad_txttoimg', (req, res) => {
-    console.log("ad_txttoimg");
 
-    var session = req.body.session;
-    let queue = new Queue(session);
-    let task = new Task("ad_txttoimg", 0, req);
-    queue.tasks.push(task);
-
-    QueueManager.instance.addToQueue(queue);
-
-    res.json({
-        success: true,
-        queue_count: QueueManager.instance.remainQueueCount()
-    });
-
-    QueueManager.instance.getNextQueue();
-})
 
 
 app.use('/test_adv', function (req, res, next) {
