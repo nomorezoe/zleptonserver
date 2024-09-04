@@ -119,6 +119,7 @@ PipeAdvancePhotoRealism.quickProcess = function (positivePrompt, imgurl, imgData
         Tool.applyImage(prompt, "1", null, imgurl);
     }
 
+    positivePrompt = "Cinematic Hollywood Film, photo in phst artstyle, " + positivePrompt;
 
     let steps = 21;
     let cfg = 5;
