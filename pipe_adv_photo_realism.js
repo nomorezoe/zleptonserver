@@ -107,7 +107,7 @@ PipeAdvancePhotoRealism.process = function (imgData, positivePrompt, negtiveProm
     return prompt;
 }
 
-PipeAdvancePhotoRealism.quickProcess = function (posprompt, imgurl, imgData) {
+PipeAdvancePhotoRealism.quickProcess = function (positivePrompt, imgurl, imgData) {
     console.log("PipeAdvancePhotoRealism.quickProcess");
     let promptFile;
     promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo.json');//');
@@ -119,7 +119,56 @@ PipeAdvancePhotoRealism.quickProcess = function (posprompt, imgurl, imgData) {
         Tool.applyImage(prompt, "1", null, imgurl);
     }
 
-    prompt["55"]["inputs"]["text_positive"] = posprompt;
+
+    let steps = 21;
+    let cfg = 5;
+    let sampler = "dpmpp_2m";
+    let scheduler = "karras";
+    let poseStrength = 0.0;
+    let poseStart = 0;
+    let poseEnd = 0.65;
+    let depthStrength = 0.26;
+    let depthStart = 0;
+    let depthEnd = 0.75;
+    let cannyStrength = 0.3;
+    let cannyStart = 0;
+    let cannyEnd = 0.75;
+    let negtivePrompt = "bare chest, asian, low res, (worst quality, greyscale), watermark, face paint, username, signature, text, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, , blur, distortion, fused fingers, too many fingers, too many legs, long neck, cut off hands, large ass, large chest, bare chest. (three legs),((((ugly)))),(((duplicate))),((morbid)),((mutilated)),[out of frame], (three hands),((poorly drawn hands))";
+
+    prompt["192"]["inputs"]["steps"] = steps;
+    prompt["192"]["inputs"]["cfg"] = cfg;
+    prompt["192"]["inputs"]["sampler_name"] = sampler;
+    prompt["192"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["193"]["inputs"]["steps"] = steps;
+    prompt["193"]["inputs"]["cfg"] = cfg;
+    prompt["193"]["inputs"]["sampler_name"] = sampler;
+    prompt["193"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["181"]["inputs"]["strength"] = poseStrength;
+    prompt["181"]["inputs"]["start_percent"] = poseStart;
+    prompt["181"]["inputs"]["end_percent"] = poseEnd;
+
+    prompt["182"]["inputs"]["strength"] = depthStrength;
+    prompt["182"]["inputs"]["start_percent"] = depthStart;
+    prompt["182"]["inputs"]["end_percent"] = depthEnd;
+
+    prompt["55"]["inputs"]["text_negative"] = negtivePrompt;
+
+    if (cannyStrength > 0) {
+        Tool.ApplyCanny("1", "182", "192", prompt, cannyStrength, cannyStart, cannyEnd, 0.01, 0.25, "diffuserscontrolnet-canny-sdxl-1.0.safetensors");
+        prompt["33"]["inputs"]["resolution"] = 1024;
+    }
+
+    let tailText = "cinematic lighting, masterpiece, high quality, high resolution, 4K, HDR";
+    let tailTexts = tailText.split(",");
+    for (let i in tailTexts) {
+        if (positivePrompt.indexOf(tailTexts[i]) == -1) {
+            positivePrompt += " " + tailTexts[i] + ",";
+        }
+    }
+
+    prompt["55"]["inputs"]["text_positive"] = positivePrompt;
     prompt["192"]["inputs"]["noise_seed"] = Tool.randomInt();
     prompt["193"]["inputs"]["noise_seed"] = Tool.randomInt();
 
