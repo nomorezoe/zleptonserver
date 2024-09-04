@@ -308,16 +308,16 @@ function sketchToStyle(task, req, queue) {
         case ("adv_photo_realism"):
             promptjson = PipeAdvancePhotoRealism.quickProcess(posPrompt, imgurl, imgData);
             break;
-        /*case ("adv_bw_loose"):
+        case ("adv_loose_color"):
             promptjson = PipeAdvanceLooseColor.quickProcess(posPrompt, imgurl, imgData);
             break;
-        case ("adv_bw_grain"):
+        /*case ("adv_bw_grain"):
             break;
         case ("adv_dslr"):
             break;
         case ("adv_epic_real"):
             break;
-        case ("adv_loose_color"):
+        case ("adv_bw_loose"):
             break;
         case ("illustration_comic"):
             break;*/

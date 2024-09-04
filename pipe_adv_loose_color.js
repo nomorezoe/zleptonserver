@@ -51,9 +51,59 @@ PipeAdvanceLooseColor.process = function (imgData, positivePrompt, negtivePrompt
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
         prompt["29"]["inputs"]["strength_model"] = 0.20;
-        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "44", "29", "3", "4", "7", "8", "9","4");
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "44", "29", "3", "4", "7", "8", "9", "4");
     }
     return prompt;
 }
+
+
+PipeAdvanceLooseColor.quickProcess = function (positivePrompt, imgurl, imgData) {
+    console.log("PipeAdvanceLooseColor.quickProcess");
+    let promptFile;
+    promptFile = fs.readFileSync('./pipe/workflow_api_adv_loose_color_2.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    if (imgData != null) {
+        prompt["44"]["inputs"]["image"] = imgData;
+    }
+    else {
+        Tool.applyImage(prompt, "44", null, imgurl);
+    }
+
+    let preText = "colscottstyle, concept art illustration portrait of ";
+    positivePrompt = preText + positivePrompt;
+    let tailText = ",Warm color temperature, serene facial expression";
+    positivePrompt += tailText;
+
+    let negtivePrompt = "text, watermark, low quality , deformed, bad anatomy, worst quality,  bad hands, text, error, missing fingers, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured";
+
+    let sampleSteps = 20;
+    let cfg = 3.5;
+    let sampler = "euler";
+    let scheduler = "normal";
+    let depthStrength = 0.8;
+    let depthStart = 0;
+    let depthEnd = 0.75;
+
+    prompt["6"]["inputs"]["text"] = positivePrompt;
+    prompt["7"]["inputs"]["text"] = negtivePrompt;
+
+
+    prompt["3"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["3"]["inputs"]["steps"] = sampleSteps;
+    prompt["3"]["inputs"]["cfg"] = cfg;
+    prompt["3"]["inputs"]["sampler_name"] = sampler;
+    prompt["3"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["41"]["inputs"]["strength"] = depthStrength;
+    prompt["41"]["inputs"]["start_percent"] = depthStart;
+    prompt["41"]["inputs"]["end_percent"] = depthEnd;
+
+    prompt["29"]["inputs"]["strength_model"] = 0.6;
+
+    return prompt;
+
+}
+
 
 module.exports = PipeAdvanceLooseColor;
