@@ -9,6 +9,8 @@ const FluxPipeStageRender = require('./flux_pipe_stage_render');
 const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism');
 const PipeAdvanceLooseColor = require("./pipe_adv_loose_color");
 
+const PipeAdvanceBWGrain = require('./pipe_adv_bw_grain');
+
 let BATCH_COUNT = 4;
 function TaskAdvanceStyleTransfer(task, req, queue) {
 
@@ -311,9 +313,10 @@ function sketchToStyle(task, req, queue) {
         case ("adv_loose_color"):
             promptjson = PipeAdvanceLooseColor.quickProcess(posPrompt, imgurl, imgData);
             break;
-        /*case ("adv_bw_grain"):
+        case ("adv_bw_grain"):
+            promptjson = PipeAdvanceBWGrain.quickProcess(posPrompt, imgurl, imgData);
             break;
-        case ("adv_dslr"):
+        /*case ("adv_dslr"):
             break;
         case ("adv_epic_real"):
             break;

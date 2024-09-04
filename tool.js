@@ -91,14 +91,15 @@ Tool.getRenderStyle = function (rdStyle, model, loras, style, sampler, sampleSte
     for (let i = 0; i < Tool.rdStyleJson.length; i++) {
         if (Tool.rdStyleJson[i].id == rdStyle) {
             if (Tool.rdStyleJson[i].model == model && Tool.rdStyleJson[i].style == style) {
-                let refLoras = [];
+                /*let refLoras = [];
                 if (Tool.rdStyleJson[i].loras != null && Tool.rdStyleJson[i].loras != "") {
                     refLoras = Tool.rdStyleJson[i].loras.split(",");
                 }
 
                 if (Tool.isSameLoraArray(refLoras, loras)) {
                     return Tool.rdStyleJson[i].pipe;
-                }
+                }*/
+                return Tool.rdStyleJson[i].pipe;
             }
             break;
         }
