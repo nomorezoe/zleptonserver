@@ -255,6 +255,7 @@
   },
   "53": {
     "inputs": {
+      "method": "average",
       "factor": 1,
       "image": [
         "19",
