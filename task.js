@@ -24,6 +24,7 @@ const FluxPipeTextToImage = require('./flux_pipe_text_to_image');
 const FluxPipeStageRender = require("./flux_pipe_stage_render");
 const FluxPipeImageToImage = require("./flux_pipe_image_to_image");
 const FluxPipeImageEnhance = require("./flux_pipe_image_enhance");
+const FluxPipeTextToSketch = require("./flux_pipe_text_to_sketch");
 
 
 function Task(type, index, req) {
@@ -123,6 +124,9 @@ Task.prototype = {
             case "ad_imgtoimg":
                 FluxPipeImageToImage(this, this.req, queue);
                 break;
+            case "ad_texttosketch":
+                FluxPipeTextToSketch(this, this.req, queue);
+                break;
             case "ad_img_enhance":
                 FluxPipeImageEnhance(this, this.req, queue);
                 break;
@@ -213,6 +217,9 @@ Task.prototype = {
             case "ad_imgtoimg":
                 return 240;
                 break;
+            case "ad_texttosketch":
+                return 340;
+                break;
             case "ad_img_enhance":
                 return 240;
                 break;
@@ -281,6 +288,9 @@ Task.prototype = {
                 break;
             case "ad_imgtoimg":
                 return 240;
+                break;
+            case "ad_texttosketch":
+                return 340;
                 break;
             case "ad_img_enhance":
                 return 240;
@@ -356,7 +366,10 @@ Task.prototype = {
                 socket.emit("completeImgToImg", this.imageFileNames.join(','));
             }
             else if (this.type == "ad_img_enhance") {
-                socket.emit("completeImgToImg", this.imageFileNames.join(','));
+                socket.emit("completeImgEnhance", this.imageFileNames.join(','));
+            }
+            else if (this.type == "ad_texttosketch") {
+                socket.emit("completeTextToSketch", this.imageFileNames.join(','));
             }
         }
     },
