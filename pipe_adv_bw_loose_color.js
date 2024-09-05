@@ -53,4 +53,48 @@ PipeAdvanceBWLooseColor.process = function (imgData, positivePrompt, negtiveProm
     return prompt;
 }
 
+PipeAdvanceBWLooseColor.quickProcess = function(positivePrompt, imgurl, imgData){
+
+    console.log("PipeAdvanceBWLooseColor.quickProcess");
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_loose_color_2.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    if (imgData != null) {
+        prompt["44"]["inputs"]["image"] = imgData;
+    }
+    else {
+        Tool.applyImage(prompt, "44", null, imgurl);
+    }
+
+    let preText = "bwstyle pencil drawing of, <lora:bwstyle:2>, ";
+    positivePrompt = preText + positivePrompt;
+    let tailText = ",Warm color temperature, serene facial expression";
+    positivePrompt += tailText;
+
+    prompt["6"]["inputs"]["text"] = positivePrompt;
+    
+    let negtivePrompt = "text, watermark, low quality , deformed, bad anatomy, worst quality,  bad hands, text, error, missing fingers, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured";
+    prompt["7"]["inputs"]["text"] = negtivePrompt;
+
+    let sampleSteps = 20;
+    let cfg = 3.5;
+    let sampler = "euler";
+    let scheduler = "normal";
+    let depthStrength = 0.8;
+    let depthStart = 0;
+    let depthEnd = 0.75;
+
+    prompt["3"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["3"]["inputs"]["steps"] = sampleSteps;
+    prompt["3"]["inputs"]["cfg"] = cfg;
+    prompt["3"]["inputs"]["sampler_name"] = sampler;
+    prompt["3"]["inputs"]["scheduler"] = scheduler;
+
+    prompt["41"]["inputs"]["strength"] = depthStrength;
+    prompt["41"]["inputs"]["start_percent"] = depthStart;
+    prompt["41"]["inputs"]["end_percent"] = depthEnd;
+
+    return prompt;
+}
+
 module.exports = PipeAdvanceBWLooseColor;

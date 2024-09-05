@@ -8,8 +8,11 @@ const { json } = require('body-parser');
 const FluxPipeStageRender = require('./flux_pipe_stage_render');
 const PipeAdvancePhotoRealism = require('./pipe_adv_photo_realism');
 const PipeAdvanceLooseColor = require("./pipe_adv_loose_color");
-
+const PipeAdvanceDSLR = require("./pipe_adv_dslr");
+const PipeAdvanceEpicReal = require("./pipe_adv_epic_real");
+const PipeAdvanceBWLooseColor = require("./pipe_adv_bw_loose_color");
 const PipeAdvanceBWGrain = require('./pipe_adv_bw_grain');
+const IllustrationComicRender = require("./pipe_illustration_comic");
 
 let BATCH_COUNT = 4;
 function TaskAdvanceStyleTransfer(task, req, queue) {
@@ -316,14 +319,18 @@ function sketchToStyle(task, req, queue) {
         case ("adv_bw_grain"):
             promptjson = PipeAdvanceBWGrain.quickProcess(posPrompt, imgurl, imgData);
             break;
-        /*case ("adv_dslr"):
+        case ("adv_dslr"):
+            promptjson = PipeAdvanceDSLR.quickProcess(posPrompt, imgurl, imgData);
             break;
         case ("adv_epic_real"):
+            promptjson = PipeAdvanceEpicReal.quickProcess(posPrompt, imgurl, imgData);
             break;
         case ("adv_bw_loose"):
+            promptjson = PipeAdvanceBWLooseColor.quickProcess(posPrompt, imgurl, imgData);
             break;
         case ("illustration_comic"):
-            break;*/
+            promptjson = IllustrationComicRender.quickProcess(posPrompt, imgurl, imgData);
+            break;
         default:
             promptjson = PipeAdvancePhotoRealism.quickProcess(posPrompt, imgurl, imgData);
     }
