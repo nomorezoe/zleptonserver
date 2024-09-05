@@ -15,15 +15,16 @@ function FluxPipeImageToImage(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-    const promptFile = fs.readFileSync('./pipe/flux_img_2_img.json');//');
+    const promptFile = fs.readFileSync('./pipe/flux_img_2_img_no_upscale.json');//');
     let prompt = JSON.parse(promptFile);
 
-    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = text;
-    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["6"]["inputs"]["text"] = "Create a cinematic image of " + text;
+   // prompt["53"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["37"]["inputs"]["image"] = imgData;
+    prompt["41"]["inputs"]["image"] = imgData;
 
-    task.pipeline = "flux_image_2_image";
+    task.pipeline = "flux_image_enhance";
     sendRequest(prompt, queue, task);
 }
 
