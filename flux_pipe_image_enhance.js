@@ -18,11 +18,11 @@ function FluxPipeImageEnhance(task, req, queue) {
     const promptFile = fs.readFileSync('./pipe/flux_enhance.json');//');
     let prompt = JSON.parse(promptFile);
 
-    //prompt["229"]["inputs"]["clip_l"] =  prompt["229"]["inputs"]["t5xxl"] = text;
-    prompt["106"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["122"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["6"]["inputs"]["text"] = "Create a cinematic image of " + text;
+   // prompt["53"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["94"]["inputs"]["image"] = imgData;
+    prompt["41"]["inputs"]["image"] = imgData;
 
     task.pipeline = "flux_image_enhance";
     sendRequest(prompt, queue, task);
@@ -38,7 +38,7 @@ function sendRequest(promptjson, queue, task) {
         hostname: Tool.RequestURL,
         path: '/run',
         method: 'POST',
-        timeout: 6000000,
+        timeout: 0,
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': data.length,

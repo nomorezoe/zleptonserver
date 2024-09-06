@@ -24,7 +24,7 @@ function FluxPipeImageToImage(task, req, queue) {
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     prompt["41"]["inputs"]["image"] = imgData;
 
-    task.pipeline = "flux_image_enhance";
+    task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
 }
 
