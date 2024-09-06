@@ -32,7 +32,7 @@
     "inputs": {
       "filename_prefix": "ComfyUI",
       "images": [
-        "8",
+        "42",
         0
       ]
     },
@@ -184,6 +184,18 @@
     "class_type": "UNETLoader",
     "_meta": {
       "title": "Load Diffusion Model"
+    }
+  },
+  "42": {
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "ImageEffectsGrayscale",
+    "_meta": {
+      "title": "ImageEffectsGrayscale"
     }
   }
 }
