@@ -17,6 +17,9 @@ function FluxPipeTextToImage(task, req, queue) {
     prompt["61"]["inputs"]["text"] = text;
     prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
 
+    let size = Tool.getImageSizeByFrameSize(req.body.framesize);
+    prompt["60"]["inputs"]["width"] = size.width;
+    prompt["60"]["inputs"]["height"] = size.height;
 
     task.pipeline = "flux_text_to_image";
     sendRequest(prompt, queue, task);

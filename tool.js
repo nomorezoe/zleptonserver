@@ -720,6 +720,36 @@ Tool.addSaveWithMeta = function (json) {
     }
 }
 
+Tool.getImageSizeByFrameSize = function (value) {
+    var returnObject = {};
+    returnObject.width = 1344;
+    returnObject.height = 768;
+    switch (value) {
+        case "9:16":
+            returnObject.width = 768;
+            returnObject.height = 1344;
+            break;
+        case "16:9":
+            returnObject.width = 1344;
+            returnObject.height = 768;
+            break;
+        case "4:3":
+            returnObject.width = 1152;
+            returnObject.height = 896;
+            break;
+        case "3:4":
+            returnObject.width = 896;
+            returnObject.height = 1152;
+            break;
+        case "1:1":
+            returnObject.width = 1024;
+            returnObject.height = 1024;
+            break;
+
+    }
+    return returnObject;
+}
+
 
 Tool.isTweakJson = function (data) {
     let json = JSON.parse(data);
@@ -744,7 +774,7 @@ Tool.isTweakJson = function (data) {
 }
 
 Tool.getPromptTweakJson = function (promptJson, num = 1) {
-   
+
     for (let i in promptJson) {
         if (promptJson[i]["class_type"] == "CLIPTextEncode") {
             promptJson[i]["inputs"]["text"] = promptJson[i]["inputs"]["text"] + "," + num;
@@ -752,6 +782,7 @@ Tool.getPromptTweakJson = function (promptJson, num = 1) {
     }
     return promptJson;
 }
+
 
 Tool.getTweakJson = function (data) {
     let json = JSON.parse(data);

@@ -17,6 +17,9 @@ function FluxPipeTextToSketch(task, req, queue) {
     prompt["6"]["inputs"]["text"] = "bwstyleart, " + text;
     prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
 
+    let size = Tool.getImageSizeByFrameSize(req.body.framesize);
+    prompt["27"]["inputs"]["width"] = size.width;
+    prompt["27"]["inputs"]["height"] = size.height;
 
     task.pipeline = "flux_text_to_sketch";
     sendRequest(prompt, queue, task);
