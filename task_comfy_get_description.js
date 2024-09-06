@@ -10,9 +10,6 @@ const CharacterTool = require("./character_tool");
 function TaskComfyGetDescription(task, req, queue) {
     console.log("TaskComfyGetDescription");
 
-    fakeResult();
-    return;
-
     var session = req.body.session;
 
     let filename = "./pipe/workflow_api_img_txt.json";
@@ -40,12 +37,6 @@ function TaskComfyGetDescription(task, req, queue) {
 
     task.pipeline = "get_desc";
     sendRequest(prompt, queue, task, req.body.type);
-}
-
-function fakeResult(){
-    queue.completeTask();
-    task.imageFileNames.push("");
-    task.sendCompleteTaskSuccess();
 }
 
 function sendRequest(promptjson, queue, task, type) {
