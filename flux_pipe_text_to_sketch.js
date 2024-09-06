@@ -11,7 +11,7 @@ function FluxPipeTextToSketch(task, req, queue) {
     var session = req.body.session;
     var text = req.body.prompt;
 
-    const promptFile = fs.readFileSync('./pipe/flux_text_2_sketch.json');//');
+    const promptFile = fs.readFileSync('./pipe/flux_text_2_sketch_model.json');//');
     let prompt = JSON.parse(promptFile);
 
     prompt["6"]["inputs"]["text"] = "bwstyleart, " + text;

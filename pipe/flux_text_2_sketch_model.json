@@ -178,7 +178,7 @@
   },
   "41": {
     "inputs": {
-      "unet_name": "flux1-dev.safetensors",
+      "unet_name": "flux1Dev_v10.safetensors",
       "weight_dtype": "default"
     },
     "class_type": "UNETLoader",
