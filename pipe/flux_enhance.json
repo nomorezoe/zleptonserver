@@ -102,17 +102,6 @@
       "title": "FluxGuidance"
     }
   },
-  "27": {
-    "inputs": {
-      "width": 512,
-      "height": 512,
-      "batch_size": 1
-    },
-    "class_type": "EmptySD3LatentImage",
-    "_meta": {
-      "title": "EmptySD3LatentImage"
-    }
-  },
   "30": {
     "inputs": {
       "max_shift": 1.1500000000000001,
@@ -198,7 +187,7 @@
       "preprocessor": "DepthAnythingPreprocessor",
       "resolution": 512,
       "image": [
-        "41",
+        "68",
         0
       ]
     },
@@ -243,7 +232,7 @@
   "57": {
     "inputs": {
       "pixels": [
-        "41",
+        "68",
         0
       ],
       "vae": [
@@ -375,6 +364,40 @@
     "class_type": "UpscaleModelLoader",
     "_meta": {
       "title": "Load Upscale Model"
+    }
+  },
+  "65": {
+    "inputs": {
+      "image": [
+        "41",
+        0
+      ]
+    },
+    "class_type": "CM_NearestSDXLResolution",
+    "_meta": {
+      "title": "NearestSDXLResolution"
+    }
+  },
+  "68": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": [
+        "65",
+        0
+      ],
+      "height": [
+        "65",
+        1
+      ],
+      "crop": "disabled",
+      "image": [
+        "41",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
     }
   }
 }
