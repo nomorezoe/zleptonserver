@@ -11,7 +11,7 @@ Tool.randomInt = function () {
     return Math.floor(Math.random() * 9007199254740991);
 }
 
-Tool.RequestURL = "j9e5gs4n-comfyui.bjz.edr.lepton.ai";
+Tool.RequestURL = "j9e5gs4n-comfyui.tin.lepton.run";
 
 Tool.modelJson = JSON.parse(require('fs').readFileSync("./settings/models.json"));
 
