@@ -53,7 +53,7 @@
   },
   "12": {
     "inputs": {
-      "model": "microsoft/Florence-2-base",
+      "model": "gokaygokay/Florence-2-SD3-Captioner",
       "precision": "fp16",
       "attention": "sdpa"
     },
