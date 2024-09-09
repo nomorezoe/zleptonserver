@@ -1,20 +1,4 @@
 {
-  "1": {
-    "inputs": {
-      "prompt": "",
-      "repo_id": "Salesforce/blip-image-captioning-base",
-      "inference_mode": "gpu_float16",
-      "get_model_online": true,
-      "image": [
-        "2",
-        0
-      ]
-    },
-    "class_type": "AutoLabel",
-    "_meta": {
-      "title": "Auto Label"
-    }
-  },
   "2": {
     "inputs": {
       "image": "4e95069e-8f48-4281-a56a-f102baf630a9_enhance.png",
@@ -36,13 +20,13 @@
       "sampler_name": "euler",
       "scheduler": "normal",
       "positive": [
-        "1",
-        0
+        "13",
+        2
       ],
       "negative": "unknown",
       "seed_value": 0,
-      "width": 512,
-      "height": 512,
+      "width": 513,
+      "height": 513,
       "lossless_webp": true,
       "quality_jpeg_or_webp": 100,
       "counter": 0,
@@ -65,6 +49,42 @@
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
+    }
+  },
+  "12": {
+    "inputs": {
+      "model": "microsoft/Florence-2-base",
+      "precision": "fp16",
+      "attention": "sdpa"
+    },
+    "class_type": "DownloadAndLoadFlorence2Model",
+    "_meta": {
+      "title": "DownloadAndLoadFlorence2Model"
+    }
+  },
+  "13": {
+    "inputs": {
+      "text_input": "",
+      "task": "region_caption",
+      "fill_mask": true,
+      "keep_model_loaded": false,
+      "max_new_tokens": 1024,
+      "num_beams": 3,
+      "do_sample": true,
+      "output_mask_select": "",
+      "seed": 1,
+      "image": [
+        "2",
+        0
+      ],
+      "florence2_model": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "Florence2Run",
+    "_meta": {
+      "title": "Florence2Run"
     }
   }
 }

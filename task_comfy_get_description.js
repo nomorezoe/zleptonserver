@@ -35,6 +35,8 @@ function TaskComfyGetDescription(task, req, queue) {
         prompt["2"]["inputs"]["image"] = imgData;
     }
 
+    prompt["13"]["inputs"]["seed"] = Tool.randomInt();
+    
     task.pipeline = "get_desc";
     sendRequest(prompt, queue, task, req.body.type);
 }
