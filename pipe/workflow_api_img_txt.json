@@ -65,7 +65,7 @@
   "13": {
     "inputs": {
       "text_input": "",
-      "task": "region_caption",
+      "task": "caption",
       "fill_mask": true,
       "keep_model_loaded": false,
       "max_new_tokens": 1024,
