@@ -20,8 +20,8 @@
       "sampler_name": "euler",
       "scheduler": "normal",
       "positive": [
-        "13",
-        2
+        "14",
+        0
       ],
       "negative": "unknown",
       "seed_value": 0,
@@ -85,6 +85,18 @@
     "class_type": "Florence2Run",
     "_meta": {
       "title": "Florence2Run"
+    }
+  },
+  "14": {
+    "inputs": {
+      "text": [
+        "13",
+        2
+      ]
+    },
+    "class_type": "JjkShowText",
+    "_meta": {
+      "title": "ShowText"
     }
   }
 }
