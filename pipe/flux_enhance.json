@@ -1,77 +1,34 @@
 {
   "6": {
     "inputs": {
-      "text": "Create a cinematic image of Telsi Gabbard angry expression as Wonder Woman with long flowing hair grabbing long haired Kamilla Harris as African American Catwoman with no mask by the head in the midst of an intense superhero battle. The scene should evoke the grandeur and dramatic tension typical of a Marvel movie, with a dark, stormy sky and lightning flashing in the background. Wonder Woman should be in her iconic armor, angry expression, while Catwoman, dressed in her sleek black suit with a hint of silver, struggles to break free. Both characters should have determined expressions, with the setting reflecting a war-torn cityscape, debris scattered around, and faint embers glowing in the distance. The overall atmosphere should feel epic and intense, capturing a moment of high stakes in their confrontation",
+      "text": "",
       "clip": [
-        "50",
-        1
+        "121",
+        0
       ]
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
-      "title": "CLIP Text Encode (Positive Prompt)"
+      "title": "CLIP Text Encode (Prompt)"
     }
   },
-  "13": {
+  "10": {
     "inputs": {
-      "noise": [
-        "25",
-        0
-      ],
-      "guider": [
-        "22",
-        0
-      ],
-      "sampler": [
-        "16",
-        0
-      ],
-      "sigmas": [
-        "17",
-        0
-      ],
-      "latent_image": [
-        "57",
-        0
-      ]
+      "vae_name": "ae.sft"
     },
-    "class_type": "SamplerCustomAdvanced",
+    "class_type": "VAELoader",
     "_meta": {
-      "title": "SamplerCustomAdvanced"
-    }
-  },
-  "16": {
-    "inputs": {
-      "sampler_name": "euler"
-    },
-    "class_type": "KSamplerSelect",
-    "_meta": {
-      "title": "KSamplerSelect"
-    }
-  },
-  "17": {
-    "inputs": {
-      "scheduler": "sgm_uniform",
-      "steps": 28,
-      "denoise": 0.9500000000000001,
-      "model": [
-        "30",
-        0
-      ]
-    },
-    "class_type": "BasicScheduler",
-    "_meta": {
-      "title": "BasicScheduler"
+      "title": "Load VAE"
     }
   },
   "22": {
     "inputs": {
       "model": [
-        "30",
+        "105",
         0
       ],
       "conditioning": [
-        "26",
+        "60",
         0
       ]
     },
@@ -80,20 +37,11 @@
       "title": "BasicGuider"
     }
   },
-  "25": {
-    "inputs": {
-      "noise_seed": 2990907369
-    },
-    "class_type": "RandomNoise",
-    "_meta": {
-      "title": "RandomNoise"
-    }
-  },
-  "26": {
+  "60": {
     "inputs": {
       "guidance": 3.5,
       "conditioning": [
-        "38",
+        "6",
         0
       ]
     },
@@ -102,56 +50,18 @@
       "title": "FluxGuidance"
     }
   },
-  "30": {
+  "74": {
     "inputs": {
-      "max_shift": 1.1500000000000001,
-      "base_shift": 0.5,
-      "width": 512,
-      "height": 512,
-      "model": [
-        "50",
-        0
-      ]
+      "unet_name": "flux1-dev-Q6_K.gguf"
     },
-    "class_type": "ModelSamplingFlux",
+    "class_type": "UnetLoaderGGUF",
     "_meta": {
-      "title": "ModelSamplingFlux"
+      "title": "Unet Loader (GGUF)"
     }
   },
-  "38": {
+  "94": {
     "inputs": {
-      "strength": 0.49,
-      "start_percent": 0,
-      "end_percent": 0.385,
-      "positive": [
-        "6",
-        0
-      ],
-      "negative": [
-        "42",
-        0
-      ],
-      "control_net": [
-        "43",
-        0
-      ],
-      "vae": [
-        "50",
-        2
-      ],
-      "image": [
-        "49",
-        0
-      ]
-    },
-    "class_type": "ControlNetApplySD3",
-    "_meta": {
-      "title": "ControlNetApply SD3 and HunyuanDiT"
-    }
-  },
-  "41": {
-    "inputs": {
-      "image": "battle_scene.png",
+      "image": "pexels-olly-762020.jpg",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -159,205 +69,107 @@
       "title": "Load Image"
     }
   },
-  "42": {
+  "104": {
     "inputs": {
-      "text": "",
-      "clip": [
-        "50",
-        1
-      ]
+      "switch_1": "Off",
+      "lora_name_1": "None",
+      "model_weight_1": 0.8,
+      "clip_weight_1": 1,
+      "switch_2": "Off",
+      "lora_name_2": "None",
+      "model_weight_2": 0.8,
+      "clip_weight_2": 1,
+      "switch_3": "Off",
+      "lora_name_3": "None",
+      "model_weight_3": 0.7000000000000001,
+      "clip_weight_3": 1
     },
-    "class_type": "CLIPTextEncode",
+    "class_type": "CR LoRA Stack",
     "_meta": {
-      "title": "CLIP Text Encode (Negative Prompt)"
+      "title": "💊 CR LoRA Stack"
     }
   },
-  "43": {
+  "105": {
     "inputs": {
-      "control_net_name": "InstantX_FLUX.1-dev-Controlnet-Union.safetensors",
-      "type": "depth"
-    },
-    "class_type": "InstantX Flux Union ControlNet Loader",
-    "_meta": {
-      "title": "InstantX Flux Union ControlNet Loader"
-    }
-  },
-  "49": {
-    "inputs": {
-      "preprocessor": "DepthAnythingPreprocessor",
-      "resolution": 512,
-      "image": [
-        "68",
-        0
-      ]
-    },
-    "class_type": "AIO_Preprocessor",
-    "_meta": {
-      "title": "AIO Aux Preprocessor"
-    }
-  },
-  "50": {
-    "inputs": {
-      "ckpt_name": "flux1-dev-fp8.safetensors"
-    },
-    "class_type": "CheckpointLoaderSimple",
-    "_meta": {
-      "title": "Load Checkpoint"
-    }
-  },
-  "52": {
-    "inputs": {
-      "images": [
-        "49",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
-    }
-  },
-  "54": {
-    "inputs": {
-      "value": 2990907369,
-      "mode": true,
-      "action": "randomize",
-      "last_seed": 1910103640
-    },
-    "class_type": "GlobalSeed //Inspire",
-    "_meta": {
-      "title": "Global Seed (Inspire)"
-    }
-  },
-  "57": {
-    "inputs": {
-      "pixels": [
-        "68",
-        0
-      ],
-      "vae": [
-        "50",
-        2
-      ]
-    },
-    "class_type": "VAEEncode",
-    "_meta": {
-      "title": "VAE Encode"
-    }
-  },
-  "58": {
-    "inputs": {
-      "noise_std": 0.6,
-      "samples": [
-        "13",
-        0
-      ]
-    },
-    "class_type": "Latent Noise Injection",
-    "_meta": {
-      "title": "Latent Noise Injection"
-    }
-  },
-  "59": {
-    "inputs": {
-      "multiplier": 0.6900000000000001,
-      "samples": [
-        "58",
-        0
-      ]
-    },
-    "class_type": "LatentMultiply",
-    "_meta": {
-      "title": "LatentMultiply"
-    }
-  },
-  "60": {
-    "inputs": {
-      "scale_method": "lanczos",
-      "seed": 0,
-      "steps": 4,
-      "cfg": 1,
-      "sampler_name": "euler_cfg_pp",
-      "scheduler": "simple",
-      "denoise": 0.27,
-      "use_tiled_vae": false,
-      "tile_size": 1024,
       "model": [
-        "30",
+        "74",
         0
       ],
-      "vae": [
-        "50",
-        2
+      "clip": [
+        "121",
+        0
+      ],
+      "lora_stack": [
+        "104",
+        0
+      ]
+    },
+    "class_type": "CR Apply LoRA Stack",
+    "_meta": {
+      "title": "💊 CR Apply LoRA Stack"
+    }
+  },
+  "106": {
+    "inputs": {
+      "upscale_by": [
+        "129",
+        0
+      ],
+      "seed": 60865728468897,
+      "steps": 6,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "beta",
+      "denoise": 0.31,
+      "mode_type": "Linear",
+      "tile_width": [
+        "132",
+        0
+      ],
+      "tile_height": [
+        "133",
+        0
+      ],
+      "mask_blur": 16,
+      "tile_padding": 32,
+      "seam_fix_mode": "Band Pass",
+      "seam_fix_denoise": 0.25,
+      "seam_fix_width": 64,
+      "seam_fix_mask_blur": 16,
+      "seam_fix_padding": 16,
+      "force_uniform_tiles": true,
+      "tiled_decode": false,
+      "image": [
+        "94",
+        0
+      ],
+      "model": [
+        "105",
+        0
       ],
       "positive": [
-        "26",
+        "60",
         0
       ],
       "negative": [
-        "38",
-        1
-      ],
-      "upscale_model_opt": [
-        "64",
-        0
-      ]
-    },
-    "class_type": "PixelKSampleUpscalerProvider",
-    "_meta": {
-      "title": "PixelKSampleUpscalerProvider"
-    }
-  },
-  "61": {
-    "inputs": {
-      "upscale_factor": 1.5,
-      "steps": 1,
-      "temp_prefix": "",
-      "step_mode": "simple",
-      "samples": [
-        "59",
-        0
-      ],
-      "upscaler": [
-        "60",
-        0
-      ]
-    },
-    "class_type": "IterativeLatentUpscale",
-    "_meta": {
-      "title": "Iterative Upscale (Latent/on Pixel Space)"
-    }
-  },
-  "62": {
-    "inputs": {
-      "samples": [
-        "61",
+        "112",
         0
       ],
       "vae": [
-        "61",
-        1
-      ]
-    },
-    "class_type": "VAEDecode",
-    "_meta": {
-      "title": "VAE Decode"
-    }
-  },
-  "63": {
-    "inputs": {
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "62",
+        "10",
+        0
+      ],
+      "upscale_model": [
+        "107",
         0
       ]
     },
-    "class_type": "SaveImage",
+    "class_type": "UltimateSDUpscale",
     "_meta": {
-      "title": "Save Image"
+      "title": "Ultimate SD Upscale"
     }
   },
-  "64": {
+  "107": {
     "inputs": {
       "model_name": "4x-UltraSharp.pth"
     },
@@ -366,38 +178,80 @@
       "title": "Load Upscale Model"
     }
   },
-  "65": {
+  "111": {
     "inputs": {
-      "image": [
-        "41",
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "106",
         0
       ]
     },
-    "class_type": "CM_NearestSDXLResolution",
+    "class_type": "SaveImage",
     "_meta": {
-      "title": "NearestSDXLResolution"
+      "title": "Save Image"
     }
   },
-  "68": {
+  "112": {
     "inputs": {
-      "upscale_method": "nearest-exact",
-      "width": [
-        "65",
-        0
-      ],
-      "height": [
-        "65",
-        1
-      ],
-      "crop": "disabled",
-      "image": [
-        "41",
+      "text": "",
+      "clip": [
+        "121",
         0
       ]
     },
-    "class_type": "ImageScale",
+    "class_type": "CLIPTextEncode",
     "_meta": {
-      "title": "Upscale Image"
+      "title": "IGNORE"
+    }
+  },
+  "121": {
+    "inputs": {
+      "clip_name1": "clip_l.safetensors",
+      "clip_name2": "t5xxl_fp16.safetensors",
+      "type": "flux"
+    },
+    "class_type": "DualCLIPLoaderGGUF",
+    "_meta": {
+      "title": "DualCLIPLoader (GGUF)"
+    }
+  },
+  "129": {
+    "inputs": {
+      "Value": 2
+    },
+    "class_type": "DF_Float",
+    "_meta": {
+      "title": "Float"
+    }
+  },
+  "130": {
+    "inputs": {
+      "image": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size"
+    }
+  },
+  "132": {
+    "inputs": {
+      "Value": 512
+    },
+    "class_type": "DF_Integer",
+    "_meta": {
+      "title": "Integer"
+    }
+  },
+  "133": {
+    "inputs": {
+      "Value": 512
+    },
+    "class_type": "DF_Integer",
+    "_meta": {
+      "title": "Integer"
     }
   }
 }

@@ -19,10 +19,11 @@ function FluxPipeImageEnhance(task, req, queue) {
     let prompt = JSON.parse(promptFile);
 
     prompt["6"]["inputs"]["text"] = "Create a cinematic image of " + text;
-   // prompt["53"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["106"]["inputs"]["seed"] = Tool.randomInt();
+   // prompt["127"]["inputs"]["seed"] = Tool.randomInt();
+    //  prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["41"]["inputs"]["image"] = imgData;
+    prompt["94"]["inputs"]["image"] = imgData;
 
     task.pipeline = "flux_image_enhance";
     sendRequest(prompt, queue, task);
