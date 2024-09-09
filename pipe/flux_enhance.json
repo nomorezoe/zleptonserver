@@ -140,7 +140,7 @@
       "force_uniform_tiles": true,
       "tiled_decode": false,
       "image": [
-        "94",
+        "135",
         0
       ],
       "model": [
@@ -217,23 +217,11 @@
   },
   "129": {
     "inputs": {
-      "Value": 2
+      "Value": 3
     },
     "class_type": "DF_Float",
     "_meta": {
       "title": "Float"
-    }
-  },
-  "130": {
-    "inputs": {
-      "image": [
-        "94",
-        0
-      ]
-    },
-    "class_type": "GetImageSize",
-    "_meta": {
-      "title": "Get Image Size"
     }
   },
   "132": {
@@ -252,6 +240,40 @@
     "class_type": "DF_Integer",
     "_meta": {
       "title": "Integer"
+    }
+  },
+  "134": {
+    "inputs": {
+      "image": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "CM_NearestSDXLResolution",
+    "_meta": {
+      "title": "NearestSDXLResolution"
+    }
+  },
+  "135": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": [
+        "134",
+        0
+      ],
+      "height": [
+        "134",
+        1
+      ],
+      "crop": "disabled",
+      "image": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
     }
   }
 }
