@@ -10,12 +10,26 @@ function FluxPipeImageToImage(task, req, queue) {
     console.log("FluxPipeImageToImage");
 
     var session = req.body.session;
-    var text = req.body.prompt;
 
     let type = "depth";
 
     if (req.body.type != undefined) {
         type = req.body.type;
+    }
+
+    console.log("type: " + type);
+
+    if (type == "hed") {
+        processHed(task, req, queue)
+        return;
+    }
+    else if (type == "depth") {
+        processDepth(task, req, queue)
+        return;
+    }
+    else if (type == "canny") {
+        processCanny(task, req, queue);
+        return;
     }
 
     var rawImg = req.files.imageByteArray.data;
@@ -30,20 +44,65 @@ function FluxPipeImageToImage(task, req, queue) {
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     prompt["41"]["inputs"]["image"] = imgData;
 
-    console.log("type: " + type);
-    switch (type) {
-        case "hed":
-           
-            break;
-        case "canny":
-            prompt["49"]["inputs"]["preprocessor"] = "CannyEdgePreprocessor";
-            prompt["43"]["inputs"]["type"] = "canny";
-            break;
-    }
-
     task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
 }
+
+function processCanny(task, req, queue) {
+    console.log("processCanny");
+    var rawImg = req.files.imageByteArray.data;
+    imgData = Buffer.from(rawImg).toString('base64');
+
+
+    var text = req.body.prompt;
+
+    const promptFile = fs.readFileSync('./pipe/advance/img2img_canny.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    prompt["16"]["inputs"]["image"] = imgData;
+    prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
+    task.pipeline = "flux_img_2_img";
+    sendRequest(prompt, queue, task);
+}
+
+
+function processDepth(task, req, queue) {
+    console.log("processDepth");
+    var rawImg = req.files.imageByteArray.data;
+    imgData = Buffer.from(rawImg).toString('base64');
+
+    var text = req.body.prompt;
+    const promptFile = fs.readFileSync('./pipe/advance/img2img_depth.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    prompt["16"]["inputs"]["image"] = imgData;
+    prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
+
+    prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
+    task.pipeline = "flux_img_2_img";
+    sendRequest(prompt, queue, task);
+}
+
+
+
+function processHed(task, req, queue) {
+    console.log("processHed");
+    var rawImg = req.files.imageByteArray.data;
+    imgData = Buffer.from(rawImg).toString('base64');
+
+    var text = req.body.prompt;
+    const promptFile = fs.readFileSync('./pipe/advance/img2img_hed.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    prompt["16"]["inputs"]["image"] = imgData;
+    prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
+
+    prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
+    task.pipeline = "flux_img_2_img";
+    sendRequest(prompt, queue, task);
+}
+
 
 
 function sendRequest(promptjson, queue, task) {
