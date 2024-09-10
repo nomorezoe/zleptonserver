@@ -12,6 +12,12 @@ function FluxPipeImageToImage(task, req, queue) {
     var session = req.body.session;
     var text = req.body.prompt;
 
+    let type = "depth";
+
+    if (req.body.type != undefined) {
+        type = req.body.type;
+    }
+
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
@@ -19,10 +25,21 @@ function FluxPipeImageToImage(task, req, queue) {
     let prompt = JSON.parse(promptFile);
 
     prompt["6"]["inputs"]["text"] = "Create a cinematic image of " + text;
-   // prompt["53"]["inputs"]["seed"] = Tool.randomInt();
+    // prompt["53"]["inputs"]["seed"] = Tool.randomInt();
     prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     prompt["41"]["inputs"]["image"] = imgData;
+
+    console.log("type: " + type);
+    switch (type) {
+        case "hed":
+           
+            break;
+        case "canny":
+            prompt["49"]["inputs"]["preprocessor"] = "CannyEdgePreprocessor";
+            prompt["43"]["inputs"]["type"] = "canny";
+            break;
+    }
 
     task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
