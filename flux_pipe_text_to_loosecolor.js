@@ -11,10 +11,10 @@ function FluxPipeTextToLooseColor(task, req, queue) {
     var session = req.body.session;
     var text = req.body.prompt;
 
-    const promptFile = fs.readFileSync('./pipe/flux_text_2_sketch_model.json');//');
+    const promptFile = fs.readFileSync('./pipe/flux_text_2_loose_color_model.json');//');
     let prompt = JSON.parse(promptFile);
 
-    prompt["6"]["inputs"]["text"] = "bwstyleart, " + text;
+    prompt["6"]["inputs"]["text"] = "(colorart), " + text;
     prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
 
     let size = Tool.getImageSizeByFrameSize(req.body.framesize);
