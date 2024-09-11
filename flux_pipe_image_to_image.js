@@ -73,7 +73,7 @@ function processCanny(task, req, queue) {
     prompt["16"]["inputs"]["image"] = imgData;
     prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
     prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
-    prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
+    prompt["19"]["inputs"]["guidance"] =  prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
     prompt["14"]["inputs"]["strength"] = (edge > 0.5) ? (0.96 + (edge - 0.5) * 0.08) : (0.96 + (edge - 0.5) * 1.32);
     task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
@@ -104,7 +104,7 @@ function processDepth(task, req, queue) {
     prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
 
     prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
-    prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
+    prompt["19"]["inputs"]["guidance"] = prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
     prompt["14"]["inputs"]["strength"] = (edge > 0.5) ? (0.8 + (edge - 0.5) * 0.4) : (0.8 + (edge - 0.5) * 1);
     task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
@@ -136,7 +136,7 @@ function processHed(task, req, queue) {
     prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
 
     prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
-    prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
+    prompt["19"]["inputs"]["guidance"] = prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
     prompt["14"]["inputs"]["strength"] = (edge > 0.5) ? (0.7 + (edge - 0.5) * 0.6) : (0.7 + (edge - 0.5) * 0.8);
     task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
