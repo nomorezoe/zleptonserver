@@ -12,7 +12,7 @@ const PipeAdvanceLooseColorUpscale = require('./pipe_adv_loose_color_upscale');
 const PipeAdvanceBWLooseUpscale = require('./pipe_adv_bw_loose_color_upscale');
 const PipeAdvanceEpicRealUpscale = require("./pipe_adv_epic_real_upscale");
 const PipeIllustrationComicUpscale = require("./pipe_illustration_coimic_upscale")
-
+const PipeFluxUpscale = require("./pipe_flux_upscale");
 function TaskComfyUpscale(task, req, queue) {
 
     var session = req.body.session;
@@ -36,7 +36,7 @@ function TaskComfyUpscale(task, req, queue) {
 
 
     var faceParams = null;
-    if( req.body.face_denoise != undefined){
+    if (req.body.face_denoise != undefined) {
         var face_denoise = req.body.face_denoise;
         var face_cfg = parseFloat(req.body.face_cfg);
         var face_samplingsteps = parseInt(req.body.face_samplingsteps);
@@ -56,9 +56,9 @@ function TaskComfyUpscale(task, req, queue) {
         faceParams.face_sampler = face_sampler;
         faceParams.face_scheduler = face_scheduler;
     }
-   
-    
-   
+
+
+
 
     //lock character
     var isLockCharacter = (req.body.lockCharacter == 1) && (req.body.fullCharacterFile != undefined);
@@ -75,7 +75,7 @@ function TaskComfyUpscale(task, req, queue) {
     let negtext = null;
     let model = null;
     let prompt = null;
-    var jsonSettings  = null;
+    var jsonSettings = null;
     let useHumanLora = false;
     if (req.body.tags != undefined) {
         var tagString = req.body.tags
@@ -109,8 +109,8 @@ function TaskComfyUpscale(task, req, queue) {
             //humanlora
             for (var i in jsonSettings) {
                 if (jsonSettings[i]["class_type"] == "CR LoRA Stack") {
-                    if(jsonSettings[i]["inputs"]["lora_name_1"] ==  "real-humans-PublicPromptsXL.safetensors"
-                        && jsonSettings[i]["inputs"]["switch_1"] == "On"){
+                    if (jsonSettings[i]["inputs"]["lora_name_1"] == "real-humans-PublicPromptsXL.safetensors"
+                        && jsonSettings[i]["inputs"]["switch_1"] == "On") {
                         useHumanLora = true;
                     }
                 }
@@ -118,38 +118,42 @@ function TaskComfyUpscale(task, req, queue) {
 
         }
     }
-    
+
     let promptjson;
-    if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")){
+    if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_realism_photo.json")) {
         task.pipeline = "upscale_photorealism";
-        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvancePhotoRealismUpscale.process(fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
-    else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")){
+    else if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_dslr.json")) {
         task.pipeline = "upscale_dslr";
-        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceDSLRUpscale.process(fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
-    else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_loose_color_2.json")){
+    else if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_loose_color_2.json")) {
         task.pipeline = "upscale_loose_color";
-        promptjson = PipeAdvanceLooseColorUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceLooseColorUpscale.process(fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
-    else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_epic_real.json")){
+    else if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_epic_real.json")) {
         task.pipeline = "upscale_real_epic";
-        promptjson =  PipeAdvanceEpicRealUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceEpicRealUpscale.process(fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, useHumanLora, negtext, isLockCharacter, fullCharacterPath);
     }
-    else if(!isLockCharacter && 
+    else if (!isLockCharacter &&
         (Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_loose_color_2.json")
-        ||Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_grain.json"))){
+            || Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_adv_bw_grain.json"))) {
         task.pipeline = "upscale_bw_loose";
-        promptjson = PipeAdvanceBWLooseUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
+        promptjson = PipeAdvanceBWLooseUpscale.process(fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
-    else if(!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_illustration_comic.json")){
+    else if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_illustration_comic.json")) {
         task.pipeline = "upscale_illustration_comic";
-        promptjson = PipeIllustrationComicUpscale.process(fullfilepath, faceParams, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext);
+        promptjson = PipeIllustrationComicUpscale.process(fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext);
+    } 
+    else if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "flux_stage_canny.json")) {
+        task.pipeline = "upscale_flux";
+        promptjson = PipeFluxUpscale.process(fullfilepath, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
-    else{
+    else {
         task.pipeline = "upscale_normal";
         let isPhoto = Tool.getIsPhotoStyle(model, style);
-        promptjson = Upscale4X.process(fullfilepath, denoise,cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
+        promptjson = Upscale4X.process(fullfilepath, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isPhoto, isLockCharacter, fullCharacterPath);
     }
     task.pipeline += "_" + isLockCharacter;
     //
@@ -178,7 +182,7 @@ function sendRequest(promptjson, queue, task) {
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
-     
+
         if (reshttps.statusCode == 200) {
 
             queue.completeTask();
