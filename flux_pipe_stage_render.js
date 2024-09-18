@@ -15,32 +15,89 @@ function FluxPipeStageRender(task, req, queue) {
     var rawImg = req.files.imageByteArray.data;
     imgData = Buffer.from(rawImg).toString('base64');
 
-    const promptFile = fs.readFileSync('./pipe/flux_stage_canny.json');//');
-    let prompt = JSON.parse(promptFile);
+    let type = "depth";
+    if (req.body.fluxRenderType) {
+        type = req.body.fluxRenderType;
+    }
 
-    prompt["229"]["inputs"]["clip_l"] =  prompt["229"]["inputs"]["t5xxl"] = text;
-    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
-    //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["37"]["inputs"]["image"] = imgData;
+    console.log("type:" + type);
+    console.log("fluxEdgeDetection:" + req.body.fluxEdgeDetection);
+    console.log("fluxGuidance:" + req.body.fluxGuidance);
+
+    let prompt = null;
+
+    switch (type) {
+        case "depth":
+            prompt = FluxPipeStageRender.depthProcess(imgData, null, text, 0.5, 0.5);
+            break;
+        case "canny":
+            prompt = FluxPipeStageRender.cannyProcess(imgData, null, text, 0.5, 0.5);
+            break;
+        case "hed":
+            prompt = FluxPipeStageRender.hedProcess(imgData, null, text, 0.5, 0.5);
+            break;
+        default:
+            prompt = FluxPipeStageRender.depthProcess(imgData, null, text, 0.5, 0.5);
+    }
+
 
     task.pipeline = "flux_stage_render";
     sendRequest(prompt, queue, task);
 }
 
-FluxPipeStageRender.quickProcess = function (posprompt, imgurl ,imgData) {
+FluxPipeStageRender.quickProcess = function (posprompt, imgurl, imgData) {
     console.log("FluxPipeStageRender.quickProcess");
-    const promptFile = fs.readFileSync('./pipe/flux_stage_canny.json');//');
+    return FluxPipeStageRender.depthProcess(imgData, imgurl, posprompt);
+}
+
+FluxPipeStageRender.depthProcess = function (imgData, imgurl, text, value_0 = 0.5, value_1 = 0.5) {
+    console.log("FluxPipeStageRender.depthProcess");
+    const promptFile = fs.readFileSync('./pipe/advance/flux_stage_depth.json');//');
     let prompt = JSON.parse(promptFile);
-    if(imgData != null){
+
+    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = text;
+    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
+    //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
+    if (imgData != null) {
         prompt["37"]["inputs"]["image"] = imgData;
     }
-    else{
+    else {
         Tool.applyImage(prompt, "37", null, imgurl);
     }
-   
-    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = posprompt;
-    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
+    return prompt;
+}
 
+FluxPipeStageRender.cannyProcess = function (imgData, imgurl, text, value_0 = 0.5, value_1 = 0.5) {
+    console.log("FluxPipeStageRender.cannyProcess");
+    const promptFile = fs.readFileSync('./pipe/advance/flux_stage_canny.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = text;
+    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
+    //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
+    if (imgData != null) {
+        prompt["37"]["inputs"]["image"] = imgData;
+    }
+    else {
+        Tool.applyImage(prompt, "37", null, imgurl);
+    }
+    return prompt;
+}
+
+FluxPipeStageRender.hedProcess = function (imgData, imgurl, text, value_0 = 0.5, value_1 = 0.5) {
+    console.log("FluxPipeStageRender.hedProcess");
+    const promptFile = fs.readFileSync('./pipe/advance/flux_stage_hed.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = text;
+    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
+    //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
+    if (imgData != null) {
+        prompt["37"]["inputs"]["image"] = imgData;
+    }
+    else {
+        Tool.applyImage(prompt, "37", null, imgurl);
+    }
     return prompt;
 }
 

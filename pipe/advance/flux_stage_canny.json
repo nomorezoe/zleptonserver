@@ -58,13 +58,13 @@
   },
   "220": {
     "inputs": {
-      "strength": 0.86,
+      "strength": 0.8,
       "controlnet": [
         "227",
         0
       ],
       "image": [
-        "232",
+        "228",
         0
       ]
     },
@@ -150,7 +150,7 @@
   "227": {
     "inputs": {
       "model_name": "flux-dev",
-      "controlnet_path": "flux-depth-controlnet-v3.safetensors"
+      "controlnet_path": "flux-canny-controlnet-v3.safetensors"
     },
     "class_type": "LoadFluxControlNet",
     "_meta": {
@@ -199,21 +199,6 @@
     "class_type": "CLIPTextEncodeFlux",
     "_meta": {
       "title": "CLIPTextEncodeFlux"
-    }
-  },
-  "232": {
-    "inputs": {
-      "a": 6.283185307179586,
-      "bg_threshold": 0.1,
-      "resolution": 512,
-      "image": [
-        "37",
-        0
-      ]
-    },
-    "class_type": "MiDaS-DepthMapPreprocessor",
-    "_meta": {
-      "title": "MiDaS Depth Map"
     }
   }
 }
