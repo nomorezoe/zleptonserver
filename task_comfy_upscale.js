@@ -145,8 +145,10 @@ function TaskComfyUpscale(task, req, queue) {
     else if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "workflow_api_illustration_comic.json")) {
         task.pipeline = "upscale_illustration_comic";
         promptjson = PipeIllustrationComicUpscale.process(fullfilepath, faceParams, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext);
-    } 
-    else if (!isLockCharacter && Tool.checkIsSamePipeLine(jsonSettings, "flux_stage_canny.json")) {
+    }
+    else if (!isLockCharacter && (Tool.checkIsSamePipeLine(jsonSettings, "/advance/flux_stage_canny.json")
+        || Tool.checkIsSamePipeLine(jsonSettings, "/advance/flux_stage_depth.json") ||
+        Tool.checkIsSamePipeLine(jsonSettings, "/advance/flux_stage_hed.json"))) {
         task.pipeline = "upscale_flux";
         promptjson = PipeFluxUpscale.process(fullfilepath, denoise, cfg, samplingsteps, sampler, scheduler, prompt, model, style, negtext, isLockCharacter, fullCharacterPath);
     }
