@@ -11,7 +11,7 @@
   },
   "4": {
     "inputs": {
-      "ckpt_name": "realismEngineSDXL_v20VAE.safetensors"
+      "ckpt_name": "realvisxlV50_v50LightningBakedvae.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -388,7 +388,7 @@
     "inputs": {
       "add_noise": "enable",
       "noise_seed": 363127728637131,
-      "steps": 20,
+      "steps": 10,
       "cfg": 3,
       "sampler_name": "euler_ancestral",
       "scheduler": "normal",
@@ -421,7 +421,7 @@
     "inputs": {
       "add_noise": "disable",
       "noise_seed": 442614990692167,
-      "steps": 20,
+      "steps": 10,
       "cfg": 8,
       "sampler_name": "euler_ancestral",
       "scheduler": "normal",
