@@ -11,19 +11,76 @@ function TaskComfySuperUpscale(task, req, queue) {
 
     var session = req.body.session;
 
+    let jsonSettings = null;
+    if (req.body.tags != undefined) {
+        var tagString = req.body.tags
+        var tags = JSON.parse(tagString);
+        if (tags.prompt) {
+            var jsonString = tags.prompt.value;
+            console.log("EXif:" + jsonString);
+            jsonSettings = JSON.parse(jsonString);
+        }
+    }
+
+    let prompt = null;
+    if (jsonSettings != null && (Tool.checkIsSamePipeLine(jsonSettings, "/advance/flux_stage_canny.json")
+        || Tool.checkIsSamePipeLine(jsonSettings, "/advance/flux_stage_depth.json") ||
+        Tool.checkIsSamePipeLine(jsonSettings, "/advance/flux_stage_hed.json"))) {
+        prompt = processFluxSuperScale(task, req);
+    }
+    else {
+        prompt = processCommonSuperScale(task, req);
+    }
+
+    sendRequest(prompt, queue, task);
+}
+
+function processCommonSuperScale(task, req) {
+    console.log("processCommonSuperScale");
+
     var fullfilepath = req.body.fullfilepath;
 
     console.log("fullfilepath" + fullfilepath);
 
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_super_scale.json');
     let prompt = JSON.parse(promptFile);
+    prompt["168"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["236"]["inputs"]["url"] = fullfilepath;
 
-    prompt["236"]["inputs"]["url"]=fullfilepath;
-    
     task.pipeline = "super_upscale";
     //
     Tool.applyRandomFileName(prompt);
-    sendRequest(prompt, queue, task);
+    return prompt;
+}
+
+function processFluxSuperScale(task, req) {
+    console.log("processFluxSuperScale");
+
+
+    task.pipeline = "flux_super_upscale";
+
+    const promptFile = fs.readFileSync('./pipe/workflow_api_adv_flux_super_scale.json');
+    let prompt = JSON.parse(promptFile);
+    var fullfilepath = req.body.fullfilepath;
+    //lockcharacter
+    /*if (isLockCharacter) {
+        
+    }*/
+
+    prompt["106"]["inputs"]["seed"] = Tool.randomInt();
+    Tool.applyImage(prompt, "94", null, fullfilepath);
+    // promptjson["2"]["inputs"]["image"] = imgBytes;
+
+    //if (prompt != null && prompt != '' && prompt != "") {
+    // promptjson["6"]["inputs"]["text_positive"] = prompt;
+    //}
+
+    //if (history_neg != null && history_neg != '' && history_neg != "") {
+    // promptjson["112"]["inputs"]["text_negative"] = history_neg;
+    //}
+
+    return prompt; ß
+
 }
 
 function sendRequest(promptjson, queue, task) {
@@ -35,7 +92,7 @@ function sendRequest(promptjson, queue, task) {
         hostname: Tool.RequestURL,
         path: '/run',
         method: 'POST',
-        timeout: 6000000,
+        timeout: 2000,
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': data.length,
@@ -47,7 +104,7 @@ function sendRequest(promptjson, queue, task) {
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
-     
+
         if (reshttps.statusCode == 200) {
 
             queue.completeTask();
