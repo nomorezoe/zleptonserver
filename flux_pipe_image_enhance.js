@@ -12,8 +12,7 @@ function FluxPipeImageEnhance(task, req, queue) {
     var session = req.body.session;
     var text = req.body.prompt;
 
-    var rawImg = req.files.imageByteArray.data;
-    imgData = Buffer.from(rawImg).toString('base64');
+    console.log("enhance scale:" + req.body.scale);
 
     const promptFile = fs.readFileSync('./pipe/flux_enhance.json');//');
     let prompt = JSON.parse(promptFile);
@@ -23,7 +22,16 @@ function FluxPipeImageEnhance(task, req, queue) {
    // prompt["127"]["inputs"]["seed"] = Tool.randomInt();
     //  prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["94"]["inputs"]["image"] = imgData;
+
+    if(req.files && req.files.imageByteArray){
+        var rawImg = req.files.imageByteArray.data;
+        imgData = Buffer.from(rawImg).toString('base64');
+        prompt["94"]["inputs"]["image"] = imgData;
+    }
+    else{
+        Tool.applyImage(prompt, "94", null, req.body.imageUrl);
+    }
+    
 
     task.pipeline = "flux_image_enhance";
     sendRequest(prompt, queue, task);

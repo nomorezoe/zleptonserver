@@ -79,8 +79,8 @@
       "lora_name_2": "None",
       "model_weight_2": 0.8,
       "clip_weight_2": 1,
-      "switch_3": "Off",
-      "lora_name_3": "None",
+      "switch_3": "On",
+      "lora_name_3": "boreal-v2.safetensors",
       "model_weight_3": 0.7000000000000001,
       "clip_weight_3": 1
     },
@@ -226,7 +226,7 @@
   },
   "132": {
     "inputs": {
-      "Value": 512
+      "Value": 1024
     },
     "class_type": "DF_Integer",
     "_meta": {
@@ -235,7 +235,7 @@
   },
   "133": {
     "inputs": {
-      "Value": 512
+      "Value": 1024
     },
     "class_type": "DF_Integer",
     "_meta": {
