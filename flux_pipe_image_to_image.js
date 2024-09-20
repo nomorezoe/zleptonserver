@@ -76,6 +76,7 @@ function processCanny(task, req, queue) {
     }
     console.log("edge:" + edge);
     console.log("guidance:" + guidance);
+    console.log("req.body.imageUrl:" + req.body.imageUrl);
 
     const promptFile = fs.readFileSync('./pipe/advance/img2img_canny.json');//');
     let prompt = JSON.parse(promptFile);
