@@ -44,13 +44,13 @@ function FluxPipeImageToImage(task, req, queue) {
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     //prompt["41"]["inputs"]["image"] = imgData;
 
-    if(req.files && req.files.imageByteArray){
-        var rawImg = req.files.imageByteArray.data;
-        imgData = Buffer.from(rawImg).toString('base64');
-        prompt["41"]["inputs"]["image"] = imgData;
+    if(req.body.imageUrl != undefined){
+        Tool.applyImage(prompt, "41", null, req.body.imageUrl);
     }
     else{
-        Tool.applyImage(prompt, "41", null, req.body.imageUrl);
+        var rawImg = req.files.imageByteArray.data;
+        let imgData = Buffer.from(rawImg).toString('base64');
+        prompt["41"]["inputs"]["image"] = imgData;
     }
 
 

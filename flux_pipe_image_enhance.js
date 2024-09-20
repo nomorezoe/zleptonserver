@@ -23,13 +23,13 @@ function FluxPipeImageEnhance(task, req, queue) {
     //  prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
 
-    if(req.files && req.files.imageByteArray){
-        var rawImg = req.files.imageByteArray.data;
-        imgData = Buffer.from(rawImg).toString('base64');
-        prompt["94"]["inputs"]["image"] = imgData;
+    if(req.body.imageUrl != undefined){
+        Tool.applyImage(prompt, "41", null, req.body.imageUrl);
     }
     else{
-        Tool.applyImage(prompt, "94", null, req.body.imageUrl);
+        var rawImg = req.files.imageByteArray.data;
+        let imgData = Buffer.from(rawImg).toString('base64');
+        prompt["41"]["inputs"]["image"] = imgData;
     }
     
 
