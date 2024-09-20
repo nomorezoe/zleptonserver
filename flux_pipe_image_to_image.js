@@ -44,8 +44,8 @@ function FluxPipeImageToImage(task, req, queue) {
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     //prompt["41"]["inputs"]["image"] = imgData;
 
-    if(req.body.imageUrl != undefined){
-        Tool.applyImage(prompt, "41", null, req.body.imageUrl);
+    if(req.body.url != undefined){
+        Tool.applyImage(prompt, "41", null, req.body.url);
     }
     else{
         var rawImg = req.files.imageByteArray.data;
@@ -76,14 +76,14 @@ function processCanny(task, req, queue) {
     }
     console.log("edge:" + edge);
     console.log("guidance:" + guidance);
-    console.log("req.body.imageUrl:" + req.body.imageUrl);
+    console.log("req.body.url:" + req.body.url);
 
     const promptFile = fs.readFileSync('./pipe/advance/img2img_canny.json');//');
     let prompt = JSON.parse(promptFile);
 
     //prompt["16"]["inputs"]["image"] = imgData;
-    if(req.body.imageUrl != undefined){
-        Tool.applyImage(prompt, "16", null, req.body.imageUrl);
+    if(req.body.url != undefined){
+        Tool.applyImage(prompt, "16", null, req.body.url);
     }
     else{
         var rawImg = req.files.imageByteArray.data;
@@ -120,8 +120,8 @@ function processDepth(task, req, queue) {
     console.log("edge:" + edge);
     console.log("guidance:" + guidance);
 
-    if(req.body.imageUrl != undefined){
-        Tool.applyImage(prompt, "16", null, req.body.imageUrl);
+    if(req.body.url != undefined){
+        Tool.applyImage(prompt, "16", null, req.body.url);
     }
     else{
         var rawImg = req.files.imageByteArray.data;
@@ -160,8 +160,8 @@ function processHed(task, req, queue) {
     console.log("edge:" + edge);
     console.log("guidance:" + guidance);
 
-    if(req.body.imageUrl != undefined){
-        Tool.applyImage(prompt, "16", null, req.body.imageUrl);
+    if(req.body.url != undefined){
+        Tool.applyImage(prompt, "16", null, req.body.url);
     }
     else{
         var rawImg = req.files.imageByteArray.data;
