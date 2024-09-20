@@ -32,8 +32,8 @@ function FluxPipeImageToImage(task, req, queue) {
         return;
     }
 
-    var rawImg = req.files.imageByteArray.data;
-    imgData = Buffer.from(rawImg).toString('base64');
+    //var rawImg = req.files.imageByteArray.data;
+    //imgData = Buffer.from(rawImg).toString('base64');
 
     const promptFile = fs.readFileSync('./pipe/flux_img_2_img_no_upscale.json');//');
     let prompt = JSON.parse(promptFile);
@@ -42,7 +42,17 @@ function FluxPipeImageToImage(task, req, queue) {
     // prompt["53"]["inputs"]["seed"] = Tool.randomInt();
     prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
-    prompt["41"]["inputs"]["image"] = imgData;
+    //prompt["41"]["inputs"]["image"] = imgData;
+
+    if(req.files && req.files.imageByteArray){
+        var rawImg = req.files.imageByteArray.data;
+        imgData = Buffer.from(rawImg).toString('base64');
+        prompt["41"]["inputs"]["image"] = imgData;
+    }
+    else{
+        Tool.applyImage(prompt, "41", null, req.body.imageUrl);
+    }
+
 
     task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
