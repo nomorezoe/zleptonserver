@@ -24,12 +24,12 @@ function FluxPipeImageEnhance(task, req, queue) {
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
 
     if(req.body.imageUrl != undefined){
-        Tool.applyImage(prompt, "41", null, req.body.imageUrl);
+        Tool.applyImage(prompt, "94", null, req.body.imageUrl);
     }
     else{
         var rawImg = req.files.imageByteArray.data;
         let imgData = Buffer.from(rawImg).toString('base64');
-        prompt["41"]["inputs"]["image"] = imgData;
+        prompt["94"]["inputs"]["image"] = imgData;
     }
     
 
