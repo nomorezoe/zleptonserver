@@ -21,6 +21,7 @@ PipeFluxUpscale.process = function (fullFilaName, denoise, cfg, samplingsteps, s
         
     }*/
 
+    prompt["106"]["inputs"]["seed"] =  Tool.randomInt();
     Tool.applyImage(promptjson, "94", null, fullFilaName);
     // promptjson["2"]["inputs"]["image"] = imgBytes;
 
