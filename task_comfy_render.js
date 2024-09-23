@@ -138,6 +138,15 @@ function TaskComfyRender(task, req, queue) {
     Tool.renderParams.animalStart = animalStart;
     Tool.renderParams.animalEnd = animalEnd;
 
+    Tool.renderParams.loosecolor_styleintensity = req.body.loosecolor_styleintensity;
+    Tool.renderParams.loosecolor_3deffectstrength = req.body.loosecolor_3deffectstrength;
+    Tool.renderParams.loosecolor_3deffectfade = req.body.loosecolor_3deffectfade;
+    Tool.renderParams.loosecolor_imageclarity = req.body.loosecolor_imageclarity;
+
+    console.log(" Tool.renderParams.loosecolor_styleintensity " +  Tool.renderParams.loosecolor_styleintensity );
+    console.log(" Tool.renderParams.loosecolor_3deffectstrength " +  Tool.renderParams.loosecolor_3deffectstrength );
+    console.log(" Tool.renderParams.loosecolor_3deffectfade " +  Tool.renderParams.loosecolor_3deffectfade );
+    console.log(" Tool.renderParams.loosecolor_imageclarity " +  Tool.renderParams.loosecolor_imageclarity );
 
 
     //lock character
