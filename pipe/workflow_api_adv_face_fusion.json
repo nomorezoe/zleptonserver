@@ -119,54 +119,58 @@
   },
   "1019": {
     "inputs": {
-      "indexes": "0",
-      "images": [
+      "start": 0,
+      "length": 1,
+      "image": [
         "1008",
         0
       ]
     },
-    "class_type": "GetImagesFromBatchIndexed",
+    "class_type": "ImageFromBatch+",
     "_meta": {
-      "title": "Get Images From Batch Indexed"
+      "title": "🔧 Image From Batch"
     }
   },
-  "1020": {
+  "1020":{
     "inputs": {
-      "indexes": "1",
-      "images": [
+      "start": 1,
+      "length": 1,
+      "image": [
         "1008",
         0
       ]
     },
-    "class_type": "GetImagesFromBatchIndexed",
+    "class_type": "ImageFromBatch+",
     "_meta": {
-      "title": "Get Images From Batch Indexed"
+      "title": "🔧 Image From Batch"
     }
   },
   "1021": {
     "inputs": {
-      "indexes": "2",
-      "images": [
+      "start": 2,
+      "length": 1,
+      "image": [
         "1008",
         0
       ]
     },
-    "class_type": "GetImagesFromBatchIndexed",
+    "class_type": "ImageFromBatch+",
     "_meta": {
-      "title": "Get Images From Batch Indexed"
+      "title": "🔧 Image From Batch"
     }
   },
   "1023": {
     "inputs": {
-      "indexes": "3",
-      "images": [
+      "start": 3,
+      "length": 1,
+      "image": [
         "1008",
         0
       ]
     },
-    "class_type": "GetImagesFromBatchIndexed",
+    "class_type": "ImageFromBatch+",
     "_meta": {
-      "title": "Get Images From Batch Indexed"
+      "title": "🔧 Image From Batch"
     }
   },
   "1024": {
