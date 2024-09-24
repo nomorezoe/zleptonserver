@@ -143,11 +143,23 @@ function TaskComfyRender(task, req, queue) {
     Tool.renderParams.loosecolor_3deffectfade = req.body.loosecolor_3deffectfade;
     Tool.renderParams.loosecolor_imageclarity = req.body.loosecolor_imageclarity;
 
-    console.log(" Tool.renderParams.loosecolor_styleintensity " +  Tool.renderParams.loosecolor_styleintensity );
-    console.log(" Tool.renderParams.loosecolor_3deffectstrength " +  Tool.renderParams.loosecolor_3deffectstrength );
-    console.log(" Tool.renderParams.loosecolor_3deffectfade " +  Tool.renderParams.loosecolor_3deffectfade );
-    console.log(" Tool.renderParams.loosecolor_imageclarity " +  Tool.renderParams.loosecolor_imageclarity );
+    console.log(" Tool.renderParams.loosecolor_styleintensity " + Tool.renderParams.loosecolor_styleintensity);
+    console.log(" Tool.renderParams.loosecolor_3deffectstrength " + Tool.renderParams.loosecolor_3deffectstrength);
+    console.log(" Tool.renderParams.loosecolor_3deffectfade " + Tool.renderParams.loosecolor_3deffectfade);
+    console.log(" Tool.renderParams.loosecolor_imageclarity " + Tool.renderParams.loosecolor_imageclarity);
 
+
+    Tool.renderParams.poseInfluence = req.body.poseInfluence;
+    Tool.renderParams.poseEffectFade = req.body.poseEffectFade;
+    Tool.renderParams.depthInfluence = req.body.depthInfluence;
+    Tool.renderParams.depthEffectFade = req.body.depthEffectFade;
+    Tool.renderParams.creativityLevel = req.body.creativityLevel;
+
+    console.log(" Tool.renderParams.poseInfluence " + Tool.renderParams.poseInfluence);
+    console.log(" Tool.renderParams.poseEffectFade " + Tool.renderParams.poseEffectFade);
+    console.log(" Tool.renderParams.depthInfluence " + Tool.renderParams.depthInfluence);
+    console.log(" Tool.renderParams.depthEffectFade " + Tool.renderParams.depthEffectFade);
+    console.log(" Tool.renderParams.creativityLevel " + Tool.renderParams.creativityLevel);
 
     //lock character
     CharacterTool.lockChParams = {};
@@ -156,9 +168,9 @@ function TaskComfyRender(task, req, queue) {
     if (req.body.lockCharacter == 1 && req.body.fullCharacterFile != undefined) {
         CharacterTool.lockChParams.isLockCharacter = true;
         CharacterTool.lockChParams.fullCharacterPath = req.body.fullCharacterFile;
-        
+
         CharacterTool.characerLockPair = JSON.parse(req.body.characerLockPair);
-       //CharacterTool.characerLockPair = [[0,0],[1,1]];
+        //CharacterTool.characerLockPair = [[0,0],[1,1]];
         console.log("req.body.characerLockPair" + CharacterTool.characerLockPair);
         if (CharacterTool.characerLockPair.length == 0) {
             CharacterTool.characerLockPair = [[0, 0]];

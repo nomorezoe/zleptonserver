@@ -74,6 +74,26 @@ PipeAdvanceDSLR.process = function (imgData, positivePrompt, negtivePrompt, mode
         prompt["54"]["inputs"]["switch_2"] = "Off";
     }
 
+
+    //
+
+    if (Tool.renderParams.poseInfluence != undefined) {
+        prompt["181"]["inputs"]["strength"] = Tool.renderParams.poseInfluence;
+    }
+    if (Tool.renderParams.poseEffectFade != undefined) {
+        prompt["181"]["inputs"]["end_percent"] = Tool.renderParams.poseEffectFade;
+    }
+    if (Tool.renderParams.depthInfluence != undefined) {
+        prompt["182"]["inputs"]["strength"] = Tool.renderParams.depthInfluence;
+    }
+    if (Tool.renderParams.depthEffectFade != undefined) {
+        prompt["182"]["inputs"]["end_percent"] = Tool.renderParams.depthEffectFade;
+    }
+    if (Tool.renderParams.creativityLevel != undefined) {
+        prompt["45"]["inputs"]["denoise"] = Tool.renderParams.creativityLevel;
+    }
+    
+
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
         prompt["52"]["inputs"]["model_weight_1"] = 0.20;
