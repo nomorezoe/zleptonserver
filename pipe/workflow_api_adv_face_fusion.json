@@ -3,7 +3,7 @@
     "inputs": {
       "save_mode": false,
       "send_only": true,
-      "face_model_name": "test",
+      "face_model_name": "temp",
       "compute_method": "Mean",
       "images": [
         "5",
