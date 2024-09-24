@@ -2,7 +2,7 @@
   "1": {
     "inputs": {
       "save_mode": false,
-      "send_only": true,
+      "send_only": false,
       "face_model_name": "temp",
       "compute_method": "Mean",
       "images": [
