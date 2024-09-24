@@ -101,62 +101,6 @@
       "title": "Extends ReActor Update CountFace"
     }
   },
-  "1019": {
-    "inputs": {
-      "start": 0,
-      "length": 1,
-      "image": [
-        "1034",
-        0
-      ]
-    },
-    "class_type": "ImageFromBatch+",
-    "_meta": {
-      "title": "🔧 Image From Batch"
-    }
-  },
-  "1020": {
-    "inputs": {
-      "start": 1,
-      "length": 1,
-      "image": [
-        "1034",
-        0
-      ]
-    },
-    "class_type": "ImageFromBatch+",
-    "_meta": {
-      "title": "🔧 Image From Batch"
-    }
-  },
-  "1021": {
-    "inputs": {
-      "start": 2,
-      "length": 1,
-      "image": [
-        "1034",
-        0
-      ]
-    },
-    "class_type": "ImageFromBatch+",
-    "_meta": {
-      "title": "🔧 Image From Batch"
-    }
-  },
-  "1023": {
-    "inputs": {
-      "start": 3,
-      "length": 1,
-      "image": [
-        "1034",
-        0
-      ]
-    },
-    "class_type": "ImageFromBatch+",
-    "_meta": {
-      "title": "🔧 Image From Batch"
-    }
-  },
   "1024": {
     "inputs": {
       "enabled": true,
@@ -171,7 +115,7 @@
       "source_faces_index": "0",
       "console_log_level": 1,
       "input_image": [
-        "1019",
+        "1038",
         0
       ],
       "face_model": [
@@ -198,7 +142,7 @@
       "source_faces_index": "0",
       "console_log_level": 1,
       "input_image": [
-        "1020",
+        "1039",
         0
       ],
       "face_model": [
@@ -225,7 +169,7 @@
       "source_faces_index": "0",
       "console_log_level": 1,
       "input_image": [
-        "1021",
+        "1040",
         0
       ],
       "face_model": [
@@ -252,7 +196,7 @@
       "source_faces_index": "0",
       "console_log_level": 1,
       "input_image": [
-        "1023",
+        "1041",
         0
       ],
       "face_model": [
@@ -317,20 +261,72 @@
       "title": "Save Image"
     }
   },
-  "1034": {
+  "1037": {
     "inputs": {
-      "count": [
+      "dup_times": [
         "1007",
         0
       ],
-      "image": [
+      "images": [
         "51",
         0
       ]
     },
-    "class_type": "ReActorImageDublicator",
+    "class_type": "ImageDuplicator",
     "_meta": {
-      "title": "Image Dublicator (List) 🌌 ReActor"
+      "title": "ImageDuplicator"
+    }
+  },
+  "1038": {
+    "inputs": {
+      "indexes": "0",
+      "images": [
+        "1037",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed_zoe",
+    "_meta": {
+      "title": "GetImagesFromBatchIndexed (zoe)"
+    }
+  },
+  "1039": {
+    "inputs": {
+      "indexes": "1",
+      "images": [
+        "1037",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed_zoe",
+    "_meta": {
+      "title": "GetImagesFromBatchIndexed (zoe)"
+    }
+  },
+  "1040": {
+    "inputs": {
+      "indexes": "2",
+      "images": [
+        "1037",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed_zoe",
+    "_meta": {
+      "title": "GetImagesFromBatchIndexed (zoe)"
+    }
+  },
+  "1041": {
+    "inputs": {
+      "indexes": "3",
+      "images": [
+        "1037",
+        0
+      ]
+    },
+    "class_type": "GetImagesFromBatchIndexed_zoe",
+    "_meta": {
+      "title": "GetImagesFromBatchIndexed (zoe)"
     }
   }
 }
