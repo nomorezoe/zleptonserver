@@ -261,27 +261,11 @@
       "title": "Save Image"
     }
   },
-  "1037": {
-    "inputs": {
-      "dup_times": [
-        "1007",
-        0
-      ],
-      "images": [
-        "51",
-        0
-      ]
-    },
-    "class_type": "ImageDuplicator",
-    "_meta": {
-      "title": "ImageDuplicator"
-    }
-  },
   "1038": {
     "inputs": {
       "indexes": "0",
       "images": [
-        "1037",
+        "1042",
         0
       ]
     },
@@ -294,7 +278,7 @@
     "inputs": {
       "indexes": "1",
       "images": [
-        "1037",
+        "1042",
         0
       ]
     },
@@ -307,7 +291,7 @@
     "inputs": {
       "indexes": "2",
       "images": [
-        "1037",
+        "1042",
         0
       ]
     },
@@ -320,13 +304,29 @@
     "inputs": {
       "indexes": "3",
       "images": [
-        "1037",
+        "1042",
         0
       ]
     },
     "class_type": "GetImagesFromBatchIndexed_zoe",
     "_meta": {
       "title": "GetImagesFromBatchIndexed (zoe)"
+    }
+  },
+  "1042": {
+    "inputs": {
+      "count": [
+        "1007",
+        0
+      ],
+      "image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "ReActorImageDublicator",
+    "_meta": {
+      "title": "Image Dublicator (List) 🌌 ReActor"
     }
   }
 }
