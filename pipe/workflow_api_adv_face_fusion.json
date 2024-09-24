@@ -322,6 +322,10 @@
       "count": [
         "1007",
         0
+      ],
+      "image": [
+        "51",
+        0
       ]
     },
     "class_type": "ReActorImageDublicator",
