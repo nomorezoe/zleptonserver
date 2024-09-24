@@ -87,6 +87,22 @@ PipeAdvanceEpicReal.process = function (imgData, positivePrompt, negtivePrompt, 
 
     }
 
+    if (Tool.renderParams.poseInfluence != undefined) {
+        prompt["181"]["inputs"]["strength"] = Tool.renderParams.poseInfluence;
+    }
+    if (Tool.renderParams.poseEffectFade != undefined) {
+        prompt["181"]["inputs"]["end_percent"] = Tool.renderParams.poseEffectFade;
+    }
+    if (Tool.renderParams.depthInfluence != undefined) {
+        prompt["232"]["inputs"]["strength"] = Tool.renderParams.depthInfluence;
+    }
+    if (Tool.renderParams.depthEffectFade != undefined) {
+        prompt["232"]["inputs"]["end_percent"] = Tool.renderParams.depthEffectFade;
+    }
+    if (Tool.renderParams.creativityLevel != undefined) {
+        prompt["45"]["inputs"]["denoise"] = Tool.renderParams.creativityLevel;
+    }
+
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
         prompt["54"]["inputs"]["model_weight_2"] = 0.20;

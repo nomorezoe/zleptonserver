@@ -47,6 +47,20 @@ PipeAdvanceBWGrain.process = function (imgData, positivePrompt, negtivePrompt, m
     prompt["41"]["inputs"]["start_percent"] = Tool.renderParams.depthStart;
     prompt["41"]["inputs"]["end_percent"] = Tool.renderParams.depthEnd;
 
+    if (Tool.renderParams.loosecolor_styleintensity != undefined) {
+        prompt["29"]["inputs"]["strength_model"] = Tool.renderParams.loosecolor_styleintensity;
+    }
+    if (Tool.renderParams.loosecolor_3deffectstrength != undefined) {
+        prompt["41"]["inputs"]["strength"] = Tool.renderParams.loosecolor_3deffectstrength;
+    }
+    if (Tool.renderParams.loosecolor_3deffectfade != undefined) {
+
+        prompt["41"]["inputs"]["end_percent"] = Tool.renderParams.loosecolor_3deffectfade;
+    }
+    if (Tool.renderParams.loosecolor_imageclarity != undefined) {
+        prompt["3"]["inputs"]["denoise"] = Tool.renderParams.loosecolor_imageclarity;
+    }
+    
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
         prompt["29"]["inputs"]["strength_model"] = 0.20;

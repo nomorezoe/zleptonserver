@@ -39,6 +39,23 @@ IllustrationComicRender.process = function (imgData, positivePrompt, negtiveProm
 
     //prompt["4"]["inputs"]["ckpt_name"] = modelFile;
 
+    if (Tool.renderParams.poseInfluence != undefined) {
+        prompt["35"]["inputs"]["strength"] = Tool.renderParams.poseInfluence;
+    }
+    /* if (Tool.renderParams.poseEffectFade != undefined) {
+         prompt["181"]["inputs"]["end_percent"] = Tool.renderParams.poseEffectFade;
+     }
+    */
+    if (Tool.renderParams.depthInfluence != undefined) {
+        prompt["34"]["inputs"]["strength"] = Tool.renderParams.depthInfluence;
+    }
+    /*if (Tool.renderParams.depthEffectFade != undefined) {
+        prompt["232"]["inputs"]["end_percent"] = Tool.renderParams.depthEffectFade;
+    }*/
+    if (Tool.renderParams.creativityLevel != undefined) {
+        prompt["13"]["inputs"]["denoise"] = Tool.renderParams.creativityLevel;
+    }
+
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
         CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "1", "50", "13", "4", "48", "19", "20", "4");
@@ -60,9 +77,9 @@ IllustrationComicRender.quickProcess = function (positivePrompt, imgurl, imgData
     }
 
 
-    prompt["49"]["inputs"]["text_positive"] =  "anime ninja illustration, " + positivePrompt;
+    prompt["49"]["inputs"]["text_positive"] = "anime ninja illustration, " + positivePrompt;
     prompt["49"]["inputs"]["text_negative"] = "watermark,nsfw,nude";
-    prompt["49"]["inputs"]["style"] =  "comic-character";
+    prompt["49"]["inputs"]["style"] = "comic-character";
 
     let steps = 25;
     let cfg = 4;
