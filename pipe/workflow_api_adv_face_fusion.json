@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "save_mode": true,
+      "save_mode": false,
       "send_only": true,
       "face_model_name": "test",
       "compute_method": "Mean",
