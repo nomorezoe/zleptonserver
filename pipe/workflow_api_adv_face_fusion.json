@@ -41,7 +41,7 @@
   },
   "51": {
     "inputs": {
-      "image": "Download image (13).png",
+      "image": "1ade2950-5914-48da-861e-c888879efff0.png",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -101,61 +101,28 @@
       "title": "Extends ReActor Update CountFace"
     }
   },
-  "20000": {
+  "1042": {
     "inputs": {
-      "indexes": "0",
-      "images": [
-        "1042",
+      "count": [
+        "1007",
+        0
+      ],
+      "image": [
+        "51",
         0
       ]
     },
-    "class_type": "GetImagesFromBatchIndexed_zoe",
+    "class_type": "ReActorImageDublicator",
     "_meta": {
-      "title": "GetImagesFromBatchIndexed (zoe)"
-    }
-  },
-  "20010": {
-    "inputs": {
-      "indexes": "1",
-      "images": [
-        "1042",
-        0
-      ]
-    },
-    "class_type": "GetImagesFromBatchIndexed_zoe",
-    "_meta": {
-      "title": "GetImagesFromBatchIndexed (zoe)"
-    }
-  },
-  "20020": {
-    "inputs": {
-      "indexes": "2",
-      "images": [
-        "1042",
-        0
-      ]
-    },
-    "class_type": "GetImagesFromBatchIndexed_zoe",
-    "_meta": {
-      "title": "GetImagesFromBatchIndexed (zoe)"
-    }
-  },
-  "20030": {
-    "inputs": {
-      "indexes": "3",
-      "images": [
-        "1042",
-        0
-      ]
-    },
-    "class_type": "GetImagesFromBatchIndexed_zoe",
-    "_meta": {
-      "title": "GetImagesFromBatchIndexed (zoe)"
+      "title": "Image Dublicator (List) 🌌 ReActor"
     }
   },
   "20001": {
     "inputs": {
-      "enabled": true,
+      "enabled": [
+        "20040",
+        0
+      ],
       "swap_model": "inswapper_128.onnx",
       "facedetection": "retinaface_resnet50",
       "face_restore_model": "none",
@@ -167,88 +134,7 @@
       "source_faces_index": "0",
       "console_log_level": 1,
       "input_image": [
-        "20000",
-        0
-      ],
-      "face_model": [
-        "1",
-        0
-      ]
-    },
-    "class_type": "ReActorFaceSwap",
-    "_meta": {
-      "title": "ReActor 🌌 Fast Face Swap"
-    }
-  },
-  "20011": {
-    "inputs": {
-      "enabled": true,
-      "swap_model": "inswapper_128.onnx",
-      "facedetection": "retinaface_resnet50",
-      "face_restore_model": "none",
-      "face_restore_visibility": 1,
-      "codeformer_weight": 0.5,
-      "detect_gender_input": "no",
-      "detect_gender_source": "no",
-      "input_faces_index": "1",
-      "source_faces_index": "0",
-      "console_log_level": 1,
-      "input_image": [
-        "20010",
-        0
-      ],
-      "face_model": [
-        "1",
-        0
-      ]
-    },
-    "class_type": "ReActorFaceSwap",
-    "_meta": {
-      "title": "ReActor 🌌 Fast Face Swap"
-    }
-  },
-  "20021": {
-    "inputs": {
-      "enabled": true,
-      "swap_model": "inswapper_128.onnx",
-      "facedetection": "retinaface_resnet50",
-      "face_restore_model": "none",
-      "face_restore_visibility": 1,
-      "codeformer_weight": 0.5,
-      "detect_gender_input": "no",
-      "detect_gender_source": "no",
-      "input_faces_index": "2",
-      "source_faces_index": "0",
-      "console_log_level": 1,
-      "input_image": [
-        "20020",
-        0
-      ],
-      "face_model": [
-        "1",
-        0
-      ]
-    },
-    "class_type": "ReActorFaceSwap",
-    "_meta": {
-      "title": "ReActor 🌌 Fast Face Swap"
-    }
-  },
-  "20031": {
-    "inputs": {
-      "enabled": true,
-      "swap_model": "inswapper_128.onnx",
-      "facedetection": "retinaface_resnet50",
-      "face_restore_model": "none",
-      "face_restore_visibility": 1,
-      "codeformer_weight": 0.5,
-      "detect_gender_input": "no",
-      "detect_gender_source": "no",
-      "input_faces_index": "3",
-      "source_faces_index": "0",
-      "console_log_level": 1,
-      "input_image": [
-        "20030",
+        "20033",
         0
       ],
       "face_model": [
@@ -274,6 +160,36 @@
       "title": "Save Image"
     }
   },
+  "20011": {
+    "inputs": {
+      "enabled": [
+        "20042",
+        0
+      ],
+      "swap_model": "inswapper_128.onnx",
+      "facedetection": "retinaface_resnet50",
+      "face_restore_model": "none",
+      "face_restore_visibility": 1,
+      "codeformer_weight": 0.5,
+      "detect_gender_input": "no",
+      "detect_gender_source": "no",
+      "input_faces_index": "1",
+      "source_faces_index": "0",
+      "console_log_level": 1,
+      "input_image": [
+        "20034",
+        0
+      ],
+      "face_model": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ReActorFaceSwap",
+    "_meta": {
+      "title": "ReActor 🌌 Fast Face Swap"
+    }
+  },
   "20012": {
     "inputs": {
       "filename_prefix": "ComfyUI",
@@ -285,6 +201,36 @@
     "class_type": "SaveImage",
     "_meta": {
       "title": "Save Image"
+    }
+  },
+  "20021": {
+    "inputs": {
+      "enabled": [
+        "20044",
+        0
+      ],
+      "swap_model": "inswapper_128.onnx",
+      "facedetection": "retinaface_resnet50",
+      "face_restore_model": "none",
+      "face_restore_visibility": 1,
+      "codeformer_weight": 0.5,
+      "detect_gender_input": "no",
+      "detect_gender_source": "no",
+      "input_faces_index": "2",
+      "source_faces_index": "0",
+      "console_log_level": 1,
+      "input_image": [
+        "20035",
+        0
+      ],
+      "face_model": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ReActorFaceSwap",
+    "_meta": {
+      "title": "ReActor 🌌 Fast Face Swap"
     }
   },
   "20022": {
@@ -300,6 +246,36 @@
       "title": "Save Image"
     }
   },
+  "20031": {
+    "inputs": {
+      "enabled": [
+        "20045",
+        0
+      ],
+      "swap_model": "inswapper_128.onnx",
+      "facedetection": "retinaface_resnet50",
+      "face_restore_model": "none",
+      "face_restore_visibility": 1,
+      "codeformer_weight": 0.5,
+      "detect_gender_input": "no",
+      "detect_gender_source": "no",
+      "input_faces_index": "3",
+      "source_faces_index": "0",
+      "console_log_level": 1,
+      "input_image": [
+        "20036",
+        0
+      ],
+      "face_model": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ReActorFaceSwap",
+    "_meta": {
+      "title": "ReActor 🌌 Fast Face Swap"
+    }
+  },
   "20032": {
     "inputs": {
       "filename_prefix": "ComfyUI",
@@ -313,20 +289,164 @@
       "title": "Save Image"
     }
   },
-  "1042": {
+  "20033": {
     "inputs": {
-      "count": [
-        "1007",
-        0
-      ],
+      "start": 0,
+      "length": 1,
       "image": [
-        "51",
+        "1042",
         0
       ]
     },
-    "class_type": "ReActorImageDublicator",
+    "class_type": "ImageFromBatch+",
     "_meta": {
-      "title": "Image Dublicator (List) 🌌 ReActor"
+      "title": "🔧 Image From Batch"
+    }
+  },
+  "20034": {
+    "inputs": {
+      "start": 1,
+      "length": 1,
+      "image": [
+        "1042",
+        0
+      ]
+    },
+    "class_type": "ImageFromBatch+",
+    "_meta": {
+      "title": "🔧 Image From Batch"
+    }
+  },
+  "20035": {
+    "inputs": {
+      "start": 2,
+      "length": 1,
+      "image": [
+        "1042",
+        0
+      ]
+    },
+    "class_type": "ImageFromBatch+",
+    "_meta": {
+      "title": "🔧 Image From Batch"
+    }
+  },
+  "20036": {
+    "inputs": {
+      "start": 3,
+      "length": 1,
+      "image": [
+        "1042",
+        0
+      ]
+    },
+    "class_type": "ImageFromBatch+",
+    "_meta": {
+      "title": "🔧 Image From Batch"
+    }
+  },
+  "20040": {
+    "inputs": {
+      "comparison": "a > b",
+      "a": [
+        "1007",
+        0
+      ],
+      "b": [
+        "20046",
+        0
+      ]
+    },
+    "class_type": "Compare-🔬",
+    "_meta": {
+      "title": "Compare"
+    }
+  },
+  "20042": {
+    "inputs": {
+      "comparison": "a > b",
+      "a": [
+        "1007",
+        0
+      ],
+      "b": [
+        "20048",
+        0
+      ]
+    },
+    "class_type": "Compare-🔬",
+    "_meta": {
+      "title": "Compare"
+    }
+  },
+  "20044": {
+    "inputs": {
+      "comparison": "a > b",
+      "a": [
+        "1007",
+        0
+      ],
+      "b": [
+        "20049",
+        0
+      ]
+    },
+    "class_type": "Compare-🔬",
+    "_meta": {
+      "title": "Compare"
+    }
+  },
+  "20045": {
+    "inputs": {
+      "comparison": "a > b",
+      "a": [
+        "1007",
+        0
+      ],
+      "b": [
+        "20050",
+        0
+      ]
+    },
+    "class_type": "Compare-🔬",
+    "_meta": {
+      "title": "Compare"
+    }
+  },
+  "20046": {
+    "inputs": {
+      "Value": 0
+    },
+    "class_type": "DF_Integer",
+    "_meta": {
+      "title": "Integer"
+    }
+  },
+  "20048": {
+    "inputs": {
+      "Value": 1
+    },
+    "class_type": "DF_Integer",
+    "_meta": {
+      "title": "Integer"
+    }
+  },
+  "20049": {
+    "inputs": {
+      "Value": 2
+    },
+    "class_type": "DF_Integer",
+    "_meta": {
+      "title": "Integer"
+    }
+  },
+  "20050": {
+    "inputs": {
+      "Value": 3
+    },
+    "class_type": "DF_Integer",
+    "_meta": {
+      "title": "Integer"
     }
   }
 }
