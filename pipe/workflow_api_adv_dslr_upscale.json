@@ -11,7 +11,7 @@
   },
   "4": {
     "inputs": {
-      "ckpt_name": "juggernautXL_v9Rdphoto2Lightning.safetensors"
+      "ckpt_name": "realvisxlV50_v50LightningBakedvae.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -38,7 +38,7 @@
   "52": {
     "inputs": {
       "switch_1": "Off",
-      "lora_name_1": "real-humans-PublicPromptsXL.safetensors",
+      "lora_name_1": "None",
       "model_weight_1": 0.9500000000000001,
       "clip_weight_1": 1,
       "switch_2": "On",
@@ -81,12 +81,12 @@
   },
   "54": {
     "inputs": {
-      "switch_1": "On",
-      "lora_name_1": "Cinematic Hollywood Film_sdxl.safetensors",
+      "switch_1": "Off",
+      "lora_name_1": "None",
       "model_weight_1": 1.5,
       "clip_weight_1": 1,
-      "switch_2": "On",
-      "lora_name_2": "SDXL1.0_Essenz-series-by-AI_Characters_Style_BetterPhotography-v1.2-'Skynet'.safetensors",
+      "switch_2": "Off",
+      "lora_name_2": "None",
       "model_weight_2": 1.5,
       "clip_weight_2": 1,
       "switch_3": "Off",

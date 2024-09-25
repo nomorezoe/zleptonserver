@@ -15,12 +15,21 @@ function TaskComfyFaceFusion(task, req, queue) {
     Tool.applyImage(prompt, "51", null, req.body.url);
 
     for (let i = 0; i < 4; i++) {
-        if (req.files["imageByteArray_" + i] != undefined) {
+        if (req.files && req.files["imageByteArray_" + i] != undefined) {
+            console.log("file" + i);
             var rawImg = req.files["imageByteArray_" + i].data;
-            imgData = Buffer.from(rawImg).toString('base64');
+            let imgData = Buffer.from(rawImg).toString('base64');
             prompt[(1003 + i).toString()]["inputs"]["image"] = imgData;
 
-            
+            var captureFile = uuidv4() + "capture.png";
+            fs.writeFileSync(__dirname + OUTPUT_FOLDER + captureFile, imgData, {
+                encoding: "base64",
+            });
+
+
+        }
+        else if (req.body["image_url_" + i] != undefined) {
+            Tool.applyImage(prompt, (1003 + i).toString(), null, req.body["image_url_" + i]);
         }
         else {
             delete prompt[(1003 + i).toString()];
