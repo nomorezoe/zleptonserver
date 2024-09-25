@@ -101,22 +101,6 @@
       "title": "Extends ReActor Update CountFace"
     }
   },
-  "1042": {
-    "inputs": {
-      "count": [
-        "1007",
-        0
-      ],
-      "image": [
-        "51",
-        0
-      ]
-    },
-    "class_type": "ReActorImageDublicator",
-    "_meta": {
-      "title": "Image Dublicator (List) 🌌 ReActor"
-    }
-  },
   "20001": {
     "inputs": {
       "enabled": [
@@ -242,7 +226,7 @@
       "start": 0,
       "length": 1,
       "image": [
-        "1042",
+        "20054",
         0
       ]
     },
@@ -256,7 +240,7 @@
       "start": 1,
       "length": 1,
       "image": [
-        "1042",
+        "20054",
         0
       ]
     },
@@ -270,7 +254,7 @@
       "start": 2,
       "length": 1,
       "image": [
-        "1042",
+        "20054",
         0
       ]
     },
@@ -284,7 +268,7 @@
       "start": 3,
       "length": 1,
       "image": [
-        "1042",
+        "20054",
         0
       ]
     },
@@ -432,6 +416,22 @@
     "class_type": "SaveImage",
     "_meta": {
       "title": "Save Image"
+    }
+  },
+  "20054": {
+    "inputs": {
+      "amount": [
+        "1007",
+        0
+      ],
+      "image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "RepeatImageBatch",
+    "_meta": {
+      "title": "RepeatImageBatch"
     }
   }
 }
