@@ -41,7 +41,7 @@
   },
   "51": {
     "inputs": {
-      "image": "1ade2950-5914-48da-861e-c888879efff0.png",
+      "image": "3d_pixels-gigapixel-scale-2_00x.png",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -147,19 +147,6 @@
       "title": "ReActor 🌌 Fast Face Swap"
     }
   },
-  "20002": {
-    "inputs": {
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "20001",
-        0
-      ]
-    },
-    "class_type": "SaveImage",
-    "_meta": {
-      "title": "Save Image"
-    }
-  },
   "20011": {
     "inputs": {
       "enabled": [
@@ -188,19 +175,6 @@
     "class_type": "ReActorFaceSwap",
     "_meta": {
       "title": "ReActor 🌌 Fast Face Swap"
-    }
-  },
-  "20012": {
-    "inputs": {
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "20011",
-        0
-      ]
-    },
-    "class_type": "SaveImage",
-    "_meta": {
-      "title": "Save Image"
     }
   },
   "20021": {
@@ -233,19 +207,6 @@
       "title": "ReActor 🌌 Fast Face Swap"
     }
   },
-  "20022": {
-    "inputs": {
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "20021",
-        0
-      ]
-    },
-    "class_type": "SaveImage",
-    "_meta": {
-      "title": "Save Image"
-    }
-  },
   "20031": {
     "inputs": {
       "enabled": [
@@ -274,19 +235,6 @@
     "class_type": "ReActorFaceSwap",
     "_meta": {
       "title": "ReActor 🌌 Fast Face Swap"
-    }
-  },
-  "20032": {
-    "inputs": {
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "20031",
-        0
-      ]
-    },
-    "class_type": "SaveImage",
-    "_meta": {
-      "title": "Save Image"
     }
   },
   "20033": {
@@ -447,6 +395,43 @@
     "class_type": "DF_Integer",
     "_meta": {
       "title": "Integer"
+    }
+  },
+  "20052": {
+    "inputs": {
+      "image1": [
+        "20001",
+        0
+      ],
+      "image2": [
+        "20011",
+        0
+      ],
+      "image3": [
+        "20021",
+        0
+      ],
+      "image4": [
+        "20031",
+        0
+      ]
+    },
+    "class_type": "Make Image Batch",
+    "_meta": {
+      "title": "Make Image Batch"
+    }
+  },
+  "20053": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "20052",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
     }
   }
 }
