@@ -29,7 +29,7 @@ function TaskComfySuperUpscale(task, req, queue) {
         prompt = processFluxSuperScale(task, req);
     }
     else {
-        prompt = processCommonSuperScale(task, req);
+        prompt = processAdvanceSuperScale(task, req);
     }
 
     sendRequest(prompt, queue, task);
@@ -50,6 +50,23 @@ function processCommonSuperScale(task, req) {
     task.pipeline = "super_upscale";
     //
     Tool.applyRandomFileName(prompt);
+    return prompt;
+}
+
+function processAdvanceSuperScale(task, req) {
+    console.log("processAdvanceSuperScale");
+    var text = req.body.prompt;
+
+    const promptFile = fs.readFileSync('./pipe/advance/flux_enhance.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    prompt["40"]["inputs"]["text"] = text;
+    prompt["39"]["inputs"]["seed"] = Tool.randomInt();
+    prompt["46"]["inputs"]["seed"] = Tool.randomInt();
+
+    Tool.applyImage(prompt, "43", null, req.body.fullfilepath);
+    
+    task.pipeline = "advance_super_upscale";
     return prompt;
 }
 
