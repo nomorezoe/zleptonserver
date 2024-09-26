@@ -96,7 +96,7 @@
   "45": {
     "inputs": {
       "seed": 974138894751107,
-      "steps": 5,
+      "steps": 6,
       "cfg": 2.0,
       "sampler_name": "dpmpp_sde",
       "scheduler": "karras",

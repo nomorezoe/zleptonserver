@@ -53,5 +53,10 @@
         "name":"realvisxlV30Turbo",
         "file":"realvisxlV30Turbo_v30Bakedvae.safetensors",
         "isxl": true
+    },
+    {
+        "name":"realvisxlV50_v50LightningBakedvae",
+        "file":"realvisxlV50_v50LightningBakedvae.safetensors",
+        "isxl": true
     }
 ]

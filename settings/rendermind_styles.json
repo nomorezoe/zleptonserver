@@ -141,13 +141,9 @@
     },
     {
         "id": "cinematic",
-        "model": "juggernautXL",
+        "model": "realvisxlV50_v50LightningBakedvae",
         "style": "base",
-        "pipe": "adv_dslr",
-        "loras": "Cinematic_Hollywood_Film,BetterPhotography",
-        "lora_weights": "1.5,1.5",
-        "optional_loras": "real-humans-PublicPrompts",
-        "optional_lora_weights": "0.95"
+        "pipe": "adv_dslr"
     },
     {
         "id": "dslr",
