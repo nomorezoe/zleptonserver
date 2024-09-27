@@ -19,19 +19,21 @@ PipeAdvanceDSLRUpscale.process = function (fullfilepath, faceParams, denoise, cf
     promptjson["55"]["inputs"]["text_positive"] = positivePrompt;
     promptjson["55"]["inputs"]["text_negative"] = negtivePrompt;
 
-    promptjson["142"]["inputs"]["seed"] =  Tool.randomInt();
-    promptjson["142"]["inputs"]["denoise"] = denoise;
-    promptjson["142"]["inputs"]["cfg"] = cfg;
-    promptjson["142"]["inputs"]["steps"] = samplingsteps;
-    promptjson["142"]["inputs"]["sampler_name"] = sampler;
-    promptjson["142"]["inputs"]["scheduler"] = scheduler;
+    promptjson["142"]["inputs"]["seed"] = Tool.randomInt();
+    /* promptjson["142"]["inputs"]["denoise"] = denoise;
+     promptjson["142"]["inputs"]["cfg"] = cfg;
+     promptjson["142"]["inputs"]["steps"] = samplingsteps;
+     promptjson["142"]["inputs"]["sampler_name"] = sampler;
+     promptjson["142"]["inputs"]["scheduler"] = scheduler;
+    
+ 
+     if(humanloras){
+         promptjson["52"]["inputs"]["switch_1"] = "On";
+         console.log("lora real-humans-PublicPrompts On");
+     }
+      */
 
-    if(humanloras){
-        promptjson["52"]["inputs"]["switch_1"] = "On";
-        console.log("lora real-humans-PublicPrompts On");
-    }
-
-    Tool.ApplyFaceParams(promptjson, faceParams);
+    promptjson["220"]["inputs"]["seed"] = Tool.randomInt();
 
     return promptjson;
 }
