@@ -92,6 +92,7 @@
       "timestep_to_start_cfg": 25,
       "true_gs": 2.0,
       "image_to_image_strength": 0,
+      "denoise_strength": 1,
       "model": [
         "161",
         0
