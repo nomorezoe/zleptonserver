@@ -44,10 +44,10 @@ function FluxPipeImageToImage(task, req, queue) {
     //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
     //prompt["41"]["inputs"]["image"] = imgData;
 
-    if(req.body.url != undefined){
+    if (req.body.url != undefined) {
         Tool.applyImage(prompt, "41", null, req.body.url);
     }
-    else{
+    else {
         var rawImg = req.files.imageByteArray.data;
         let imgData = Buffer.from(rawImg).toString('base64');
         prompt["41"]["inputs"]["image"] = imgData;
@@ -66,26 +66,26 @@ function processCanny(task, req, queue) {
 
     var text = req.body.prompt;
 
-    let guidance = 0.5;
-    let edge = 0.5;
-    if (req.body.guidance != undefined) {
-        guidance = req.body.guidance;
+    let flux_strength = 0.4;
+    let flux_fade_effect = 0.4;
+    if (req.body.flux_strength != undefined) {
+        flux_strength = req.body.flux_strength;
     }
-    if (req.body.edgeDetection != undefined) {
-        edge = req.body.edgeDetection;
+    if (req.body.flux_fade_effect != undefined) {
+        flux_fade_effect = req.body.flux_fade_effect;
     }
-    console.log("edge:" + edge);
-    console.log("guidance:" + guidance);
+    console.log("flux_strength:" + flux_strength);
+    console.log("flux_fade_effect:" + flux_fade_effect);
     console.log("req.body.url:" + req.body.url);
 
-    const promptFile = fs.readFileSync('./pipe/advance/img2img_canny.json');//');
+    const promptFile = fs.readFileSync('./pipe/advance/img2img_canny_v2.json');//');
     let prompt = JSON.parse(promptFile);
 
     //prompt["16"]["inputs"]["image"] = imgData;
-    if(req.body.url != undefined){
+    if (req.body.url != undefined) {
         Tool.applyImage(prompt, "16", null, req.body.url);
     }
-    else{
+    else {
         var rawImg = req.files.imageByteArray.data;
         let imgData = Buffer.from(rawImg).toString('base64');
         prompt["16"]["inputs"]["image"] = imgData;
@@ -93,8 +93,9 @@ function processCanny(task, req, queue) {
 
     prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
     prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
-    prompt["19"]["inputs"]["guidance"] =  prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
-    prompt["14"]["inputs"]["strength"] = (edge > 0.5) ? (0.96 + (edge - 0.5) * 0.08) : (0.96 + (edge - 0.5) * 1.32);
+    // prompt["19"]["inputs"]["guidance"] = prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
+    prompt["14"]["inputs"]["strength"] = flux_strength;
+    prompt["14"]["inputs"]["end"] = flux_fade_effect;
     task.pipeline = "flux_img_2_img";
     sendRequest(prompt, queue, task);
 }
@@ -106,35 +107,38 @@ function processDepth(task, req, queue) {
     //imgData = Buffer.from(rawImg).toString('base64');
 
     var text = req.body.prompt;
-    const promptFile = fs.readFileSync('./pipe/advance/img2img_depth.json');//');
+    const promptFile = fs.readFileSync('./pipe/advance/img2img_depth_v2.json');//');
     let prompt = JSON.parse(promptFile);
 
-    let guidance = 0.5;
-    let edge = 0.5;
-    if (req.body.guidance != undefined) {
-        guidance = req.body.guidance;
+    let flux_strength = 0.4;
+    let flux_fade_effect = 0.4;
+    if (req.body.flux_strength != undefined) {
+        flux_strength = req.body.flux_strength;
     }
-    if (req.body.edgeDetection != undefined) {
-        edge = req.body.edgeDetection;
+    if (req.body.flux_fade_effect != undefined) {
+        flux_fade_effect = req.body.flux_fade_effect;
     }
-    console.log("edge:" + edge);
-    console.log("guidance:" + guidance);
+    console.log("flux_strength:" + flux_strength);
+    console.log("flux_fade_effect:" + flux_fade_effect);
 
-    if(req.body.url != undefined){
-        Tool.applyImage(prompt, "16", null, req.body.url);
+    if (req.body.url != undefined) {
+        Tool.applyImage(prompt, "71", null, req.body.url);
     }
-    else{
+    else {
         var rawImg = req.files.imageByteArray.data;
         let imgData = Buffer.from(rawImg).toString('base64');
-        prompt["16"]["inputs"]["image"] = imgData;
+        prompt["71"]["inputs"]["image"] = imgData;
     }
 
-    prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["6"]["inputs"]["text"] = text;
+    prompt["38"]["inputs"]["strength"] = flux_strength;
+    prompt["38"]["inputs"]["end_percent"] = flux_fade_effect;
 
-    prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
-    prompt["19"]["inputs"]["guidance"] = prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
-    prompt["14"]["inputs"]["strength"] = (edge > 0.5) ? (0.8 + (edge - 0.5) * 0.4) : (0.8 + (edge - 0.5) * 1);
-    task.pipeline = "flux_img_2_img";
+    //prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
+    //prompt["19"]["inputs"]["guidance"] = prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
+    //prompt["14"]["inputs"]["strength"] = (edge > 0.5) ? (0.8 + (edge - 0.5) * 0.4) : (0.8 + (edge - 0.5) * 1);
+    task.pipeline = "flux_img_2_img_depth";
     sendRequest(prompt, queue, task);
 }
 
@@ -146,24 +150,24 @@ function processHed(task, req, queue) {
     //imgData = Buffer.from(rawImg).toString('base64');
 
     var text = req.body.prompt;
-    const promptFile = fs.readFileSync('./pipe/advance/img2img_hed.json');//');
+    const promptFile = fs.readFileSync('./pipe/advance/img2img_hed_v2.json');//');
     let prompt = JSON.parse(promptFile);
 
-    let guidance = 0.5;
-    let edge = 0.5;
-    if (req.body.guidance != undefined) {
-        guidance = req.body.guidance;
+    let flux_strength = 0.4;
+    let flux_fade_effect = 0.4;
+    if (req.body.flux_strength != undefined) {
+        flux_strength = req.body.flux_strength;
     }
-    if (req.body.edgeDetection != undefined) {
-        edge = req.body.edgeDetection;
+    if (req.body.flux_fade_effect != undefined) {
+        flux_fade_effect = req.body.flux_fade_effect;
     }
-    console.log("edge:" + edge);
-    console.log("guidance:" + guidance);
+    console.log("flux_strength:" + flux_strength);
+    console.log("flux_fade_effect:" + flux_fade_effect);
 
-    if(req.body.url != undefined){
+    if (req.body.url != undefined) {
         Tool.applyImage(prompt, "16", null, req.body.url);
     }
-    else{
+    else {
         var rawImg = req.files.imageByteArray.data;
         let imgData = Buffer.from(rawImg).toString('base64');
         prompt["16"]["inputs"]["image"] = imgData;
@@ -172,9 +176,10 @@ function processHed(task, req, queue) {
     prompt["3"]["inputs"]["noise_seed"] = Tool.randomInt();
 
     prompt["5"]["inputs"]["clip_l"] = prompt["5"]["inputs"]["t5xxl"] = "Create a cinematic image of " + text;
-    prompt["19"]["inputs"]["guidance"] = prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
-    prompt["14"]["inputs"]["strength"] = (edge > 0.5) ? (0.7 + (edge - 0.5) * 0.6) : (0.7 + (edge - 0.5) * 0.8);
-    task.pipeline = "flux_img_2_img";
+    // prompt["19"]["inputs"]["guidance"] = prompt["5"]["inputs"]["guidance"] = (guidance > 0.5) ? (4 + (guidance - 0.5) * 2) : (4 + (guidance - 0.5) * 2);
+    prompt["14"]["inputs"]["strength"] = flux_strength;
+    prompt["14"]["inputs"]["end"] = flux_fade_effect;
+    task.pipeline = "flux_img_2_img_hed";
     sendRequest(prompt, queue, task);
 }
 
