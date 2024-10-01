@@ -262,7 +262,7 @@
   "70": {
     "inputs": {
       "ckpt_name": "depth_anything_v2_vitl.pth",
-      "resolution": 1024,
+      "resolution": 512,
       "image": [
         "73",
         0
