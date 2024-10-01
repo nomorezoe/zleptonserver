@@ -81,7 +81,7 @@ FluxPipeStageRender.depthProcess = function (imgData, imgurl, text, req = null, 
         console.log("flux_fade_effect:" + flux_fade_effect);
 
         prompt["220"]["inputs"]["strength"] = flux_strength;
-        prompt["220"]["inputs"]["end_percent"] = flux_fade_effect;
+        prompt["220"]["inputs"]["end"] = flux_fade_effect;
     }
 
     return prompt;
@@ -116,7 +116,7 @@ FluxPipeStageRender.cannyProcess = function (imgData, imgurl, text, req = null, 
         console.log("flux_fade_effect:" + flux_fade_effect);
 
         prompt["220"]["inputs"]["strength"] = flux_strength;
-        prompt["220"]["inputs"]["end_percent"] = flux_fade_effect;
+        prompt["220"]["inputs"]["end"] = flux_fade_effect;
     }
     return prompt;
 }
@@ -150,7 +150,7 @@ FluxPipeStageRender.hedProcess = function (imgData, imgurl, text, req = null, va
         console.log("flux_fade_effect:" + flux_fade_effect);
 
         prompt["220"]["inputs"]["strength"] = flux_strength;
-        prompt["220"]["inputs"]["end_percent"] = flux_fade_effect;
+        prompt["220"]["inputs"]["end"] = flux_fade_effect;
     }
     return prompt;
 }
