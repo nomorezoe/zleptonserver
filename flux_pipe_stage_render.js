@@ -79,7 +79,7 @@ FluxPipeStageRender.depthProcess = function (imgData, imgurl, text, req = null, 
         console.log("flux_fade_effect:" + flux_fade_effect);
 
         prompt["38"]["inputs"]["strength"] = flux_strength;
-        prompt["38"]["inputs"]["end"] = flux_fade_effect;
+        prompt["38"]["inputs"]["end_percent"] = flux_fade_effect;
     }
     return prompt;
 }
