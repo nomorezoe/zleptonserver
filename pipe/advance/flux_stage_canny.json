@@ -58,7 +58,9 @@
   },
   "220": {
     "inputs": {
-      "strength": 0.8,
+      "strength": 1,
+      "start": 0,
+      "end": 1,
       "controlnet": [
         "227",
         0
@@ -68,9 +70,9 @@
         0
       ]
     },
-    "class_type": "ApplyFluxControlNet",
+    "class_type": "ApplyAdvancedFluxControlNet",
     "_meta": {
-      "title": "Apply Flux ControlNet"
+      "title": "Apply Advanced Flux ControlNet"
     }
   },
   "221": {

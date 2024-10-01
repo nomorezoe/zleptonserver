@@ -21,23 +21,23 @@ function FluxPipeStageRender(task, req, queue) {
     }
 
     console.log("type:" + type);
-    console.log("fluxEdgeDetection:" + req.body.fluxEdgeDetection);
-    console.log("fluxGuidance:" + req.body.fluxGuidance);
+    console.log("flux_strength:" + req.body.flux_strength);
+    console.log("flux_fade_effect:" + req.body.flux_fade_effect);
 
     let prompt = null;
 
     switch (type) {
         case "depth":
-            prompt = FluxPipeStageRender.depthProcess(imgData, null, text, 0.5, 0.5);
+            prompt = FluxPipeStageRender.depthProcess(imgData, null, text, req, 0.5, 0.5);
             break;
         case "canny":
-            prompt = FluxPipeStageRender.cannyProcess(imgData, null, text, 0.5, 0.5);
+            prompt = FluxPipeStageRender.cannyProcess(imgData, null, text, req, 0.5, 0.5);
             break;
         case "hed":
-            prompt = FluxPipeStageRender.hedProcess(imgData, null, text, 0.5, 0.5);
+            prompt = FluxPipeStageRender.hedProcess(imgData, null, text, req, 0.5, 0.5);
             break;
         default:
-            prompt = FluxPipeStageRender.depthProcess(imgData, null, text, 0.5, 0.5);
+            prompt = FluxPipeStageRender.depthProcess(imgData, null, text, req, 0.5, 0.5);
     }
 
 
@@ -50,24 +50,44 @@ FluxPipeStageRender.quickProcess = function (posprompt, imgurl, imgData) {
     return FluxPipeStageRender.depthProcess(imgData, imgurl, posprompt);
 }
 
-FluxPipeStageRender.depthProcess = function (imgData, imgurl, text, value_0 = 0.5, value_1 = 0.5) {
+FluxPipeStageRender.depthProcess = function (imgData, imgurl, text, req = null, value_0 = 0.5, value_1 = 0.5) {
     console.log("FluxPipeStageRender.depthProcess");
     const promptFile = fs.readFileSync('./pipe/advance/flux_stage_depth.json');//');
     let prompt = JSON.parse(promptFile);
 
-    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = text;
-    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
-    //prompt["233"]["inputs"]["seed"] = Tool.randomInt();
-    if (imgData != null) {
-        prompt["37"]["inputs"]["image"] = imgData;
+    if (req.body.url != undefined) {
+        Tool.applyImage(prompt, "37", null, req.body.url);
     }
     else {
-        Tool.applyImage(prompt, "37", null, imgurl);
+        var rawImg = req.files.imageByteArray.data;
+        let imgData = Buffer.from(rawImg).toString('base64');
+        prompt["37"]["inputs"]["image"] = imgData;
     }
+
+    prompt["229"]["inputs"]["clip_l"] = prompt["229"]["inputs"]["t5xxl"] = text;
+    prompt["222"]["inputs"]["noise_seed"] = Tool.randomInt();
+
+    //parmas
+    if (req != null) {
+        let flux_strength = 0.4;
+        let flux_fade_effect = 0.4;
+        if (req.body.flux_strength != undefined) {
+            flux_strength = req.body.flux_strength;
+        }
+        if (req.body.flux_fade_effect != undefined) {
+            flux_fade_effect = req.body.flux_fade_effect;
+        }
+        console.log("flux_strength:" + flux_strength);
+        console.log("flux_fade_effect:" + flux_fade_effect);
+
+        prompt["220"]["inputs"]["strength"] = flux_strength;
+        prompt["220"]["inputs"]["end_percent"] = flux_fade_effect;
+    }
+
     return prompt;
 }
 
-FluxPipeStageRender.cannyProcess = function (imgData, imgurl, text, value_0 = 0.5, value_1 = 0.5) {
+FluxPipeStageRender.cannyProcess = function (imgData, imgurl, text, req = null, value_0 = 0.5, value_1 = 0.5) {
     console.log("FluxPipeStageRender.cannyProcess");
     const promptFile = fs.readFileSync('./pipe/advance/flux_stage_canny.json');//');
     let prompt = JSON.parse(promptFile);
@@ -81,10 +101,27 @@ FluxPipeStageRender.cannyProcess = function (imgData, imgurl, text, value_0 = 0.
     else {
         Tool.applyImage(prompt, "37", null, imgurl);
     }
+
+    //parmas
+    if (req != null) {
+        let flux_strength = 0.4;
+        let flux_fade_effect = 0.4;
+        if (req.body.flux_strength != undefined) {
+            flux_strength = req.body.flux_strength;
+        }
+        if (req.body.flux_fade_effect != undefined) {
+            flux_fade_effect = req.body.flux_fade_effect;
+        }
+        console.log("flux_strength:" + flux_strength);
+        console.log("flux_fade_effect:" + flux_fade_effect);
+
+        prompt["220"]["inputs"]["strength"] = flux_strength;
+        prompt["220"]["inputs"]["end_percent"] = flux_fade_effect;
+    }
     return prompt;
 }
 
-FluxPipeStageRender.hedProcess = function (imgData, imgurl, text, value_0 = 0.5, value_1 = 0.5) {
+FluxPipeStageRender.hedProcess = function (imgData, imgurl, text, req = null, value_0 = 0.5, value_1 = 0.5) {
     console.log("FluxPipeStageRender.hedProcess");
     const promptFile = fs.readFileSync('./pipe/advance/flux_stage_hed.json');//');
     let prompt = JSON.parse(promptFile);
@@ -97,6 +134,23 @@ FluxPipeStageRender.hedProcess = function (imgData, imgurl, text, value_0 = 0.5,
     }
     else {
         Tool.applyImage(prompt, "37", null, imgurl);
+    }
+
+    //parmas
+    if (req != null) {
+        let flux_strength = 0.4;
+        let flux_fade_effect = 0.4;
+        if (req.body.flux_strength != undefined) {
+            flux_strength = req.body.flux_strength;
+        }
+        if (req.body.flux_fade_effect != undefined) {
+            flux_fade_effect = req.body.flux_fade_effect;
+        }
+        console.log("flux_strength:" + flux_strength);
+        console.log("flux_fade_effect:" + flux_fade_effect);
+
+        prompt["220"]["inputs"]["strength"] = flux_strength;
+        prompt["220"]["inputs"]["end_percent"] = flux_fade_effect;
     }
     return prompt;
 }
