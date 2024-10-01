@@ -52,6 +52,40 @@ FluxPipeStageRender.quickProcess = function (posprompt, imgurl, imgData) {
 
 FluxPipeStageRender.depthProcess = function (imgData, imgurl, text, req = null, value_0 = 0.5, value_1 = 0.5) {
     console.log("FluxPipeStageRender.depthProcess");
+
+    const promptFile = fs.readFileSync('./pipe/advance/img2img_depth_v2.json');//');
+    let prompt = JSON.parse(promptFile);
+
+    if (imgData != null) {
+        prompt["71"]["inputs"]["image"] = imgData;
+    }
+    else {
+        Tool.applyImage(prompt, "71", null, imgurl);
+    }
+
+    prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
+    prompt["6"]["inputs"]["text"] = text;
+     //parmas
+     if (req != null) {
+        let flux_strength = 0.4;
+        let flux_fade_effect = 0.4;
+        if (req.body.flux_strength != undefined) {
+            flux_strength = req.body.flux_strength;
+        }
+        if (req.body.flux_fade_effect != undefined) {
+            flux_fade_effect = req.body.flux_fade_effect;
+        }
+        console.log("flux_strength:" + flux_strength);
+        console.log("flux_fade_effect:" + flux_fade_effect);
+
+        prompt["38"]["inputs"]["strength"] = flux_strength;
+        prompt["38"]["inputs"]["end"] = flux_fade_effect;
+    }
+    return prompt;
+}
+
+FluxPipeStageRender.old_depthProcess = function (imgData, imgurl, text, req = null, value_0 = 0.5, value_1 = 0.5) {
+    console.log("FluxPipeStageRender.depthProcess");
     const promptFile = fs.readFileSync('./pipe/advance/flux_stage_depth.json');//');
     let prompt = JSON.parse(promptFile);
 
