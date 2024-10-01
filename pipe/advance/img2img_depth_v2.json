@@ -153,8 +153,14 @@
   },
   "27": {
     "inputs": {
-      "width": 1024,
-      "height": 576,
+      "width": [
+        "72",
+        0
+      ],
+      "height": [
+        "72",
+        1
+      ],
       "batch_size": 1
     },
     "class_type": "EmptySD3LatentImage",
@@ -258,7 +264,7 @@
       "ckpt_name": "depth_anything_v2_vitl.pth",
       "resolution": 1024,
       "image": [
-        "71",
+        "73",
         0
       ]
     },
@@ -275,6 +281,40 @@
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
+    }
+  },
+  "72": {
+    "inputs": {
+      "image": [
+        "71",
+        0
+      ]
+    },
+    "class_type": "CM_NearestSDXLResolution",
+    "_meta": {
+      "title": "NearestSDXLResolution"
+    }
+  },
+  "73": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": [
+        "72",
+        0
+      ],
+      "height": [
+        "72",
+        1
+      ],
+      "crop": "center",
+      "image": [
+        "71",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
     }
   }
 }
