@@ -252,12 +252,11 @@
   },
   "63": {
     "inputs": {
-      "unet_name": "flux1Dev_v10.safetensors",
-      "weight_dtype": "default"
+      "unet_name": "flux1-dev-Q6_K.gguf"
     },
-    "class_type": "UNETLoader",
+    "class_type": "UnetLoaderGGUF",
     "_meta": {
-      "title": "Load Diffusion Model"
+      "title": "Unet Loader (GGUF)"
     }
   },
   "70": {
