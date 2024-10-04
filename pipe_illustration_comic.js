@@ -64,7 +64,7 @@ IllustrationComicRender.process = function (imgData, positivePrompt, negtiveProm
     return prompt;
 }
 
-IllustrationComicRender.quickProcess = function (positivePrompt, imgurl, imgData) {
+IllustrationComicRender.quickProcess = function (positivePrompt, imgurl, imgData, req) {
     console.log("IllustrationComicRender.quickProcess");
     const promptFile = fs.readFileSync('./pipe/workflow_api_illustration_comic.json');//');
     let prompt = JSON.parse(promptFile);
@@ -95,6 +95,35 @@ IllustrationComicRender.quickProcess = function (positivePrompt, imgurl, imgData
 
     prompt["35"]["inputs"]["strength"] = poseStrength;
     prompt["34"]["inputs"]["strength"] = depthStrength;
+
+    let poseInfluence = 0.5;
+    let poseEffectFade = 0.65;
+    let depthInfluence = 0.8;
+    let depthEffectFade = 0.4;
+    let creativityLevel = 1.0;
+    if (req.body.poseInfluence != undefined) {
+        poseInfluence = req.body.poseInfluence;
+    }
+    if (req.body.poseEffectFade != undefined) {
+        poseEffectFade = req.body.poseEffectFade;
+    }
+    if (req.body.depthInfluence != undefined) {
+        depthInfluence = req.body.depthInfluence;
+    }
+    if (req.body.depthEffectFade != undefined) {
+        depthEffectFade = req.body.depthEffectFade;
+    }
+    if (req.body.creativityLevel != undefined) {
+        creativityLevel = req.body.creativityLevel;
+    }
+
+    prompt["34"]["inputs"]["strength"] = depthInfluence;
+    prompt["34"]["inputs"]["end_percent"] = depthEffectFade;
+
+    prompt["35"]["inputs"]["strength"] = poseInfluence;
+    prompt["35"]["inputs"]["end_percent"] = poseEffectFade;
+
+    prompt["13"]["inputs"]["denoise"] = creativityLevel;
 
     return prompt;
 }

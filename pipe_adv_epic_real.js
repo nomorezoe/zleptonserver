@@ -112,7 +112,7 @@ PipeAdvanceEpicReal.process = function (imgData, positivePrompt, negtivePrompt, 
     return prompt;
 }
 
-PipeAdvanceEpicReal.quickProcess = function (positivePrompt, imgurl, imgData) {
+PipeAdvanceEpicReal.quickProcess = function (positivePrompt, imgurl, imgData, req) {
     console.log("PipeAdvanceEpicReal.quickProcess");
 
     let promptFile = fs.readFileSync('./pipe/workflow_api_adv_epic_real.json');//');
@@ -165,8 +165,38 @@ PipeAdvanceEpicReal.quickProcess = function (positivePrompt, imgurl, imgData) {
     prompt["181"]["inputs"]["start_percent"] = poseStart;
     prompt["181"]["inputs"]["end_percent"] = poseEnd;
 
+
+    let poseInfluence = 0.5;
+    let poseEffectFade = 0.65;
+    let depthInfluence = 0.8;
+    let depthEffectFade = 0.4;
+    let creativityLevel = 1.0;
+    if (req.body.poseInfluence != undefined) {
+        poseInfluence = req.body.poseInfluence;
+    }
+    if (req.body.poseEffectFade != undefined) {
+        poseEffectFade = req.body.poseEffectFade;
+    }
+    if (req.body.depthInfluence != undefined) {
+        depthInfluence = req.body.depthInfluence;
+    }
+    if (req.body.depthEffectFade != undefined) {
+        depthEffectFade = req.body.depthEffectFade;
+    }
+    if (req.body.creativityLevel != undefined) {
+        creativityLevel = req.body.creativityLevel;
+    }
+
+    prompt["232"]["inputs"]["strength"] = depthInfluence;
+    prompt["232"]["inputs"]["end_percent"] = depthEffectFade;
+
+    prompt["181"]["inputs"]["strength"] = poseInfluence;
+    prompt["181"]["inputs"]["end_percent"] = poseEffectFade;
+
+    prompt["45"]["inputs"]["denoise"] = creativityLevel;
+
     Tool.ApplyCanny("1", "232", "45", prompt, cannyStrength, cannyStart, cannyEnd, 0.01, 0.25, "control_v11p_sd15_canny.pth");
-    
+
 
 
     return prompt;

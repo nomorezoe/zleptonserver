@@ -107,7 +107,7 @@ PipeAdvancePhotoRealism.process = function (imgData, positivePrompt, negtiveProm
     return prompt;
 }
 
-PipeAdvancePhotoRealism.quickProcess = function (positivePrompt, imgurl, imgData) {
+PipeAdvancePhotoRealism.quickProcess = function (positivePrompt, imgurl, imgData, req) {
     console.log("PipeAdvancePhotoRealism.quickProcess");
     let promptFile;
     promptFile = fs.readFileSync('./pipe/workflow_api_adv_realism_photo.json');//');
@@ -173,6 +173,36 @@ PipeAdvancePhotoRealism.quickProcess = function (positivePrompt, imgurl, imgData
     prompt["55"]["inputs"]["text_positive"] = positivePrompt;
     prompt["192"]["inputs"]["noise_seed"] = Tool.randomInt();
     prompt["193"]["inputs"]["noise_seed"] = Tool.randomInt();
+
+    let poseInfluence = 0.5;
+    let poseEffectFade = 0.65;
+    let depthInfluence = 0.8;
+    let depthEffectFade = 0.4;
+    let creativityLevel = 1.0;
+    if (req.body.poseInfluence != undefined) {
+        poseInfluence = req.body.poseInfluence;
+    }
+    if (req.body.poseEffectFade != undefined) {
+        poseEffectFade = req.body.poseEffectFade;
+    }
+    if (req.body.depthInfluence != undefined) {
+        depthInfluence = req.body.depthInfluence;
+    }
+    if (req.body.depthEffectFade != undefined) {
+        depthEffectFade = req.body.depthEffectFade;
+    }
+    if (req.body.creativityLevel != undefined) {
+        creativityLevel = req.body.creativityLevel;
+    }
+
+    prompt["182"]["inputs"]["strength"] = depthInfluence;
+    prompt["182"]["inputs"]["end_percent"] = depthEffectFade;
+
+    prompt["181"]["inputs"]["strength"] = poseInfluence;
+    prompt["181"]["inputs"]["end_percent"] = poseEffectFade;
+
+   // prompt["45"]["inputs"]["denoise"] = creativityLevel;
+
 
     return prompt;
 }

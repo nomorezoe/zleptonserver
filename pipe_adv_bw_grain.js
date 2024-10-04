@@ -69,7 +69,7 @@ PipeAdvanceBWGrain.process = function (imgData, positivePrompt, negtivePrompt, m
     return prompt;
 }
 
-PipeAdvanceBWGrain.quickProcess = function (positivePrompt, imgurl, imgData) {
+PipeAdvanceBWGrain.quickProcess = function (positivePrompt, imgurl, imgData, req) {
     console.log("PipeAdvanceBWGrain.quickProcess");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_grain.json');//');
     let prompt = JSON.parse(promptFile);
@@ -112,6 +112,26 @@ PipeAdvanceBWGrain.quickProcess = function (positivePrompt, imgurl, imgData) {
     prompt["41"]["inputs"]["strength"] = depthStrength;
     prompt["41"]["inputs"]["start_percent"] = depthStart;
     prompt["41"]["inputs"]["end_percent"] = depthEnd;
+
+    let depthInfluence = 0.8;
+    let depthEffectFade = 0.4;
+    let creativityLevel = 1.0;
+   
+    if (req.body.depthInfluence != undefined) {
+        depthInfluence = req.body.depthInfluence;
+    }
+    if (req.body.depthEffectFade != undefined) {
+        depthEffectFade = req.body.depthEffectFade;
+    }
+    if (req.body.creativityLevel != undefined) {
+        creativityLevel = req.body.creativityLevel;
+    }
+
+    prompt["41"]["inputs"]["strength"] = depthInfluence;
+    prompt["41"]["inputs"]["end_percent"] = depthEffectFade;
+    
+    prompt["3"]["inputs"]["denoise"] = creativityLevel;
+
 
     return prompt;
 }

@@ -75,7 +75,7 @@ PipeAdvanceLooseColor.process = function (imgData, positivePrompt, negtivePrompt
 }
 
 
-PipeAdvanceLooseColor.quickProcess = function (positivePrompt, imgurl, imgData) {
+PipeAdvanceLooseColor.quickProcess = function (positivePrompt, imgurl, imgData, req) {
     console.log("PipeAdvanceLooseColor.quickProcess");
     let promptFile;
     promptFile = fs.readFileSync('./pipe/workflow_api_adv_loose_color_2.json');//');
@@ -119,6 +119,40 @@ PipeAdvanceLooseColor.quickProcess = function (positivePrompt, imgurl, imgData) 
 
     prompt["29"]["inputs"]["strength_model"] = 0.6;
 
+    if (Tool.renderParams.loosecolor_styleintensity != undefined) {
+        prompt["29"]["inputs"]["strength_model"] = Tool.renderParams.loosecolor_styleintensity;
+    }
+    if (Tool.renderParams.loosecolor_3deffectstrength != undefined) {
+        prompt["41"]["inputs"]["strength"] = Tool.renderParams.loosecolor_3deffectstrength;
+    }
+    if (Tool.renderParams.loosecolor_3deffectfade != undefined) {
+
+        prompt["41"]["inputs"]["end_percent"] = Tool.renderParams.loosecolor_3deffectfade;
+    }
+    if (Tool.renderParams.loosecolor_imageclarity != undefined) {
+        prompt["3"]["inputs"]["denoise"] = Tool.renderParams.loosecolor_imageclarity;
+    }
+
+    let depthInfluence = 0.8;
+    let depthEffectFade = 0.4;
+    let creativityLevel = 1.0;
+   
+    if (req.body.depthInfluence != undefined) {
+        depthInfluence = req.body.depthInfluence;
+    }
+    if (req.body.depthEffectFade != undefined) {
+        depthEffectFade = req.body.depthEffectFade;
+    }
+    if (req.body.creativityLevel != undefined) {
+        creativityLevel = req.body.creativityLevel;
+    }
+
+    prompt["41"]["inputs"]["strength"] = depthInfluence;
+    prompt["41"]["inputs"]["end_percent"] = depthEffectFade;
+    
+    prompt["3"]["inputs"]["denoise"] = creativityLevel;
+
+    
     return prompt;
 
 }

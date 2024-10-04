@@ -62,12 +62,12 @@ PipeAdvanceBWLooseColor.process = function (imgData, positivePrompt, negtiveProm
     //ch lock
     if (CharacterTool.lockChParams.isLockCharacter) {
         prompt["29"]["inputs"]["strength_model"] = 0.20;
-        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "44", "29", "3", "4", "7", "8", "9","4");
+        CharacterTool.AddAPerson(prompt, CharacterTool.characerLockPair, CharacterTool.lockChParams.fullCharacterPath, "44", "29", "3", "4", "7", "8", "9", "4");
     }
     return prompt;
 }
 
-PipeAdvanceBWLooseColor.quickProcess = function(positivePrompt, imgurl, imgData){
+PipeAdvanceBWLooseColor.quickProcess = function (positivePrompt, imgurl, imgData, req) {
 
     console.log("PipeAdvanceBWLooseColor.quickProcess");
     const promptFile = fs.readFileSync('./pipe/workflow_api_adv_bw_loose_color_2.json');//');
@@ -86,7 +86,7 @@ PipeAdvanceBWLooseColor.quickProcess = function(positivePrompt, imgurl, imgData)
     positivePrompt += tailText;
 
     prompt["6"]["inputs"]["text"] = positivePrompt;
-    
+
     let negtivePrompt = "text, watermark, low quality , deformed, bad anatomy, worst quality,  bad hands, text, error, missing fingers, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured";
     prompt["7"]["inputs"]["text"] = negtivePrompt;
 
@@ -107,6 +107,39 @@ PipeAdvanceBWLooseColor.quickProcess = function(positivePrompt, imgurl, imgData)
     prompt["41"]["inputs"]["strength"] = depthStrength;
     prompt["41"]["inputs"]["start_percent"] = depthStart;
     prompt["41"]["inputs"]["end_percent"] = depthEnd;
+
+    if (Tool.renderParams.loosecolor_styleintensity != undefined) {
+        prompt["29"]["inputs"]["strength_model"] = Tool.renderParams.loosecolor_styleintensity;
+    }
+    if (Tool.renderParams.loosecolor_3deffectstrength != undefined) {
+        prompt["41"]["inputs"]["strength"] = Tool.renderParams.loosecolor_3deffectstrength;
+    }
+    if (Tool.renderParams.loosecolor_3deffectfade != undefined) {
+
+        prompt["41"]["inputs"]["end_percent"] = Tool.renderParams.loosecolor_3deffectfade;
+    }
+    if (Tool.renderParams.loosecolor_imageclarity != undefined) {
+        prompt["3"]["inputs"]["denoise"] = Tool.renderParams.loosecolor_imageclarity;
+    }
+
+    let depthInfluence = 0.8;
+    let depthEffectFade = 0.4;
+    let creativityLevel = 1.0;
+   
+    if (req.body.depthInfluence != undefined) {
+        depthInfluence = req.body.depthInfluence;
+    }
+    if (req.body.depthEffectFade != undefined) {
+        depthEffectFade = req.body.depthEffectFade;
+    }
+    if (req.body.creativityLevel != undefined) {
+        creativityLevel = req.body.creativityLevel;
+    }
+
+    prompt["41"]["inputs"]["strength"] = depthInfluence;
+    prompt["41"]["inputs"]["end_percent"] = depthEffectFade;
+    
+    prompt["3"]["inputs"]["denoise"] = creativityLevel;
 
     return prompt;
 }

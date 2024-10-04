@@ -112,6 +112,13 @@ function TaskAdvanceStyleTransfer(task, req, queue) {
     }
 
 
+    console.log("poseInfluence: ", req.body.poseInfluence);
+    console.log("poseEffectFade: ", req.body.poseEffectFade);
+    console.log("depthInfluence: ", req.body.depthInfluence);
+    console.log("depthEffectFade: ", req.body.depthEffectFade);
+    console.log("creativityLevel: ", req.body.creativityLevel);
+
+
 
     //req.body.shapePrecision
     console.log("shapePrecision: " + req.body.shapePrecision);
@@ -308,31 +315,31 @@ function sketchToStyle(task, req, queue) {
     let style = Tool.getQuickRenderStyle(req.body.style);
     switch (style) {
         case ("flux"):
-            promptjson = FluxPipeStageRender.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = FluxPipeStageRender.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         case ("adv_photo_realism"):
-            promptjson = PipeAdvancePhotoRealism.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = PipeAdvancePhotoRealism.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         case ("adv_loose_color"):
-            promptjson = PipeAdvanceLooseColor.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = PipeAdvanceLooseColor.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         case ("adv_bw_grain"):
-            promptjson = PipeAdvanceBWGrain.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = PipeAdvanceBWGrain.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         case ("adv_dslr"):
-            promptjson = PipeAdvanceDSLR.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = PipeAdvanceDSLR.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         case ("adv_epic_real"):
-            promptjson = PipeAdvanceEpicReal.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = PipeAdvanceEpicReal.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         case ("adv_bw_loose"):
-            promptjson = PipeAdvanceBWLooseColor.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = PipeAdvanceBWLooseColor.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         case ("illustration_comic"):
-            promptjson = IllustrationComicRender.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = IllustrationComicRender.quickProcess(posPrompt, imgurl, imgData, req);
             break;
         default:
-            promptjson = PipeAdvancePhotoRealism.quickProcess(posPrompt, imgurl, imgData);
+            promptjson = PipeAdvancePhotoRealism.quickProcess(posPrompt, imgurl, imgData, req);
     }
 
     sendRequest(promptjson, queue, task);
