@@ -45,7 +45,7 @@ function FluxPipeStageRender(task, req, queue) {
     sendRequest(prompt, queue, task);
 }
 
-FluxPipeStageRender.quickProcess = function (posprompt, imgurl, imgData) {
+FluxPipeStageRender.quickProcess = function (posprompt, imgurl, imgData, req) {
     console.log("FluxPipeStageRender.quickProcess");
     return FluxPipeStageRender.depthProcess(imgData, imgurl, posprompt);
 }
@@ -65,8 +65,8 @@ FluxPipeStageRender.depthProcess = function (imgData, imgurl, text, req = null, 
 
     prompt["25"]["inputs"]["noise_seed"] = Tool.randomInt();
     prompt["6"]["inputs"]["text"] = text;
-     //parmas
-     if (req != null) {
+    //parmas
+    if (req != null) {
         let flux_strength = 0.4;
         let flux_fade_effect = 0.4;
         if (req.body.flux_strength != undefined) {
