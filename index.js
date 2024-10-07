@@ -701,6 +701,27 @@ app.use('/ad_texttosketch', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 })
 
+app.use('/ad_texttotightcolor', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/ad_texttotightcolor', (req, res) => {
+    console.log("ad_texttotightcolor");
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    let task = new Task("ad_texttotightcolor", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+
 
 app.use('/ad_texttoloosecolor', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
