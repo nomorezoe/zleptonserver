@@ -252,7 +252,7 @@
   },
   "63": {
     "inputs": {
-      "unet_name": "flux1-dev-Q6_K.gguf"
+      "unet_name": "fluxDevQ5KMGGUFQuantizationA_v10.gguf"
     },
     "class_type": "UnetLoaderGGUF",
     "_meta": {
