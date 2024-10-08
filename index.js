@@ -701,10 +701,10 @@ app.use('/ad_texttosketch', function (req, res, next) {
     QueueManager.instance.getNextQueue();
 })
 
-app.use('/ad_texttotightcolor', function (req, res, next) {
+app.use('/ad_texttoloosecolor', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
-}).post('/ad_texttotightcolor', (req, res) => {
+}).post('/ad_texttoloosecolor', (req, res) => {
     console.log("ad_texttotightcolor");
 
     var session = req.body.session;
@@ -723,10 +723,10 @@ app.use('/ad_texttotightcolor', function (req, res, next) {
 })
 
 
-app.use('/ad_texttoloosecolor', function (req, res, next) {
+app.use('/ad_texttotightcolor', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
-}).post('/ad_texttoloosecolor', (req, res) => {
+}).post('/ad_texttotightcolor', (req, res) => {
     console.log("ad_texttoloosecolor");
 
     var session = req.body.session;
