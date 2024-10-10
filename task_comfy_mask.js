@@ -10,28 +10,36 @@ function TaskComfyMask(task, req, queue) {
     console.log("TaskComfyMask");
 
     var session = req.body.session;
-    
+
     const promptFile = fs.readFileSync('./pipe/get_character_mask_update.json');
     console.log("get_character_mask_update");
     let prompt = JSON.parse(promptFile);
 
     let isUpscaleImage = false;
 
-    if(req.body.img_url == undefined){
+    if (req.body.img_url == undefined) {
         var rawMaskImg = req.files.imageByteArray.data;
         var buffer = Buffer.from(rawMaskImg);
         var imgBytes = buffer.toString('base64');
         prompt["5"]["inputs"]["image"] = imgBytes;
     }
-    else
-    {
+    else {
         var maskUrl = req.body.img_url;
         Tool.applyImage(prompt, "5", null, maskUrl);
         isUpscaleImage = true;
         prompt["1"]["inputs"]["crop_factor"] = 6;
     }
-    
-    
+
+    let type = "body";
+    if (req.body.type != undefined) {
+        type = req.body.type;
+    }
+
+    if (type == "face") {
+        prompt["20"]["inputs"]["model_name"] = "bbox/face_yolov8n_v2.pt";
+    }
+
+
     task.pipeline = "get_mask";
     //
     Tool.applyRandomFileName(prompt);
@@ -59,7 +67,7 @@ function sendRequest(promptjson, queue, task) {
     const reqhttps = https.request(options, (reshttps) => {
         console.log('statusCode:', reshttps.statusCode);
         console.log('headers:', reshttps.headers);
-     
+
         if (reshttps.statusCode == 200) {
 
             queue.completeTask();
