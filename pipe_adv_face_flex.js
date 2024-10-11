@@ -28,6 +28,20 @@ function FaceFlexPipe(task, req, queue) {
         }
     }
 
+    let type = "body";
+    if (req.body.type != undefined) {
+        type = req.body.type;
+    }
+    if (req.body.type == "face") {
+        prompt["20"]["inputs"]["model_name"] = "bbox/face_yolov8n_v2.pt";
+    }
+
+    let index = 0;
+    if (req.body.index != undefined) {
+        index = parseInt(req.body.index);
+        prompt["2"]["inputs"]["take_start"] = index;
+    }
+    
     console.log("type:" + req.body.type);
     console.log("index:" + req.body.index);
 
