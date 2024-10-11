@@ -228,8 +228,8 @@ Tool.applyCropInfo = function (prompt, cropwidth, cropHeight) {
 
 Tool.applyImage = function (prompt, index, oldFilePath, fullFilePath, folder = OUTPUT_FOLDER) {
     if (fullFilePath != undefined && fullFilePath != "" && fullFilePath != null) {
-        console.log("fullFilePath")
-        let json = {
+        console.log("fullFilePath:" + fullFilePath)
+        let json = { 
             "inputs": {
                 "url": "",
                 "keep_alpha_channel": false,

@@ -27,7 +27,7 @@ const FluxPipeImageEnhance = require("./flux_pipe_image_enhance");
 const FluxPipeTextToSketch = require("./flux_pipe_text_to_sketch");
 const FluxPipeTextToLooseColor = require("./flux_pipe_text_to_loosecolor");
 const FluxPipeTextToTightColor = require("./flux_pipe_text_to_tight_color");
-
+const FaceFlexPipe = require("./pipe_adv_face_flex");
 
 function Task(type, index, req) {
     this.type = type;
@@ -81,6 +81,9 @@ Task.prototype = {
                 break;
             case "mask":
                 TaskComfyMask(this, this.req, queue);
+                break;
+            case "faceflex":
+                FaceFlexPipe(this, this.req, queue);
                 break;
             case "chcreator":
                 TaskComfyChCreator(this, this.req, queue);
@@ -182,6 +185,9 @@ Task.prototype = {
             case "mask":
                 return 30;
                 break;
+            case "faceflex":
+                return 30;
+                break;
             case "styletransfer":
                 return 120;
                 break;
@@ -260,6 +266,9 @@ Task.prototype = {
             case "mask":
                 return 30;
                 break;
+            case "faceflex":
+                return 30;
+                break;
             case "styletransfer":
                 return 120;
                 break;
@@ -336,6 +345,9 @@ Task.prototype = {
             }
             else if (this.type == "mask") {
                 socket.emit("completeMaskTask", this.imageFileNames.join(','));
+            }
+            else if (this.type == "faceflex") {
+                socket.emit("completeFaceFlexTask", this.imageFileNames.join(','));
             }
             else if (this.type == "chcreator") {
                 socket.emit("completeChCreatorTask", this.imageFileNames.join(','));
