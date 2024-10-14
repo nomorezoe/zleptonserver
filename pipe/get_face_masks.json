@@ -1,0 +1,119 @@
+{
+    "1": {
+      "inputs": {
+        "bbox_threshold": 0.5,
+        "bbox_dilation": 0,
+        "crop_factor": 3,
+        "drop_size": 50,
+        "sub_threshold": 0.5,
+        "sub_dilation": 0,
+        "sub_bbox_expansion": 0,
+        "sam_mask_hint_threshold": 0.7000000000000001,
+        "post_dilation": 0,
+        "bbox_detector": [
+          "20",
+          0
+        ],
+        "image": [
+          "5",
+          0
+        ]
+      },
+      "class_type": "ImpactSimpleDetectorSEGS",
+      "_meta": {
+        "title": "Simple Detector (SEGS)"
+      }
+    },
+    "2": {
+      "inputs": {
+        "target": "x1",
+        "order": false,
+        "take_start": 0,
+        "take_count": 4,
+        "segs": [
+          "1",
+          0
+        ]
+      },
+      "class_type": "ImpactSEGSOrderedFilter",
+      "_meta": {
+        "title": "SEGS Filter (ordered)"
+      }
+    },
+    "5": {
+      "inputs": {
+        "image": "c18c83ff-a006-48d9-b4f7-dc56aa823801_adv_style.png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load Image"
+      }
+    },
+    "20": {
+      "inputs": {
+        "model_name": "bbox/face_yolov8n_v2.pt"
+      },
+      "class_type": "UltralyticsDetectorProvider",
+      "_meta": {
+        "title": "UltralyticsDetectorProvider"
+      }
+    },
+    "62": {
+      "inputs": {
+        "segs": [
+          "2",
+          0
+        ]
+      },
+      "class_type": "ImpactSEGSToMaskList",
+      "_meta": {
+        "title": "SEGS to Mask List"
+      }
+    },
+    "75": {
+      "inputs": {
+        "context_expand_pixels": 20,
+        "context_expand_factor": 1,
+        "fill_mask_holes": true,
+        "blur_mask_pixels": 16,
+        "invert_mask": false,
+        "blend_pixels": 16,
+        "rescale_algorithm": "bicubic",
+        "mode": "ranged size",
+        "force_width": 1024,
+        "force_height": 1024,
+        "rescale_factor": 1,
+        "min_width": 512,
+        "min_height": 512,
+        "max_width": 768,
+        "max_height": 768,
+        "padding": 32,
+        "image": [
+          "5",
+          0
+        ],
+        "mask": [
+          "62",
+          0
+        ]
+      },
+      "class_type": "InpaintCrop",
+      "_meta": {
+        "title": "✂️ Inpaint Crop"
+      }
+    },
+    "79": {
+      "inputs": {
+        "filename_prefix": "ComfyUI",
+        "images": [
+          "75",
+          1
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    }
+  }

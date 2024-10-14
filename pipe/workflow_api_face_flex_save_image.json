@@ -1,0 +1,834 @@
+{
+  "3": {
+    "inputs": {
+      "image": "3_Females_1296x728-header.webp",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "20": {
+    "inputs": {
+      "model_name": "bbox/face_yolov8n_v2.pt"
+    },
+    "class_type": "UltralyticsDetectorProvider",
+    "_meta": {
+      "title": "UltralyticsDetectorProvider"
+    }
+  },
+  "22": {
+    "inputs": {
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 0,
+      "crop_factor": 3,
+      "drop_size": 50,
+      "sub_threshold": 0.5,
+      "sub_dilation": 0,
+      "sub_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7000000000000001,
+      "post_dilation": 0,
+      "bbox_detector": [
+        "20",
+        0
+      ],
+      "image": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "ImpactSimpleDetectorSEGS",
+    "_meta": {
+      "title": "Simple Detector (SEGS)"
+    }
+  },
+  "56": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "10034",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "75": {
+    "inputs": {
+      "model_name": "sam_vit_b_01ec64.pth",
+      "device_mode": "AUTO"
+    },
+    "class_type": "SAMLoader",
+    "_meta": {
+      "title": "SAMLoader (Impact)"
+    }
+  },
+  "10000": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 0,
+      "take_count": 1,
+      "segs": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "10001": {
+    "inputs": {
+      "segs": [
+        "10000",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "10002": {
+    "inputs": {
+      "context_expand_pixels": 20,
+      "context_expand_factor": 1,
+      "fill_mask_holes": true,
+      "blur_mask_pixels": 16,
+      "invert_mask": false,
+      "blend_pixels": 16,
+      "rescale_algorithm": "bicubic",
+      "mode": "ranged size",
+      "force_width": 1024,
+      "force_height": 1024,
+      "rescale_factor": 1,
+      "min_width": 512,
+      "min_height": 512,
+      "max_width": 1024,
+      "max_height": 1024,
+      "padding": 32,
+      "image": [
+        "3",
+        0
+      ],
+      "mask": [
+        "10001",
+        0
+      ]
+    },
+    "class_type": "InpaintCrop",
+    "_meta": {
+      "title": "✂️ Inpaint Crop"
+    }
+  },
+  "10003": {
+    "inputs": {
+      "rotate_pitch": 0,
+      "rotate_yaw": 0,
+      "rotate_roll": 0,
+      "blink": 0,
+      "eyebrow": 0,
+      "wink": 24.5,
+      "pupil_x": 0,
+      "pupil_y": 0,
+      "aaa": 0,
+      "eee": 0,
+      "woo": 0,
+      "smile": 0,
+      "src_ratio": 1,
+      "sample_ratio": 1,
+      "sample_parts": "OnlyExpression",
+      "crop_factor": 1.7000000000000002,
+      "src_image": [
+        "10002",
+        1
+      ]
+    },
+    "class_type": "ExpressionEditor",
+    "_meta": {
+      "title": "Expression Editor (PHM)"
+    }
+  },
+  "10004": {
+    "inputs": {
+      "rescale_algorithm": "bislerp",
+      "stitch": [
+        "10002",
+        0
+      ],
+      "inpainted_image": [
+        "10003",
+        0
+      ]
+    },
+    "class_type": "InpaintStitch",
+    "_meta": {
+      "title": "✂️ Inpaint Stitch"
+    }
+  },
+  "10010": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 1,
+      "take_count": 1,
+      "segs": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "10011": {
+    "inputs": {
+      "segs": [
+        "10010",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "10012": {
+    "inputs": {
+      "context_expand_pixels": 20,
+      "context_expand_factor": 1,
+      "fill_mask_holes": true,
+      "blur_mask_pixels": 16,
+      "invert_mask": false,
+      "blend_pixels": 16,
+      "rescale_algorithm": "bicubic",
+      "mode": "ranged size",
+      "force_width": 1024,
+      "force_height": 1024,
+      "rescale_factor": 1,
+      "min_width": 512,
+      "min_height": 512,
+      "max_width": 1024,
+      "max_height": 1024,
+      "padding": 32,
+      "image": [
+        "10004",
+        0
+      ],
+      "mask": [
+        "10011",
+        0
+      ]
+    },
+    "class_type": "InpaintCrop",
+    "_meta": {
+      "title": "✂️ Inpaint Crop"
+    }
+  },
+  "10013": {
+    "inputs": {
+      "rotate_pitch": 0,
+      "rotate_yaw": 0,
+      "rotate_roll": 0,
+      "blink": 0,
+      "eyebrow": 0,
+      "wink": 0,
+      "pupil_x": 0,
+      "pupil_y": 0,
+      "aaa": 0,
+      "eee": 14.8,
+      "woo": 0,
+      "smile": 0,
+      "src_ratio": 1,
+      "sample_ratio": 1,
+      "sample_parts": "OnlyExpression",
+      "crop_factor": 1.7000000000000002,
+      "src_image": [
+        "10012",
+        1
+      ]
+    },
+    "class_type": "ExpressionEditor",
+    "_meta": {
+      "title": "Expression Editor (PHM)"
+    }
+  },
+  "10014": {
+    "inputs": {
+      "rescale_algorithm": "bislerp",
+      "stitch": [
+        "10012",
+        0
+      ],
+      "inpainted_image": [
+        "10013",
+        0
+      ]
+    },
+    "class_type": "InpaintStitch",
+    "_meta": {
+      "title": "✂️ Inpaint Stitch"
+    }
+  },
+  "10020": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 2,
+      "take_count": 1,
+      "segs": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "10021": {
+    "inputs": {
+      "segs": [
+        "10020",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "10022": {
+    "inputs": {
+      "context_expand_pixels": 20,
+      "context_expand_factor": 1,
+      "fill_mask_holes": true,
+      "blur_mask_pixels": 16,
+      "invert_mask": false,
+      "blend_pixels": 16,
+      "rescale_algorithm": "bicubic",
+      "mode": "ranged size",
+      "force_width": 1024,
+      "force_height": 1024,
+      "rescale_factor": 1,
+      "min_width": 512,
+      "min_height": 512,
+      "max_width": 1024,
+      "max_height": 1024,
+      "padding": 32,
+      "image": [
+        "10014",
+        0
+      ],
+      "mask": [
+        "10021",
+        0
+      ]
+    },
+    "class_type": "InpaintCrop",
+    "_meta": {
+      "title": "✂️ Inpaint Crop"
+    }
+  },
+  "10023": {
+    "inputs": {
+      "rotate_pitch": 0,
+      "rotate_yaw": 0,
+      "rotate_roll": 19.5,
+      "blink": 0,
+      "eyebrow": 0,
+      "wink": 0,
+      "pupil_x": 0,
+      "pupil_y": 0,
+      "aaa": 0,
+      "eee": 0,
+      "woo": 0,
+      "smile": 0,
+      "src_ratio": 1,
+      "sample_ratio": 1,
+      "sample_parts": "OnlyExpression",
+      "crop_factor": 1.7000000000000002,
+      "src_image": [
+        "10022",
+        1
+      ]
+    },
+    "class_type": "ExpressionEditor",
+    "_meta": {
+      "title": "Expression Editor (PHM)"
+    }
+  },
+  "10024": {
+    "inputs": {
+      "rescale_algorithm": "bislerp",
+      "stitch": [
+        "10022",
+        0
+      ],
+      "inpainted_image": [
+        "10023",
+        0
+      ]
+    },
+    "class_type": "InpaintStitch",
+    "_meta": {
+      "title": "✂️ Inpaint Stitch"
+    }
+  },
+  "10030": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 3,
+      "take_count": 1,
+      "segs": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "10031": {
+    "inputs": {
+      "segs": [
+        "10030",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "10032": {
+    "inputs": {
+      "context_expand_pixels": 20,
+      "context_expand_factor": 1,
+      "fill_mask_holes": true,
+      "blur_mask_pixels": 16,
+      "invert_mask": false,
+      "blend_pixels": 16,
+      "rescale_algorithm": "bicubic",
+      "mode": "ranged size",
+      "force_width": 1024,
+      "force_height": 1024,
+      "rescale_factor": 1,
+      "min_width": 512,
+      "min_height": 512,
+      "max_width": 1024,
+      "max_height": 1024,
+      "padding": 32,
+      "image": [
+        "10024",
+        0
+      ],
+      "mask": [
+        "10031",
+        0
+      ]
+    },
+    "class_type": "InpaintCrop",
+    "_meta": {
+      "title": "✂️ Inpaint Crop"
+    }
+  },
+  "10033": {
+    "inputs": {
+      "rotate_pitch": 0,
+      "rotate_yaw": 0,
+      "rotate_roll": 19.5,
+      "blink": 0,
+      "eyebrow": 0,
+      "wink": 0,
+      "pupil_x": 0,
+      "pupil_y": 0,
+      "aaa": 0,
+      "eee": 0,
+      "woo": 0,
+      "smile": 0,
+      "src_ratio": 1,
+      "sample_ratio": 1,
+      "sample_parts": "OnlyExpression",
+      "crop_factor": 1.7000000000000002,
+      "src_image": [
+        "10032",
+        1
+      ]
+    },
+    "class_type": "ExpressionEditor",
+    "_meta": {
+      "title": "Expression Editor (PHM)"
+    }
+  },
+  "10034": {
+    "inputs": {
+      "rescale_algorithm": "bislerp",
+      "stitch": [
+        "10032",
+        0
+      ],
+      "inpainted_image": [
+        "10033",
+        0
+      ]
+    },
+    "class_type": "InpaintStitch",
+    "_meta": {
+      "title": "✂️ Inpaint Stitch"
+    }
+  },
+  "20000": {
+    "inputs": {
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 0,
+      "crop_factor": 3,
+      "drop_size": 50,
+      "sub_threshold": 0.5,
+      "sub_dilation": 0,
+      "sub_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7000000000000001,
+      "post_dilation": 0,
+      "bbox_detector": [
+        "20",
+        0
+      ],
+      "image": [
+        "3",
+        0
+      ],
+      "sam_model_opt": [
+        "75",
+        0
+      ]
+    },
+    "class_type": "ImpactSimpleDetectorSEGS",
+    "_meta": {
+      "title": "Simple Detector (SEGS)"
+    }
+  },
+  "20001": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 0,
+      "take_count": 1,
+      "segs": [
+        "20000",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "20002": {
+    "inputs": {
+      "segs": [
+        "20001",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "20003": {
+    "inputs": {
+      "mask": [
+        "20002",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "20004": {
+    "inputs": {
+      "force_resize_width": 0,
+      "force_resize_height": 0,
+      "image": [
+        "10034",
+        0
+      ],
+      "mask": [
+        "20003",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "20005": {
+    "inputs": {
+      "resize_behavior": "source_size",
+      "image_base": [
+        "3",
+        0
+      ],
+      "image_to_paste": [
+        "20004",
+        0
+      ],
+      "mask": [
+        "20003",
+        0
+      ]
+    },
+    "class_type": "Paste By Mask",
+    "_meta": {
+      "title": "Paste By Mask"
+    }
+  },
+  "20011": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 1,
+      "take_count": 1,
+      "segs": [
+        "20000",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "20012": {
+    "inputs": {
+      "segs": [
+        "20011",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "20013": {
+    "inputs": {
+      "mask": [
+        "20012",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "20014": {
+    "inputs": {
+      "force_resize_width": 0,
+      "force_resize_height": 0,
+      "image": [
+        "10034",
+        0
+      ],
+      "mask": [
+        "20013",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "20015": {
+    "inputs": {
+      "resize_behavior": "source_size",
+      "image_base": [
+        "20005",
+        0
+      ],
+      "image_to_paste": [
+        "20014",
+        0
+      ],
+      "mask": [
+        "20013",
+        0
+      ]
+    },
+    "class_type": "Paste By Mask",
+    "_meta": {
+      "title": "Paste By Mask"
+    }
+  },
+  "20021": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 2,
+      "take_count": 1,
+      "segs": [
+        "20000",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "20022": {
+    "inputs": {
+      "segs": [
+        "20021",
+        0
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "20023": {
+    "inputs": {
+      "mask": [
+        "20022",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "20024": {
+    "inputs": {
+      "force_resize_width": 0,
+      "force_resize_height": 0,
+      "image": [
+        "10034",
+        0
+      ],
+      "mask": [
+        "20023",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "20025": {
+    "inputs": {
+      "resize_behavior": "source_size",
+      "image_base": [
+        "20015",
+        0
+      ],
+      "image_to_paste": [
+        "20024",
+        0
+      ],
+      "mask": [
+        "20023",
+        0
+      ]
+    },
+    "class_type": "Paste By Mask",
+    "_meta": {
+      "title": "Paste By Mask"
+    }
+  },
+  "20031": {
+    "inputs": {
+      "target": "x1",
+      "order": false,
+      "take_start": 3,
+      "take_count": 1,
+      "segs": [
+        "20000",
+        0
+      ]
+    },
+    "class_type": "ImpactSEGSOrderedFilter",
+    "_meta": {
+      "title": "SEGS Filter (ordered)"
+    }
+  },
+  "20032": {
+    "inputs": {
+      "segs": [
+        "20031",
+        1
+      ]
+    },
+    "class_type": "SegsToCombinedMask",
+    "_meta": {
+      "title": "SEGS to MASK (combined)"
+    }
+  },
+  "20033": {
+    "inputs": {
+      "mask": [
+        "20032",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "20034": {
+    "inputs": {
+      "force_resize_width": 0,
+      "force_resize_height": 0,
+      "image": [
+        "10034",
+        0
+      ],
+      "mask": [
+        "20033",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "20035": {
+    "inputs": {
+      "resize_behavior": "source_size",
+      "image_base": [
+        "20025",
+        0
+      ],
+      "image_to_paste": [
+        "20034",
+        0
+      ],
+      "mask": [
+        "20033",
+        0
+      ]
+    },
+    "class_type": "Paste By Mask",
+    "_meta": {
+      "title": "Paste By Mask"
+    }
+  }
+}

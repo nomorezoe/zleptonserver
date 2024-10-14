@@ -335,7 +335,7 @@ app.use('/getmask', function (req, res, next) {
 })
 //get mask end
 
-//get mask start
+//get face flex
 app.use('/faceflex', function (req, res, next) {
     req.setTimeout(300000); //set a 20s timeout for this request
     next();
@@ -358,7 +358,57 @@ app.use('/faceflex', function (req, res, next) {
 
     QueueManager.instance.getNextQueue();
 })
-//get mask end
+//get face flex
+
+//get face flex save image
+app.use('/faceflex_image', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/faceflex_image', (req, res) => {
+    console.log("faceflex_image");
+    //GetCharacterMask.queueProcess(req, res);
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    queue.setPriority(50);
+    let task = new Task("faceflex_image", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+//get face flex save image
+
+//get face flex save image
+app.use('/getfaces', function (req, res, next) {
+    req.setTimeout(300000); //set a 20s timeout for this request
+    next();
+}).post('/getfaces', (req, res) => {
+    console.log("getfaces");
+    //GetCharacterMask.queueProcess(req, res);
+
+    var session = req.body.session;
+    let queue = new Queue(session);
+    queue.setPriority(50);
+    let task = new Task("getfaces", 0, req);
+    queue.tasks.push(task);
+
+    QueueManager.instance.addToQueue(queue);
+
+    res.json({
+        success: true,
+        queue_count: QueueManager.instance.remainQueueCount()
+    });
+
+    QueueManager.instance.getNextQueue();
+})
+//get face flex save image
 
 //ch creator start
 app.use('/chcreator', function (req, res, next) {

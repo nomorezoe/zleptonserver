@@ -28,6 +28,8 @@ const FluxPipeTextToSketch = require("./flux_pipe_text_to_sketch");
 const FluxPipeTextToLooseColor = require("./flux_pipe_text_to_loosecolor");
 const FluxPipeTextToTightColor = require("./flux_pipe_text_to_tight_color");
 const FaceFlexPipe = require("./pipe_adv_face_flex");
+const FaceFlexPipeSaveImage = require("./pipe_adv_face_flex_save_image");
+const TaskComfyGetFaces = require("./task_comfy_get_faces");
 
 function Task(type, index, req) {
     this.type = type;
@@ -82,8 +84,14 @@ Task.prototype = {
             case "mask":
                 TaskComfyMask(this, this.req, queue);
                 break;
+            case "getfaces":
+                TaskComfyGetFaces(this, this.req, queue);
+                break;
             case "faceflex":
                 FaceFlexPipe(this, this.req, queue);
+                break;
+            case "faceflex_image":
+                FaceFlexPipeSaveImage(this, this.req, queue);
                 break;
             case "chcreator":
                 TaskComfyChCreator(this, this.req, queue);
@@ -185,8 +193,14 @@ Task.prototype = {
             case "mask":
                 return 30;
                 break;
+            case "getfaces":
+                return 60;
+                break;
             case "faceflex":
                 return 30;
+                break;
+            case "faceflex_image":
+                return 120;
                 break;
             case "styletransfer":
                 return 120;
@@ -266,8 +280,14 @@ Task.prototype = {
             case "mask":
                 return 30;
                 break;
+            case "getfaces":
+                return 60;
+                break;
             case "faceflex":
-                return 30;
+                return 60;
+                break;
+            case "faceflex_image":
+                return 60;
                 break;
             case "styletransfer":
                 return 120;
@@ -346,8 +366,14 @@ Task.prototype = {
             else if (this.type == "mask") {
                 socket.emit("completeMaskTask", this.imageFileNames.join(','));
             }
+            else if (this.type == "getfaces") {
+                socket.emit("completeGetFacesTask", this.imageFileNames.join(','));
+            }
             else if (this.type == "faceflex") {
                 socket.emit("completeFaceFlexTask", this.imageFileNames.join(','));
+            }
+            else if (this.type == "faceflex_image") {
+                socket.emit("completeFaceFlexSaveImageTask", this.imageFileNames.join(','));
             }
             else if (this.type == "chcreator") {
                 socket.emit("completeChCreatorTask", this.imageFileNames.join(','));
