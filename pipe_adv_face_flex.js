@@ -40,7 +40,11 @@ function FaceFlexPipe(task, req, queue) {
     if (req.body.index != undefined) {
         index = parseInt(req.body.index);
         prompt["2"]["inputs"]["take_start"] = index;
+
+        console.log("index: "+index);
     }
+
+    
     
     console.log("type:" + req.body.type);
     console.log("index:" + req.body.index);
