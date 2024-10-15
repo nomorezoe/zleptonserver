@@ -370,7 +370,7 @@ Task.prototype = {
                 socket.emit("completeGetFacesTask", this.imageFileNames.join(','));
             }
             else if (this.type == "faceflex") {
-                socket.emit("completeFaceFlexTask", this.imageFileNames.join(','));
+                socket.emit("completeFaceFlexTask" + this.req.body.index,this.imageFileNames.join(','));
             }
             else if (this.type == "faceflex_image") {
                 socket.emit("completeFaceFlexSaveImageTask", this.imageFileNames.join(','));
