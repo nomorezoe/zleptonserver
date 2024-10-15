@@ -63,7 +63,7 @@ function FaceFlexPipeSaveImage(task, req, queue) {
        // prompt[id20001]["inputs"]["take_start"] = i;
     }
 
-    if(req.body.image_url != undefined  && req.body.img_url != null){
+    if(req.body.img_url != undefined  && req.body.img_url != null){
         var maskUrl = req.body.img_url;
         Tool.applyImage(prompt, "3", null, maskUrl);
     }
