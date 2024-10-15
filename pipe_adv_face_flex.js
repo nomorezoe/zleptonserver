@@ -80,7 +80,6 @@ function FaceFlexPipe(task, req, queue) {
 function sendRequest(promptjson, queue, task) {
 
     var data = new TextEncoder("utf-8").encode(JSON.stringify({ "prompt": promptjson }));
-
     //send request
     const options = {
         hostname: Tool.RequestURL,

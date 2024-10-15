@@ -21,6 +21,10 @@ function FaceFlexPipeSaveImage(task, req, queue) {
     }
     updatePromptByCount(prompt, count);
 
+    if (req.body.type == "body") {
+        prompt["20"]["inputs"]["model_name"] = "segm/person_yolov8m-seg.pt";
+    }
+
     let deleteCount = 4 - count;
     for(i = 0; i < count ; i++){
 

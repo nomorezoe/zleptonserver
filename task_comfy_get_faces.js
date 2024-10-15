@@ -21,6 +21,11 @@ function TaskComfyGetFaces(task, req, queue) {
     isUpscaleImage = true;
     //prompt["1"]["inputs"]["crop_factor"] = 6;
 
+   
+    if (req.body.type == "body") {
+        prompt["20"]["inputs"]["model_name"] = "segm/person_yolov8m-seg.pt";
+    }
+
     task.pipeline = "get_mask";
     //
     Tool.applyRandomFileName(prompt);
