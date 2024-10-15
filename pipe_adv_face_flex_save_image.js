@@ -23,6 +23,10 @@ function FaceFlexPipeSaveImage(task, req, queue) {
 
     if (req.body.type == "body") {
         prompt["20"]["inputs"]["model_name"] = "segm/person_yolov8m-seg.pt";
+       // delete prompt["20036"];
+    }
+    else{
+      //  delete prompt["20036"];
     }
 
     let deleteCount = 4 - count;
@@ -55,8 +59,8 @@ function FaceFlexPipeSaveImage(task, req, queue) {
         let id10000 = 10000 + (deleteCount + i) * 10 + "";
         prompt[id10000]["inputs"]["take_start"] = i;
 
-        let id20001 = 20001 + (deleteCount + i) * 10 + "";
-        prompt[id20001]["inputs"]["take_start"] = i;
+        //let id20001 = 20001 + (deleteCount + i) * 10 + "";
+       // prompt[id20001]["inputs"]["take_start"] = i;
     }
 
     var maskUrl = req.body.img_url;
@@ -147,11 +151,7 @@ function updatePromptByCount(prompt, count) {
             let id10004 = 10004 + i * 10 + "";
 
           
-            let id20001 = 20001 + i * 10 + "";
-            let id20002 = 20002 + i * 10 + "";
-            let id20003 = 20003 + i * 10 + "";
-            let id20004 = 20004 + i * 10 + "";
-            let id20005 = 20005 + i * 10 + "";
+            /*
 
             delete prompt[id10000];
             delete prompt[id10001];
@@ -159,18 +159,25 @@ function updatePromptByCount(prompt, count) {
             delete prompt[id10003];
             delete prompt[id10004];
 
+            let id20001 = 20001 + i * 10 + "";
+            let id20002 = 20002 + i * 10 + "";
+            let id20003 = 20003 + i * 10 + "";
+            let id20004 = 20004 + i * 10 + "";
+            let id20005 = 20005 + i * 10 + "";
             delete prompt[id20001];
             delete prompt[id20002];
             delete prompt[id20003];
             delete prompt[id20004];
             delete prompt[id20005];
+            */
         }
 
         let ids_10002 = 10002 + deleteCount * 10 + "";
         prompt[ids_10002]["inputs"]["image"] = ["3", 0];
 
-        let ids_20005 = 20005 + deleteCount * 10 + "";
+        /*let ids_20005 = 20005 + deleteCount * 10 + "";
         prompt[ids_20005]["inputs"]["image_base"] = ["3", 0];
+        */
     }
 
 }
