@@ -15,8 +15,16 @@ function FaceFlexPipe(task, req, queue) {
     const promptFile = fs.readFileSync('./pipe/workflow_api_face_flex.json');//');
     let prompt = JSON.parse(promptFile);
 
-    var maskUrl = req.body.img_url;
-    Tool.applyImage(prompt, "5", null, maskUrl);
+    if (req.body.img_url != undefined  && req.body.img_url != null) {
+        var maskUrl = req.body.img_url;
+        Tool.applyImage(prompt, "5", null, maskUrl);
+    }
+    else {
+
+        var rawImg = req.files.img_data.data;
+        prompt["5"]["inputs"]["image"] = Buffer.from(rawImg).toString('base64');
+    }
+
 
 
     var params = [];
@@ -41,11 +49,11 @@ function FaceFlexPipe(task, req, queue) {
         index = parseInt(req.body.index);
         prompt["2"]["inputs"]["take_start"] = index;
 
-        console.log("index: "+index);
+        console.log("index: " + index);
     }
 
-    
-    
+
+
     console.log("type:" + req.body.type);
     console.log("index:" + req.body.index);
 

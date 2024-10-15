@@ -27,7 +27,7 @@ function TaskComfyMask(task, req, queue) {
         var maskUrl = req.body.img_url;
         Tool.applyImage(prompt, "5", null, maskUrl);
         isUpscaleImage = true;
-        prompt["1"]["inputs"]["crop_factor"] = 6;
+        //prompt["1"]["inputs"]["crop_factor"] = 6;
     }
 
     let type = "body";

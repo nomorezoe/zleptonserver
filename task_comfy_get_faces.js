@@ -16,8 +16,16 @@ function TaskComfyGetFaces(task, req, queue) {
 
     let isUpscaleImage = false;
 
-    var maskUrl = req.body.img_url;
-    Tool.applyImage(prompt, "5", null, maskUrl);
+    console.log("req.body.img_url " + req.body.img_url );
+    if(req.body.img_url != undefined && req.body.img_url != null){
+        var maskUrl = req.body.img_url;
+        Tool.applyImage(prompt, "5", null, maskUrl);
+    }
+    else{
+        var rawImg = req.files.img_data.data;
+        prompt["5"]["inputs"]["image"] = Buffer.from(rawImg).toString('base64');
+    }
+   
     isUpscaleImage = true;
     //prompt["1"]["inputs"]["crop_factor"] = 6;
 
