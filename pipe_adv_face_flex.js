@@ -30,7 +30,7 @@ function FaceFlexPipe(task, req, queue) {
     var params = [];
     var isDefault = true;
     for (let i = 0; i < 12; i++) {
-        params[i] = req.body["p" + i] - 0.5;
+        params[i] = (req.body["p" + i] - 0.5) * 2;
         if (params[i] != 0) {
             isDefault = false;
         }
